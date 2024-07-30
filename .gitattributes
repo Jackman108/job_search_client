@@ -1,0 +1,36 @@
+# Normalize all text files to LF in the repository
+* text=auto
+
+# Explicitly set CRLF for specific file types
+*.bat text eol=crlf
+*.cmd text eol=crlf
+*.ps1 text eol=crlf
+
+# Explicitly set LF for specific file types
+*.sh text eol=lf
+*.py text eol=lf
+*.js text eol=lf
+*.css text eol=lf
+*.html text eol=lf
+*.md text eol=lf
+
+# Treat all files in the 'docs' directory as text
+docs/* text
+
+# Binary files that should not be modified
+*.jpg binary
+*.png binary
+*.gif binary
+*.ico binary
+*.pdf binary
+*.zip binary
+*.tar binary
+*.gz binary
+*.7z binary
+
+# Use the 'text' attribute for all files in specific directories
+src/** text
+public/** text
+
+# Ensure that files ending in .csv are treated as text
+*.csv text
