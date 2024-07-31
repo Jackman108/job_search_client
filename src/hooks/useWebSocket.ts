@@ -1,6 +1,6 @@
 import { useState, useCallback, useEffect, useRef } from 'react';
 
-export const useWebSocket = (wsUrl: string, fetchVacancies: () => void) => {
+export const useWebSocket = (wsUrl: string, fetchVacancies: () => void, setAlert: (message: string) => void) => {
   const [message, setMessage] = useState<any>(null);
   const [error, setError] = useState<Event | null>(null);
   const [open, setOpen] = useState<boolean>(false);
@@ -8,7 +8,6 @@ export const useWebSocket = (wsUrl: string, fetchVacancies: () => void) => {
 
   const connect = useCallback(() => {
     if (wsRef.current) {
-      console.log('WebSocket already connected');
       return;
     }
     console.log(`Connecting to WebSocket: ${wsUrl}`);
@@ -22,7 +21,13 @@ export const useWebSocket = (wsUrl: string, fetchVacancies: () => void) => {
 
     ws.onmessage = (event) => {
       console.log('WebSocket message received:', event.data);
-      setMessage(event.data);
+      setMessage(event.data);     
+      if (event.data === 'ERROR detected restart') {
+        setAlert('Некорректный Email или Пароль');
+      } else if (event.data === 'CAPTCHA detected restart'){
+        const captchaSrc = event.data.split(' ')[2];
+        setAlert(`Нужен ввод капчи, попробуйте позже ${captchaSrc}`);
+      }      
     };
 
     ws.onerror = (event) => {
