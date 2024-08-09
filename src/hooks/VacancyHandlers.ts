@@ -9,10 +9,11 @@ const VacancyHandlers = (): VacancyHandlersData => {
   const [message, setMessage] = useState('');
   const [vacancyUrl, setVacancyUrl] = useState('');
   const [errors, setErrors] = useState<Errors>({});
+  const [isLoading, setIsLoading] = useState(false);
 
   const handleSubmit = async (event: React.FormEvent): Promise<void> => {
     event.preventDefault();
-    await submitHandler(email, password, position, message, vacancyUrl, setErrors);
+    await submitHandler(email, password, position, message, vacancyUrl, setErrors, setIsLoading);
   };
 
   const handleStop = async () => {
@@ -33,6 +34,7 @@ const VacancyHandlers = (): VacancyHandlersData => {
     errors,
     handleSubmit,
     handleStop,
+    isLoading,
   };
 };
 

@@ -12,7 +12,8 @@ export const handleSubmit = async (
   position: string,
   message: string,
   vacancyUrl: string,
-  setErrors: (errors: Errors) => void
+  setErrors: (errors: Errors) => void,
+  setIsLoading: (isLoading: boolean) => void
 ): Promise<void> => {
   const { isValid, errors: validationErrors } = validateUtils(email, vacancyUrl);
 
@@ -20,6 +21,8 @@ export const handleSubmit = async (
     setErrors(validationErrors);
     return;
   }
+
+  setIsLoading(true);
 
   try {
     const response = await axios.post(`${apiUrl}/start`, {
@@ -32,6 +35,8 @@ export const handleSubmit = async (
     console.log(response.data);
   } catch (error) {
     console.error('Ошибка при отправке данных:', error);
+  } finally {
+    setIsLoading(false);
   }
 };
 

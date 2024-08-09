@@ -17,6 +17,7 @@
     errors: Errors;
     handleSubmit: (event: React.FormEvent) => void;
     handleStop: () => void;
+    isLoading: boolean;
   }
 
   export interface Vacancy {

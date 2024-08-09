@@ -18,7 +18,8 @@ const VacancyForm: FC = (
     setVacancyUrl,
     errors,
     handleSubmit,
-    handleStop
+    handleStop,
+    isLoading,
   } = VacancyHandlers();
   return (
     <section className={styles.sectionContainer}>
@@ -29,6 +30,7 @@ const VacancyForm: FC = (
             className={`${styles.input} ${errors.vacancyUrl ? styles.error : ''}`}
             value={vacancyUrl}
             onChange={(e) => setVacancyUrl(e.target.value)}
+            disabled={isLoading}
           />
           {errors.vacancyUrl && <p className={styles.errorText}>{errors.vacancyUrl}</p>}
         </div>
@@ -40,6 +42,7 @@ const VacancyForm: FC = (
                 className={`${styles.input} ${errors.email ? styles.error : ''}`}
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
+                disabled={isLoading}
               />
               {errors.email && <p className={styles.errorText}>{errors.email}</p>}
             </div>
@@ -50,6 +53,7 @@ const VacancyForm: FC = (
                 type="text"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
+                disabled={isLoading}
               />
             </div>
             <div className={styles.formGroup}>
@@ -59,6 +63,7 @@ const VacancyForm: FC = (
                 type="text"
                 value={position}
                 onChange={(e) => setPosition(e.target.value)}
+                disabled={isLoading}
               />
             </div>
           </div>
@@ -69,12 +74,13 @@ const VacancyForm: FC = (
                 className={styles.textarea}
                 value={message}
                 onChange={(e) => setMessage(e.target.value)}
+                disabled={isLoading}
               />
             </div>
           </div>
         </div>
-        <button className={styles.button} type="submit">Начать</button>
-        <button className={styles.button} type="button" onClick={handleStop}>Остановить</button>
+        <button className={styles.button} type="submit" disabled={isLoading}>{isLoading ? 'Загрузка...' : 'Начать'}</button>
+        <button className={styles.button} type="button" onClick={handleStop} disabled={!isLoading}>Остановить</button>
       </form>
     </section>
   );
