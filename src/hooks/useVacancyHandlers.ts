@@ -1,20 +1,29 @@
 // src/hooks/useVacancyHandlers.ts
 
 import axios from 'axios';
-import { Errors } from '../Interfaces/Interface.types';
+import { HandleSubmitParams } from '../Interfaces/Interface.types';
 import { validateUtils } from '../utils/validateUtils';
 
 const apiUrl = process.env.REACT_APP_API_URL || '';
 
-export const handleSubmit = async (
-  email: string,
-  password: string,
-  position: string,
-  message: string,
-  vacancyUrl: string,
-  setErrors: (errors: Errors) => void,
-  setIsLoading: (isLoading: boolean) => void
-): Promise<void> => {
+const submitRequest = async (endpoint: string, data?: Record<string, any>) => {
+  try {
+    const response = await axios.post(`${apiUrl}/${endpoint}`, data);
+    console.log(response.data);
+  } catch (error) {
+    console.error(`Ошибка при выполнении запроса к ${endpoint}:`, error);
+  }
+};
+
+export const handleSubmit = async ({
+  email,
+  password,
+  position,
+  message,
+  vacancyUrl,
+  setErrors,
+  setIsLoading,
+}: HandleSubmitParams): Promise<void> => {
   const { isValid, errors: validationErrors } = validateUtils(email, vacancyUrl);
 
   if (!isValid) {
@@ -23,28 +32,10 @@ export const handleSubmit = async (
   }
 
   setIsLoading(true);
-
-  try {
-    const response = await axios.post(`${apiUrl}/start`, {
-      email,
-      password,
-      position,
-      message,
-      vacancyUrl,
-    });
-    console.log(response.data);
-  } catch (error) {
-    console.error('Ошибка при отправке данных:', error);
-  } finally {
-    setIsLoading(false);
-  }
+  await submitRequest('start', { email, password, position, message, vacancyUrl });
+  setIsLoading(false);
 };
 
 export const handleStop = async (): Promise<void> => {
-  try {
-    const response = await axios.post(`${apiUrl}/stop`);
-    console.log(response.data);
-  } catch (error) {
-    console.error('Ошибка при остановке скрипта:', error);
-  }
+  await submitRequest('stop');
 };

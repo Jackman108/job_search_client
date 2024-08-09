@@ -1,5 +1,5 @@
-import { useState } from 'react';
-import { Errors, VacancyHandlersData } from '../Interfaces/Interface.types';
+import { useCallback, useState } from 'react';
+import { Errors, HandleSubmitParams, VacancyHandlersData } from '../Interfaces/Interface.types';
 import { handleSubmit as submitHandler, handleStop as stopHandler } from './useVacancyHandlers';
 
 const VacancyHandlers = (): VacancyHandlersData => {
@@ -11,14 +11,23 @@ const VacancyHandlers = (): VacancyHandlersData => {
   const [errors, setErrors] = useState<Errors>({});
   const [isLoading, setIsLoading] = useState(false);
 
-  const handleSubmit = async (event: React.FormEvent): Promise<void> => {
+  const handleSubmit = useCallback(async (event: React.FormEvent): Promise<void> => {
     event.preventDefault();
-    await submitHandler(email, password, position, message, vacancyUrl, setErrors, setIsLoading);
-  };
+    const params: HandleSubmitParams = {
+      email,
+      password,
+      position,
+      message,
+      vacancyUrl,
+      setErrors,
+      setIsLoading,
+    };
+    await submitHandler(params);
+  }, [email, password, position, message, vacancyUrl]);
 
-  const handleStop = async () => {
+  const handleStop = useCallback(async () => {
     await stopHandler();
-  };
+  }, []);
 
   return {
     email,

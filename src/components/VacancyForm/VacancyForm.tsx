@@ -1,10 +1,10 @@
 // src/components/VacancyForm.tsx
 import {FC} from 'react';
 import VacancyHandlers from '../../hooks/VacancyHandlers';
+import { useFormHandlers } from '../../hooks/useFormHandlers';
 import styles from './VacancyForm.module.css';
 
-const VacancyForm: FC = (
-  ): JSX.Element => {
+const VacancyForm: FC = (): JSX.Element => {
   const {
     email,
     setEmail,
@@ -21,6 +21,21 @@ const VacancyForm: FC = (
     handleStop,
     isLoading,
   } = VacancyHandlers();
+
+  const {
+    handleVacancyUrlChange,
+    handleEmailChange,
+    handlePasswordChange,
+    handlePositionChange,
+    handleMessageChange
+  } = useFormHandlers({
+    setEmail,
+    setPassword,
+    setPosition,
+    setMessage,
+    setVacancyUrl
+  });
+
   return (
     <section className={styles.sectionContainer}>
       <form className={styles.formContainer} onSubmit={handleSubmit}>
@@ -29,7 +44,7 @@ const VacancyForm: FC = (
           <input
             className={`${styles.input} ${errors.vacancyUrl ? styles.error : ''}`}
             value={vacancyUrl}
-            onChange={(e) => setVacancyUrl(e.target.value)}
+            onChange={handleVacancyUrlChange}
             disabled={isLoading}
           />
           {errors.vacancyUrl && <p className={styles.errorText}>{errors.vacancyUrl}</p>}
@@ -41,7 +56,7 @@ const VacancyForm: FC = (
               <input
                 className={`${styles.input} ${errors.email ? styles.error : ''}`}
                 value={email}
-                onChange={(e) => setEmail(e.target.value)}
+                onChange={handleEmailChange}
                 disabled={isLoading}
               />
               {errors.email && <p className={styles.errorText}>{errors.email}</p>}
@@ -52,7 +67,7 @@ const VacancyForm: FC = (
                 className={styles.input}
                 type="text"
                 value={password}
-                onChange={(e) => setPassword(e.target.value)}
+                onChange={handlePasswordChange}
                 disabled={isLoading}
               />
             </div>
@@ -62,7 +77,7 @@ const VacancyForm: FC = (
                 className={styles.input}
                 type="text"
                 value={position}
-                onChange={(e) => setPosition(e.target.value)}
+                onChange={handlePositionChange}
                 disabled={isLoading}
               />
             </div>
@@ -73,7 +88,7 @@ const VacancyForm: FC = (
               <textarea
                 className={styles.textarea}
                 value={message}
-                onChange={(e) => setMessage(e.target.value)}
+                onChange={handleMessageChange}
                 disabled={isLoading}
               />
             </div>

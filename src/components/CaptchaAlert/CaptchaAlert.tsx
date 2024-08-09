@@ -1,13 +1,8 @@
-import React from 'react';
+import { FC } from 'react';
+import { CaptchaAlertProps } from '../../Interfaces/Interface.types';
 import './CaptchaAlert.css';
 
-interface CaptchaAlertProps {
-    message: string;
-    captchaSrc?: string;
-    onClose: () => void;
-}
-
-const CaptchaAlert: React.FC<CaptchaAlertProps> = ({ message, captchaSrc, onClose }) => {
+const CaptchaAlert: FC<CaptchaAlertProps> = ({ message, captchaSrc, onClose }) => {
     return (
         <div className="captcha-alert">
             <span>{message}</span>

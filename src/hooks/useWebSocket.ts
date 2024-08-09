@@ -1,8 +1,9 @@
 import { useState, useCallback, useEffect, useRef } from 'react';
+import { UseWebSocketParams, WebSocketHook } from '../Interfaces/Interface.types';
 
-export const useWebSocket = (wsUrl: string, fetchVacancies: () => void, setAlert: (message: string) => void) => {
-  const [message, setMessage] = useState<any>(null);
-  const [error, setError] = useState<Event | null>(null);
+export const useWebSocket = ({ wsUrl, fetchVacancies, setAlert }: UseWebSocketParams): WebSocketHook => {
+  const [message, setMessage] = useState<string | null>(null);
+  const [error, setError] = useState<string | null>(null);
   const [open, setOpen] = useState<boolean>(false);
   const wsRef = useRef<WebSocket | null>(null);
 
@@ -20,19 +21,20 @@ export const useWebSocket = (wsUrl: string, fetchVacancies: () => void, setAlert
     };
 
     ws.onmessage = (event) => {
-      console.log('WebSocket message received:', event.data);
-      setMessage(event.data);     
-      if (event.data === 'ERROR detected restart') {
+      const data = event.data;
+      console.log('WebSocket message received:', data);
+      setMessage(data);     
+      if (data === 'ERROR detected restart') {
         setAlert('Некорректный Email или Пароль');
-      } else if (event.data === 'CAPTCHA detected restart'){
-        const captchaSrc = event.data.split(' ')[2];
+      } else if (data === 'CAPTCHA detected restart'){
+        const captchaSrc = data.split(' ')[2];
         setAlert(`Нужен ввод капчи, попробуйте позже ${captchaSrc}`);
       }      
     };
 
     ws.onerror = (event) => {
       console.error('WebSocket error:', event);
-      setError(event);
+      setError('Произошла ошибка при соединении с WebSocket');
     };
 
     ws.onclose = (event) => {

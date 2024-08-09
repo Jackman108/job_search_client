@@ -2,7 +2,7 @@
 
 import { useState, useCallback, useEffect } from 'react';
 import { Vacancy } from '../Interfaces/Interface.types';
-import { formatDate } from '../utils/dateUtils';
+import { formatAndSortVacancies } from '../utils/formaUtils';
 import axios from 'axios';
 
 const useFetchVacancies = (apiUrl: string) => {
@@ -15,16 +15,7 @@ const useFetchVacancies = (apiUrl: string) => {
     setError(null);
     try {
       const response = await axios.get(`${apiUrl}/data`);
-      const formattedVacancies = response.data.map((vacancy: Vacancy) => ({
-        ...vacancy,
-        response_date_time: formatDate(vacancy.response_date).time,
-        response_date_date: formatDate(vacancy.response_date).date,
-      }));
-
-      const sortedVacancies = formattedVacancies.sort((a: Vacancy, b: Vacancy) =>
-        new Date(b.response_date).getTime() - new Date(a.response_date).getTime()
-      );
-      setVacancies(sortedVacancies);
+      setVacancies(formatAndSortVacancies(response.data));
     } catch (error) {
       setError('Ошибка при получении данных');
       console.error(error);
