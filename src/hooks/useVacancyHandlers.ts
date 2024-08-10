@@ -24,7 +24,11 @@ export const handleSubmit = async ({
   setErrors,
   setIsLoading,
 }: HandleSubmitParams): Promise<void> => {
-  const { isValid, errors: validationErrors } = validateUtils(email, vacancyUrl);
+  
+  const { isValid, errors: validationErrors } = validateUtils({
+    email,
+    vacancyUrl
+  });
 
   if (!isValid) {
     setErrors(validationErrors);
