@@ -1,8 +1,8 @@
 // src/utils/validateUtils.ts
 
-import { Errors } from '../Interfaces/Interface.types';
+import { Errors, ValidationParams, ValidationResult } from '../Interfaces/Interface.types';
 
-export const validateUtils = (email: string, vacancyUrl: string): { isValid: boolean, errors: Errors } => {
+export const validateUtils = ({ email, vacancyUrl }: ValidationParams): ValidationResult => {
   let valid = true;
   const newErrors: Errors = {};
 

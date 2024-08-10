@@ -1,5 +1,5 @@
 import { createContext, FC, useCallback, useEffect, useState } from 'react';
-import { VacanciesContextType, VacanciesProviderProps } from '../Interfaces/Interface.types';
+import { StateAlertProps, VacanciesContextType, VacanciesProviderProps } from '../Interfaces/Interface.types';
 import useFetchVacancies from '../hooks/useFetchVacancies';
 import { useWebSocket } from '../hooks/useWebSocket';
 import CaptchaAlert from '../components/CaptchaAlert/CaptchaAlert';
@@ -13,7 +13,7 @@ const VacanciesProvider: FC<VacanciesProviderProps> = ({
   const wsUrl = 'ws://localhost:8000';
   const { vacancies, loading, error, fetchVacancies } = useFetchVacancies(apiUrl);
 
-  const [alertState, setAlertState] = useState<{ message: string | null; captchaSrc: string | undefined }>({
+  const [alertState, setAlertState] = useState<StateAlertProps>({
     message: null,
     captchaSrc: undefined,
   });
@@ -29,7 +29,7 @@ const VacanciesProvider: FC<VacanciesProviderProps> = ({
   const { error: wsError } = useWebSocket({
     wsUrl,
     fetchVacancies,
-    setAlert,
+    setAlert
   });
 
   useEffect(() => {

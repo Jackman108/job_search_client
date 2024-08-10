@@ -39,8 +39,8 @@ export interface UseFormHandlersParams {
   vacancyUrl: string;
   setVacancyUrl: Dispatch<React.SetStateAction<string>>
   errors: Errors;
-  submitHandler: (event: FormEvent) => void;
-  stopHandler: () => void;
+  submitHandler: (event: FormEvent) => Promise<void>;
+  stopHandler: () => Promise<void>;
   isLoading: boolean;
   handleVacancyUrlChange: (e: ChangeEvent<HTMLInputElement>) => void;
   handleEmailChange: (e: ChangeEvent<HTMLInputElement>) => void;
@@ -87,6 +87,26 @@ export interface CaptchaAlertProps {
 export interface SubmitRequestProps {
   endpoint: string;
   data?: Record<string, any>;
+}
+
+export interface StateAlertProps {
+message: string | null; 
+captchaSrc: string | undefined;
+}
+
+export interface FormattedDate {
+  time: string;
+  date: string;
+}
+
+export interface ValidationParams {
+  email: string;
+  vacancyUrl: string;
+}
+
+export interface ValidationResult {
+  isValid: boolean;
+  errors: Errors;
 }
 
 export interface FormHandlers {

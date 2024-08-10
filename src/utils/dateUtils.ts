@@ -1,4 +1,6 @@
-export const formatDate = (isoDateString: string): { time: string; date: string } => {
+import { FormattedDate } from "../Interfaces/Interface.types";
+
+export const formatDate = (isoDateString: string): FormattedDate => {
     const date = new Date(isoDateString);
 
     date.setHours(date.getHours() + 6);
