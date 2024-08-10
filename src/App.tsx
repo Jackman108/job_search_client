@@ -1,5 +1,6 @@
 // src/App.tsx
 import './App.css';
+import Layout from './components/Layout/Layout';
 import VacanciesTable from './components/VacanciesTable/VacanciesTable';
 import VacancyForm from './components/VacancyForm/VacancyForm';
 import VacanciesProvider from './hooks/VacanciesProvider';
@@ -11,10 +12,12 @@ function App() {
         автоотклик hh
       </header>
       <main>
-        <VacancyForm />
-        <VacanciesProvider>
-          <VacanciesTable />
-        </VacanciesProvider>
+        <Layout>
+          <VacanciesProvider>
+            <VacanciesTable />
+          </VacanciesProvider>
+        </Layout>
+
       </main>
     </div>
   );
