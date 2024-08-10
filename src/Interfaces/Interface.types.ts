@@ -27,7 +27,7 @@ export interface HandleSubmitParams {
   setIsLoading: (isLoading: boolean) => void;
 }
 
-export interface VacancyHandlersData {
+export interface UseFormHandlersParams {
   email: string;
   setEmail: Dispatch<React.SetStateAction<string>>;
   password: string;
@@ -39,9 +39,14 @@ export interface VacancyHandlersData {
   vacancyUrl: string;
   setVacancyUrl: Dispatch<React.SetStateAction<string>>
   errors: Errors;
-  handleSubmit: (event: FormEvent) => void;
-  handleStop: () => void;
+  submitHandler: (event: FormEvent) => void;
+  stopHandler: () => void;
   isLoading: boolean;
+  handleVacancyUrlChange: (e: ChangeEvent<HTMLInputElement>) => void;
+  handleEmailChange: (e: ChangeEvent<HTMLInputElement>) => void;
+  handlePasswordChange: (e: ChangeEvent<HTMLInputElement>) => void;
+  handlePositionChange: (e: ChangeEvent<HTMLInputElement>) => void;
+  handleMessageChange: (e: ChangeEvent<HTMLTextAreaElement>) => void;
 }
 
 export interface WebSocketHook {
@@ -79,13 +84,9 @@ export interface CaptchaAlertProps {
   onClose: () => void;
 }
 
-
-export interface UseFormHandlersParams {
-  setEmail: Dispatch<SetStateAction<string>>;
-  setPassword: Dispatch<SetStateAction<string>>;
-  setPosition: Dispatch<SetStateAction<string>>;
-  setMessage: Dispatch<SetStateAction<string>>;
-  setVacancyUrl: Dispatch<SetStateAction<string>>;
+export interface SubmitRequestProps {
+  endpoint: string;
+  data?: Record<string, any>;
 }
 
 export interface FormHandlers {

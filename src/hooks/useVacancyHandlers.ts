@@ -1,12 +1,12 @@
 // src/hooks/useVacancyHandlers.ts
 
 import axios from 'axios';
-import { HandleSubmitParams } from '../Interfaces/Interface.types';
+import { HandleSubmitParams, SubmitRequestProps } from '../Interfaces/Interface.types';
 import { validateUtils } from '../utils/validateUtils';
 
 const apiUrl = process.env.REACT_APP_API_URL || '';
 
-const submitRequest = async (endpoint: string, data?: Record<string, any>) => {
+const submitRequest = async ({ endpoint, data }: SubmitRequestProps) => {
   try {
     const response = await axios.post(`${apiUrl}/${endpoint}`, data);
     console.log(response.data);
@@ -32,10 +32,13 @@ export const handleSubmit = async ({
   }
 
   setIsLoading(true);
-  await submitRequest('start', { email, password, position, message, vacancyUrl });
+  await submitRequest({
+    endpoint: 'start',
+    data: { email, password, position, message, vacancyUrl }
+  });
   setIsLoading(false);
 };
 
 export const handleStop = async (): Promise<void> => {
-  await submitRequest('stop');
+  await submitRequest({ endpoint: 'stop' });
 };

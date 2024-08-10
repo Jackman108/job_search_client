@@ -1,44 +1,29 @@
 // src/components/VacancyForm.tsx
 import {FC} from 'react';
-import VacancyHandlers from '../../hooks/VacancyHandlers';
-import { useFormHandlers } from '../../hooks/useFormHandlers';
+import  useFormHandlers  from '../../hooks/useFormHandlers';
 import styles from './VacancyForm.module.css';
 
 const VacancyForm: FC = (): JSX.Element => {
   const {
     email,
-    setEmail,
     password,
-    setPassword,
     position,
-    setPosition,
     message,
-    setMessage,
     vacancyUrl,
-    setVacancyUrl,
     errors,
-    handleSubmit,
-    handleStop,
     isLoading,
-  } = VacancyHandlers();
-
-  const {
+    submitHandler,
+    stopHandler,
     handleVacancyUrlChange,
     handleEmailChange,
     handlePasswordChange,
     handlePositionChange,
     handleMessageChange
-  } = useFormHandlers({
-    setEmail,
-    setPassword,
-    setPosition,
-    setMessage,
-    setVacancyUrl
-  });
+  } = useFormHandlers();
 
   return (
     <section className={styles.sectionContainer}>
-      <form className={styles.formContainer} onSubmit={handleSubmit}>
+      <form className={styles.formContainer} onSubmit={submitHandler}>
         <div className={styles.formGroup}>
           <label className={styles.label}>Сылка с фильтрами на вакансии:</label>
           <input
@@ -95,7 +80,7 @@ const VacancyForm: FC = (): JSX.Element => {
           </div>
         </div>
         <button className={styles.button} type="submit" disabled={isLoading}>{isLoading ? 'Загрузка...' : 'Начать'}</button>
-        <button className={styles.button} type="button" onClick={handleStop} disabled={!isLoading}>Остановить</button>
+        <button className={styles.button} type="button" onClick={stopHandler} disabled={!isLoading}>Остановить</button>
       </form>
     </section>
   );

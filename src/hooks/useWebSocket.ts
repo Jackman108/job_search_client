@@ -47,7 +47,7 @@ export const useWebSocket = ({ wsUrl, fetchVacancies, setAlert }: UseWebSocketPa
       wsRef.current = null;
     };
     console.log('WebSocket object:', ws);
-  }, [wsUrl]);
+  }, [wsUrl, setAlert]);
 
   useEffect(() => {
     connect();

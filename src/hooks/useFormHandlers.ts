@@ -1,39 +1,66 @@
 // src/hooks/useFormHandlers.ts
-import { ChangeEvent, useCallback } from 'react';
-import { FormHandlers, UseFormHandlersParams } from '../Interfaces/Interface.types';
+import { ChangeEvent, FormEvent, useCallback, useState } from 'react';
+import { Errors, HandleSubmitParams, UseFormHandlersParams } from '../Interfaces/Interface.types';
+import { handleSubmit, handleStop } from './useVacancyHandlers';
 
-export const useFormHandlers = ({
-    setEmail,
-    setPassword,
-    setPosition,
-    setMessage,
-    setVacancyUrl
-  }: UseFormHandlersParams): FormHandlers => {
-  const handleVacancyUrlChange = useCallback((e: ChangeEvent<HTMLInputElement>) => {
-    setVacancyUrl(e.target.value);
-  }, [setVacancyUrl]);
+const useFormHandlers = (): UseFormHandlersParams => {
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [position, setPosition] = useState('');
+  const [message, setMessage] = useState('');
+  const [vacancyUrl, setVacancyUrl] = useState('https://hh.ru/search/vacancy?L_save_area=true&text=&excluded_text=&salary=&currency_code=USD&experience=doesNotMatter&order_by=relevance&search_period=7&items_on_page=50&hhtmFrom=vacancy_search_filter');
+  const [errors, setErrors] = useState<Errors>({});
+  const [isLoading, setIsLoading] = useState(false);
 
-  const handleEmailChange = useCallback((e: ChangeEvent<HTMLInputElement>) => {
-    setEmail(e.target.value);
-  }, [setEmail]);
+  const useInputChangeHandler = (setter: (value: string) => void) =>
+  useCallback((e: ChangeEvent<HTMLInputElement>) => {
+    setter(e.target.value);
+  }, [setter]);
 
-  const handlePasswordChange = useCallback((e: ChangeEvent<HTMLInputElement>) => {
-    setPassword(e.target.value);
-  }, [setPassword]);
+const useTextAreaChangeHandler = (setter: (value: string) => void) =>
+  useCallback((e: ChangeEvent<HTMLTextAreaElement>) => {
+    setter(e.target.value);
+  }, [setter]);
 
-  const handlePositionChange = useCallback((e: ChangeEvent<HTMLInputElement>) => {
-    setPosition(e.target.value);
-  }, [setPosition]);
+  const submitHandler = useCallback(async (event: FormEvent): Promise<void> => {
+    event.preventDefault();
+    const params: HandleSubmitParams = {
+      email,
+      password,
+      position,
+      message,
+      vacancyUrl,
+      setErrors,
+      setIsLoading,
+    };
+    await handleSubmit(params);
+  }, [email, password, position, message, vacancyUrl]);
 
-  const handleMessageChange = useCallback((e: React.ChangeEvent<HTMLTextAreaElement>) => {
-    setMessage(e.target.value);
-  }, [setMessage]);
+  const stopHandler = useCallback(async () => {
+    await handleStop();
+  }, []);
 
   return {
-    handleVacancyUrlChange,
-    handleEmailChange,
-    handlePasswordChange,
-    handlePositionChange,
-    handleMessageChange
+    email,
+    setEmail,
+    password,
+    setPassword,
+    position,
+    setPosition,
+    message,
+    setMessage,
+    vacancyUrl,
+    setVacancyUrl,
+    errors,
+    submitHandler,
+    stopHandler,
+    isLoading,
+    handleVacancyUrlChange: useInputChangeHandler(setVacancyUrl),
+    handleEmailChange: useInputChangeHandler(setEmail),
+    handlePasswordChange: useInputChangeHandler(setPassword),
+    handlePositionChange: useInputChangeHandler(setPosition),
+    handleMessageChange: useTextAreaChangeHandler(setMessage),
   };
 };
+
+export default useFormHandlers;

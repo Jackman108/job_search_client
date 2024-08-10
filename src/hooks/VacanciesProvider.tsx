@@ -1,4 +1,4 @@
-import { createContext, FC, useEffect, useState } from 'react';
+import { createContext, FC, useCallback, useEffect, useState } from 'react';
 import { VacanciesContextType, VacanciesProviderProps } from '../Interfaces/Interface.types';
 import useFetchVacancies from '../hooks/useFetchVacancies';
 import { useWebSocket } from '../hooks/useWebSocket';
@@ -18,16 +18,18 @@ const VacanciesProvider: FC<VacanciesProviderProps> = ({
     captchaSrc: undefined,
   });
 
+  const setAlert = useCallback((message: string) => {
+    const [alert, src] = 
+      message.split(' ').length > 2 
+        ? [message.split(' ')[0] + ' ' + message.split(' ')[1], message.split(' ')[2]] 
+        : [message, undefined];
+    setAlertState({ message: alert, captchaSrc: src });
+  }, []);
+
   const { error: wsError } = useWebSocket({
     wsUrl,
     fetchVacancies,
-    setAlert: (message: string) => {
-      const [alert, src] = 
-      message.split(' ').length > 2 
-      ? [message.split(' ')[0] + ' ' + message.split(' ')[1], message.split(' ')[2]] 
-      : [message, undefined];
-      setAlertState({ message: alert, captchaSrc: src });
-    }
+    setAlert,
   });
 
   useEffect(() => {

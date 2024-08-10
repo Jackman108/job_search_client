@@ -1,11 +1,11 @@
 import { FC } from 'react';
-import { useVacancies } from '../../hooks/useVacancies';
+import { useTableContext } from '../../hooks/useTableContext';
 import { useSortedVacancies } from '../../hooks/useSortedVacancies';
 import './VacanciesTable.css';
 
 const VacanciesTable: FC = (
 ): JSX.Element => {
-  const { vacancies, loading, error } = useVacancies();
+  const { vacancies, loading, error } = useTableContext();
   const { sortedVacancies, handleSort, getSortArrow } = useSortedVacancies(vacancies);
 
   if (loading) return <div>Загрузка...</div>;
