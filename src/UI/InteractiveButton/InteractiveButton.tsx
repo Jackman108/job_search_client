@@ -1,16 +1,12 @@
-import { useState, FC } from 'react';
+import { useState } from 'react';
 import styles from './InteractiveButton.module.css';
-
-interface InteractiveButtonProps {
-  iconSrc: string;
-  tooltipText: string;
-  Component: FC<{ onClose: () => void; isOpen: boolean }>;
-}
+import { InteractiveButtonProps } from '../../Interfaces/Interface.types';
 
 const InteractiveButton = ({
-  iconSrc,
+  icon,
   tooltipText,
-  Component
+  Component,
+  position = 'left',
 }: InteractiveButtonProps): JSX.Element => {
   const [isComponentOpen, setIsComponentOpen] = useState(false);
 
@@ -21,10 +17,24 @@ const InteractiveButton = ({
   return (
     <>
       <button className={styles.openButton} onClick={toggleComponent}>
-        <img src={iconSrc} alt="Open" className={styles.icon} />
-        <span className={styles.tooltip}>{tooltipText}</span>
+        <img src={icon} alt="Open" className={styles.icon} />
+        <span className={`${styles.tooltip} ${position === 'left' ? styles.tooltipLeft : styles.tooltipRight}`}>
+          {tooltipText}
+        </span>
       </button>
-      <Component onClose={toggleComponent} isOpen={isComponentOpen} />
+      {isComponentOpen && (
+        <>
+          <div className={`${styles.backdrop} ${position === 'left' ? styles.backdropLeft : styles.backdropRight}
+          ${isComponentOpen ? styles.open : ''}`} onClick={toggleComponent}></div>
+          <div className={`${styles.drawer} ${position === 'left' ? styles.drawerLeft : styles.drawerRight} 
+          ${isComponentOpen ? styles.open : ''}`}>
+            <Component
+              onClose={toggleComponent}
+              isOpen={isComponentOpen}
+            />
+          </div>
+        </>
+      )}
     </>
   );
 };

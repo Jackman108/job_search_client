@@ -1,12 +1,12 @@
-import { createContext, FC, useCallback, useEffect, useState } from 'react';
-import { StateAlertProps, VacanciesContextType, VacanciesProviderProps } from '../Interfaces/Interface.types';
+import { createContext, FC, ReactNode, useCallback, useEffect, useState } from 'react';
+import { StateAlertProps, VacanciesContextType } from '../Interfaces/Interface.types';
 import useFetchVacancies from '../hooks/useFetchVacancies';
 import { useWebSocket } from '../hooks/useWebSocket';
 import CaptchaAlert from '../UI/CaptchaAlert/CaptchaAlert';
 
 export const VacanciesContext = createContext<VacanciesContextType | undefined>(undefined);
 
-const VacanciesProvider: FC<VacanciesProviderProps> = ({
+const VacanciesProvider: FC<{children: ReactNode}> = ({
   children
 }): JSX.Element => {
   const apiUrl = 'http://localhost:8000';

@@ -1,4 +1,4 @@
-import { ChangeEvent, Dispatch, FormEvent, SetStateAction } from 'react';
+import { ChangeEvent, Dispatch, FC, FormEvent, SetStateAction } from 'react';
 
 export interface Errors {
   email?: string;
@@ -78,22 +78,6 @@ export interface SortConfig {
   direction: 'ascending' | 'descending';
 };
 
-export interface CaptchaAlertProps {
-  message: string;
-  captchaSrc?: string;
-  onClose: () => void;
-}
-
-export interface SubmitRequestProps {
-  endpoint: string;
-  data?: Record<string, any>;
-}
-
-export interface StateAlertProps {
-message: string | null; 
-captchaSrc: string | undefined;
-}
-
 export interface FormattedDate {
   time: string;
   date: string;
@@ -115,4 +99,44 @@ export interface FormHandlers {
   handlePasswordChange: (e: ChangeEvent<HTMLInputElement>) => void;
   handlePositionChange: (e: ChangeEvent<HTMLInputElement>) => void;
   handleMessageChange: (e: ChangeEvent<HTMLTextAreaElement>) => void;
+}
+
+export interface ButtonConfig<T> {
+  icon: string;
+  tooltipText: string;
+  Component: FC<T>;
+  position: 'left' | 'right';
+}
+
+export interface VacancyFormProps {
+  onClose: () => void;
+  isOpen: boolean;
+}
+
+export interface ProfileProps {
+  onClose: () => void;
+  isOpen: boolean;
+}
+
+export interface CaptchaAlertProps {
+  message: string;
+  captchaSrc?: string;
+  onClose: () => void;
+}
+
+export interface SubmitRequestProps {
+  endpoint: string;
+  data?: Record<string, any>;
+}
+
+export interface StateAlertProps {
+  message: string | null;
+  captchaSrc: string | undefined;
+}
+
+export interface InteractiveButtonProps {
+  icon: string;
+  tooltipText: string;
+  Component: FC<{ onClose: () => void; isOpen: boolean }>;
+  position?: 'left' | 'right';
 }
