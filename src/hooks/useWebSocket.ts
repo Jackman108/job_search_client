@@ -24,12 +24,20 @@ export const useWebSocket = ({ wsUrl, fetchVacancies, setAlert }: UseWebSocketPa
       const data = event.data;
       console.log('WebSocket message received:', data);
       setMessage(data);     
-      if (data === 'ERROR detected restart') {
-        setAlert('Некорректный Email или Пароль');
-      } else if (data === 'CAPTCHA detected restart'){
-        const captchaSrc = data.split(' ')[2];
-        setAlert(`Нужен ввод капчи, попробуйте позже ${captchaSrc}`);
-      }      
+      switch (true) {
+        case data === 'ERROR detected restart':
+          setAlert('Некорректный Email или Пароль');
+          break;
+        case data === 'CAPTCHA detected restart':
+          const captchaSrc = data.split(' ')[2];
+          setAlert(`Нужен ввод капчи, попробуйте позже ${captchaSrc}`);
+          break;
+        case data === 'hh closed':
+          setAlert(`Сайт закрыт, попробуйте позже ${captchaSrc}`);
+          break;
+        default:
+          break;
+      }
     };
 
     ws.onerror = (event) => {
