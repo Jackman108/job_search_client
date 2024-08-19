@@ -55,15 +55,16 @@ export interface UseFormHandlersParams {
 
 export interface WebSocketHook {
   connect: () => void;
-  fetchVacancies: () => void;
   message: string | null;
   error: string | null;
   open: boolean;
 }
 
 export interface UseWebSocketParams {
-  wsUrl: string;
-  fetchVacancies: () => void;
+  API_URL: string;
+  WS_URL: string;
+  fetchVacanciesByUserId: (userId: string, token: string) => void;
+  fetchVacanciesByProfileId: (profileId: string, token: string) => void;
   setAlert: (message: string) => void;
 }
 

@@ -3,15 +3,14 @@ import { StateAlertProps, VacanciesContextType } from '../Interfaces/Interface.t
 import useFetchVacancies from '../hooks/useFetchVacancies';
 import { useWebSocket } from '../hooks/useWebSocket';
 import CaptchaAlert from '../UI/CaptchaAlert/CaptchaAlert';
+import { WS_URL, API_URL } from '../config/serverConfig';
 
 export const VacanciesContext = createContext<VacanciesContextType | undefined>(undefined);
 
 const VacanciesProvider: FC<{ children: ReactNode }> = ({
   children
 }): JSX.Element => {
-  const apiUrl = 'http://localhost:8000';
-  const wsUrl = 'ws://localhost:8000';
-  const { vacancies, loading, error, fetchVacancies } = useFetchVacancies(apiUrl);
+  const { vacancies, loading, error, fetchVacanciesByUserId, fetchVacanciesByProfileId } = useFetchVacancies(API_URL);
 
   const [alertState, setAlertState] = useState<StateAlertProps>({
     message: null,
@@ -27,8 +26,10 @@ const VacanciesProvider: FC<{ children: ReactNode }> = ({
   }, []);
 
   const { error: wsError } = useWebSocket({
-    wsUrl,
-    fetchVacancies,
+    WS_URL,
+    API_URL,
+    fetchVacanciesByUserId,
+    fetchVacanciesByProfileId, 
     setAlert
   });
 

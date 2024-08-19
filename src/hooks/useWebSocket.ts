@@ -1,18 +1,26 @@
 import { useState, useCallback, useEffect, useRef } from 'react';
 import { UseWebSocketParams, WebSocketHook } from '../Interfaces/Interface.types';
+import useFetchAuth from './useFetchAuth';
+import useFetchVacancies from './useFetchVacancies';
 
-export const useWebSocket = ({ wsUrl, fetchVacancies, setAlert }: UseWebSocketParams): WebSocketHook => {
+export const useWebSocket = ({
+  WS_URL,
+  API_URL,
+  setAlert
+}: UseWebSocketParams): WebSocketHook => {
   const [message, setMessage] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [open, setOpen] = useState<boolean>(false);
   const wsRef = useRef<WebSocket | null>(null);
 
+  const { currentUser } = useFetchAuth();
+  const { fetchVacanciesByUserId, fetchVacanciesByProfileId } = useFetchVacancies(API_URL);
   const connect = useCallback(() => {
     if (wsRef.current) {
       return;
     }
-    console.log(`Connecting to WebSocket: ${wsUrl}`);
-    const ws = new WebSocket(wsUrl);
+    console.log(`Connecting to WebSocket: ${WS_URL}`);
+    const ws = new WebSocket(WS_URL);
     wsRef.current = ws;
 
     ws.onopen = () => {
@@ -23,7 +31,7 @@ export const useWebSocket = ({ wsUrl, fetchVacancies, setAlert }: UseWebSocketPa
     ws.onmessage = (event) => {
       const data = event.data;
       console.log('WebSocket message received:', data);
-      setMessage(data);     
+      setMessage(data);
       switch (true) {
         case data === 'ERROR detected restart':
           setAlert('Некорректный Email или Пароль');
@@ -35,6 +43,10 @@ export const useWebSocket = ({ wsUrl, fetchVacancies, setAlert }: UseWebSocketPa
         case data === 'hh closed':
           setAlert(`Сайт закрыт, попробуйте позже ${captchaSrc}`);
           break;
+        case data.startsWith('userId:'):
+          const [_, currentUser, token] = data.split(' ');
+          if (currentUser && token) fetchVacanciesByUserId(currentUser.id, token);
+          break;        
         default:
           break;
       }
@@ -55,18 +67,20 @@ export const useWebSocket = ({ wsUrl, fetchVacancies, setAlert }: UseWebSocketPa
       wsRef.current = null;
     };
     console.log('WebSocket object:', ws);
-  }, [wsUrl, setAlert]);
+  }, [WS_URL, setAlert, fetchVacanciesByUserId, fetchVacanciesByProfileId]);
 
   useEffect(() => {
     connect();
-    if (message) {
-      fetchVacancies();
+    if (message && currentUser) {
+      const userId = currentUser.id.toString();
+      const token = localStorage.getItem('token') || '';
+      fetchVacanciesByUserId(userId, token);
+      fetchVacanciesByProfileId(userId.toString(), token);
     }
-  }, [message, fetchVacancies, connect]);
+  }, [message, connect, fetchVacanciesByUserId, fetchVacanciesByProfileId, currentUser]);
 
   return {
     connect,
-    fetchVacancies,
     message,
     error,
     open,
