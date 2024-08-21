@@ -2,17 +2,19 @@
 
 import { useState, useCallback } from 'react';
 import axios from 'axios';
-import { AuthResponse, RegisterResponse, UserProfile } from '../Interfaces/InterfaceProfile.types';
-import useFetchVacancies from './useFetchVacancies';
-import { API_URL, AUTH_URL } from '../config/serverConfig';
+import { UserProfile } from '../Interfaces/InterfaceProfile.types';
+import useFetchUserProfile from './useFetchUserProfile';
+import { AUTH_URL } from '../config/serverConfig';
+import { AuthResponse, RegisterResponse } from '../Interfaces/InterfaceAuth.types';
 
 const useFetchAuth = () => {
-
-  const { fetchUserProfile } = useFetchVacancies(API_URL);
-
+  const { fetchUserProfile } = useFetchUserProfile();
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [currentUser, setCurrentUser] = useState<UserProfile | null>(null);
+
+  const setUserId = (userId: number) => localStorage.setItem('userId', userId.toString());
+  const removeUserId = () => localStorage.removeItem('userId');
 
   const setToken = (token: string) => localStorage.setItem('token', token);
   const removeToken = () => localStorage.removeItem('token');
@@ -21,6 +23,7 @@ const useFetchAuth = () => {
     setError(message);
     setCurrentUser(null);
   };
+
   const login = useCallback(async (email: string, password: string) => {
     setLoading(true);
     try {
@@ -29,15 +32,14 @@ const useFetchAuth = () => {
         password,
       });
       setToken(data.accessToken);
-      const userProfile = await fetchUserProfile(email, data.accessToken);
-      setCurrentUser(userProfile);
+      setCurrentUser(await fetchUserProfile(email));
     } catch {
       handleError('Ошибка при входе');
       setCurrentUser(null);
     } finally {
       setLoading(false);
     }
-  }, [fetchUserProfile]);
+  }, [fetchUserProfile, setToken, handleError]);
 
   const register = useCallback(async (email: string, password: string, passwordRepeat: string) => {
     setLoading(true);
@@ -47,19 +49,20 @@ const useFetchAuth = () => {
         password,
         passwordRepeat,
       });
-      setToken(data.id.toString());
-      await login(email, password);   
+      setUserId(data.id);
+      await login(email, password);
     } catch {
       handleError('Ошибка при регистрации');
     } finally {
       setLoading(false);
     }
-  }, [fetchUserProfile]);
+  }, [login, setToken, handleError]);
 
   const logout = useCallback(async () => {
     setLoading(true);
     try {
       await axios.get(`${AUTH_URL}/auth/logout`, { withCredentials: true });
+      removeUserId();
       removeToken();
       setCurrentUser(null);
     } catch (error) {
@@ -67,7 +70,7 @@ const useFetchAuth = () => {
     } finally {
       setLoading(false);
     }
-  }, []);
+  }, [removeUserId, removeToken]);
 
   return { login, register, logout, loading, error, currentUser, fetchUserProfile };
 };

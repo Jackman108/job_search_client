@@ -63,8 +63,7 @@ export interface WebSocketHook {
 export interface UseWebSocketParams {
   API_URL: string;
   WS_URL: string;
-  fetchVacanciesByUserId: (userId: string, token: string) => void;
-  fetchVacanciesByProfileId: (profileId: string, token: string) => void;
+  fetchVacanciesByUserId: (userId: number, token: string) => void;
   setAlert: (message: string) => void;
 }
 

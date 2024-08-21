@@ -14,7 +14,7 @@ export const useWebSocket = ({
   const wsRef = useRef<WebSocket | null>(null);
 
   const { currentUser } = useFetchAuth();
-  const { fetchVacanciesByUserId, fetchVacanciesByProfileId } = useFetchVacancies(API_URL);
+  const { fetchVacanciesByUserId } = useFetchVacancies(API_URL);
   const connect = useCallback(() => {
     if (wsRef.current) {
       return;
@@ -42,11 +42,7 @@ export const useWebSocket = ({
           break;
         case data === 'hh closed':
           setAlert(`Сайт закрыт, попробуйте позже ${captchaSrc}`);
-          break;
-        case data.startsWith('userId:'):
-          const [_, currentUser, token] = data.split(' ');
-          if (currentUser && token) fetchVacanciesByUserId(currentUser.id, token);
-          break;        
+          break;       
         default:
           break;
       }
@@ -67,17 +63,12 @@ export const useWebSocket = ({
       wsRef.current = null;
     };
     console.log('WebSocket object:', ws);
-  }, [WS_URL, setAlert, fetchVacanciesByUserId, fetchVacanciesByProfileId]);
+  }, [WS_URL, setAlert, fetchVacanciesByUserId]);
 
   useEffect(() => {
     connect();
-    if (message && currentUser) {
-      const userId = currentUser.id.toString();
-      const token = localStorage.getItem('token') || '';
-      fetchVacanciesByUserId(userId, token);
-      fetchVacanciesByProfileId(userId.toString(), token);
-    }
-  }, [message, connect, fetchVacanciesByUserId, fetchVacanciesByProfileId, currentUser]);
+      fetchVacanciesByUserId();
+  }, [message, connect, fetchVacanciesByUserId, currentUser]);
 
   return {
     connect,

@@ -49,7 +49,7 @@ const Profile: FC<ProfileProps> = ({ onClose, isOpen }) => {
   useEffect(() => {
     const token = localStorage.getItem('token');
     if (token && currentUser?.email) {
-      fetchUserProfile(currentUser.email, token);
+      fetchUserProfile(currentUser.email);
     }
   }, [currentUser, fetchUserProfile]);
 

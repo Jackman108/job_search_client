@@ -3,6 +3,7 @@ import './App.css';
 import Layout from './components/Layout/Layout';
 import VacanciesTable from './components/VacanciesTable/VacanciesTable';
 import VacanciesProvider from './hooks/VacanciesProvider';
+import { AuthProvider } from './context/useAuthContext';
 
 function App() {
   return (
@@ -12,9 +13,11 @@ function App() {
       </header>
       <main>
         <Layout>
-          <VacanciesProvider>
-            <VacanciesTable />
-          </VacanciesProvider>
+          <AuthProvider>
+            <VacanciesProvider>
+              <VacanciesTable />
+            </VacanciesProvider>
+          </AuthProvider>
         </Layout>
 
       </main>

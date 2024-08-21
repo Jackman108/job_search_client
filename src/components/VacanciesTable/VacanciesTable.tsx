@@ -1,5 +1,5 @@
 import { FC } from 'react';
-import { useTableContext } from '../../hooks/useTableContext';
+import { useTableContext } from '../../context/useTableContext';
 import { useSortedVacancies } from '../../hooks/useSortedVacancies';
 import './VacanciesTable.css';
 
