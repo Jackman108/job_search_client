@@ -8,25 +8,33 @@ const useFetchUserProfile = () => {
   const [userProfile, setUserProfile] = useState<UserProfile | null>(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
-  const { token } = useAuth();
+  const { userId } = useAuth();
 
-  const fetchUserProfile = useCallback(async (email: string) => {
-    if (!token) return null;
-    setLoading(true);
+  const fetchUserProfile = useCallback(async () => {
+
+    if (!userId) {
+      console.warn('userId is null, cannot fetch user profile.');
+      return null;
+    }
+    console.log(`Fetching user profile for userId: ${userId}`);
+
+        setLoading(true);
     try {
-      const { data } = await axios.get<UserProfile>(`${API_URL}/profiles/${email}`, {
-        headers: { Authorization: `Bearer ${token}` },
+      const { data } = await axios.get<UserProfile>(`${API_URL}/profile/${userId}`, {
         withCredentials: true,
       });
+      console.log('User profile fetched successfully:', data);
       setUserProfile(data);
       return data;
-    } catch {
+    } catch (err) {
       setError('Ошибка при получении данных пользователя');
+      console.error('Error fetching user profile:', err);
       return null;
     } finally {
       setLoading(false);
+      console.log('fetchUserProfile completed.');
     }
-  }, [token]);
+  }, [userId]);
 
   return { userProfile, loading, error, fetchUserProfile };
 };

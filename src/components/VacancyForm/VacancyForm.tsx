@@ -1,5 +1,5 @@
 // src/components/VacancyForm/VacancyForm.tsx
-import React, { ChangeEvent, FC, useMemo } from 'react';
+import { ChangeEvent, FC } from 'react';
 import useFormHandlers from '../../hooks/useFormHandlers';
 import styles from './VacancyForm.module.css';
 import { VacancyFormProps } from '../../Interfaces/Interface.types';

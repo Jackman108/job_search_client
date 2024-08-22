@@ -2,27 +2,20 @@
 
 import { useState, useCallback } from 'react';
 import axios from 'axios';
-import { UserProfile } from '../Interfaces/InterfaceProfile.types';
-import useFetchUserProfile from './useFetchUserProfile';
-import { AUTH_URL } from '../config/serverConfig';
+import { API_URL, AUTH_URL } from '../config/serverConfig';
 import { AuthResponse, RegisterResponse } from '../Interfaces/InterfaceAuth.types';
+import { decodeToken, isTokenExpired } from '../utils/tokenUtils';
+import { useAuth } from '../context/useAuthContext';
 
 const useFetchAuth = () => {
-  const { fetchUserProfile } = useFetchUserProfile();
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
-  const [currentUser, setCurrentUser] = useState<UserProfile | null>(null);
+  const { setUserId, setToken, } = useAuth();
 
-  const setUserId = (userId: number) => localStorage.setItem('userId', userId.toString());
-  const removeUserId = () => localStorage.removeItem('userId');
 
-  const setToken = (token: string) => localStorage.setItem('token', token);
-  const removeToken = () => localStorage.removeItem('token');
-
-  const handleError = (message: string) => {
+  const handleError = useCallback((message: string) => {
     setError(message);
-    setCurrentUser(null);
-  };
+  }, []);
 
   const login = useCallback(async (email: string, password: string) => {
     setLoading(true);
@@ -32,14 +25,20 @@ const useFetchAuth = () => {
         password,
       });
       setToken(data.accessToken);
-      setCurrentUser(await fetchUserProfile(email));
+
+      const decodedToken = decodeToken(data.accessToken);
+      console.log('Decoded token:', decodedToken);
+
+      if (isTokenExpired(decodedToken.exp)) {
+        throw new Error('Токен истек');
+      }
+      setUserId(decodedToken.id);      
     } catch {
-      handleError('Ошибка при входе');
-      setCurrentUser(null);
+      handleError('Ошибка при входе');      
     } finally {
       setLoading(false);
     }
-  }, [fetchUserProfile, setToken, handleError]);
+  }, [ setUserId, setToken, handleError]);
 
   const register = useCallback(async (email: string, password: string, passwordRepeat: string) => {
     setLoading(true);
@@ -49,30 +48,32 @@ const useFetchAuth = () => {
         password,
         passwordRepeat,
       });
+      console.log('Data:', data);
       setUserId(data.id);
-      await login(email, password);
-    } catch {
+      
+      const profileData = { userId: data.id }
+      await axios.post(`${API_URL}/profile`, profileData);
+      } catch {
       handleError('Ошибка при регистрации');
     } finally {
       setLoading(false);
     }
-  }, [login, setToken, handleError]);
+  }, [handleError, setUserId]);
 
   const logout = useCallback(async () => {
     setLoading(true);
     try {
       await axios.get(`${AUTH_URL}/auth/logout`, { withCredentials: true });
-      removeUserId();
-      removeToken();
-      setCurrentUser(null);
+      setUserId(null);
+      setToken(null);  
     } catch (error) {
       console.error('Ошибка при выходе', error);
     } finally {
       setLoading(false);
     }
-  }, [removeUserId, removeToken]);
+  }, [setToken, setUserId]);
 
-  return { login, register, logout, loading, error, currentUser, fetchUserProfile };
+  return { login, register, logout, loading, error};
 };
 
 export default useFetchAuth;

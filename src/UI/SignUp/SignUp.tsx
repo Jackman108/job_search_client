@@ -1,7 +1,7 @@
 // src/components/SignUp/SignUp.tsx
 
 import React, { useState } from 'react';
-import { SignUpProps } from '../../Interfaces/InterfaceProfile.types';
+import { SignUpProps } from '../../Interfaces/InterfaceAuth.types';
 
 const SignUp: React.FC<SignUpProps> = ({ onSignUp, error, loading }) => {
   const [email, setEmail] = useState('');

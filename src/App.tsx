@@ -12,13 +12,14 @@ function App() {
         автоотклик hh
       </header>
       <main>
-        <Layout>
-          <AuthProvider>
+        <AuthProvider>
+          <Layout>
             <VacanciesProvider>
               <VacanciesTable />
             </VacanciesProvider>
-          </AuthProvider>
-        </Layout>
+          </Layout>
+        </AuthProvider>
+
 
       </main>
     </div>

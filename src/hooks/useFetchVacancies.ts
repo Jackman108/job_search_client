@@ -1,6 +1,6 @@
 // src/hooks/useFetchVacancies.ts
 
-import { useState, useCallback, useEffect } from 'react';
+import { useState, useCallback } from 'react';
 import { Vacancy } from '../Interfaces/Interface.types';
 import { formatAndSortVacancies } from '../utils/formaUtils';
 import axios from 'axios';
@@ -30,9 +30,9 @@ const useFetchVacancies = (apiUrl: string) => {
 
   const fetchVacanciesByUserId = useCallback(() => {
     if (userId) {
-      fetchVacancies(`${apiUrl}/vacancies/user/${userId}`, 'Ошибка при получении данных вакансий по userId');
+      //fetchVacancies(`${apiUrl}/vacancies/user/${userId}`, 'Ошибка при получении данных вакансий по userId');
     }
-  }, [apiUrl, fetchVacancies, userId]);  
+  }, [apiUrl, fetchVacancies, userId]);
 
   return { vacancies, loading, error, fetchVacanciesByUserId };
 };

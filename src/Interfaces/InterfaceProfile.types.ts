@@ -7,7 +7,7 @@ export interface UserProps {
 }
 
 export interface UserProfile {
-  id: number;
+  id: string;
   email: string;
   updatedAt: string;
   roles: string[];

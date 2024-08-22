@@ -9,11 +9,12 @@ import SignIn from '../../UI/SignIn/SignIn';
 import SignUp from '../../UI/SignUp/SignUp';
 import SignOut from '../../UI/SignOut/SignOut';
 import { UserProfile } from '../../Interfaces/InterfaceProfile.types';
-
+import useFetchUserProfile from '../../hooks/useFetchUserProfile';
 
 const Profile: FC<ProfileProps> = ({ onClose, isOpen }) => {
-  const { login, register, logout, error, loading, currentUser, fetchUserProfile } = useFetchAuth();
-  const [isLoggedIn, setIsLoggedIn] = useState<boolean>(!!localStorage.getItem('token'));
+  const { login, register, logout, error, loading } = useFetchAuth();
+  const { userProfile, fetchUserProfile, loading: profileLoading, error: profileError } = useFetchUserProfile();
+  const [isLoggedIn, setIsLoggedIn] = useState<boolean>(!!userProfile);
   const [isSignUp, setIsSignUp] = useState<boolean>(false);
   const [formError, setFormError] = useState<string | null>(null);
 
@@ -42,21 +43,35 @@ const Profile: FC<ProfileProps> = ({ onClose, isOpen }) => {
     setIsLoggedIn(false);
   }, [logout]);
 
-  const handleUpdateProfile = useCallback((updatedProfile: UserProfile) => {
-    // логика для обновления профиля
-  }, []);
+  const handleUpdateProfile = useCallback(async (updatedProfile: UserProfile) => {
+    try {
+      //await updateUserProfile(updatedProfile);
+      fetchUserProfile();
+    } catch (error) {
+      setFormError('Ошибка обновления профиля');
+    }
+  }, [fetchUserProfile]);
+
 
   useEffect(() => {
-    const token = localStorage.getItem('token');
-    if (token && currentUser?.email) {
-      fetchUserProfile(currentUser.email);
+    if (isLoggedIn) {
+      fetchUserProfile();
     }
-  }, [currentUser, fetchUserProfile]);
+  }, [isLoggedIn, fetchUserProfile]);
+
+  useEffect(() => {
+    if (profileError) {
+      setFormError(profileError);
+    }
+  }, [profileError]);
 
   const renderAuthContent = () => (
     <>
       {isSignUp ? (
-        <SignUp onSignUp={handleRegister} error={error} loading={loading} />
+        <>
+          <SignUp onSignUp={handleRegister} error={error} loading={loading} />
+          <div>{localStorage.getItem('token')}</div>
+        </>
       ) : (
         <SignIn onSignIn={handleSignIn} error={error} loading={loading} />
       )}
@@ -70,12 +85,12 @@ const Profile: FC<ProfileProps> = ({ onClose, isOpen }) => {
       </button>
       {isLoggedIn ? (
         <>
-          {currentUser ? (
-            <User 
-              userInfo={currentUser}
+          {userProfile ? (
+            <User
+              userInfo={userProfile}
               onSignOut={handleSignOut}
               onUpdateProfile={handleUpdateProfile}
-             />
+            />
           ) : (
             <p>Загрузка данных...</p>
           )}

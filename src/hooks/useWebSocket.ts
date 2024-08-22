@@ -1,7 +1,7 @@
 import { useState, useCallback, useEffect, useRef } from 'react';
 import { UseWebSocketParams, WebSocketHook } from '../Interfaces/Interface.types';
-import useFetchAuth from './useFetchAuth';
 import useFetchVacancies from './useFetchVacancies';
+import useFetchUserProfile from './useFetchUserProfile';
 
 export const useWebSocket = ({
   WS_URL,
@@ -13,7 +13,7 @@ export const useWebSocket = ({
   const [open, setOpen] = useState<boolean>(false);
   const wsRef = useRef<WebSocket | null>(null);
 
-  const { currentUser } = useFetchAuth();
+  const { userProfile } = useFetchUserProfile();
   const { fetchVacanciesByUserId } = useFetchVacancies(API_URL);
   const connect = useCallback(() => {
     if (wsRef.current) {
@@ -63,12 +63,14 @@ export const useWebSocket = ({
       wsRef.current = null;
     };
     console.log('WebSocket object:', ws);
-  }, [WS_URL, setAlert, fetchVacanciesByUserId]);
+  }, [WS_URL, setAlert]);
 
   useEffect(() => {
     connect();
       fetchVacanciesByUserId();
-  }, [message, connect, fetchVacanciesByUserId, currentUser]);
+      console.log('Fetched currentUser:', userProfile);
+
+  }, [message, connect, fetchVacanciesByUserId, userProfile]);
 
   return {
     connect,

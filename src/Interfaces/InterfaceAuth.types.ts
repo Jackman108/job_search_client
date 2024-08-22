@@ -4,7 +4,7 @@ export interface AuthResponse {
 }
 
 export interface RegisterResponse {
-  id: number;
+  id: string;
   email: string;
   updatedAt: string;
   roles: string[];
@@ -23,8 +23,8 @@ export interface SignInProps {
 }
 
 export interface AuthContextProps {
-  userId: number | null;
+  userId: string | null;
   token: string | null;
-  setUserId: (id: number | null) => void;
+  setUserId: (id: string | null) => void;
   setToken: (token: string | null) => void;
 }

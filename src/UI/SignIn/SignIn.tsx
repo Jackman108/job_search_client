@@ -1,7 +1,7 @@
 // src/components/SignIn/SignIn.tsx
 
 import React, { useState } from 'react';
-import { SignInProps } from '../../Interfaces/InterfaceProfile.types';
+import { SignInProps } from '../../Interfaces/InterfaceAuth.types';
 
 const SignIn: React.FC<SignInProps> = ({ onSignIn, error, loading }) => {
   const [email, setEmail] = useState('');
