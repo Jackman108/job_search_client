@@ -1,6 +1,6 @@
 // src/hooks/useFetchAuth.ts
 
-import { useState, useCallback } from 'react';
+import { useState, useCallback, useEffect } from 'react';
 import axios from 'axios';
 import { API_URL, AUTH_URL } from '../config/serverConfig';
 import { AuthResponse, RegisterResponse } from '../Interfaces/InterfaceAuth.types';
@@ -11,7 +11,6 @@ const useFetchAuth = () => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const { setUserId, setToken, } = useAuth();
-
 
   const handleError = useCallback((message: string) => {
     setError(message);
@@ -25,35 +24,27 @@ const useFetchAuth = () => {
         password,
       });
       setToken(data.accessToken);
-
       const decodedToken = decodeToken(data.accessToken);
-      console.log('Decoded token:', decodedToken);
-
       if (isTokenExpired(decodedToken.exp)) {
         throw new Error('Токен истек');
       }
-      setUserId(decodedToken.id);      
+      setUserId(decodedToken.id);
     } catch {
-      handleError('Ошибка при входе');      
+      handleError('Ошибка при входе');
     } finally {
       setLoading(false);
     }
-  }, [ setUserId, setToken, handleError]);
+  }, [setUserId, setToken, handleError]);
 
   const register = useCallback(async (email: string, password: string, passwordRepeat: string) => {
     setLoading(true);
     try {
       const { data } = await axios.post<RegisterResponse>(`${AUTH_URL}/auth/register`, {
-        email,
-        password,
-        passwordRepeat,
+        email, password, passwordRepeat,
       });
-      console.log('Data:', data);
       setUserId(data.id);
-      
-      const profileData = { userId: data.id }
-      await axios.post(`${API_URL}/profile`, profileData);
-      } catch {
+      await axios.post(`${API_URL}/profile`, { userId: data.id });
+    } catch {
       handleError('Ошибка при регистрации');
     } finally {
       setLoading(false);
@@ -65,15 +56,15 @@ const useFetchAuth = () => {
     try {
       await axios.get(`${AUTH_URL}/auth/logout`, { withCredentials: true });
       setUserId(null);
-      setToken(null);  
+      setToken(null);
     } catch (error) {
-      console.error('Ошибка при выходе', error);
+      handleError('Ошибка при выходе');
     } finally {
       setLoading(false);
     }
-  }, [setToken, setUserId]);
+  }, [setToken, setUserId, handleError]);
 
-  return { login, register, logout, loading, error};
+  return { login, register, logout, loading, error };
 };
 
 export default useFetchAuth;

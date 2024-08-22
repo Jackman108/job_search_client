@@ -1,16 +1,48 @@
 // src/contexts/useAuthContext.tsx
-import { createContext, useContext, useState, ReactNode, FC } from 'react';
+import { createContext, useContext, useState, ReactNode, FC, useEffect } from 'react';
 import { AuthContextProps } from '../Interfaces/InterfaceAuth.types';
+import { UserProfile } from '../Interfaces/InterfaceProfile.types';
 
 
 const AuthContext = createContext<AuthContextProps | undefined>(undefined);
 
 export const AuthProvider: FC<{ children: ReactNode }> = ({ children }) => {
-    const [userId, setUserId] = useState<string | null>(null);
-    const [token, setToken] = useState<string | null>(null);
+    const [userId, setUserId] = useState<string | null>(localStorage.getItem('userId'));
+    const [token, setToken] = useState<string | null>(localStorage.getItem('token'));
+    const [userProfile, setUserProfile] = useState<UserProfile | null>(() => {
+        const savedProfile = localStorage.getItem('userProfile');
+        return savedProfile ? JSON.parse(savedProfile) : null;
+    });
 
+    useEffect(() => {
+        if (userId) {
+            localStorage.setItem('userId', userId);
+        } else {
+            localStorage.removeItem('userId');
+        }
+        if (token) {
+            localStorage.setItem('token', token);
+        } else {
+            localStorage.removeItem('token');
+        }
+    }, [userId, token]);
+
+    useEffect(() => {
+        if (userProfile) {
+            localStorage.setItem('userProfile', JSON.stringify(userProfile));
+        } else {
+            localStorage.removeItem('userProfile');
+        }
+    }, [userProfile]);
+
+    const logout = () => {
+        setUserId(null);
+        setToken(null);
+        setUserProfile(null);
+    };
+    
     return (
-        <AuthContext.Provider value={{ userId, token, setUserId, setToken }}>
+        <AuthContext.Provider value={{ userId, token, userProfile, setUserId, setToken, setUserProfile, logout }}>
             {children}
         </AuthContext.Provider>
     );

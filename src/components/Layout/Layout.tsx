@@ -1,10 +1,11 @@
 // src/components/Layout/Layout.tsx
-import { FC, ReactNode } from 'react';
+import { FC, ReactNode, useState } from 'react';
 import styles from './Layout.module.css';
 import InteractiveButton from '../../UI/InteractiveButton/InteractiveButton';
 import { buttonConfigs } from '../../config/buttonConfigs';
 
 const Layout: FC<{ children: ReactNode }> = ({ children }) => {
+
     const renderButtons = (position: 'left' | 'right') => (
         buttonConfigs
             .filter(config => config.position === position)
@@ -24,7 +25,9 @@ const Layout: FC<{ children: ReactNode }> = ({ children }) => {
             <nav className={styles.sidebarLeft}>
                 {renderButtons('left')}
             </nav>
-            <div className={styles.content}>{children}</div>
+            <div className={styles.content}>
+                {children}
+            </div>
             <nav className={styles.sidebarRight}>
                 {renderButtons('right')}
             </nav>

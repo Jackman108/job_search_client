@@ -11,14 +11,9 @@ const useFetchUserProfile = () => {
   const { userId } = useAuth();
 
   const fetchUserProfile = useCallback(async () => {
-
-    if (!userId) {
-      console.warn('userId is null, cannot fetch user profile.');
-      return null;
-    }
-    console.log(`Fetching user profile for userId: ${userId}`);
-
-        setLoading(true);
+    if (!userId) return;
+    
+    setLoading(true);
     try {
       const { data } = await axios.get<UserProfile>(`${API_URL}/profile/${userId}`, {
         withCredentials: true,
@@ -28,11 +23,8 @@ const useFetchUserProfile = () => {
       return data;
     } catch (err) {
       setError('Ошибка при получении данных пользователя');
-      console.error('Error fetching user profile:', err);
-      return null;
     } finally {
       setLoading(false);
-      console.log('fetchUserProfile completed.');
     }
   }, [userId]);
 
