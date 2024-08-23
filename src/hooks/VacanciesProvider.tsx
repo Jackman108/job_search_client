@@ -4,10 +4,9 @@ import useFetchVacancies from './useFetchVacancies';
 import useAlert from './useAlert';
 import useWebSocketConnection from './useWebSocketConnection';
 import CaptchaAlert from '../UI/CaptchaAlert/CaptchaAlert';
-import { API_URL } from '../config/serverConfig';
 
 const VacanciesProvider: FC<{ children: ReactNode }> = ({ children }) => {
-  const { vacancies, loading, error, fetchVacanciesByUserId } = useFetchVacancies(API_URL);
+  const { vacancies, loading, error, fetchVacanciesByUserId } = useFetchVacancies();
   const { alertState, setAlert, handleCloseAlert } = useAlert();
 
   useWebSocketConnection(fetchVacanciesByUserId, setAlert);

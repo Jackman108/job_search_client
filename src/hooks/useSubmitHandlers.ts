@@ -16,6 +16,7 @@ const submitRequest = async ({ endpoint, data }: SubmitRequestProps) => {
 };
 
 export const handleSubmit = async ({
+  userId,
   email,
   password,
   position,
@@ -38,7 +39,7 @@ export const handleSubmit = async ({
   setIsLoading(true);
   await submitRequest({
     endpoint: 'start',
-    data: { email, password, position, message, vacancyUrl }
+    data: { userId, email, password, position, message, vacancyUrl }
   });
   setIsLoading(false);
 };

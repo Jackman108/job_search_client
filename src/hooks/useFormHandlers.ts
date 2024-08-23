@@ -1,19 +1,26 @@
 // src/hooks/useFormHandlers.ts
-import { ChangeEvent, Dispatch, FormEvent, SetStateAction, useCallback, useState } from 'react';
+import { ChangeEvent, Dispatch, FormEvent, SetStateAction, useCallback, useEffect, useState } from 'react';
 import { Errors, HandleSubmitParams, UseFormHandlersParams } from '../Interfaces/Interface.types';
-import { handleSubmit, handleStop } from './useVacancyHandlers';
+import { handleSubmit, handleStop } from './useSubmitHandlers';
 import { buildVacancyUrl } from '../utils/buildVacancyUrl';
 import { DEFAULT_VACANCY_PARAMS } from '../config/formConfigs';
 import { FormParams } from '../config/formConfigs';
 
-const useFormHandlers = (): UseFormHandlersParams => {
+const useFormHandlers = (userId: string): UseFormHandlersParams => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [position, setPosition] = useState('');
   const [message, setMessage] = useState('');
   const [vacancyUrl, setVacancyUrl] = useState(buildVacancyUrl(DEFAULT_VACANCY_PARAMS));
   const [errors, setErrors] = useState<Errors>({});
-  const [isLoading, setIsLoading] = useState(false);
+  const [isLoading, setIsLoading] = useState(() => {
+
+    const savedLoadingState = localStorage.getItem('isLoading');
+    return savedLoadingState === 'true';
+  });
+  useEffect(() => {
+    localStorage.setItem('isLoading', isLoading.toString());
+  }, [isLoading]);
 
   const handleInputChange = (setter: Dispatch<SetStateAction<string>>) => (
     e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
@@ -31,6 +38,7 @@ const useFormHandlers = (): UseFormHandlersParams => {
   const submitHandler = useCallback(async (event: FormEvent): Promise<void> => {
     event.preventDefault();
     const params: HandleSubmitParams = {
+      userId,
       email,
       password,
       position,
@@ -40,10 +48,11 @@ const useFormHandlers = (): UseFormHandlersParams => {
       setIsLoading,
     };
     await handleSubmit(params);
-  }, [email, password, position, message, vacancyUrl]);
+  }, [userId,email, password, position, message, vacancyUrl]);
 
   const stopHandler = useCallback(async () => {
     await handleStop();
+    setIsLoading(false);
   }, []);
 
   return {

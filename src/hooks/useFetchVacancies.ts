@@ -1,40 +1,47 @@
 // src/hooks/useFetchVacancies.ts
 
-import { useState, useCallback } from 'react';
+import { useState, useCallback, useEffect } from 'react';
 import { Vacancy } from '../Interfaces/Interface.types';
 import { formatAndSortVacancies } from '../utils/formaUtils';
 import axios from 'axios';
+import { API_URL } from '../config/serverConfig';
 import { useAuth } from '../context/useAuthContext';
 
-const useFetchVacancies = (apiUrl: string) => {
+const useFetchVacancies = () => {
   const [vacancies, setVacancies] = useState<Vacancy[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
-  const { userId, token } = useAuth();
+  const { userId } = useAuth();
 
-  const fetchVacancies = useCallback(async (url: string, errorMsg: string) => {
+  const fetchVacanciesByUserId = useCallback(async () => {
+    if (!userId) {
+      setError('User ID is not available.');
+      setLoading(false);
+      return;
+    }
+
     setLoading(true);
     setError(null);
     try {
-      const { data } = await axios.get<Vacancy[]>(url, {
-        headers: { Authorization: `Bearer ${token}` },
+      const { data } = await axios.get<Vacancy[]>(`${API_URL}/vacancy/${userId}`, {
         withCredentials: true
       });
+      console.log('data', data);
+
       setVacancies(formatAndSortVacancies(data));
     } catch {
-      setError(errorMsg);
+      setError('Failed to fetch vacancies.');
     } finally {
       setLoading(false);
     }
-  }, [token]);
+  }, [userId]);
 
-  const fetchVacanciesByUserId = useCallback(() => {
-    if (userId) {
-      //fetchVacancies(`${apiUrl}/vacancies/user/${userId}`, 'Ошибка при получении данных вакансий по userId');
-    }
-  }, [apiUrl, fetchVacancies, userId]);
+useEffect(() => {
+    fetchVacanciesByUserId();
+  }, [fetchVacanciesByUserId]);
 
   return { vacancies, loading, error, fetchVacanciesByUserId };
+
 };
 
 export default useFetchVacancies;

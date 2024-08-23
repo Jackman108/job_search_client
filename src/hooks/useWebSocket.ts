@@ -1,11 +1,10 @@
 import { useState, useCallback, useEffect, useRef } from 'react';
 import { UseWebSocketParams, WebSocketHook } from '../Interfaces/Interface.types';
-import useFetchVacancies from './useFetchVacancies';
-import useFetchUserProfile from './useFetchUserProfile';
-
+import { useAuth } from '../context/useAuthContext';
+const RECONNECT_INTERVAL = 5000;
 export const useWebSocket = ({
   WS_URL,
-  API_URL,
+  fetchVacanciesByUserId,
   setAlert
 }: UseWebSocketParams): WebSocketHook => {
   const [message, setMessage] = useState<string | null>(null);
@@ -13,10 +12,15 @@ export const useWebSocket = ({
   const [open, setOpen] = useState<boolean>(false);
   const wsRef = useRef<WebSocket | null>(null);
 
-  const { userProfile } = useFetchUserProfile();
-  const { fetchVacanciesByUserId } = useFetchVacancies(API_URL);
+  const { userId } = useAuth();
+
   const connect = useCallback(() => {
+    if (!userId) {
+      console.warn('User ID is not available');
+      return;
+    }
     if (wsRef.current) {
+      console.warn('WebSocket already connected');
       return;
     }
     console.log(`Connecting to WebSocket: ${WS_URL}`);
@@ -26,6 +30,7 @@ export const useWebSocket = ({
     ws.onopen = () => {
       console.log('WebSocket connection established');
       setOpen(true);
+      setError(null);
     };
 
     ws.onmessage = (event) => {
@@ -33,6 +38,11 @@ export const useWebSocket = ({
       console.log('WebSocket message received:', data);
       setMessage(data);
       switch (true) {
+        case data.startsWith('Vacancy has been successfully saved with ID'):
+          const id = data.split('ID ')[1];
+          console.log(`Vacancy with ID ${id} was saved`);
+          fetchVacanciesByUserId();
+          break;
         case data === 'ERROR detected restart':
           setAlert('Некорректный Email или Пароль');
           break;
@@ -42,7 +52,7 @@ export const useWebSocket = ({
           break;
         case data === 'hh closed':
           setAlert(`Сайт закрыт, попробуйте позже ${captchaSrc}`);
-          break;       
+          break;
         default:
           break;
       }
@@ -63,17 +73,27 @@ export const useWebSocket = ({
       wsRef.current = null;
     };
     console.log('WebSocket object:', ws);
+
   }, [WS_URL, setAlert]);
 
   useEffect(() => {
-    connect();
-      fetchVacanciesByUserId();
-      console.log('Fetched currentUser:', userProfile);
+    if (userId) {
+      const timer = setTimeout(() => {
+        connect();
+      }, RECONNECT_INTERVAL);
 
-  }, [message, connect, fetchVacanciesByUserId, userProfile]);
+      return () => {
+        clearTimeout(timer);
+        if (wsRef.current) {
+          wsRef.current.close();
+        }
+      };
+    }
+  }, [userId, connect]);
 
   return {
     connect,
+    fetchVacanciesByUserId,
     message,
     error,
     open,

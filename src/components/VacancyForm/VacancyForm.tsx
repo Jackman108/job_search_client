@@ -4,8 +4,15 @@ import useFormHandlers from '../../hooks/useFormHandlers';
 import styles from './VacancyForm.module.css';
 import { VacancyFormProps } from '../../Interfaces/Interface.types';
 import { OPTIONS, FORM_TEXTS, FORM_LABELS, FORM_BUTTONS, FORM_PARAMS } from '../../config/formConfigs';
+import { useAuth } from '../../context/useAuthContext';
 
-const VacancyForm: FC<VacancyFormProps> = ({ onClose, isOpen }) => {
+const VacancyForm: FC<VacancyFormProps> = ({ onClose }) => {
+  const { userId } = useAuth();
+  
+  if (!userId) {
+    console.error("User ID is null");
+  } 
+    
   const {
     email,
     password,
@@ -22,7 +29,7 @@ const VacancyForm: FC<VacancyFormProps> = ({ onClose, isOpen }) => {
     handlePositionChange,
     handleMessageChange,
     handleSelectChange,
-  } = useFormHandlers();
+  } = useFormHandlers(userId || '');
 
   const renderInput = (label: string, value: string, onChange: (e: ChangeEvent<HTMLInputElement>) => void, type: string = 'text') => (
     <div className={styles.formGroup}>

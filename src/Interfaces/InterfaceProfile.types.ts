@@ -10,17 +10,14 @@ export interface UserProfile {
   id: string;
   email: string;
   updatedAt: string;
-  roles: string[];
   avatar: string;
   firstName: string;
   lastName: string;
   balance: number;
   spinCount: number;
   successfulResponsesCount: number;
+  userId: string;
   currentStatus: string;
-  resumes: Resume[];
-  messages: Message[];
-  responsesToApplications: Vacancy[];
 }
 
 export interface Resume {
