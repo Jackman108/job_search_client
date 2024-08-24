@@ -13,7 +13,6 @@ const UserInfo: React.FC<UserInfoProps> = ({ userInfo, onEdit, onSignOut }) => (
     <Avatar src={userInfo.avatar} />
     <p><strong>{USER_TEXTS.firstNameLabel}:</strong> {userInfo.firstName}</p>
     <p><strong>{USER_TEXTS.lastNameLabel}:</strong> {userInfo.lastName}</p>
-    <p><strong>{USER_TEXTS.avatarLabel}:</strong> {userInfo.avatar || USER_TEXTS.noAvatar}</p>
     <p><strong>{USER_TEXTS.balanceLabel}:</strong> {userInfo.balance}</p>
     <p><strong>{USER_TEXTS.spinCountLabel}:</strong> {userInfo.spinCount}</p>
     <p><strong>{USER_TEXTS.successfulResponsesLabel}:</strong> {userInfo.successfulResponsesCount}</p>
