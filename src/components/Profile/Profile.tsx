@@ -8,7 +8,7 @@ import Button from '../../UI/Button/Button';
 import {FORM_BUTTONS} from '../../config/formConfigs';
 import { ProfileProps } from '../../Interfaces/InterfaceProfile.types';
 
-const Profile: FC<ProfileProps> = ({ onClose }) => {
+const Profile: FC<ProfileProps> = () => {
   const {
     userProfile,
     isSign,

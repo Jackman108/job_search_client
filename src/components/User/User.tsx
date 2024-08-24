@@ -10,6 +10,10 @@ const User: React.FC<UserProps> = ({ userInfo, onSignOut, onUpdateProfile }) => 
     isEditing,
     setIsEditing,
     handleSave,
+    editProfile,
+    avatarPreview,
+    handleInputChange,
+    handleAvatarChange,
   } = useUserHandlers(userInfo);
 
   return (
@@ -17,9 +21,14 @@ const User: React.FC<UserProps> = ({ userInfo, onSignOut, onUpdateProfile }) => 
       <h2>{USER_TEXTS.profileTitle}</h2>
       {isEditing ? (
         <UserChange
-          userInfo={userInfo}
-          onSave={() => handleSave(onUpdateProfile)}
-          onCancel={() => setIsEditing(false)}
+        userInfo={userInfo}
+        onSave={() => handleSave(onUpdateProfile)}
+        onCancel={() => setIsEditing(false)}
+        editProfile={editProfile}
+        avatarPreview={avatarPreview}
+        handleInputChange={handleInputChange}
+        handleAvatarChange={handleAvatarChange}
+        handleSave={handleSave}
         />
       ) : (
         <UserInfo

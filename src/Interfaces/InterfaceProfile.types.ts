@@ -41,7 +41,7 @@ export interface UseProfileHandlers {
   handleSignIn: (email: string, password: string) => Promise<void>;
   handleRegister: (email: string, password: string, passwordRepeat: string) => Promise<void>;
   handleSignOut: () => void;
-  handleUpdateProfile: () => Promise<void>;
+  handleUpdateProfile: (updatedProfile: UserProfile) => Promise<void>;
   authLoading: boolean;
   authError: string | null;
 }
@@ -66,11 +66,18 @@ export interface UserInfoProps {
   onSignOut: () => void;
 }
 
+// src/Interfaces/InterfaceProfile.types.ts
 export interface UserChangeProps {
   userInfo: UserProfile;
   onSave: () => void;
   onCancel: () => void;
+  editProfile: UserProfile;
+  avatarPreview: string;
+  handleInputChange: (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => void;
+  handleAvatarChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  handleSave: (onUpdateProfile: (profile: UserProfile) => void) => void;
 }
+
 
 export interface AvatarProps {
   src?: string;

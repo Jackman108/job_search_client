@@ -7,27 +7,18 @@ import { USER_TEXTS, BUTTON_TEXTS } from '../../config/formConfigs';
 import RenderInput from '../../UI/RenderInput/RenderInput';
 import AvatarPreview from '../../UI/ImagePreview/ImagePreview';
 import AvatarUploader from '../../UI/ImageUploader/ImageUploader';
-import { useUserHandlers } from '../../hooks/useUserHandlers';
 
+const UserChange: React.FC<UserChangeProps> = ({ userInfo, onSave, onCancel, editProfile, avatarPreview, handleInputChange, handleAvatarChange }) => {
 
-
-const UserChange: React.FC<UserChangeProps> = ({ userInfo, onSave, onCancel }) => {
-  const {
-    editProfile,
-    avatarPreview,
-    handleInputChange,
-    handleAvatarChange,
-    handleSave,
-  } = useUserHandlers(userInfo);
- 
+  console.log('editProfile', editProfile);
   return (
     <div className={styles.editForm}>
       <RenderInput
         label={USER_TEXTS.firstNameLabel}
         name='firstName'
-        value={editProfile.firstName}
+        value={editProfile.firstName || ""}
         onChange={handleInputChange}
-        error={undefined} 
+        error={undefined}
         isLoading={false}
         type="text"
         placeholder={USER_TEXTS.firstNamePlaceholder}
@@ -35,9 +26,9 @@ const UserChange: React.FC<UserChangeProps> = ({ userInfo, onSave, onCancel }) =
       <RenderInput
         label={USER_TEXTS.lastNameLabel}
         name='lastName'
-        value={editProfile.lastName}
+        value={editProfile.lastName || ""}
         onChange={handleInputChange}
-        error={undefined} 
+        error={undefined}
         isLoading={false}
         type="text"
         placeholder={USER_TEXTS.lastNamePlaceholder}
@@ -45,16 +36,16 @@ const UserChange: React.FC<UserChangeProps> = ({ userInfo, onSave, onCancel }) =
       <RenderInput
         label={USER_TEXTS.avatarLabel}
         name='avatar'
-        value={editProfile.avatar}
+        value={editProfile.avatar || ""}
         onChange={handleInputChange}
-        error={undefined} 
+        error={undefined}
         isLoading={false}
         type="text"
         placeholder={USER_TEXTS.avatarPlaceholder}
       />
       <AvatarUploader onChange={handleAvatarChange} />
       {avatarPreview && <AvatarPreview src={avatarPreview} />}
-      <Button variant="primary"  onClick={() => handleSave(onSave)}>
+      <Button type="submit" variant="primary" onClick={() => onSave()}>
         {BUTTON_TEXTS.saveButton}
       </Button>
       <Button variant="secondary" onClick={onCancel}>

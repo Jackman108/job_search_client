@@ -6,7 +6,6 @@ import { UseProfileHandlers } from '../Interfaces/InterfaceProfile.types';
 export const useProfileHandlers = (): UseProfileHandlers => {
     const { login, register, logout, error: authError, loading: authLoading } = useFetchAuth();
     const { userProfile, fetchUserProfile, error: profileError } = useFetchUserProfile();
-
     const [isSign, setIsSign] = useState<boolean>(!!userProfile);
     const [formError, setFormError] = useState<string | null>(null);
 
@@ -34,18 +33,20 @@ export const useProfileHandlers = (): UseProfileHandlers => {
         }
     }, [register]);
 
-    const handleSignOut = useCallback(() => {
+    const handleSignOut = useCallback(async () => {
         logout();
         setFormError(null);
-    }, [logout]);
+        }, [logout]);
 
-    const handleUpdateProfile = useCallback(async () => {
+    const handleUpdateProfile = useCallback(async (): Promise<void> => {
         try {
             await fetchUserProfile();
-        } catch {
+        } catch (error) {
             setFormError('Ошибка обновления профиля');
         }
-    }, [fetchUserProfile]);
+    },
+        [fetchUserProfile]);
+
 
     useEffect(() => {
         if (profileError) {

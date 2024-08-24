@@ -1,11 +1,13 @@
 import { useCallback, useState } from 'react';
 import { UserProfile } from '../Interfaces/InterfaceProfile.types';
-import { changeUserProfile } from './useChangeUser';
+import { useChangeUserProfile } from './useChangeUserProfile';
 
 export const useUserHandlers = (initialUserInfo: UserProfile) => {
   const [isEditing, setIsEditing] = useState(false);
   const [editProfile, setEditProfile] = useState<UserProfile>(initialUserInfo);
   const [avatarPreview, setAvatarPreview] = useState<string>(initialUserInfo.avatar || '');
+
+  const { changeUserProfile } = useChangeUserProfile();
 
   const handleInputChange = useCallback((e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target;
@@ -32,8 +34,8 @@ export const useUserHandlers = (initialUserInfo: UserProfile) => {
     } catch (error) {
       console.error('Ошибка при сохранении профиля:', error);
     }
-  }, [editProfile]);
-  
+  }, [changeUserProfile, editProfile]);
+
   return {
     isEditing,
     setIsEditing,
