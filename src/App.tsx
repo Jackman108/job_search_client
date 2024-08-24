@@ -19,8 +19,6 @@ function App() {
             </VacanciesProvider>
           </Layout>
         </AuthProvider>
-
-
       </main>
     </div>
   );

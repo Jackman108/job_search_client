@@ -1,18 +1,22 @@
 // src/components/VacancyForm/VacancyForm.tsx
-import { ChangeEvent, FC } from 'react';
+import { FC } from 'react';
 import useFormHandlers from '../../hooks/useFormHandlers';
 import styles from './VacancyForm.module.css';
 import { VacancyFormProps } from '../../Interfaces/Interface.types';
 import { OPTIONS, FORM_TEXTS, FORM_LABELS, FORM_BUTTONS, FORM_PARAMS } from '../../config/formConfigs';
 import { useAuth } from '../../context/useAuthContext';
+import Button from '../../UI/Button/Button';
+import RenderInput from '../../UI/RenderInput/RenderInput';
+import RenderSelect from '../../UI/RenderSelect/RenderSelect';
+import RenderTextarea from '../../UI/RenderTextarea/RenderTextarea';
 
 const VacancyForm: FC<VacancyFormProps> = ({ onClose }) => {
   const { userId } = useAuth();
-  
+
   if (!userId) {
     console.error("User ID is null");
-  } 
-    
+  }
+
   const {
     email,
     password,
@@ -31,93 +35,101 @@ const VacancyForm: FC<VacancyFormProps> = ({ onClose }) => {
     handleSelectChange,
   } = useFormHandlers(userId || '');
 
-  const renderInput = (label: string, value: string, onChange: (e: ChangeEvent<HTMLInputElement>) => void, type: string = 'text') => (
-    <div className={styles.formGroup}>
-      <label className={styles.label}>{label}:</label>
-      <input
-        className={`${styles.input} ${errors[value] ? styles.error : ''}`}
-        type={type}
-        value={value}
-        onChange={onChange}
-        disabled={isLoading}
-      />
-      {errors[value] && <p className={styles.errorText}>{errors[value]}</p>}
-    </div>
-  );
-
-  const renderSelect = (
-    label: string,
-    options: { value: string; label: string }[],
-    param: keyof typeof OPTIONS) => (
-
-    <div className={styles.formGroup}>
-      <label className={styles.label}>{label}:</label>
-      <select
-        className={styles.select}
-        onChange={handleSelectChange(param)}
-        disabled={isLoading}
-        name={label}
-      >
-        {options.map(option => (
-          <option key={option.value} value={option.value}>{option.label}</option>
-        ))}
-      </select>
-    </div>
-  );
-  const submitButton =  (
-    <button
-      className={styles.button}
-      type="submit"
-      disabled={isLoading}
-    >
-      {isLoading ? FORM_BUTTONS.isLoading : FORM_BUTTONS.submitButton}
-    </button>
-  );
-
-  const stopButton = (
-    <button
-      className={styles.button}
-      type="button"
-      onClick={stopHandler}
-      disabled={!isLoading}
-    >
-      {FORM_BUTTONS.stopButton}
-    </button>
-  );
   return (
-    <div className={styles.formContainer}>
-      <button className={styles.closeButton} onClick={onClose}>
+    <section className={styles.sectionContainer}>
+      <Button className={styles.closeButton} onClick={onClose} variant="secondary">
         {FORM_BUTTONS.closeButton}
-      </button>
+      </Button>
       <form className={styles.formContainer} onSubmit={submitHandler}>
-        {renderInput(FORM_TEXTS.vacancyUrlLabel, vacancyUrl, handleVacancyUrlChange)}
         <div className={styles.columns}>
-          <div className={styles.leftColumn}>
-            {renderInput(FORM_TEXTS.emailLabel, email, handleEmailChange)}
-            {renderInput(FORM_TEXTS.passwordLabel, password, handlePasswordChange)}
-            {renderInput(FORM_TEXTS.positionLabel, position, handlePositionChange)}
-          </div>
-          <div className={styles.rightColumn}>
-            <div className={styles.formGroup}>
-              <label className={styles.label}>{FORM_TEXTS.messageLabel}:</label>
-              <textarea
-                className={styles.textarea}
-                value={message}
-                onChange={handleMessageChange}
-                disabled={isLoading}
-              />
-            </div>
-          </div>
+          <RenderInput
+            label={FORM_TEXTS.vacancyUrlLabel}
+            name="vacancyUrl"
+            value={vacancyUrl}
+            onChange={handleVacancyUrlChange}
+            error={errors.vacancyUrl}
+            isLoading={isLoading}
+          />
+          <RenderInput
+            label={FORM_TEXTS.emailLabel}
+            name="email"
+            value={email}
+            onChange={handleEmailChange}
+            error={errors.email}
+            isLoading={isLoading}
+          />
+          <RenderInput
+            label={FORM_TEXTS.passwordLabel}
+            name="password"
+            value={password}
+            onChange={handlePasswordChange}
+            error={errors.password}
+            isLoading={isLoading}
+            type="password"
+          />
+          <RenderInput
+            label={FORM_TEXTS.positionLabel}
+            name="position"
+            value={position}
+            onChange={handlePositionChange}
+            error={errors.position}
+            isLoading={isLoading}
+          />
+          <RenderTextarea
+            label={FORM_TEXTS.messageLabel}
+            value={message}
+            onChange={handleMessageChange}
+            isLoading={isLoading}
+          />
         </div>
-        {renderSelect(FORM_LABELS.schedule, OPTIONS.schedule, FORM_PARAMS.schedule)}
-        {renderSelect(FORM_LABELS.orderBy, OPTIONS.orderBy, FORM_PARAMS.orderBy)}
-        {renderSelect(FORM_LABELS.searchField, OPTIONS.searchField, FORM_PARAMS.searchField)}
-        {renderSelect(FORM_LABELS.experience, OPTIONS.experience, FORM_PARAMS.experience)}
-        {renderSelect(FORM_LABELS.searchPeriod, OPTIONS.searchPeriod, FORM_PARAMS.searchPeriod)}
-        {submitButton}
-        {stopButton}
+        <RenderSelect
+          label={FORM_LABELS.schedule}
+          options={OPTIONS.schedule}
+          onChange={handleSelectChange(FORM_PARAMS.schedule)}
+          isLoading={isLoading}
+        />
+        <RenderSelect
+          label={FORM_LABELS.orderBy}
+          options={OPTIONS.orderBy}
+          onChange={handleSelectChange(FORM_PARAMS.orderBy)}
+          isLoading={isLoading}
+        />
+        <RenderSelect
+          label={FORM_LABELS.searchField}
+          options={OPTIONS.searchField}
+          onChange={handleSelectChange(FORM_PARAMS.searchField)}
+          isLoading={isLoading}
+        />
+        <RenderSelect
+          label={FORM_LABELS.experience}
+          options={OPTIONS.experience}
+          onChange={handleSelectChange(FORM_PARAMS.experience)}
+          isLoading={isLoading}
+        />
+        <RenderSelect
+          label={FORM_LABELS.searchPeriod}
+          options={OPTIONS.searchPeriod}
+          onChange={handleSelectChange(FORM_PARAMS.searchPeriod)}
+          isLoading={isLoading}
+        />
+        <Button
+          className={styles.button}
+          type="submit"
+          disabled={isLoading}
+        >
+          {isLoading ? FORM_BUTTONS.isLoading : FORM_BUTTONS.submitButton}
+        </Button>
+        <Button
+          className={styles.button}
+          type="button"
+          onClick={stopHandler}
+          disabled={!isLoading}
+          variant="danger"
+        >
+          {FORM_BUTTONS.stopButton}
+        </Button>
       </form>
-    </div>
+    </section>
   );
 };
 

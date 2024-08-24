@@ -9,10 +9,11 @@
   height: 100vh;
   background-color: #f4f4f4;
   padding: 5px;
+  position: fixed;
 }
 
 .sidebarRight {
-  position: fixed;
+  
   right: 0;
 }
 

@@ -52,8 +52,6 @@ export interface UseFormHandlersParams {
   handleSelectChange: (param: keyof typeof OPTIONS) => (e: ChangeEvent<HTMLSelectElement>) => void;
 }
 
-
-
 export interface WebSocketHook {
   connect: () => void;
   fetchVacanciesByUserId: () => void;
@@ -115,27 +113,6 @@ export interface ButtonConfig<T> {
 }
 
 export interface VacancyFormProps {
-  onClose: () => void;
-  isOpen: boolean;
-}
-
-export type RenderSelectProps = {
-  label: string;
-  options: {
-    value: string;
-    label: string;
-  };
-  param: keyof typeof OPTIONS;
-};
-
-export type RenderInputProps = {
-  label: string;
-  value: string;
-  onChange: (e: ChangeEvent<HTMLInputElement>) => void;
-  type?: string;
-};
-
-export interface ProfileProps {
   onClose: () => void;
   isOpen: boolean;
 }

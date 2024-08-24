@@ -62,6 +62,9 @@ export const FORM_BUTTONS = {
     submitButton: 'Начать',
     stopButton: 'Остановить',
     closeButton: 'Закрыть',
+    SignInButton: 'Вход',
+    SignOutButton: 'Выход',
+    SignUpButton: 'Регистрация',
 };
 
 export const ERROR_MESSAGES = {
@@ -77,8 +80,31 @@ export const FORM_PARAMS = {
     searchField: 'searchField',
     experience: 'experience',
     searchPeriod: 'searchPeriod',
-  } as const;
+} as const;
+
+export const USER_TEXTS = {
+    profileTitle: 'Профиль пользователя',
+    firstNameLabel: 'Имя',
+    lastNameLabel: 'Фамилия',
+    avatarLabel: 'Аватар',
+    avatarPlaceholder: 'Вставьте ссылку на изображение',
+    firstNamePlaceholder: 'Введите Имя',
+    lastNamePlaceholder: 'Введите Фамилию',
+    balanceLabel: 'Баланс',
+    spinCountLabel: 'Количество вращений',
+    successfulResponsesLabel: 'Успешные отклики',
+    currentStatusLabel: 'Текущий статус',
+    noAvatar: 'Нет',
+  };
   
-  export type FormParams = keyof typeof FORM_PARAMS;
+  export const BUTTON_TEXTS = {
+    saveButton: 'Сохранить',
+    cancelButton: 'Отмена',
+    editButton: 'Редактировать',
+    signOutButton: 'Выйти',
+  };
+
+  export const DEFAULT_AVATAR_URL = 'https://yandex.by/images/search?img_url=https%3A%2F%2Fs3.amazonaws.com%2Frcp-prod-uploads%2Fimages%2F6a8147b2d9fe1a61ccda3087d860751874f37334tZ.png&lr=26966&p=1&pos=33&rpt=simage&source=serp&stype=image&text=%D0%B0%D0%B2%D0%B0%D1%82%D0%B0%D1%80%20default';
   
-  
+export type FormParams = keyof typeof FORM_PARAMS;
+

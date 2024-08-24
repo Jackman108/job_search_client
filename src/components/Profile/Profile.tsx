@@ -1,71 +1,29 @@
-// src/components/Profile/Profile.tsx
-
-import React, { FC, useCallback, useEffect, useState } from 'react';
+import React, { FC } from 'react';
 import styles from './Profile.module.css';
-import { ProfileProps } from '../../Interfaces/Interface.types';
-import useFetchAuth from '../../hooks/useFetchAuth';
-import User from '../../UI/User/User';
+import User from '../User/User';
 import SignIn from '../../UI/SignIn/SignIn';
 import SignUp from '../../UI/SignUp/SignUp';
-import { UserProfile } from '../../Interfaces/InterfaceProfile.types';
-import useFetchUserProfile from '../../hooks/useFetchUserProfile';
+import { useProfileHandlers } from '../../hooks/useProfileHandlers';
+import Button from '../../UI/Button/Button';
+import {FORM_BUTTONS} from '../../config/formConfigs';
+import { ProfileProps } from '../../Interfaces/InterfaceProfile.types';
 
-const Profile: FC<ProfileProps> = ({ onClose, isOpen }) => {
-  const { login, register, logout, error, loading } = useFetchAuth();
-  const { userProfile, fetchUserProfile, error: profileError, loading: profileLoading } = useFetchUserProfile();
-  const [isSign, setIsSign] = useState<boolean>(true);
-  const [formError, setFormError] = useState<string | null>(null);
-
-  useEffect(() => {
-    if (userProfile === null) {
-      fetchUserProfile();
-    }
-  }, [fetchUserProfile, userProfile]);
-
-  const handleSignIn = useCallback(async (email: string, password: string) => {
-    setFormError(null);
-    try {
-      await login(email, password);
-      
-    } catch {
-      setFormError('Ошибка при входе: неверный email или пароль');
-    }
-  }, [login]);
-
-  const handleRegister = useCallback(async (email: string, password: string, passwordRepeat: string) => {
-    setFormError(null);
-    try {
-      await register(email, password, passwordRepeat);      
-    } catch {
-      setFormError('Ошибка при регистрации: проверьте правильность введенных данных');
-    }
-  }, [register, fetchUserProfile]);
-
-  const handleSignOut = useCallback(() => {
-    logout();
-    onClose();
-    setFormError(null);
-  }, [logout]);
-
-  const handleUpdateProfile = useCallback(async (updatedProfile: UserProfile) => {
-    try {
-      await fetchUserProfile();
-    } catch {
-      setFormError('Ошибка обновления профиля');
-    }
-  }, [fetchUserProfile]);
-
-  useEffect(() => {
-    if (profileError) {
-      setFormError(profileError);
-    }
-  }, [profileError]);
+const Profile: FC<ProfileProps> = ({ onClose }) => {
+  const {
+    userProfile,
+    isSign,
+    setIsSign,
+    formError,
+    handleSignIn,
+    handleRegister,
+    handleSignOut,
+    handleUpdateProfile,
+    authLoading,
+    authError,
+  } = useProfileHandlers();
 
   return (
     <section className={styles.sectionContainer}>
-      <button className={styles.closeButton} onClick={onClose}>
-        Закрыть
-      </button>
       {userProfile ? (
         <User
           userInfo={userProfile}
@@ -75,26 +33,29 @@ const Profile: FC<ProfileProps> = ({ onClose, isOpen }) => {
       ) : (
         <>
           <div className={styles.tabContainer}>
-            <button
+            <Button
               className={`${styles.tab} ${!isSign ? styles.activeTab : ''}`}
               onClick={() => setIsSign(false)}
+              variant="primary"
+              disabled={!isSign}
             >
-              Вход
-            </button>
-            <button
+              {FORM_BUTTONS.SignInButton}
+            </Button>
+            <Button
               className={`${styles.tab} ${isSign ? styles.activeTab : ''}`}
               onClick={() => setIsSign(true)}
+              variant="danger"
+              disabled={isSign}
             >
-              Регистрация
-            </button>
+              {FORM_BUTTONS.SignUpButton}
+            </Button>
           </div>
           {isSign ? (
-            <SignUp onSignUp={handleRegister} error={error} loading={loading} />
+            <SignUp onSignUp={handleRegister} error={authError} loading={authLoading} />
           ) : (
-            <SignIn onSignIn={handleSignIn} error={error} loading={loading} />
+            <SignIn onSignIn={handleSignIn} error={authError} loading={authLoading} />
           )}
-          {formError && <p>{formError}</p>}
-
+          {formError && <p className={styles.error}>{formError}</p>}
         </>
       )}
     </section>

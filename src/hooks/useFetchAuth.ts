@@ -1,6 +1,6 @@
 // src/hooks/useFetchAuth.ts
 
-import { useState, useCallback, useEffect } from 'react';
+import { useState, useCallback } from 'react';
 import axios from 'axios';
 import { API_URL, AUTH_URL } from '../config/serverConfig';
 import { AuthResponse, RegisterResponse } from '../Interfaces/InterfaceAuth.types';
