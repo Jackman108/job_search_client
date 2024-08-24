@@ -20,7 +20,6 @@ const useFetchUserProfile = () => {
       const { data } = await axios.get<UserProfile>(`${API_URL}/profile/${userId}`, {
         withCredentials: true,
       });
-      console.log('User profile fetched successfully:', data);
       setUserProfile(data);
       return data;
     } catch (err) {

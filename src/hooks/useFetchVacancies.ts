@@ -26,7 +26,6 @@ const useFetchVacancies = () => {
       const { data } = await axios.get<Vacancy[]>(`${API_URL}/vacancy/${userId}`, {
         withCredentials: true
       });
-      console.log('data', data);
 
       setVacancies(formatAndSortVacancies(data));
     } catch {

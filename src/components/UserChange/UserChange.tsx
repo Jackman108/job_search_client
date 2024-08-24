@@ -10,7 +10,6 @@ import AvatarUploader from '../../UI/ImageUploader/ImageUploader';
 
 const UserChange: React.FC<UserChangeProps> = ({ userInfo, onSave, onCancel, editProfile, avatarPreview, handleInputChange, handleAvatarChange }) => {
 
-  console.log('editProfile', editProfile);
   return (
     <div className={styles.editForm}>
       <RenderInput

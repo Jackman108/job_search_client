@@ -23,12 +23,10 @@ export const useWebSocket = ({
       console.warn('WebSocket already connected');
       return;
     }
-    console.log(`Connecting to WebSocket: ${WS_URL}`);
     const ws = new WebSocket(WS_URL);
     wsRef.current = ws;
 
     ws.onopen = () => {
-      console.log('WebSocket connection established');
       setOpen(true);
       setError(null);
     };
@@ -72,7 +70,6 @@ export const useWebSocket = ({
       setOpen(false);
       wsRef.current = null;
     };
-    console.log('WebSocket object:', ws);
 
   }, [WS_URL, setAlert]);
 

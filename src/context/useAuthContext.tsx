@@ -34,10 +34,7 @@ export const AuthProvider: FC<{ children: ReactNode }> = ({ children }) => {
             localStorage.removeItem('userProfile');
         }
     }, [userProfile]);
-    useEffect(() => {
-        console.log('userId2:', userId);
-        console.log('userProfile2:', userProfile);
-      }, [userId, userProfile]);
+
     const logout = () => {
         setUserId(null);
         setToken(null);
