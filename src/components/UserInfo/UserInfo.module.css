@@ -1,0 +1,27 @@
+.profileInfo {
+  display: flex;
+  flex-direction: column;
+  padding: 20px;
+}
+
+.avatar {
+  margin-bottom: 20px;
+}
+
+.infoContainer {
+  width: 100%;
+  max-width: 600px;
+  margin-bottom: 20px;
+}
+
+.infoDetail {
+  margin: 8px 0;
+  font-size: 16px;
+}
+
+.buttonGroup {
+  display: flex;
+  gap: 10px;
+  margin-top: 15px;
+  flex-direction: column;
+}

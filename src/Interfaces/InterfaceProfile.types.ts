@@ -8,26 +8,6 @@ export interface UserProps {
   onUpdateProfile: (updatedProfile: UserProfile) => void;
 }
 
-
-
-export interface Resume {
-  id: number;
-  title: string;
-  description: string;
-  createdAt: string;
-  updatedAt: string;
-  status: string;
-}
-
-export interface Message {
-  id: number;
-  senderId: number;
-  receiverId: number;
-  content: string;
-  createdAt: string;
-  read: boolean;
-}
-
 export interface ProfileProps {
   onClose: () => void;
   isOpen: boolean;
@@ -78,7 +58,6 @@ export interface UserChangeProps {
   handleSave: (onUpdateProfile: (profile: UserProfile) => void) => void;
 }
 
-
 export interface AvatarProps {
   src?: string;
   alt?: string;
@@ -91,14 +70,18 @@ export interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
 }
 
 export interface RenderInputProps {
+  id?: string;
   label: string;
   name: string;
   value: string;
   onChange: (e: ChangeEvent<HTMLInputElement>) => void;
+  accept?: string;
   error?: string;
   isLoading: boolean;
   type?: string;
   placeholder?: string;
+  className?: string;
+  required?: boolean;
 }
 
 export interface ProfileProps {
@@ -118,6 +101,10 @@ export interface ImageUploaderProps {
 export interface Option {
   value: string;
   label: string;
+}
+export interface RenderRowProps {
+  label: string;
+  value: string | number;
 }
 
 export interface RenderSelectProps {

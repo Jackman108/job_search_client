@@ -1,15 +1,21 @@
 // src/components/User/UserChange.tsx
 import React from 'react';
-import styles from '../User/User.module.css';
+import styles from '../UserChange/UserChange.module.css';
 import { UserChangeProps } from '../../Interfaces/InterfaceProfile.types';
 import Button from '../../UI/Button/Button';
 import { USER_TEXTS, BUTTON_TEXTS } from '../../config/formConfigs';
 import RenderInput from '../../UI/RenderInput/RenderInput';
-import AvatarPreview from '../../UI/ImagePreview/ImagePreview';
-import AvatarUploader from '../../UI/ImageUploader/ImageUploader';
+import ImagePreview from '../../UI/ImagePreview/ImagePreview';
+import ImageUploader from '../../UI/ImageUploader/ImageUploader';
 
-const UserChange: React.FC<UserChangeProps> = ({ userInfo, onSave, onCancel, editProfile, avatarPreview, handleInputChange, handleAvatarChange }) => {
-
+const UserChange: React.FC<UserChangeProps> = ({
+  onSave,
+  onCancel,
+  editProfile,
+  avatarPreview,
+  handleInputChange,
+  handleAvatarChange
+}) => {
   return (
     <div className={styles.editForm}>
       <RenderInput
@@ -17,7 +23,6 @@ const UserChange: React.FC<UserChangeProps> = ({ userInfo, onSave, onCancel, edi
         name='firstName'
         value={editProfile.firstName || ""}
         onChange={handleInputChange}
-        error={undefined}
         isLoading={false}
         type="text"
         placeholder={USER_TEXTS.firstNamePlaceholder}
@@ -27,7 +32,6 @@ const UserChange: React.FC<UserChangeProps> = ({ userInfo, onSave, onCancel, edi
         name='lastName'
         value={editProfile.lastName || ""}
         onChange={handleInputChange}
-        error={undefined}
         isLoading={false}
         type="text"
         placeholder={USER_TEXTS.lastNamePlaceholder}
@@ -37,19 +41,22 @@ const UserChange: React.FC<UserChangeProps> = ({ userInfo, onSave, onCancel, edi
         name='avatar'
         value={editProfile.avatar || ""}
         onChange={handleInputChange}
-        error={undefined}
         isLoading={false}
         type="text"
         placeholder={USER_TEXTS.avatarPlaceholder}
       />
-      <AvatarUploader onChange={handleAvatarChange} />
-      {avatarPreview && <AvatarPreview src={avatarPreview} />}
-      <Button type="submit" variant="primary" onClick={() => onSave()}>
-        {BUTTON_TEXTS.saveButton}
-      </Button>
-      <Button variant="secondary" onClick={onCancel}>
-        {BUTTON_TEXTS.cancelButton}
-      </Button>
+      <div className={styles.avatarContainer}>
+        <ImageUploader onChange={handleAvatarChange} />
+        {avatarPreview && <ImagePreview src={avatarPreview} />}
+      </div>
+      <div className={styles.buttonGroup}>
+        <Button type="submit" variant="primary" onClick={onSave}>
+          {BUTTON_TEXTS.saveButton}
+        </Button>
+        <Button variant="secondary" onClick={onCancel}>
+          {BUTTON_TEXTS.cancelButton}
+        </Button>
+      </div>
     </div>
   );
 };

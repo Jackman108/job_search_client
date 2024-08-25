@@ -1,6 +1,6 @@
-// src/components/VacancyForm/RenderInput.tsx
+// src/components/UI/RenderInput.tsx
 import { FC } from 'react';
-import styles from '../../components/VacancyForm/VacancyForm.module.css';
+import styles from './RenderInput.module.css';
 import { RenderInputProps } from '../../Interfaces/InterfaceProfile.types';
 
 const RenderInput: FC<RenderInputProps> = ({ label, name, value, onChange, error, isLoading, type = 'text', placeholder }) => (

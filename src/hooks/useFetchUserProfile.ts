@@ -1,5 +1,4 @@
 // src/hooks/useFetchUserProfile.ts
-
 import { useState, useCallback } from 'react';
 import axios from 'axios';
 import { UserProfile } from '../Interfaces/InterfaceProfile.types';
@@ -7,10 +6,9 @@ import { API_URL } from '../config/serverConfig';
 import { useAuth } from '../context/useAuthContext';
 
 const useFetchUserProfile = () => {
-  const [userProfile, setUserProfile] = useState<UserProfile | null>(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
-  const { userId } = useAuth();
+  const { userId, setUserProfile} = useAuth();
 
   const fetchUserProfile = useCallback(async () => {
     if (!userId) return;
@@ -27,9 +25,9 @@ const useFetchUserProfile = () => {
     } finally {
       setLoading(false);
     }
-  }, [userId]);
+  }, [userId, setUserProfile]);
 
-  return { userProfile, loading, error, fetchUserProfile };
+  return { loading, error, fetchUserProfile };
 };
 
 export default useFetchUserProfile;

@@ -10,7 +10,7 @@ import { useAuth } from '../context/useAuthContext';
 const useFetchAuth = () => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
-  const { setUserId, setToken, } = useAuth();
+  const { setUserId, setToken, setUserProfile } = useAuth();
 
   const handleError = useCallback((message: string) => {
     setError(message);
@@ -57,12 +57,14 @@ const useFetchAuth = () => {
       await axios.get(`${AUTH_URL}/auth/logout`, { withCredentials: true });
       setUserId(null);
       setToken(null);
+      setUserProfile(null);
+
     } catch (error) {
       handleError('Ошибка при выходе');
     } finally {
       setLoading(false);
     }
-  }, [setToken, setUserId, handleError]);
+  }, [setToken, setUserId, setUserProfile, handleError]);
 
   return { login, register, logout, loading, error };
 };

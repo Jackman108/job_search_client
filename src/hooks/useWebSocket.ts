@@ -71,7 +71,7 @@ export const useWebSocket = ({
       wsRef.current = null;
     };
 
-  }, [WS_URL, setAlert]);
+  }, [userId, WS_URL, setAlert, fetchVacanciesByUserId]);
 
   useEffect(() => {
     if (userId) {

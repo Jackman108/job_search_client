@@ -83,7 +83,7 @@ export const FORM_PARAMS = {
 } as const;
 
 export const USER_TEXTS = {
-    profileTitle: 'Профиль пользователя',
+    profileTitle: 'Профиль',
     firstNameLabel: 'Имя',
     lastNameLabel: 'Фамилия',
     avatarLabel: 'Аватар',
@@ -102,9 +102,18 @@ export const USER_TEXTS = {
     cancelButton: 'Отмена',
     editButton: 'Редактировать',
     signOutButton: 'Выйти',
+    emailButton: 'email',
+    passwordButton: 'password',
+    passwordRepeat: 'passwordRepeat',
+    loadingButton: 'Загрузка...',
+    insertButton: 'Войти',
+    registerButton: 'Зарегистрироваться',
+    insertPasswordButton: 'Введиите пароль',
+    replacePasswordButton: 'Повторите пароль',
   };
 
-  export const DEFAULT_AVATAR_URL = 'https://yandex.by/images/search?img_url=https%3A%2F%2Fs3.amazonaws.com%2Frcp-prod-uploads%2Fimages%2F6a8147b2d9fe1a61ccda3087d860751874f37334tZ.png&lr=26966&p=1&pos=33&rpt=simage&source=serp&stype=image&text=%D0%B0%D0%B2%D0%B0%D1%82%D0%B0%D1%80%20default';
+  export const DEFAULT_AVATAR_URL = 'https://polinka.top/uploads/posts/2023-06/1686471538_polinka-top-p-kartinka-dlya-profilya-muzhskoi-vkontakte-17.jpg';
+
   
 export type FormParams = keyof typeof FORM_PARAMS;
 

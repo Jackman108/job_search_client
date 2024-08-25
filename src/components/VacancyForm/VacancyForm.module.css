@@ -1,41 +1,4 @@
 /* src/components/VacancyForm/VacancyForm.module.css */
-
-.backdrop {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100vw;
-  height: 100vh;
-  background-color: rgba(255, 255, 255, 0.8);
-  backdrop-filter: blur(5px);
-  z-index: 900;
-  transition: opacity 0.3s ease;
-  opacity: 0;
-  pointer-events: none;
-}
-
-.backdrop.open {
-  opacity: 1;
-  pointer-events: auto;
-}
-
-.drawer {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 25%;
-  height: 100vh;
-  background-color: #f9f9f9;
-  z-index: 1000;
-  transform: translateX(-100%);
-  transition: transform 0.3s ease;
-  box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
-}
-
-.drawer.open {
-  transform: translateX(0);
-}
-
 .sectionContainer {
   width: 100%;
   max-width: 600px;
@@ -47,43 +10,33 @@
   flex-direction: column;
   gap: 15px;
   overflow-y: auto;
-  position:static;
+  position: static;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  background-color: #dad7d7;
+
 }
 
-.formGroup {
+.formContainer {
   display: flex;
   flex-direction: column;
 }
 
-.label {
-  font-weight: bold;
-  margin-bottom: 5px;
+.fieldGroup {
+  flex-wrap: wrap;
+  gap: 120px;
 }
 
-.input,
-.textarea,
-.select {
-  width: 100%;
-  padding: 10px;
-  border: 1px solid #ccc;
-  border-radius: 4px;
-  box-sizing: border-box;
+.selectsContainer {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
 }
 
-.select {
-  background-color: #fff;
-  appearance: none;
-  text-align: center;
-  cursor: pointer;
-}
-
-.select:disabled {
-  background-color: #f2f2f2;
-}
-
-.textarea {
-  height: 228px;
-  resize: none;
+.buttonsContainer {
+  display: flex;
+  gap: 10px;
+  margin-top: 15px;
+  flex-direction: column;
 }
 
 .error {
@@ -96,12 +49,7 @@
   margin-top: 5px;
 }
 
-
 @media (max-width: 768px) {
-  .drawer {
-    width: 100%;
-  }
-
   .formContainer {
     padding: 15px;
   }

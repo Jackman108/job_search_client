@@ -2,17 +2,18 @@ import { useState, useCallback, useEffect } from 'react';
 import useFetchAuth from '../hooks/useFetchAuth';
 import useFetchUserProfile from '../hooks/useFetchUserProfile';
 import { UseProfileHandlers } from '../Interfaces/InterfaceProfile.types';
+import { useAuth } from '../context/useAuthContext';
 
 export const useProfileHandlers = (): UseProfileHandlers => {
     const { login, register, logout, error: authError, loading: authLoading } = useFetchAuth();
-    const { userProfile, fetchUserProfile, error: profileError } = useFetchUserProfile();
+    const { fetchUserProfile, error: profileError } = useFetchUserProfile();
+    const { userProfile, setUserProfile, } = useAuth();
+
     const [isSign, setIsSign] = useState<boolean>(!!userProfile);
     const [formError, setFormError] = useState<string | null>(null);
 
     useEffect(() => {
-        if (!userProfile) {
-            fetchUserProfile();
-        }
+        if (!userProfile) fetchUserProfile();
     }, [userProfile, fetchUserProfile]);
 
     const handleSignIn = useCallback(async (email: string, password: string) => {
@@ -33,20 +34,19 @@ export const useProfileHandlers = (): UseProfileHandlers => {
         }
     }, [register]);
 
-    const handleSignOut = useCallback(async () => {
-        logout();
-        setFormError(null);
-        }, [logout]);
-
     const handleUpdateProfile = useCallback(async (): Promise<void> => {
         try {
             await fetchUserProfile();
         } catch (error) {
             setFormError('Ошибка обновления профиля');
         }
-    },
-        [fetchUserProfile]);
+    }, [fetchUserProfile]);
 
+    const handleSignOut = useCallback(async () => {
+        setUserProfile(null);
+        setFormError(null);
+        logout();
+    }, [logout, setUserProfile]);
 
     useEffect(() => {
         if (profileError) {

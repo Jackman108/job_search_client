@@ -1,29 +1,33 @@
 // src/components/User/ProfileInfo.tsx
 import React from 'react';
-import styles from '../User/User.module.css';
+import styles from './UserInfo.module.css';
 import { UserInfoProps } from '../../Interfaces/InterfaceProfile.types';
 import Button from '../../UI/Button/Button';
 import { USER_TEXTS, BUTTON_TEXTS } from '../../config/formConfigs';
 import Avatar from '../../UI/Avatar/Avatar';
-
-
+import RenderRow from '../../UI/RenderRow/RenderRow';
 
 const UserInfo: React.FC<UserInfoProps> = ({ userInfo, onEdit, onSignOut }) => (
   <div className={styles.profileInfo}>
-    <Avatar src={userInfo.avatar} />
-    <p><strong>{USER_TEXTS.firstNameLabel}:</strong> {userInfo.firstName}</p>
-    <p><strong>{USER_TEXTS.lastNameLabel}:</strong> {userInfo.lastName}</p>
-    <p><strong>{USER_TEXTS.balanceLabel}:</strong> {userInfo.balance}</p>
-    <p><strong>{USER_TEXTS.spinCountLabel}:</strong> {userInfo.spinCount}</p>
-    <p><strong>{USER_TEXTS.successfulResponsesLabel}:</strong> {userInfo.successfulResponsesCount}</p>
-    <p><strong>{USER_TEXTS.currentStatusLabel}:</strong> {userInfo.currentStatus}</p>
+    <Avatar src={userInfo.avatar} className={styles.avatar} />
+    
+    <div className={styles.infoContainer}>
+      <RenderRow label={USER_TEXTS.firstNameLabel} value={userInfo.firstName} />
+      <RenderRow label={USER_TEXTS.lastNameLabel} value={userInfo.lastName} />
+      <RenderRow label={USER_TEXTS.balanceLabel} value={userInfo.balance} />
+      <RenderRow label={USER_TEXTS.spinCountLabel} value={userInfo.spinCount} />
+      <RenderRow label={USER_TEXTS.successfulResponsesLabel} value={userInfo.successfulResponsesCount} />
+      <RenderRow label={USER_TEXTS.currentStatusLabel} value={userInfo.currentStatus} />
+    </div>
 
-    <Button variant="primary" onClick={onEdit}>
-      {BUTTON_TEXTS.editButton}
-    </Button>
-    <Button variant="danger" onClick={onSignOut}>
-      {BUTTON_TEXTS.signOutButton}
-    </Button>
+    <div className={styles.buttonGroup}>
+      <Button variant="primary" onClick={onEdit}>
+        {BUTTON_TEXTS.editButton}
+      </Button>
+      <Button variant="danger" onClick={onSignOut}>
+        {BUTTON_TEXTS.signOutButton}
+      </Button>
+    </div>
   </div>
 );
 

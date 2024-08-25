@@ -41,93 +41,100 @@ const VacancyForm: FC<VacancyFormProps> = ({ onClose }) => {
         {FORM_BUTTONS.closeButton}
       </Button>
       <form className={styles.formContainer} onSubmit={submitHandler}>
-        <div className={styles.columns}>
-          <RenderInput
-            label={FORM_TEXTS.vacancyUrlLabel}
-            name="vacancyUrl"
-            value={vacancyUrl}
-            onChange={handleVacancyUrlChange}
-            error={errors.vacancyUrl}
-            isLoading={isLoading}
-          />
-          <RenderInput
-            label={FORM_TEXTS.emailLabel}
-            name="email"
-            value={email}
-            onChange={handleEmailChange}
-            error={errors.email}
-            isLoading={isLoading}
-          />
-          <RenderInput
-            label={FORM_TEXTS.passwordLabel}
-            name="password"
-            value={password}
-            onChange={handlePasswordChange}
-            error={errors.password}
-            isLoading={isLoading}
-            type="password"
-          />
-          <RenderInput
-            label={FORM_TEXTS.positionLabel}
-            name="position"
-            value={position}
-            onChange={handlePositionChange}
-            error={errors.position}
-            isLoading={isLoading}
-          />
+        <div className={styles.fieldGroup}>
+          <div className={styles.inputsContainer}>
+            <RenderInput
+              label={FORM_TEXTS.vacancyUrlLabel}
+              name="vacancyUrl"
+              value={vacancyUrl}
+              onChange={handleVacancyUrlChange}
+              error={errors.vacancyUrl}
+              isLoading={isLoading}
+            />
+            <RenderInput
+              label={FORM_TEXTS.emailLabel}
+              name="email"
+              value={email}
+              onChange={handleEmailChange}
+              error={errors.email}
+              isLoading={isLoading}
+            />
+            <RenderInput
+              label={FORM_TEXTS.passwordLabel}
+              name="password"
+              value={password}
+              onChange={handlePasswordChange}
+              error={errors.password}
+              isLoading={isLoading}
+              type="password"
+            />
+            <RenderInput
+              label={FORM_TEXTS.positionLabel}
+              name="position"
+              value={position}
+              onChange={handlePositionChange}
+              error={errors.position}
+              isLoading={isLoading}
+            />
+          </div>
           <RenderTextarea
             label={FORM_TEXTS.messageLabel}
             value={message}
             onChange={handleMessageChange}
             isLoading={isLoading}
           />
+
+          <div className={styles.selectsContainer}>
+            <RenderSelect
+              label={FORM_LABELS.schedule}
+              options={OPTIONS.schedule}
+              onChange={handleSelectChange(FORM_PARAMS.schedule)}
+              isLoading={isLoading}
+            />
+            <RenderSelect
+              label={FORM_LABELS.orderBy}
+              options={OPTIONS.orderBy}
+              onChange={handleSelectChange(FORM_PARAMS.orderBy)}
+              isLoading={isLoading}
+            />
+            <RenderSelect
+              label={FORM_LABELS.searchField}
+              options={OPTIONS.searchField}
+              onChange={handleSelectChange(FORM_PARAMS.searchField)}
+              isLoading={isLoading}
+            />
+            <RenderSelect
+              label={FORM_LABELS.experience}
+              options={OPTIONS.experience}
+              onChange={handleSelectChange(FORM_PARAMS.experience)}
+              isLoading={isLoading}
+            />
+            <RenderSelect
+              label={FORM_LABELS.searchPeriod}
+              options={OPTIONS.searchPeriod}
+              onChange={handleSelectChange(FORM_PARAMS.searchPeriod)}
+              isLoading={isLoading}
+            />
+          </div>
         </div>
-        <RenderSelect
-          label={FORM_LABELS.schedule}
-          options={OPTIONS.schedule}
-          onChange={handleSelectChange(FORM_PARAMS.schedule)}
-          isLoading={isLoading}
-        />
-        <RenderSelect
-          label={FORM_LABELS.orderBy}
-          options={OPTIONS.orderBy}
-          onChange={handleSelectChange(FORM_PARAMS.orderBy)}
-          isLoading={isLoading}
-        />
-        <RenderSelect
-          label={FORM_LABELS.searchField}
-          options={OPTIONS.searchField}
-          onChange={handleSelectChange(FORM_PARAMS.searchField)}
-          isLoading={isLoading}
-        />
-        <RenderSelect
-          label={FORM_LABELS.experience}
-          options={OPTIONS.experience}
-          onChange={handleSelectChange(FORM_PARAMS.experience)}
-          isLoading={isLoading}
-        />
-        <RenderSelect
-          label={FORM_LABELS.searchPeriod}
-          options={OPTIONS.searchPeriod}
-          onChange={handleSelectChange(FORM_PARAMS.searchPeriod)}
-          isLoading={isLoading}
-        />
-        <Button
-          className={styles.button}
-          type="submit"
-          disabled={isLoading}
-        >
-          {isLoading ? FORM_BUTTONS.isLoading : FORM_BUTTONS.submitButton}
-        </Button>
-        <Button
-          className={styles.button}
-          type="button"
-          onClick={stopHandler}
-          disabled={!isLoading}
-          variant="danger"
-        >
-          {FORM_BUTTONS.stopButton}
-        </Button>
+        <div className={styles.buttonsContainer}>
+          <Button
+            className={styles.button}
+            type="submit"
+            disabled={isLoading}
+          >
+            {isLoading ? FORM_BUTTONS.isLoading : FORM_BUTTONS.submitButton}
+          </Button>
+          <Button
+            className={styles.button}
+            type="button"
+            onClick={stopHandler}
+            disabled={!isLoading}
+            variant="danger"
+          >
+            {FORM_BUTTONS.stopButton}
+          </Button>
+        </div>
       </form>
     </section>
   );

@@ -1,7 +1,9 @@
 // src/components/SignUp/SignUp.tsx
-
 import React, { useState } from 'react';
 import { SignUpProps } from '../../Interfaces/InterfaceAuth.types';
+import Button from '../Button/Button';
+import RenderInput from '../RenderInput/RenderInput';
+import { BUTTON_TEXTS, FORM_TEXTS } from '../../config/formConfigs';
 
 const SignUp: React.FC<SignUpProps> = ({ onSignUp, error, loading }) => {
   const [email, setEmail] = useState('');
@@ -15,30 +17,40 @@ const SignUp: React.FC<SignUpProps> = ({ onSignUp, error, loading }) => {
 
   return (
     <form onSubmit={handleSubmit}>
-      <input
-        type="email"
-        placeholder="Email"
+
+      <RenderInput
+        label={FORM_TEXTS.emailLabel}
+        name={BUTTON_TEXTS.emailButton}
         value={email}
-        onChange={(e) => setEmail(e.target.value)}
+        onChange={(e: any) => setEmail(e.target.value)}
+        isLoading={false}
+        type={BUTTON_TEXTS.emailButton}
+        placeholder={BUTTON_TEXTS.emailButton}
         required
       />
-      <input
-        type="password"
-        placeholder="Password"
+      <RenderInput
+        label={FORM_TEXTS.passwordLabel}
+        name={BUTTON_TEXTS.passwordButton}
         value={password}
         onChange={(e) => setPassword(e.target.value)}
+        isLoading={false}
+        type={BUTTON_TEXTS.passwordButton}
+        placeholder={BUTTON_TEXTS.insertPasswordButton}
         required
       />
-      <input
-        type="password"
-        placeholder="Повторите пароль"
+      <RenderInput
+        label={BUTTON_TEXTS.replacePasswordButton}
+        name={BUTTON_TEXTS.passwordRepeat}
         value={passwordRepeat}
         onChange={(e) => setPasswordRepeat(e.target.value)}
+        isLoading={false}
+        type={BUTTON_TEXTS.passwordButton}
+        placeholder={BUTTON_TEXTS.replacePasswordButton}
         required
       />
-      <button type="submit" disabled={loading}>
-        {loading ? 'Загрузка...' : 'Зарегистрироваться'}
-      </button>
+      <Button type="submit" variant="secondary" disabled={loading}>
+        {loading ? BUTTON_TEXTS.loadingButton : BUTTON_TEXTS.registerButton}
+      </Button>
       {error && <p>{error}</p>}
     </form>
   );

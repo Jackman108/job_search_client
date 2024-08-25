@@ -1,6 +1,6 @@
 // src/components/VacancyForm/RenderTextarea.tsx
 import { FC } from 'react';
-import styles from '../../components/VacancyForm/VacancyForm.module.css';
+import styles from './RenderTextarea.module.css';
 import { RenderTextareaProps } from '../../Interfaces/InterfaceProfile.types';
 
 const RenderTextarea: FC<RenderTextareaProps> = ({ label, value, onChange, isLoading }) => (

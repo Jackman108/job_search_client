@@ -3,8 +3,10 @@ import React from 'react';
 import styles from './ImagePreview.module.css';
 import { ImagePreviewProps } from '../../Interfaces/InterfaceProfile.types';
 
-const AvatarPreview: React.FC<ImagePreviewProps> = ({ src, alt = "Avatar Preview" }) => (
-  <img src={src} alt={alt} className={styles.avatarPreview} />
+const ImagePreview: React.FC<ImagePreviewProps> = ({ src, alt = "Avatar Preview" }) => (
+  <div className={styles.previewContainer}>
+    <img src={src} alt={alt} className={styles.avatarPreview} />
+  </div>
 );
 
-export default AvatarPreview;
+export default ImagePreview;
