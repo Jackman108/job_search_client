@@ -24,13 +24,14 @@ const VacanciesTable: FC = (
             <th onClick={() => handleSort('response_date')}>Дата {getSortArrow('response_date')}</th>
           </tr>
         </thead>
+        
         <tbody>
           {sortedVacancies.map(vacancy => (
             <tr key={vacancy.id}>
               <td>{vacancy.id}</td>
               <td><a href={vacancy.url_vacancy} target="_blank" rel="noopener noreferrer">{vacancy.title_vacancy}</a></td>
               <td><a href={vacancy.url_company} target="_blank" rel="noopener noreferrer">{vacancy.title_company}</a></td>
-              <td>{vacancy.vacancy_status ? 'Откликнулся' : 'Пропустил'}</td>
+              <td>{vacancy.vacancy_status === 'true' ? 'Откликнулся' : 'Пропустил'}</td>
               <td>
                 <div className="tableDate">{vacancy.response_date_time}</div>
                 <div className="tableDate">{vacancy.response_date_date}</div>
