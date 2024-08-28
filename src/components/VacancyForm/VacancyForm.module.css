@@ -25,6 +25,11 @@
   flex-wrap: wrap;
   gap: 120px;
 }
+.inputsContainer{
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
 
 .selectsContainer {
   display: flex;

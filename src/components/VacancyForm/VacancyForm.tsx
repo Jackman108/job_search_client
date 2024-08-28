@@ -58,6 +58,7 @@ const VacancyForm: FC<VacancyFormProps> = ({ onClose }) => {
               onChange={handleEmailChange}
               error={errors.email}
               isLoading={isLoading}
+              type="text"
             />
             <RenderInput
               label={FORM_TEXTS.passwordLabel}
@@ -66,7 +67,7 @@ const VacancyForm: FC<VacancyFormProps> = ({ onClose }) => {
               onChange={handlePasswordChange}
               error={errors.password}
               isLoading={isLoading}
-              type="password"
+              type="text"
             />
             <RenderInput
               label={FORM_TEXTS.positionLabel}

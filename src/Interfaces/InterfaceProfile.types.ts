@@ -82,6 +82,7 @@ export interface RenderInputProps {
   placeholder?: string;
   className?: string;
   required?: boolean;
+  autoComplete?: string;
 }
 
 export interface ProfileProps {

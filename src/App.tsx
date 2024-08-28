@@ -9,7 +9,7 @@ function App() {
   return (
     <div className="App">
       <header className="App-header">
-        автоотклик hh
+        ТРУДОУСТРОЙСТВО
       </header>
       <main>
         <AuthProvider>
