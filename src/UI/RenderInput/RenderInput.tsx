@@ -10,14 +10,13 @@ const RenderInput: FC<RenderInputProps> = ({
   return (
     <div className={styles.formGroup}>
       <input
-        id={name}
         className={`${styles.input} ${error ? styles.error : ''}`}
         type={type}
         name={name}
         value={value}
         onChange={onChange}
         disabled={isLoading}
-        placeholder={placeholder}
+        placeholder=''
         required={required}
         autoComplete={autoCompleteValue}
       />

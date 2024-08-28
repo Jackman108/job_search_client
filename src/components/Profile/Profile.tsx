@@ -1,12 +1,14 @@
 import React, { FC } from 'react';
 import styles from './Profile.module.css';
-import User from '../User/User';
 import SignIn from '../../UI/SignIn/SignIn';
 import SignUp from '../../UI/SignUp/SignUp';
-import { useProfileHandlers } from '../../hooks/useProfileHandlers';
 import Button from '../../UI/Button/Button';
-import {FORM_BUTTONS} from '../../config/formConfigs';
-import { ProfileProps } from '../../Interfaces/InterfaceProfile.types';
+import { FORM_BUTTONS, USER_TEXTS } from '../../config/formConfigs';
+import { useProfileHandlers } from '../../hooks/useProfileHandlers';
+import { useUserHandlers } from '../../hooks/useUserHandlers';
+import { ProfileProps, UserProfile } from '../../Interfaces/InterfaceProfile.types';
+import UserInfo from '../UserInfo/UserInfo';
+import UserChange from '../UserChange/UserChange';
 
 const Profile: FC<ProfileProps> = () => {
   const {
@@ -22,14 +24,40 @@ const Profile: FC<ProfileProps> = () => {
     authError,
   } = useProfileHandlers();
 
+  const {
+    isEditing,
+    setIsEditing,
+    handleSave,
+    editProfile,
+    avatarPreview,
+    handleInputChange,
+    handleAvatarChange,
+  } = useUserHandlers(userProfile || {} as UserProfile);
+
   return (
     <section className={styles.sectionContainer}>
       {userProfile ? (
-        <User
-          userInfo={userProfile}
-          onSignOut={handleSignOut}
-          onUpdateProfile={handleUpdateProfile}
-        />
+        <div className={styles.userContainer}>
+          <h2>{USER_TEXTS.profileTitle}</h2>
+          {isEditing ? (
+            <UserChange
+              userInfo={userProfile}
+              onSave={() => handleSave(handleUpdateProfile)}
+              onCancel={() => setIsEditing(false)}
+              editProfile={editProfile}
+              avatarPreview={avatarPreview}
+              handleInputChange={handleInputChange}
+              handleAvatarChange={handleAvatarChange}
+              handleSave={handleSave}
+            />
+          ) : (
+            <UserInfo
+              userInfo={userProfile}
+              onEdit={() => setIsEditing(true)}
+              onSignOut={handleSignOut}
+            />
+          )}
+        </div>
       ) : (
         <>
           <div className={styles.tabContainer}>

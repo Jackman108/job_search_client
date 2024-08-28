@@ -42,7 +42,7 @@ export const OPTIONS = {
 
 
 export const FORM_TEXTS = {
-    vacancyUrlLabel: 'Ссылка с фильтрами на вакансии:',
+    vacancyUrlLabel: 'Ссылка с фильтрами на вакансии',
     emailLabel: 'E-mail',
     passwordLabel: 'Пароль',
     positionLabel: 'Название вакансии',
@@ -87,9 +87,6 @@ export const USER_TEXTS = {
     firstNameLabel: 'Имя',
     lastNameLabel: 'Фамилия',
     avatarLabel: 'Аватар',
-    avatarPlaceholder: 'Вставьте ссылку на изображение',
-    firstNamePlaceholder: 'Введите Имя',
-    lastNamePlaceholder: 'Введите Фамилию',
     balanceLabel: 'Баланс',
     spinCountLabel: 'Количество вращений',
     successfulResponsesLabel: 'Успешные отклики',

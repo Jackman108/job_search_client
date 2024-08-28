@@ -46,7 +46,6 @@ export interface UserInfoProps {
   onSignOut: () => void;
 }
 
-// src/Interfaces/InterfaceProfile.types.ts
 export interface UserChangeProps {
   userInfo: UserProfile;
   onSave: () => void;
@@ -117,6 +116,7 @@ export interface RenderSelectProps {
 
 export interface RenderTextareaProps {
   label: string;
+  name: string;
   value: string;
   onChange: (e: React.ChangeEvent<HTMLTextAreaElement>) => void;
   isLoading: boolean;

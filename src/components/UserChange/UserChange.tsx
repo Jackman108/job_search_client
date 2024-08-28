@@ -25,7 +25,7 @@ const UserChange: React.FC<UserChangeProps> = ({
         onChange={handleInputChange}
         isLoading={false}
         type="text"
-        placeholder={USER_TEXTS.firstNamePlaceholder}
+        placeholder=''
       />
       <RenderInput
         label={USER_TEXTS.lastNameLabel}
@@ -34,7 +34,7 @@ const UserChange: React.FC<UserChangeProps> = ({
         onChange={handleInputChange}
         isLoading={false}
         type="text"
-        placeholder={USER_TEXTS.lastNamePlaceholder}
+        placeholder=''
       />
       <RenderInput
         label={USER_TEXTS.avatarLabel}
@@ -43,7 +43,7 @@ const UserChange: React.FC<UserChangeProps> = ({
         onChange={handleInputChange}
         isLoading={false}
         type="text"
-        placeholder={USER_TEXTS.avatarPlaceholder}
+        placeholder=''
       />
       <div className={styles.avatarContainer}>
         <ImageUploader onChange={handleAvatarChange} />

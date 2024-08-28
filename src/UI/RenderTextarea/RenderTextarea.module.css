@@ -1,14 +1,63 @@
-.label {
-  font-weight: bold;
-  margin-bottom: 5px;
+.formGroup {
+  position: relative;
+  width: 18rem;
+  height: 8rem; /* Увеличим высоту для текстовой области */
 }
 
 .textarea {
+  position: absolute;
+  top: 0;
+  left: 0;
   width: 100%;
-  padding: 10px;
+  height: 100%;
   border: 1px solid #ccc;
   border-radius: 4px;
+  font-family: inherit;
+  font-size: inherit;
+  color: #000;
+  background-color: white;
+  outline: none;
+  padding: 1.25rem;
+
   box-sizing: border-box;
-  height: 228px;
-  resize: none;
+  resize: none; /* Отключаем возможность изменения размера */
+}
+
+.textarea:hover {
+  border-color: #3E5F8A;
+}
+
+.textarea:focus {
+  border-color: #3E5F8A;
+}
+
+.label {
+  position: absolute;
+  color: #3E5F8A;
+  left: 1rem;
+  top: 1rem; /* Настроим позицию для текстовой области */
+  padding: 0 0.5rem;
+  cursor: text;
+  transition: top 200ms ease-in,
+    left 200ms ease-in,
+    font-size 200ms ease-in;
+  background-color: white;
+  border-radius: 2px;
+}
+
+.textarea:focus~.label,
+.textarea:not(:placeholder-shown).textarea:not(:focus)~.label {
+  top: -0.5rem;
+  font-size: 0.8rem;
+  left: 0.8rem;
+}
+
+.error {
+  border-color: red;
+}
+
+.errorText {
+  color: red;
+  margin-top: 5px;
+  font-size: 0.9rem;
 }
