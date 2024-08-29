@@ -1,5 +1,5 @@
 // src/components/Layout/Layout.tsx
-import { FC, ReactNode, useState } from 'react';
+import { FC, ReactNode } from 'react';
 import styles from './Layout.module.css';
 import InteractiveButton from '../../UI/InteractiveButton/InteractiveButton';
 import { buttonConfigs } from '../../config/buttonConfigs';

@@ -4,14 +4,14 @@ FROM node:19-alpine3.16
 # Создаем рабочую директорию
 WORKDIR /app
 
-# Копируем package.json и package-lock.json
-COPY package*.json ./
+# Копируем package.json и yarn.lock
+COPY package.json yarn.lock ./
 
 # Устанавливаем зависимости
-RUN npm install
+RUN yarn install
 
 # Копируем все файлы проекта в контейнер
 COPY . .
 
 # Собираем приложение
-CMD ["npm", "start"]
+CMD ["yarn", "start"]
