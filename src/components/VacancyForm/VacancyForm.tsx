@@ -12,11 +12,6 @@ import { VacancyFormProps } from '../../Interfaces/InterfaceComponent.types';
 
 const VacancyForm: FC<VacancyFormProps> = ({ onClose }) => {
   const { userId } = useAuth();
-
-  if (!userId) {
-    console.error("User ID is null");
-  }
-
   const {
     email,
     password,
@@ -35,11 +30,25 @@ const VacancyForm: FC<VacancyFormProps> = ({ onClose }) => {
     handleSelectChange,
   } = useFormHandlers(userId || '');
 
+  if (!userId) {
+    return (
+      <section className={styles.sectionContainer}>
+        <p className={styles.authMessage}>Пожалуйста, авторизуйтесь, чтобы заполнить форму.</p>
+        <Button className={styles.closeButton} onClick={onClose} variant="secondary">
+          {FORM_BUTTONS.closeButton}
+        </Button>
+      </section>
+    );
+  }
+
   return (
     <section className={styles.sectionContainer}>
       <Button className={styles.closeButton} onClick={onClose} variant="secondary">
         {FORM_BUTTONS.closeButton}
       </Button>
+      {!userId ? (
+        <p className={styles.authMessage}>Пожалуйста, авторизуйтесь, чтобы заполнить форму.</p>
+      ) : (
       <form className={styles.formContainer} onSubmit={submitHandler}>
         <div className={styles.inputsContainer}>
           <RenderInput
@@ -137,6 +146,7 @@ const VacancyForm: FC<VacancyFormProps> = ({ onClose }) => {
           </Button>
         </div>
       </form>
+      )};
     </section>
   );
 };

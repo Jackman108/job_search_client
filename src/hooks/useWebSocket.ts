@@ -24,7 +24,7 @@ export const useWebSocket = ({
       console.warn('WebSocket already connected');
       return;
     }
-    const ws = new WebSocket(WS_URL);
+    const ws = new WebSocket(`${WS_URL}?userId=${userId}`);
     wsRef.current = ws;
 
     ws.onopen = () => {
