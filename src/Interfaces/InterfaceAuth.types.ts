@@ -31,5 +31,4 @@ export interface AuthContextProps {
   setUserId: (id: string | null) => void;
   setToken: (token: string | null) => void;
   setUserProfile: (profile: UserProfile | null) => void;
-  logout: () => void;
 }

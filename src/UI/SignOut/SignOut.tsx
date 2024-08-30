@@ -8,7 +8,6 @@ const SignOut: React.FC = () => {
 
   const handleSignOut = () => {
     logout();
-    window.location.reload();
   };
 
   return <button onClick={handleSignOut}>Выйти</button>;

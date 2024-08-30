@@ -1,11 +1,10 @@
 // src/hooks/useFetchAuth.ts
-
-import { useState, useCallback } from 'react';
 import axios from 'axios';
-import { API_URL, AUTH_URL } from '../config/serverConfig';
+import { useCallback, useState } from 'react';
 import { AuthResponse, RegisterResponse } from '../Interfaces/InterfaceAuth.types';
-import { decodeToken, isTokenExpired } from '../utils/tokenUtils';
+import { API_URL, AUTH_URL } from '../config/serverConfig';
 import { useAuth } from '../context/useAuthContext';
+import { decodeToken, isTokenExpired } from '../utils/tokenUtils';
 
 const useFetchAuth = () => {
   const [loading, setLoading] = useState(false);
@@ -52,13 +51,12 @@ const useFetchAuth = () => {
   }, [handleError, setUserId]);
 
   const logout = useCallback(async () => {
+    setUserId(null);
+    setToken(null);
+    setUserProfile(null);
     setLoading(true);
     try {
       await axios.get(`${AUTH_URL}/auth/logout`, { withCredentials: true });
-      setUserId(null);
-      setToken(null);
-      setUserProfile(null);
-
     } catch (error) {
       handleError('Ошибка при выходе');
     } finally {

@@ -49,12 +49,10 @@ export const useProfileHandlers = (): UseProfileHandlers => {
     }, [logout, setUserProfile]);
 
     useEffect(() => {
-        if (profileError) {
-            setFormError(profileError);
-        } else if (authError) {
-            setFormError(authError);
-        }
-    }, [profileError, authError]);
+        if (profileError || authError) {
+      setFormError(profileError || authError);
+    }
+  }, [profileError, authError]);
 
     return {
         userProfile,
