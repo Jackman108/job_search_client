@@ -5,6 +5,8 @@
   cursor: pointer;
   display: flex;
   align-items: center;
+  justify-content: center;
+  width: 100%;
 }
 
 .icon {
@@ -73,7 +75,7 @@
 .drawer {
   position: fixed;
   top: 0;
-  width: 25%;
+  width: 400px;
   height: 100vh;
   background-color: #f9f9f9;
   z-index: 1000;
@@ -96,13 +98,12 @@
   transform: translateX(0);
 }
 
-/* Медиазапрос для мобильных устройств */
 @media (max-width: 768px) {
   .tooltip {
     display: none;
   }
-
-  .drawer {
-    width: 100%;
+  .icon {
+    width: 20px;
+    height: 20px;
   }
 }

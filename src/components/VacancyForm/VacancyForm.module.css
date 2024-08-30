@@ -1,7 +1,6 @@
 /* src/components/VacancyForm/VacancyForm.module.css */
 .sectionContainer {
   width: 100%;
-  max-width: 600px;
   margin: 0 auto;
   height: 100%;
   padding: 20px;
@@ -17,7 +16,7 @@
 
 .formContainer {
   display: flex;
-  flex-wrap: wrap;
+  flex-direction: column;
   gap: 15px;
 }
 
