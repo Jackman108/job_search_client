@@ -1,4 +1,4 @@
-import { FormattedDate } from "../Interfaces/Interface.types";
+import { FormattedDate } from "../Interfaces/InterfaceForm.types";
 
 export const formatDate = (isoDateString: string): FormattedDate => {
     const date = new Date(isoDateString);

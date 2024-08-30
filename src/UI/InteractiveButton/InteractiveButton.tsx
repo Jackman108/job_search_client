@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import styles from './InteractiveButton.module.css';
-import { InteractiveButtonProps } from '../../Interfaces/Interface.types';
+import { InteractiveButtonProps } from '../../Interfaces/InterfaceComponent.types';
 
 const InteractiveButton = ({
   icon,

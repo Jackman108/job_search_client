@@ -1,7 +1,9 @@
-import { useState, useCallback, useEffect, useRef } from 'react';
-import { UseWebSocketParams, WebSocketHook } from '../Interfaces/Interface.types';
+import { useCallback, useEffect, useRef, useState } from 'react';
+import { UseWebSocketParams, WebSocketHook } from '../Interfaces/InterfaceWebSocket.types';
 import { useAuth } from '../context/useAuthContext';
+
 const RECONNECT_INTERVAL = 5000;
+
 export const useWebSocket = ({
   WS_URL,
   fetchVacanciesByUserId,
@@ -11,7 +13,6 @@ export const useWebSocket = ({
   const [error, setError] = useState<string | null>(null);
   const [open, setOpen] = useState<boolean>(false);
   const wsRef = useRef<WebSocket | null>(null);
-
   const { userId } = useAuth();
 
   const connect = useCallback(() => {
@@ -67,6 +68,7 @@ export const useWebSocket = ({
         reason: event.reason,
         wasClean: event.wasClean,
       });
+
       setOpen(false);
       wsRef.current = null;
     };
@@ -78,7 +80,6 @@ export const useWebSocket = ({
       const timer = setTimeout(() => {
         connect();
       }, RECONNECT_INTERVAL);
-
       return () => {
         clearTimeout(timer);
         if (wsRef.current) {

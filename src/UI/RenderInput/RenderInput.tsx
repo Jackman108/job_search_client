@@ -1,7 +1,7 @@
 // src/components/UI/RenderInput.tsx
 import { FC } from 'react';
+import { RenderInputProps } from '../../Interfaces/InterfaceForm.types';
 import styles from './RenderInput.module.css';
-import { RenderInputProps } from '../../Interfaces/InterfaceProfile.types';
 
 const RenderInput: FC<RenderInputProps> = ({ 
   label, name, value, onChange, error, isLoading, type = 'text', placeholder, required 

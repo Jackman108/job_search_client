@@ -1,5 +1,5 @@
 import { useState, useCallback } from 'react';
-import { StateAlertProps } from '../Interfaces/Interface.types';
+import { StateAlertProps } from '../Interfaces/InterfaceComponent.types';
 
 const useAlert = () => {
   const [alertState, setAlertState] = useState<StateAlertProps>({ message: null, captchaSrc: undefined });

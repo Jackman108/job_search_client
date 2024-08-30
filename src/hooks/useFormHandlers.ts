@@ -1,10 +1,9 @@
 // src/hooks/useFormHandlers.ts
 import { ChangeEvent, Dispatch, FormEvent, SetStateAction, useCallback, useEffect, useState } from 'react';
-import { Errors, HandleSubmitParams, UseFormHandlersParams } from '../Interfaces/Interface.types';
-import { handleSubmit, handleStop } from './useSubmitHandlers';
+import { Errors, HandleSubmitParams, UseFormHandlersParams } from '../Interfaces/InterfaceForm.types';
+import { DEFAULT_VACANCY_PARAMS, FormParams } from '../config/formConfigs';
 import { buildVacancyUrl } from '../utils/buildVacancyUrl';
-import { DEFAULT_VACANCY_PARAMS } from '../config/formConfigs';
-import { FormParams } from '../config/formConfigs';
+import { handleStop, handleSubmit } from './useSubmitHandlers';
 
 const useFormHandlers = (userId: string): UseFormHandlersParams => {
   const [email, setEmail] = useState('');
@@ -48,7 +47,7 @@ const useFormHandlers = (userId: string): UseFormHandlersParams => {
       setIsLoading,
     };
     await handleSubmit(params);
-  }, [userId,email, password, position, message, vacancyUrl]);
+  }, [userId, email, password, position, message, vacancyUrl]);
 
   const stopHandler = useCallback(async () => {
     await handleStop();

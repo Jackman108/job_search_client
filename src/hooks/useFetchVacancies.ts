@@ -1,11 +1,11 @@
 // src/hooks/useFetchVacancies.ts
 
-import { useState, useCallback, useEffect } from 'react';
-import { Vacancy } from '../Interfaces/Interface.types';
-import { formatAndSortVacancies } from '../utils/formaUtils';
 import axios from 'axios';
+import { useCallback, useEffect, useState } from 'react';
+import { Vacancy } from '../Interfaces/InterfaceVacancy.types';
 import { API_URL } from '../config/serverConfig';
 import { useAuth } from '../context/useAuthContext';
+import { formatAndSortVacancies } from '../utils/formaUtils';
 
 const useFetchVacancies = () => {
   const [vacancies, setVacancies] = useState<Vacancy[]>([]);
@@ -35,7 +35,7 @@ const useFetchVacancies = () => {
     }
   }, [userId]);
 
-useEffect(() => {
+  useEffect(() => {
     fetchVacanciesByUserId();
   }, [fetchVacanciesByUserId]);
 

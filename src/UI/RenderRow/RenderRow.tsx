@@ -1,6 +1,6 @@
 import React from 'react';
+import { RenderRowProps } from '../../Interfaces/InterfaceForm.types';
 import styles from './RenderRow.module.css';
-import { RenderRowProps } from '../../Interfaces/InterfaceProfile.types';
 
 const RenderRow: React.FC<RenderRowProps> = ({ label, value }) => (
   <p className={styles.infoRow}>

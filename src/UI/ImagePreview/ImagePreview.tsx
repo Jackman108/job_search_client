@@ -1,7 +1,7 @@
 // src/components/User/AvatarPreview.tsx
 import React from 'react';
 import styles from './ImagePreview.module.css';
-import { ImagePreviewProps } from '../../Interfaces/InterfaceProfile.types';
+import { ImagePreviewProps } from '../../Interfaces/InterfaceComponent.types';
 
 const ImagePreview: React.FC<ImagePreviewProps> = ({ src, alt = "Avatar Preview" }) => (
   <div className={styles.previewContainer}>

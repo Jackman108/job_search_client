@@ -1,5 +1,5 @@
+import { Vacancy } from '../Interfaces/InterfaceVacancy.types';
 import { formatDate } from './dateUtils';
-import { Vacancy } from '../Interfaces/Interface.types';
 
 export const formatAndSortVacancies = (vacancies: Vacancy[]): Vacancy[] => {
   return vacancies.map(vacancy => ({

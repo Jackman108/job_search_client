@@ -1,14 +1,15 @@
 import React, { FC } from 'react';
-import styles from './Profile.module.css';
+import { ProfileProps } from '../../Interfaces/InterfaceForm.types';
+import { UserProfile } from '../../Interfaces/InterfaceProfile.types';
+import Button from '../../UI/Button/Button';
 import SignIn from '../../UI/SignIn/SignIn';
 import SignUp from '../../UI/SignUp/SignUp';
-import Button from '../../UI/Button/Button';
 import { FORM_BUTTONS, USER_TEXTS } from '../../config/formConfigs';
 import { useProfileHandlers } from '../../hooks/useProfileHandlers';
 import { useUserHandlers } from '../../hooks/useUserHandlers';
-import { ProfileProps, UserProfile } from '../../Interfaces/InterfaceProfile.types';
-import UserInfo from '../UserInfo/UserInfo';
 import UserChange from '../UserChange/UserChange';
+import UserInfo from '../UserInfo/UserInfo';
+import styles from './Profile.module.css';
 
 const Profile: FC<ProfileProps> = () => {
   const {

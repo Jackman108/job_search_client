@@ -1,11 +1,11 @@
 import { FC, ReactNode, useMemo } from 'react';
-import { VacanciesContext } from '../context/useTableContext';
-import useFetchVacancies from './useFetchVacancies';
-import useAlert from './useAlert';
-import useWebSocketConnection from './useWebSocketConnection';
 import CaptchaAlert from '../UI/CaptchaAlert/CaptchaAlert';
+import useAlert from '../hooks/useAlert';
+import useFetchVacancies from '../hooks/useFetchVacancies';
+import useWebSocketConnection from '../hooks/useWebSocketConnection';
+import TableContext from './useTableContext';
 
-const VacanciesProvider: FC<{ children: ReactNode }> = ({ children }) => {
+const TableProvider: FC<{ children: ReactNode }> = ({ children }) => {
   const { vacancies, loading, error, fetchVacanciesByUserId } = useFetchVacancies();
   const { alertState, setAlert, handleCloseAlert } = useAlert();
 
@@ -14,7 +14,7 @@ const VacanciesProvider: FC<{ children: ReactNode }> = ({ children }) => {
   const contextValue = useMemo(() => ({ vacancies, loading, error }), [vacancies, loading, error]);
 
   return (
-    <VacanciesContext.Provider value={contextValue}>
+    <TableContext.Provider value={contextValue}>
       {children}
       {alertState.message && (
         <CaptchaAlert
@@ -23,8 +23,8 @@ const VacanciesProvider: FC<{ children: ReactNode }> = ({ children }) => {
           onClose={handleCloseAlert}
         />
       )}
-    </VacanciesContext.Provider>
+    </TableContext.Provider>
   );
 };
 
-export default VacanciesProvider;
+export default TableProvider;

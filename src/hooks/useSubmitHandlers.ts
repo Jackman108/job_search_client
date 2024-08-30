@@ -1,7 +1,6 @@
 // src/hooks/useVacancyHandlers.ts
-
 import axios from 'axios';
-import { HandleSubmitParams, SubmitRequestProps } from '../Interfaces/Interface.types';
+import { HandleSubmitParams, SubmitRequestProps } from '../Interfaces/InterfaceForm.types';
 import { validateUtils } from '../utils/validateUtils';
 
 const apiUrl = process.env.REACT_APP_API_URL || '';
@@ -25,17 +24,14 @@ export const handleSubmit = async ({
   setErrors,
   setIsLoading,
 }: HandleSubmitParams): Promise<void> => {
-  
   const { isValid, errors: validationErrors } = validateUtils({
     email,
     vacancyUrl
   });
-
   if (!isValid) {
     setErrors(validationErrors);
     return;
   }
-
   setIsLoading(true);
   await submitRequest({
     endpoint: 'start',

@@ -1,10 +1,7 @@
-// src/contexts/useAuthContext.tsx
-import { createContext, useContext, useState, ReactNode, FC, useEffect } from 'react';
-import { AuthContextProps } from '../Interfaces/InterfaceAuth.types';
+// src/contexts/AuthProvider.tsx
+import { FC, ReactNode, useEffect, useState } from 'react';
 import { UserProfile } from '../Interfaces/InterfaceProfile.types';
-
-
-const AuthContext = createContext<AuthContextProps | undefined>(undefined);
+import AuthContext from './useAuthContext';
 
 export const AuthProvider: FC<{ children: ReactNode }> = ({ children }) => {
     const [userId, setUserId] = useState<string | null>(localStorage.getItem('userId'));
@@ -35,24 +32,9 @@ export const AuthProvider: FC<{ children: ReactNode }> = ({ children }) => {
         setUserProfile(null);
     };
 
-    useEffect(() => {
-        if (userProfile) {
-            localStorage.setItem('userProfile', JSON.stringify(userProfile));
-        } else {
-            localStorage.removeItem('userProfile');
-        }
-    }, [userProfile]);
     return (
         <AuthContext.Provider value={{ userId, token, userProfile, setUserId, setToken, setUserProfile, logout }}>
             {children}
         </AuthContext.Provider>
     );
-};
-
-export const useAuth = () => {
-    const context = useContext(AuthContext);
-    if (!context) {
-        throw new Error('useAuth must be used within an AuthProvider');
-    }
-    return context;
 };

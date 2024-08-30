@@ -2,8 +2,8 @@
 import './App.css';
 import Layout from './components/Layout/Layout';
 import VacanciesTable from './components/VacanciesTable/VacanciesTable';
-import VacanciesProvider from './hooks/VacanciesProvider';
-import { AuthProvider } from './context/useAuthContext';
+import TableProvider from './context/TableProvider';
+import { AuthProvider } from './context/AuthProvider';
 
 function App() {
   return (
@@ -14,9 +14,9 @@ function App() {
       <main>
         <AuthProvider>
           <Layout>
-            <VacanciesProvider>
+            <TableProvider>
               <VacanciesTable />
-            </VacanciesProvider>
+            </TableProvider>
           </Layout>
         </AuthProvider>
       </main>

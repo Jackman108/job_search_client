@@ -6,18 +6,6 @@ export interface Errors {
 
 }
 
-export interface Vacancy {
-  id: number;
-  title_vacancy: string;
-  url_vacancy: string;
-  title_company: string;
-  url_company: string;
-  vacancy_status: string;
-  response_date: string;
-  response_date_time?: string;
-  response_date_date?: string;
-}
-
 export interface HandleSubmitParams {
   userId: string,
   email: string;
@@ -52,41 +40,6 @@ export interface UseFormHandlersParams {
   handleSelectChange: (param: keyof typeof OPTIONS) => (e: ChangeEvent<HTMLSelectElement>) => void;
 }
 
-export interface WebSocketHook {
-  connect: () => void;
-  fetchVacanciesByUserId: () => void;
-  message: string | null;
-  error: string | null;
-  open: boolean;
-}
-
-export interface UseWebSocketParams {
-  API_URL: string;
-  WS_URL: string;
-  fetchVacanciesByUserId: () => void;
-  setAlert: (message: string) => void;
-}
-
-export interface VacanciesContextType {
-  vacancies: Vacancy[];
-  loading: boolean;
-  error: string | null;
-}
-
-export interface VacanciesProviderProps {
-  children: React.ReactNode;
-}
-
-export interface SortConfig {
-  key: keyof Vacancy;
-  direction: 'ascending' | 'descending';
-};
-
-export interface FormattedDate {
-  time: string;
-  date: string;
-}
-
 export interface ValidationParams {
   email: string;
   vacancyUrl: string;
@@ -105,22 +58,9 @@ export interface FormHandlers {
   handleMessageChange: (e: ChangeEvent<HTMLTextAreaElement>) => void;
 }
 
-export interface ButtonConfig<T> {
-  icon: string;
-  tooltipText: string;
-  Component: FC<T>;
-  position: 'left' | 'right';
-}
-
-export interface VacancyFormProps {
-  onClose: () => void;
-  isOpen: boolean;
-}
-
-export interface CaptchaAlertProps {
-  message: string;
-  captchaSrc?: string;
-  onClose: () => void;
+export interface FormattedDate {
+  time: string;
+  date: string;
 }
 
 export interface SubmitRequestProps {
@@ -128,14 +68,48 @@ export interface SubmitRequestProps {
   data?: Record<string, any>;
 }
 
-export interface StateAlertProps {
-  message: string | null;
-  captchaSrc: string | undefined;
+export interface RenderInputProps {
+  id?: string;
+  label: string;
+  name: string;
+  value: string;
+  onChange: (e: ChangeEvent<HTMLInputElement>) => void;
+  accept?: string;
+  error?: string;
+  isLoading: boolean;
+  type?: string;
+  placeholder?: string;
+  className?: string;
+  required?: boolean;
+  autoComplete?: string;
 }
 
-export interface InteractiveButtonProps {
-  icon: string;
-  tooltipText: string;
-  Component: FC<{ onClose: () => void; isOpen: boolean }>;
-  position?: 'left' | 'right';
+export interface RenderSelectProps {
+  label: string;
+  options: Option[];
+  onChange: (e: React.ChangeEvent<HTMLSelectElement>) => void;
+  isLoading: boolean;
+}
+
+export interface RenderTextareaProps {
+  label: string;
+  name: string;
+  value: string;
+  onChange: (e: React.ChangeEvent<HTMLTextAreaElement>) => void;
+  isLoading: boolean;
+}
+
+export interface ProfileProps {
+  onClose: () => void;
+  isOpen: boolean;
+}
+
+export interface Option {
+  value: string;
+  label: string;
+}
+
+export interface RenderRowProps {
+  label: string;
+  value: string | number;
 }

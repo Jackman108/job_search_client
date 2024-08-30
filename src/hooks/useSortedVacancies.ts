@@ -1,8 +1,6 @@
 // src/hooks/useSortedVacancies.ts
-
 import { useState, useMemo, useCallback } from 'react';
-import { Vacancy } from '../Interfaces/Interface.types';
-import { SortConfig } from '../Interfaces/Interface.types';
+import { SortConfig, Vacancy } from '../Interfaces/InterfaceVacancy.types';
 
 export const useSortedVacancies = (vacancies: Vacancy[]) => {
   const [sortConfig, setSortConfig] = useState<SortConfig>({
@@ -14,11 +12,9 @@ export const useSortedVacancies = (vacancies: Vacancy[]) => {
     return [...vacancies].sort((a, b) => {
       const aValue = a[sortConfig.key];
       const bValue = b[sortConfig.key];
-
       if (aValue === undefined || bValue === undefined) {
         return 0;
       }
-
       if (aValue < bValue) {
         return sortConfig.direction === 'ascending' ? -1 : 1;
       }

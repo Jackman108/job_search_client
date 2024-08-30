@@ -1,6 +1,6 @@
 // src/components/User/AvatarUploader.tsx
-import React, { FC } from 'react';
-import { ImageUploaderProps } from '../../Interfaces/InterfaceProfile.types';
+import { FC } from 'react';
+import { ImageUploaderProps } from '../../Interfaces/InterfaceComponent.types';
 import styles from './ImageUploader.module.css';
 
 const ImageUploader: FC<ImageUploaderProps> = ({ onChange }) => (

@@ -1,7 +1,7 @@
 // src/components/VacancyForm/RenderSelect.tsx
 import { FC } from 'react';
+import { RenderSelectProps } from '../../Interfaces/InterfaceForm.types';
 import styles from './RenderSelect.module.css';
-import { RenderSelectProps } from '../../Interfaces/InterfaceProfile.types';
 
 const RenderSelect: FC<RenderSelectProps> = ({ label, options, onChange, isLoading }) => (
   <div className={styles.formGroup}>

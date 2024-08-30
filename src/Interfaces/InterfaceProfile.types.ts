@@ -1,16 +1,21 @@
-import { ButtonHTMLAttributes, ChangeEvent } from "react";
-import { Vacancy } from "./Interface.types";
-import { OPTIONS } from "../config/formConfigs";
+export interface UserProfile {
+  id: string;
+  email: string;
+  updatedAt: string;
+  userId: string;
+  firstName: string;
+  lastName: string;
+  avatar: string;
+  balance: number;
+  spinCount: number;
+  successfulResponsesCount: number;
+  currentStatus: string;
+}
 
 export interface UserProps {
   userInfo: UserProfile;
   onSignOut: () => void;
   onUpdateProfile: (updatedProfile: UserProfile) => void;
-}
-
-export interface ProfileProps {
-  onClose: () => void;
-  isOpen: boolean;
 }
 
 export interface UseProfileHandlers {
@@ -24,20 +29,6 @@ export interface UseProfileHandlers {
   handleUpdateProfile: (updatedProfile: UserProfile) => Promise<void>;
   authLoading: boolean;
   authError: string | null;
-}
-
-export interface UserProfile {
-  id: string;
-  email: string;
-  updatedAt: string;
-  userId: string;
-  firstName: string;
-  lastName: string;
-  avatar: string;
-  balance: number;
-  spinCount: number;
-  successfulResponsesCount: number;
-  currentStatus: string;
 }
 
 export interface UserInfoProps {
@@ -55,69 +46,4 @@ export interface UserChangeProps {
   handleInputChange: (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => void;
   handleAvatarChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
   handleSave: (onUpdateProfile: (profile: UserProfile) => void) => void;
-}
-
-export interface AvatarProps {
-  src?: string;
-  alt?: string;
-  className?: string;
-}
-
-export interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
-  variant?: 'primary' | 'secondary' | 'danger' | 'close';
-  isLoading?: boolean;
-}
-
-export interface RenderInputProps {
-  id?: string;
-  label: string;
-  name: string;
-  value: string;
-  onChange: (e: ChangeEvent<HTMLInputElement>) => void;
-  accept?: string;
-  error?: string;
-  isLoading: boolean;
-  type?: string;
-  placeholder?: string;
-  className?: string;
-  required?: boolean;
-  autoComplete?: string;
-}
-
-export interface ProfileProps {
-  onClose: () => void;
-  isOpen: boolean;
-}
-
-export interface ImagePreviewProps {
-  src: string;
-  alt?: string;
-}
-
-export interface ImageUploaderProps {
-  onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
-}
-
-export interface Option {
-  value: string;
-  label: string;
-}
-export interface RenderRowProps {
-  label: string;
-  value: string | number;
-}
-
-export interface RenderSelectProps {
-  label: string;
-  options: Option[];
-  onChange: (e: React.ChangeEvent<HTMLSelectElement>) => void;
-  isLoading: boolean;
-}
-
-export interface RenderTextareaProps {
-  label: string;
-  name: string;
-  value: string;
-  onChange: (e: React.ChangeEvent<HTMLTextAreaElement>) => void;
-  isLoading: boolean;
 }

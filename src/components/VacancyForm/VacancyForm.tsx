@@ -2,13 +2,13 @@
 import { FC } from 'react';
 import useFormHandlers from '../../hooks/useFormHandlers';
 import styles from './VacancyForm.module.css';
-import { VacancyFormProps } from '../../Interfaces/Interface.types';
 import { OPTIONS, FORM_TEXTS, FORM_LABELS, FORM_BUTTONS, FORM_PARAMS } from '../../config/formConfigs';
 import { useAuth } from '../../context/useAuthContext';
 import Button from '../../UI/Button/Button';
 import RenderInput from '../../UI/RenderInput/RenderInput';
 import RenderSelect from '../../UI/RenderSelect/RenderSelect';
 import RenderTextarea from '../../UI/RenderTextarea/RenderTextarea';
+import { VacancyFormProps } from '../../Interfaces/InterfaceComponent.types';
 
 const VacancyForm: FC<VacancyFormProps> = ({ onClose }) => {
   const { userId } = useAuth();
