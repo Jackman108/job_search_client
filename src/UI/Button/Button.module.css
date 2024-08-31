@@ -19,11 +19,11 @@
     background-color: #3e76b2;
     cursor: not-allowed;
   }
+
   .secondary {
     background-color: #6c757d;
     color: #fff;
-  }
-  
+  }  
   .secondary:hover {
     background-color: #5a6268;
   }
@@ -31,8 +31,7 @@
   .danger {
     background-color: #dc3545;
     color: #fff;
-  }
-  
+  }  
   .danger:hover {
     background-color: #c82333;
   }
@@ -40,12 +39,12 @@
     background-color: #ae5760;
     cursor: not-allowed;
   }
+
    .close {
     background-color: transparent;
     color: #000;
     font-size: 16px;
   }
-  
   .close:hover {
     color: #ff0000;
   }

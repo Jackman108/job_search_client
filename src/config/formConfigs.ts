@@ -109,6 +109,22 @@ export const USER_TEXTS = {
     replacePasswordButton: 'Повторите пароль',
   };
 
+  export const BUTTON_SYMBOL = {
+    deleteButton: '\u2716',
+  };
+
+  export const TABLE_HEADER = {
+    tableTitle: 'Обработанные вакансии',
+    tableNumde: '№',
+    tablePosition: 'Должность',
+    tableCompany: 'Компания',
+    tableResult: 'Результат',
+    tableDate: 'Дата',
+    tableResponded: 'Откликнулся',
+    tableMissed: 'Пропустил',
+    deletedButton: 'Удалить',
+  };
+
   export const DEFAULT_AVATAR_URL = 'https://polinka.top/uploads/posts/2023-06/1686471538_polinka-top-p-kartinka-dlya-profilya-muzhskoi-vkontakte-17.jpg';
 
   
