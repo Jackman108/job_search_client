@@ -16,31 +16,26 @@ const useFetchAuth = () => {
   }, []);
 
   const login = useCallback(async (email: string, password: string) => {
+    if (loading) return;
     setLoading(true);
     try {
-      const { data } = await axios.post<AuthResponse>(`${AUTH_URL}/auth/login`, {
-        email,
-        password,
-      });
+      const { data } = await axios.post<AuthResponse>(`${AUTH_URL}/auth/login`, { email, password });
       setToken(data.accessToken);
       const decodedToken = decodeToken(data.accessToken);
-      if (isTokenExpired(decodedToken.exp)) {
-        throw new Error('Токен истек');
-      }
+      if (isTokenExpired(decodedToken.exp)) { throw new Error('Токен истек'); }
       setUserId(decodedToken.id);
     } catch {
       handleError('Ошибка при входе');
     } finally {
       setLoading(false);
     }
-  }, [setUserId, setToken, handleError]);
+  }, [loading, setUserId, setToken, handleError]);
 
   const register = useCallback(async (email: string, password: string, passwordRepeat: string) => {
+    if (loading) return;
     setLoading(true);
     try {
-      const { data } = await axios.post<RegisterResponse>(`${AUTH_URL}/auth/register`, {
-        email, password, passwordRepeat,
-      });
+      const { data } = await axios.post<RegisterResponse>(`${AUTH_URL}/auth/register`, { email, password, passwordRepeat });
       setUserId(data.id);
       await axios.post(`${API_URL}/profile`, { userId: data.id });
     } catch {
@@ -48,9 +43,10 @@ const useFetchAuth = () => {
     } finally {
       setLoading(false);
     }
-  }, [handleError, setUserId]);
+  }, [loading, handleError, setUserId]);
 
   const logout = useCallback(async () => {
+    if (loading) return;
     setUserId(null);
     setToken(null);
     setUserProfile(null);
@@ -62,7 +58,7 @@ const useFetchAuth = () => {
     } finally {
       setLoading(false);
     }
-  }, [setToken, setUserId, setUserProfile, handleError]);
+  }, [loading, setToken, setUserId, setUserProfile, handleError]);
 
   return { login, register, logout, loading, error };
 };

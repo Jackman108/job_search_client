@@ -11,35 +11,27 @@ const useFetchVacancies = () => {
   const [vacancies, setVacancies] = useState<Vacancy[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
-  const { userId } = useAuth();
+  const { userProfile } = useAuth();
 
-  const fetchVacanciesByUserId = useCallback(async () => {
-    if (!userId) {
-      setError('User ID is not available.');
-      setLoading(false);
-      return;
-    }
-
+  const fetchVacancies = useCallback(async () => {
+    if (!userProfile) return;
     setLoading(true);
     setError(null);
     try {
-      const { data } = await axios.get<Vacancy[]>(`${API_URL}/vacancy/${userId}`, {
-        withCredentials: true
-      });
-
+      const { data } = await axios.get<Vacancy[]>(`${API_URL}/vacancy/${userProfile.userId}`, { withCredentials: true });
       setVacancies(formatAndSortVacancies(data));
     } catch {
       setError('Failed to fetch vacancies.');
     } finally {
       setLoading(false);
     }
-  }, [userId]);
+  }, [userProfile]);
 
   useEffect(() => {
-    fetchVacanciesByUserId();
-  }, [fetchVacanciesByUserId]);
+    fetchVacancies();
+  }, [fetchVacancies]);
 
-  return { vacancies, loading, error, fetchVacanciesByUserId };
+  return { vacancies, loading, error, fetchVacancies };
 
 };
 

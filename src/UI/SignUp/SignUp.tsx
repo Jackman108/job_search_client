@@ -1,28 +1,32 @@
 // src/components/SignUp/SignUp.tsx
-import React, { useState } from 'react';
+import React, { ChangeEvent, useState } from 'react';
 import { SignUpProps } from '../../Interfaces/InterfaceAuth.types';
 import Button from '../Button/Button';
 import RenderInput from '../RenderInput/RenderInput';
 import { BUTTON_TEXTS, FORM_TEXTS } from '../../config/formConfigs';
 
 const SignUp: React.FC<SignUpProps> = ({ onSignUp, error, loading }) => {
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const [passwordRepeat, setPasswordRepeat] = useState('');
+  const [email, setEmail] = useState<string>('');
+  const [password, setPassword] = useState<string>('');
+  const [passwordRepeat, setPasswordRepeat] = useState<string>('');
+
+  const handleChange = (setter: React.Dispatch<React.SetStateAction<string>>) => (e: ChangeEvent<HTMLInputElement>) => {
+    setter(e.target.value);
+  };
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
+    if (loading) return;
     onSignUp(email, password, passwordRepeat);
   };
 
   return (
     <form onSubmit={handleSubmit}>
-
       <RenderInput
         label={FORM_TEXTS.emailLabel}
         name={BUTTON_TEXTS.emailButton}
         value={email}
-        onChange={(e: any) => setEmail(e.target.value)}
+        onChange={handleChange(setEmail)}
         isLoading={false}
         type={BUTTON_TEXTS.emailButton}
         placeholder={BUTTON_TEXTS.emailButton}
@@ -32,7 +36,7 @@ const SignUp: React.FC<SignUpProps> = ({ onSignUp, error, loading }) => {
         label={FORM_TEXTS.passwordLabel}
         name={BUTTON_TEXTS.passwordButton}
         value={password}
-        onChange={(e) => setPassword(e.target.value)}
+        onChange={handleChange(setPassword)}
         isLoading={false}
         type={BUTTON_TEXTS.passwordButton}
         placeholder={BUTTON_TEXTS.insertPasswordButton}
@@ -42,7 +46,7 @@ const SignUp: React.FC<SignUpProps> = ({ onSignUp, error, loading }) => {
         label={BUTTON_TEXTS.replacePasswordButton}
         name={BUTTON_TEXTS.passwordRepeat}
         value={passwordRepeat}
-        onChange={(e) => setPasswordRepeat(e.target.value)}
+        onChange={handleChange(setPasswordRepeat)}
         isLoading={false}
         type={BUTTON_TEXTS.passwordButton}
         placeholder={BUTTON_TEXTS.replacePasswordButton}

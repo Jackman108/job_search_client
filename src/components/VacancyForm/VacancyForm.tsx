@@ -11,7 +11,7 @@ import RenderTextarea from '../../UI/RenderTextarea/RenderTextarea';
 import { VacancyFormProps } from '../../Interfaces/InterfaceComponent.types';
 
 const VacancyForm: FC<VacancyFormProps> = ({ onClose }) => {
-  const { userId } = useAuth();
+  const { userProfile  } = useAuth();
   const {
     email,
     password,
@@ -28,12 +28,20 @@ const VacancyForm: FC<VacancyFormProps> = ({ onClose }) => {
     handlePositionChange,
     handleMessageChange,
     handleSelectChange,
-  } = useFormHandlers(userId || '');
+  } = useFormHandlers(userProfile?.userId || '');
 
-  if (!userId) {
+  let messageContent: string | null = null;
+  
+  if (!userProfile) {
+    messageContent = 'Пожалуйста, авторизуйтесь, чтобы заполнить форму.';
+  } else if (userProfile.currentStatus !== 'active') {
+    messageContent = 'Пожалуйста, пополните счёт, чтобы заполнить форму.';
+  }
+
+  if (messageContent) {
     return (
       <section className={styles.sectionContainer}>
-        <p className={styles.authMessage}>Пожалуйста, авторизуйтесь, чтобы заполнить форму.</p>
+        <p className={styles.authMessage}>{messageContent}</p>
         <Button className={styles.closeButton} onClick={onClose} variant="secondary">
           {FORM_BUTTONS.closeButton}
         </Button>
@@ -46,9 +54,7 @@ const VacancyForm: FC<VacancyFormProps> = ({ onClose }) => {
       <Button className={styles.closeButton} onClick={onClose} variant="secondary">
         {FORM_BUTTONS.closeButton}
       </Button>
-      {!userId ? (
-        <p className={styles.authMessage}>Пожалуйста, авторизуйтесь, чтобы заполнить форму.</p>
-      ) : (
+  
       <form className={styles.formContainer} onSubmit={submitHandler}>
         <div className={styles.inputsContainer}>
           <RenderInput
@@ -146,7 +152,7 @@ const VacancyForm: FC<VacancyFormProps> = ({ onClose }) => {
           </Button>
         </div>
       </form>
-      )};
+    
     </section>
   );
 };

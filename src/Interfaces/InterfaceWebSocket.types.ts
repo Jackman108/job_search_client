@@ -1,6 +1,6 @@
 export interface WebSocketHook {
   connect: () => void;
-  fetchVacanciesByUserId: () => void;
+  fetchVacancies: () => void;
   message: string | null;
   error: string | null;
   open: boolean;
@@ -9,6 +9,6 @@ export interface WebSocketHook {
 export interface UseWebSocketParams {
   API_URL: string;
   WS_URL: string;
-  fetchVacanciesByUserId: () => void;
+  fetchVacancies: () => void;
   setAlert: (message: string) => void;
 }

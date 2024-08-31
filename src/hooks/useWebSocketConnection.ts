@@ -2,11 +2,11 @@ import { useEffect } from 'react';
 import { useWebSocket } from './useWebSocket';
 import { WS_URL, API_URL } from '../config/serverConfig';
 
-const useWebSocketConnection = (fetchVacanciesByUserId: () => void, setAlert: (message: string) => void) => {
+const useWebSocketConnection = (fetchVacancies: () => void, setAlert: (message: string) => void) => {
   const { error: wsError } = useWebSocket({
     WS_URL,
     API_URL,
-    fetchVacanciesByUserId,
+    fetchVacancies,
     setAlert
   });
 

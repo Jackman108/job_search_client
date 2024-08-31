@@ -83,8 +83,7 @@ const Profile: FC<ProfileProps> = () => {
             <SignUp onSignUp={handleRegister} error={authError} loading={authLoading} />
           ) : (
             <SignIn onSignIn={handleSignIn} error={authError} loading={authLoading} />
-          )}
-          {formError && <p className={styles.error}>{formError}</p>}
+          )}          
         </>
       )}
     </section>

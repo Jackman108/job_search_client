@@ -6,7 +6,7 @@ const RECONNECT_INTERVAL = 5000;
 
 export const useWebSocket = ({
   WS_URL,
-  fetchVacanciesByUserId,
+  fetchVacancies,
   setAlert
 }: UseWebSocketParams): WebSocketHook => {
   const [message, setMessage] = useState<string | null>(null);
@@ -40,7 +40,7 @@ export const useWebSocket = ({
         case data.startsWith('Vacancy has been successfully saved with ID'):
           const id = data.split('ID ')[1];
           console.log(`Vacancy with ID ${id} was saved`);
-          fetchVacanciesByUserId();
+          fetchVacancies();
           break;
         case data === 'ERROR detected restart':
           setAlert('Некорректный Email или Пароль');
@@ -73,7 +73,7 @@ export const useWebSocket = ({
       wsRef.current = null;
     };
 
-  }, [userId, WS_URL, setAlert, fetchVacanciesByUserId]);
+  }, [userId, WS_URL, setAlert, fetchVacancies]);
 
   useEffect(() => {
     if (userId) {
@@ -91,7 +91,7 @@ export const useWebSocket = ({
 
   return {
     connect,
-    fetchVacanciesByUserId,
+    fetchVacancies,
     message,
     error,
     open,
