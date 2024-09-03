@@ -111,6 +111,7 @@ export const USER_TEXTS = {
 
   export const BUTTON_SYMBOL = {
     deleteButton: '\u2716',
+    pencilButton: '\u270F',
   };
 
   export const TABLE_HEADER = {

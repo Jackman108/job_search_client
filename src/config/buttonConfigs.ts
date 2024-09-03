@@ -2,6 +2,7 @@
 import VacancyForm from '../components/VacancyForm/VacancyForm';
 import Profile from '../components/Profile/Profile';
 import { ButtonConfig } from '../Interfaces/InterfaceComponent.types';
+import Resume from '../components/Resume/Resume';
 
 export const buttonConfigs: ButtonConfig<any>[] = [
     {
@@ -14,6 +15,12 @@ export const buttonConfigs: ButtonConfig<any>[] = [
         icon: '/profile.png',
         tooltipText: 'Профиль',
         Component: Profile,
+        position: 'right',
+    },
+    {
+        icon: '/resume.png',
+        tooltipText: 'Резюме',
+        Component: Resume,
         position: 'right',
     },
 ];
