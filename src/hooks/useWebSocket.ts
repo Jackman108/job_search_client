@@ -38,7 +38,7 @@ export const useWebSocket = ({
       setMessage(data);
       switch (true) {
         case data.startsWith('Vacancy has been successfully saved with ID'):
-          const id = data.split('ID ')[1];
+          const id = data.split('ID')[1];
           console.log(`Vacancy with ID ${id} was saved`);
           fetchVacancies();
           break;

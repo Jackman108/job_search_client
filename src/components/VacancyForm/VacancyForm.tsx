@@ -9,6 +9,7 @@ import RenderInput from '../../UI/RenderInput/RenderInput';
 import RenderSelect from '../../UI/RenderSelect/RenderSelect';
 import RenderTextarea from '../../UI/RenderTextarea/RenderTextarea';
 import { VacancyFormProps } from '../../Interfaces/InterfaceComponent.types';
+import Canvas from '../../UI/Canvas/Canvas';
 
 const VacancyForm: FC<VacancyFormProps> = ({ onClose }) => {
   const { userProfile  } = useAuth();
@@ -152,7 +153,8 @@ const VacancyForm: FC<VacancyFormProps> = ({ onClose }) => {
           </Button>
         </div>
       </form>
-    
+      {isLoading ? <Canvas /> : ''}
+      
     </section>
   );
 };

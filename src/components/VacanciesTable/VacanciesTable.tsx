@@ -5,6 +5,7 @@ import { useTableContext } from '../../context/useTableContext';
 import useDeleteVacancy from '../../hooks/useDeleteVacancy';
 import { useSortedVacancies } from '../../hooks/useSortedVacancies';
 import './VacanciesTable.css';
+import Graph from '../../UI/Graph/Graph';
 
 const VacanciesTable: FC = (
 ): JSX.Element => {
@@ -22,6 +23,8 @@ const VacanciesTable: FC = (
       console.error('Ошибка удаления вакансии:', err);
     }
   };
+
+
 
   return (
     <div className="vacanciesTable">
@@ -56,6 +59,7 @@ const VacanciesTable: FC = (
           ))}
         </tbody>
       </table>
+      <Graph sortedVacancies={sortedVacancies}/>
     </div>
   );
 };
