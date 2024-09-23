@@ -1,15 +1,14 @@
 // src/components/VacancyForm/VacancyForm.tsx
 import { FC } from 'react';
-import useFormHandlers from '../../hooks/useFormHandlers';
-import styles from './VacancyForm.module.css';
-import { OPTIONS, FORM_TEXTS, FORM_LABELS, FORM_BUTTONS, FORM_PARAMS } from '../../config/formConfigs';
-import { useAuth } from '../../context/useAuthContext';
+import { VacancyFormProps } from '../../Interfaces/InterfaceComponent.types';
 import Button from '../../UI/Button/Button';
 import RenderInput from '../../UI/RenderInput/RenderInput';
 import RenderSelect from '../../UI/RenderSelect/RenderSelect';
 import RenderTextarea from '../../UI/RenderTextarea/RenderTextarea';
-import { VacancyFormProps } from '../../Interfaces/InterfaceComponent.types';
-import Canvas from '../../UI/Canvas/Canvas';
+import { FORM_BUTTONS, FORM_LABELS, FORM_PARAMS, FORM_TEXTS, OPTIONS } from '../../config/formConfigs';
+import { useAuth } from '../../context/useAuthContext';
+import useFormHandlers from '../../hooks/useFormHandlers';
+import styles from './VacancyForm.module.css';
 
 const VacancyForm: FC<VacancyFormProps> = ({ onClose }) => {
   const { userProfile  } = useAuth();
@@ -152,9 +151,7 @@ const VacancyForm: FC<VacancyFormProps> = ({ onClose }) => {
             {FORM_BUTTONS.stopButton}
           </Button>
         </div>
-      </form>
-      {isLoading ? <Canvas /> : ''}
-      
+      </form>   
     </section>
   );
 };
