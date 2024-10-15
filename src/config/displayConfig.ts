@@ -13,32 +13,33 @@ export const dataDisplayConfig: Record<string, ConfigItem> = {
             business_trip_readiness: 'Готовность к командировкам'
         },
     },
-        /*contacts: {
+    contacts: {
         title: 'Контакты',
         apiEndpoint: (userId: string) => `/contacts/${userId}`,
         fields: {
             phone: 'Телефон',
             email: 'Email',
-            personalSite: 'Личный сайт'
+            personal_site: 'Личный сайт'
         }
     },
-skills: {
+
+    skills: {
         title: 'Навыки',
         apiEndpoint: (userId: string) => `/skills/${userId}`,
         fields: {
-            skillName: 'Навык',
-            proficiencyLevel: 'Уровень'
+            skill_name: 'Навык',
+            proficiency_level: 'Уровень'
         }
     },
     workExperience: {
         title: 'Опыт работы',
         apiEndpoint: (userId: string) => `/work_experience/${userId}`,
         fields: {
-            companyName: 'Компания',
+            company_name: 'Компания',
             position: 'Должность',
-            startDate: 'Дата начала',
-            endDate: 'Дата окончания',
+            start_date: 'Дата начала',
+            end_date: 'Дата окончания',
             description: 'Описание'
         }
-    }*/
+    }
 };

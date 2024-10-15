@@ -12,3 +12,14 @@ export interface ConfigItem {
 export interface DataDisplayProps {
     config: Record<string, ConfigItem>
 }
+
+export interface DataItem {
+  id: number; 
+  [key: string]: any; 
+}
+
+export interface RenderArrayProps {
+  config: ConfigItem;
+  userId: string;
+  data: any[];
+}

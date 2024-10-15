@@ -1,10 +1,8 @@
 // useDataDisplay.ts
-import axios from 'axios';
 import { useCallback, useEffect, useState } from 'react';
 import { DataDisplayProps } from '../Interfaces/InterfaceDataDisplay.types';
-import { API_URL } from '../config/serverConfig';
 import { useAuth } from '../context/useAuthContext';
-import { fetchDataForType } from './useFetchData';
+import { createDataForType, deleteDataForType, fetchDataForType, updateDataForType } from './useFetchData';
 
 
 export const useDataDisplay = (config: DataDisplayProps['config']) => {
@@ -13,9 +11,9 @@ export const useDataDisplay = (config: DataDisplayProps['config']) => {
     const [notFound, setNotFound] = useState<Record<string, boolean>>({});
     const [error, setError] = useState<Record<string, string | null>>({});
     const [formData, setFormData] = useState<Record<string, any>>({});
-    const [isCreating, setIsCreating] = useState<boolean>(false);
+    const [isCreating, setIsCreating] = useState<Record<string, boolean>>({});
     const [isEditing, setIsEditing] = useState<Record<string, boolean>>({});
-    const { userProfile } = useAuth();
+        const { userProfile } = useAuth();
     const userId = userProfile?.userId;
 
     const loadData = useCallback(async () => {
@@ -25,21 +23,20 @@ export const useDataDisplay = (config: DataDisplayProps['config']) => {
         }
 
         const newLoading: Record<string, boolean> = {};
-        const newError: Record<string, string | null> = {};
         const newData: Record<string, any> = {};
-        const newNotFound: Record<string, boolean> = {}; 
+        const newNotFound: Record<string, boolean> = {};
 
-        for (const [type, item] of Object.entries(config)) {
+        await Promise.all(Object.entries(config).map(async ([type, item]) => {
             newLoading[type] = true;
-            const { data, error } = await fetchDataForType(item.apiEndpoint(userId));
-            newData[type] = data;
-            newError[type] = error;
+            const { data: fetchedData, error } = await fetchDataForType(item.apiEndpoint(userId));
+            newData[type] = fetchedData;
             newLoading[type] = false;
-        }
+            newNotFound[type] = !fetchedData;
+            if (error) setError((prev) => ({ ...prev, [type]: error }));
+        }));
 
         setData(newData);
         setLoading(newLoading);
-        setError(newError);
         setNotFound(newNotFound);
     }, [config, userId]);
 
@@ -53,54 +50,45 @@ export const useDataDisplay = (config: DataDisplayProps['config']) => {
         }
     }, [isCreating]);
 
-    const handleCreateClick = () => {
-        setIsCreating(true);
-        setIsEditing({});
-        
+    const handleCreateClick = (type: string) => {
+        setIsCreating((prev) => ({ ...prev, [type]: true }));
+        setFormData({});
     };
 
-    const handleEditClick = (type: string) => {
-        setFormData(data[type] || {});
-        setIsEditing({ [type]: true });
-        setIsCreating(false);
+    const handleEditClick = (type: string, item: any) => {
+        setIsEditing((prev) => ({ ...prev, [type]: true }));
+        setFormData({ ...item });
     };
 
     const handleDeleteClick = async (type: string) => {
         if (userId) {
-            try {
-                const endpoint = `${API_URL}${config[type].apiEndpoint(userId)}`;
-                const response = await axios.delete(endpoint, { withCredentials: true });
-                if (response.status === 200) {
-                    await loadData();
-                } else {
-                    alert('Ошибка удаления записи');
-                }
-            } catch {
-                alert('Ошибка при удалении записи');
+            const { error } = await deleteDataForType(config[type].apiEndpoint(userId));
+            if (!error) {
+                await loadData();
+            } else {
+                console.error('Ошибка при удалении записи', error);
             }
         }
     };
     const handleCancelClick = (type: string) => {
         setIsEditing((prev) => ({ ...prev, [type]: false }));
-        setIsCreating(false);
-      };
+        setIsCreating((prev) => ({ ...prev, [type]: false }));
+        setFormData({});
+    };
 
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>, type: string) => {
         e.preventDefault();
         if (config[type] && userId) {
             const endpoint = config[type].apiEndpoint(userId);
             try {
-                const method = isCreating ? 'post' : 'put';
-                const response = await axios[method](`${API_URL}${endpoint}`, formData, { withCredentials: true });
-                if (response.status === (isCreating ? 201 : 200)) {
+                const method = isCreating[type] ? createDataForType : updateDataForType;
+                const { error } = await method(endpoint, formData);
+                if (!error) {
                     await loadData();
-                    setIsEditing(prev => ({ ...prev, [type]: false }));
-                    setIsCreating(false);
-                } else {
-                    alert('Ошибка записи');
+                    handleCancelClick(type);
                 }
-            } catch {
-                alert('Ошибка при сохранении записи');
+            } catch (error) {
+                console.error('Ошибка при сохранении', error);
             }
         }
     };
@@ -118,12 +106,12 @@ export const useDataDisplay = (config: DataDisplayProps['config']) => {
         formData,
         isCreating,
         isEditing,
+        userId,
         handleCreateClick,
         handleEditClick,
         handleDeleteClick,
         handleSubmit,
         handleInputChange,
         handleCancelClick,
-        userId,
     };
 };

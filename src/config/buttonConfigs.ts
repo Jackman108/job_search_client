@@ -12,6 +12,12 @@ export const buttonConfigs: ButtonConfig<any>[] = [
         position: 'left',
     },
     {
+        icon: '/update.png',
+        tooltipText: 'Обновить результат',
+        Component: Resume,
+        position: 'left',
+    },
+    {
         icon: '/profile.png',
         tooltipText: 'Профиль',
         Component: Profile,
