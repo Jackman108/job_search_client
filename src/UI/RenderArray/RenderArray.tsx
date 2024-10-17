@@ -4,8 +4,9 @@ import Button from '../../UI/Button/Button';
 import styles from './RenderArray.module.css';
 import { RenderArrayProps } from '../../Interfaces/InterfaceDataDisplay.types';
 
-const RenderArray: FC<RenderArrayProps> = ({ config, userId, data }) => {
+const RenderArray: FC<RenderArrayProps> = ({ config, userId , data}) => {
     const {
+
         formData,
         isEditing,
         handleEditClick,
@@ -63,7 +64,11 @@ const RenderArray: FC<RenderArrayProps> = ({ config, userId, data }) => {
 
 return (
     <ul className={styles.dataContainer}>
-            {data.map(renderDataItem )}
+        {data?.length ? (
+            data.map(renderDataItem)
+        ) : (
+            <div>Нет данных для отображения</div>
+        )}
     </ul>
 );
 };

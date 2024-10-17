@@ -1,13 +1,16 @@
-import { useCallback, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { UserProfile } from '../Interfaces/InterfaceProfile.types';
-import { useChangeUserProfile } from './useChangeUserProfile';
+import useFetchUserProfile from './useFetchUserProfile';
 
 export const useUserHandlers = (initialUserInfo: UserProfile) => {
   const [isEditing, setIsEditing] = useState(false);
   const [editProfile, setEditProfile] = useState<UserProfile>(initialUserInfo);
   const [avatarPreview, setAvatarPreview] = useState<string>(initialUserInfo.avatar || '');
-
-  const { changeUserProfile } = useChangeUserProfile();
+  useEffect(() => {
+    setEditProfile(initialUserInfo);
+    setAvatarPreview(initialUserInfo.avatar || '');
+  }, [initialUserInfo]);
+  const { changeUserProfile } = useFetchUserProfile();
 
   const handleInputChange = useCallback((e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target;
@@ -26,8 +29,8 @@ export const useUserHandlers = (initialUserInfo: UserProfile) => {
     }
   }, []);
 
-  const handleSave = useCallback(async (onUpdateProfile: (profile: UserProfile) => void) => {
-    try {
+  const handleSave = useCallback(async (onUpdateProfile: (editProfile: UserProfile) => void) => {
+        try {
       const updatedProfile = await changeUserProfile(editProfile);
       onUpdateProfile(updatedProfile);
       setIsEditing(false);
@@ -38,9 +41,10 @@ export const useUserHandlers = (initialUserInfo: UserProfile) => {
 
   return {
     isEditing,
-    setIsEditing,
     editProfile,
     avatarPreview,
+    setEditProfile,
+    setIsEditing,    
     handleInputChange,
     handleAvatarChange,
     handleSave,

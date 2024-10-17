@@ -13,8 +13,7 @@ export const useDataDisplay = (config: DataDisplayProps['config']) => {
     const [formData, setFormData] = useState<Record<string, any>>({});
     const [isCreating, setIsCreating] = useState<Record<string, boolean>>({});
     const [isEditing, setIsEditing] = useState<Record<string, boolean>>({});
-        const { userProfile } = useAuth();
-    const userId = userProfile?.userId;
+        const { userId } = useAuth();
 
     const loadData = useCallback(async () => {
         if (!userId) {

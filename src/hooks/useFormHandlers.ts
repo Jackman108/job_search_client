@@ -1,25 +1,19 @@
 // src/hooks/useFormHandlers.ts
-import { ChangeEvent, Dispatch, FormEvent, SetStateAction, useCallback, useEffect, useState } from 'react';
+import { ChangeEvent, Dispatch, FormEvent, SetStateAction, useCallback, useState } from 'react';
 import { Errors, HandleSubmitParams, UseFormHandlersParams } from '../Interfaces/InterfaceForm.types';
 import { DEFAULT_VACANCY_PARAMS, FormParams } from '../config/formConfigs';
+import { useAuth } from '../context/useAuthContext';
 import { buildVacancyUrl } from '../utils/buildVacancyUrl';
 import { handleStop, handleSubmit } from './useSubmitHandlers';
 
-const useFormHandlers = (userId: string): UseFormHandlersParams => {
+const useFormHandlers = (): UseFormHandlersParams => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [position, setPosition] = useState('');
   const [message, setMessage] = useState('');
   const [vacancyUrl, setVacancyUrl] = useState(buildVacancyUrl(DEFAULT_VACANCY_PARAMS));
   const [errors, setErrors] = useState<Errors>({});
-  const [isLoading, setIsLoading] = useState(() => {
-
-    const savedLoadingState = localStorage.getItem('isLoading');
-    return savedLoadingState === 'true';
-  });
-  useEffect(() => {
-    localStorage.setItem('isLoading', isLoading.toString());
-  }, [isLoading]);
+  const { userId, isLoading, setIsLoading  } = useAuth();
 
   const handleInputChange = (setter: Dispatch<SetStateAction<string>>) => (
     e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
@@ -34,10 +28,12 @@ const useFormHandlers = (userId: string): UseFormHandlersParams => {
     setVacancyUrl(buildVacancyUrl(Object.fromEntries(urlParams.entries())));
   };
 
-  const submitHandler = useCallback(async (event: FormEvent): Promise<void> => {
+  const submitHandler = useCallback(async (event: FormEvent) => {
     event.preventDefault();
+    setIsLoading(true);
+
     const params: HandleSubmitParams = {
-      userId,
+      userId: userId ?? '',
       email,
       password,
       position,
@@ -46,13 +42,17 @@ const useFormHandlers = (userId: string): UseFormHandlersParams => {
       setErrors,
       setIsLoading,
     };
-    await handleSubmit(params);
-  }, [userId, email, password, position, message, vacancyUrl]);
+    try {
+      await handleSubmit(params);
+    } finally {
+      setIsLoading(false); 
+    }
+  }, [userId, email, password, position, message, vacancyUrl, setIsLoading]);
 
   const stopHandler = useCallback(async () => {
     await handleStop();
     setIsLoading(false);
-  }, []);
+  }, [setIsLoading]);
 
   return {
     email,

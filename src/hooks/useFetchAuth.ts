@@ -9,7 +9,7 @@ import { decodeToken, isTokenExpired } from '../utils/tokenUtils';
 const useFetchAuth = () => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
-  const { setUserId, setToken, setUserProfile } = useAuth();
+  const { setUserId, setToken } = useAuth();
 
   const handleError = useCallback((message: string) => {
     setError(message);
@@ -49,7 +49,6 @@ const useFetchAuth = () => {
     if (loading) return;
     setUserId(null);
     setToken(null);
-    setUserProfile(null);
     setLoading(true);
     try {
       await axios.get(`${AUTH_URL}/auth/logout`, { withCredentials: true });
@@ -58,7 +57,7 @@ const useFetchAuth = () => {
     } finally {
       setLoading(false);
     }
-  }, [loading, setToken, setUserId, setUserProfile, handleError]);
+  }, [loading, setToken, setUserId, handleError]);
 
   return { login, register, logout, loading, error };
 };

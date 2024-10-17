@@ -16,6 +16,8 @@ const UserChange: React.FC<UserChangeProps> = ({
   handleInputChange,
   handleAvatarChange
 }) => {
+  console.log(editProfile)
+
   return (
     <div className={styles.editForm}>
       <RenderInput

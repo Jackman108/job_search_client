@@ -31,7 +31,7 @@ export interface UseFormHandlersParams {
   errors: Errors;
   submitHandler: (event: FormEvent) => Promise<void>;
   stopHandler: () => Promise<void>;
-  isLoading: boolean;
+  isLoading: boolean | null;
   handleVacancyUrlChange: (e: ChangeEvent<HTMLInputElement>) => void;
   handleEmailChange: (e: ChangeEvent<HTMLInputElement>) => void;
   handlePasswordChange: (e: ChangeEvent<HTMLInputElement>) => void;

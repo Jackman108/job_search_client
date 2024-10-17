@@ -6,15 +6,15 @@ import { useAuth } from '../context/useAuthContext';
 
 export const useProfileHandlers = (): UseProfileHandlers => {
     const { login, register, logout, error: authError, loading: authLoading } = useFetchAuth();
-    const { userProfile, setUserProfile, } = useAuth();
-    const { fetchUserProfile, error: profileError } = useFetchUserProfile();
+    const { token } = useAuth();
+    const { fetchUserProfile, userProfile, error: profileError } = useFetchUserProfile();
     
-    const [isSign, setIsSign] = useState<boolean>(!!userProfile);
+    const [isSign, setIsSign] = useState<boolean>(!!token);
     const [formError, setFormError] = useState<string | null>(null);
 
     useEffect(() => {
-        if (!userProfile) fetchUserProfile();
-    }, [userProfile, fetchUserProfile]);
+        if (token) fetchUserProfile();
+    }, [token, fetchUserProfile]);
 
     const handleSignIn = useCallback(async (email: string, password: string) => {
         setFormError(null);
@@ -43,14 +43,13 @@ export const useProfileHandlers = (): UseProfileHandlers => {
     }, [fetchUserProfile]);
 
     const handleSignOut = useCallback(async () => {
-        setUserProfile(null);
         setFormError(null);
         try {
             await logout();
           } catch {
             setFormError('Ошибка при выходе');
           }
-    }, [logout, setUserProfile]);
+    }, [logout]);
 
     useEffect(() => {
         if (profileError || authError) {

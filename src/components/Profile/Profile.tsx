@@ -10,13 +10,13 @@ import { useUserHandlers } from '../../hooks/useUserHandlers';
 import UserChange from '../UserChange/UserChange';
 import UserInfo from '../UserInfo/UserInfo';
 import styles from './Profile.module.css';
+import useFetchUserProfile from '../../hooks/useFetchUserProfile';
 
 const Profile: FC<ProfileProps> = () => {
   const {
     userProfile,
     isSign,
     setIsSign,
-    formError,
     handleSignIn,
     handleRegister,
     handleSignOut,
@@ -27,14 +27,16 @@ const Profile: FC<ProfileProps> = () => {
 
   const {
     isEditing,
-    setIsEditing,
-    handleSave,
     editProfile,
     avatarPreview,
+    setEditProfile,
+    setIsEditing,
+    handleSave,    
     handleInputChange,
-    handleAvatarChange,
-  } = useUserHandlers(userProfile || {} as UserProfile);
+    handleAvatarChange,    
+  } = useUserHandlers(userProfile || ({} as UserProfile));
 
+  
   return (
     <section className={styles.sectionContainer}>
       {userProfile ? (
@@ -42,14 +44,12 @@ const Profile: FC<ProfileProps> = () => {
           <h2>{USER_TEXTS.profileTitle}</h2>
           {isEditing ? (
             <UserChange
-              userInfo={userProfile}
               onSave={() => handleSave(handleUpdateProfile)}
               onCancel={() => setIsEditing(false)}
               editProfile={editProfile}
               avatarPreview={avatarPreview}
               handleInputChange={handleInputChange}
               handleAvatarChange={handleAvatarChange}
-              handleSave={handleSave}
             />
           ) : (
             <UserInfo

@@ -2,12 +2,11 @@ import React, { FC } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { ResumeProps } from '../../Interfaces/InterfaceResume.types';
 import Button from '../../UI/Button/Button';
-import { useProfileHandlers } from '../../hooks/useProfileHandlers';
+import { useAuth } from '../../context/useAuthContext';
 import styles from './Resume.module.css';
 
 const Resume: FC<ResumeProps> = () => {
-  const { userProfile } = useProfileHandlers();
-  const userId = userProfile?.userId
+  const { token } = useAuth();
   const navigate = useNavigate();
 
   const handleGetClick = () => {
@@ -16,7 +15,7 @@ const Resume: FC<ResumeProps> = () => {
   
   return (
     <section className={styles.resumeSection}>
-    {userId ?  (
+    {token ?  (
       <div className={styles.resumeContainer}>
         <Button onClick={handleGetClick} variant="primary">
         резюме

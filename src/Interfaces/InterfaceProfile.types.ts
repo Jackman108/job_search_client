@@ -38,12 +38,10 @@ export interface UserInfoProps {
 }
 
 export interface UserChangeProps {
-  userInfo: UserProfile;
   onSave: () => void;
   onCancel: () => void;
   editProfile: UserProfile;
   avatarPreview: string;
   handleInputChange: (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => void;
   handleAvatarChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
-  handleSave: (onUpdateProfile: (profile: UserProfile) => void) => void;
 }

@@ -20,7 +20,7 @@ const ResumeView: FC = () => {
       try {
         if (userId) {
           const [resumeResponse, contactsResponse, skillsResponse, workExperienceResponse] = await Promise.all([
-            axios.get<ResumeData>(`${API_URL}/resume/${userId}`),
+            axios.get<ResumeData>(`${API_URL}/resume`),
             axios.get<ContactData[]>(`${API_URL}/contacts/${userId}`),
             axios.get<SkillData[]>(`${API_URL}/skills/${userId}`),
             axios.get<WorkExperienceData[]>(`${API_URL}/work_experience/${userId}`),

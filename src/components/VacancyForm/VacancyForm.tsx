@@ -11,7 +11,7 @@ import RenderTextarea from '../../UI/RenderTextarea/RenderTextarea';
 import { VacancyFormProps } from '../../Interfaces/InterfaceComponent.types';
 
 const VacancyForm: FC<VacancyFormProps> = ({ onClose }) => {
-  const { userProfile  } = useAuth();
+  const { token, isLoading  } = useAuth();
   const {
     email,
     password,
@@ -19,7 +19,6 @@ const VacancyForm: FC<VacancyFormProps> = ({ onClose }) => {
     message,
     vacancyUrl,
     errors,
-    isLoading,
     submitHandler,
     stopHandler,
     handleVacancyUrlChange,
@@ -28,14 +27,12 @@ const VacancyForm: FC<VacancyFormProps> = ({ onClose }) => {
     handlePositionChange,
     handleMessageChange,
     handleSelectChange,
-  } = useFormHandlers(userProfile?.userId || '');
+  } = useFormHandlers();
 
   let messageContent: string | null = null;
   
-  if (!userProfile) {
+  if (!token) {
     messageContent = 'Пожалуйста, авторизуйтесь, чтобы заполнить форму.';
-  } else if (userProfile.currentStatus !== 'active') {
-    messageContent = 'Пожалуйста, пополните счёт, чтобы заполнить форму.';
   }
 
   if (messageContent) {

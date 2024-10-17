@@ -1,3 +1,4 @@
+import { Dispatch, SetStateAction } from "react";
 import { UserProfile } from "./InterfaceProfile.types";
 
 export interface AuthResponse {
@@ -27,8 +28,8 @@ export interface SignInProps {
 export interface AuthContextProps {
   userId: string | null;
   token: string | null;
-  userProfile: UserProfile | null;
+  isLoading: boolean;
   setUserId: (id: string | null) => void;
   setToken: (token: string | null) => void;
-  setUserProfile: (profile: UserProfile | null) => void;
+  setIsLoading: Dispatch<SetStateAction<boolean>>;
 }
