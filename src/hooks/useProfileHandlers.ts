@@ -13,15 +13,17 @@ export const useProfileHandlers = (): UseProfileHandlers => {
     const [formError, setFormError] = useState<string | null>(null);
 
     useEffect(() => {
-        if (token) fetchUserProfile();
-    }, [token, fetchUserProfile]);
+        if (token && !userProfile) {
+            fetchUserProfile();
+        }
+    }, [token, fetchUserProfile, userProfile]);
 
     const handleSignIn = useCallback(async (email: string, password: string) => {
         setFormError(null);
         try {
             await login(email, password);
         } catch {
-            setFormError('Ошибка при входе: неверный email или пароль');
+            setFormError('Login error: invalid email or password');
         }
     }, [login]);
 
@@ -30,7 +32,7 @@ export const useProfileHandlers = (): UseProfileHandlers => {
         try {
             await register(email, password, passwordRepeat);
         } catch {
-            setFormError('Ошибка при регистрации: проверьте правильность введенных данных');
+            setFormError('Registration error: check if the data entered is correct');
         }
     }, [register]);
 
@@ -38,7 +40,7 @@ export const useProfileHandlers = (): UseProfileHandlers => {
         try {
             await fetchUserProfile();
         } catch (error) {
-            setFormError('Ошибка обновления профиля');
+            setFormError('Profile update error');
         }
     }, [fetchUserProfile]);
 
@@ -47,7 +49,7 @@ export const useProfileHandlers = (): UseProfileHandlers => {
         try {
             await logout();
           } catch {
-            setFormError('Ошибка при выходе');
+            setFormError('Exit error');
           }
     }, [logout]);
 

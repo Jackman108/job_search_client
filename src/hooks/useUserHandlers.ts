@@ -6,10 +6,12 @@ export const useUserHandlers = (initialUserInfo: UserProfile) => {
   const [isEditing, setIsEditing] = useState(false);
   const [editProfile, setEditProfile] = useState<UserProfile>(initialUserInfo);
   const [avatarPreview, setAvatarPreview] = useState<string>(initialUserInfo.avatar || '');
+  
   useEffect(() => {
     setEditProfile(initialUserInfo);
     setAvatarPreview(initialUserInfo.avatar || '');
   }, [initialUserInfo]);
+
   const { changeUserProfile } = useFetchUserProfile();
 
   const handleInputChange = useCallback((e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {

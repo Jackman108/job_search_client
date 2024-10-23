@@ -2,15 +2,13 @@ import { FC } from 'react';
 import Button from '../../UI/Button/Button';
 import { BUTTON_SYMBOL, TABLE_HEADER } from '../../config/formConfigs';
 import { useTableContext } from '../../context/useTableContext';
-import useDeleteVacancy from '../../hooks/useDeleteVacancy';
 import { useSortedVacancies } from '../../hooks/useSortedVacancies';
 import './VacanciesTable.css';
 
 const VacanciesTable: FC = (
 ): JSX.Element => {
-  const { vacancies, loading, error } = useTableContext();
+  const { vacancies, loading, error, deleteVacancy, fetchVacancies } = useTableContext();
   const { sortedVacancies, handleSort, getSortArrow } = useSortedVacancies(vacancies);
-  const { deleteVacancy } = useDeleteVacancy();
 
   if (loading) return <div>Загрузка...</div>;
   if (error) return <div>{error}</div>;
@@ -18,6 +16,7 @@ const VacanciesTable: FC = (
   const handleDelete = async (id: number) => {
     try {
       await deleteVacancy(id);
+      await fetchVacancies();
     } catch (err) {
       console.error('Ошибка удаления вакансии:', err);
     }

@@ -1,5 +1,4 @@
 import { Dispatch, SetStateAction } from "react";
-import { UserProfile } from "./InterfaceProfile.types";
 
 export interface AuthResponse {
   accessToken: string;

@@ -6,12 +6,14 @@ import useWebSocketConnection from '../hooks/useWebSocketConnection';
 import TableContext from './useTableContext';
 
 const TableProvider: FC<{ children: ReactNode }> = ({ children }) => {
-  const { vacancies, loading, error, fetchVacancies } = useFetchVacancies();
+  const { vacancies, loading, error, fetchVacancies, deleteVacancy } = useFetchVacancies();
   const { alertState, setAlert, handleCloseAlert } = useAlert();
 
   useWebSocketConnection(fetchVacancies, setAlert);
 
-  const contextValue = useMemo(() => ({ vacancies, loading, error }), [vacancies, loading, error]);
+  const contextValue = useMemo(
+    () => ({ vacancies, loading, error, fetchVacancies, deleteVacancy }), 
+    [vacancies, loading, error, fetchVacancies, deleteVacancy]);
 
   return (
     <TableContext.Provider value={contextValue}>

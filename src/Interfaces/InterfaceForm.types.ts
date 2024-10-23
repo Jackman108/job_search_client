@@ -7,7 +7,7 @@ export interface Errors {
 }
 
 export interface HandleSubmitParams {
-  userId: string,
+  token: string | null;
   email: string;
   password: string;
   position: string;
@@ -64,6 +64,7 @@ export interface FormattedDate {
 }
 
 export interface SubmitRequestProps {
+  token: string | null;
   endpoint: string;
   data?: Record<string, any>;
 }

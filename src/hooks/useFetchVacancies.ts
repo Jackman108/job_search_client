@@ -1,40 +1,36 @@
 // src/hooks/useFetchVacancies.ts
 
-import axios from 'axios';
 import { useCallback, useEffect, useState } from 'react';
 import { Vacancy } from '../Interfaces/InterfaceVacancy.types';
-import { API_URL } from '../config/serverConfig';
-import { useAuth } from '../context/useAuthContext';
+import useApi from '../api/api';
 import { formatAndSortVacancies } from '../utils/formaUtils';
 
 const useFetchVacancies = () => {
   const [vacancies, setVacancies] = useState<Vacancy[]>([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
-  const { token } = useAuth();
+  const { loading, error, request } = useApi();
+
 
   const fetchVacancies = useCallback(async () => {
-    if (!token) return;
-    setLoading(true);
-    setError(null);
     try {
-      const { data } = await axios.get<Vacancy[]>(`${API_URL}/vacancy`, {
-        headers: { Authorization:  token },
-        withCredentials: true
-      });
+      const data = await request('get', '/vacancy');
       setVacancies(formatAndSortVacancies(data));
-    } catch {
-      setError('Failed to fetch vacancies.');
-    } finally {
-      setLoading(false);
-    }
-  }, [token]);
+    } catch {}
+  }, [request]);
+
+
+  const deleteVacancy = useCallback(async (id: number) => {
+    try {
+      await request('delete', `/vacancy/${id}`);
+      setVacancies((prevVacancies) => prevVacancies.filter((vacancy) => vacancy.id !== id));
+    } catch {}
+  }, [request]);
+
 
   useEffect(() => {
     fetchVacancies();
   }, [fetchVacancies]);
 
-  return { vacancies, loading, error, fetchVacancies };
+  return { vacancies, loading, error, fetchVacancies, deleteVacancy };
 
 };
 

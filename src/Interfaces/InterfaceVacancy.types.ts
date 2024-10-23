@@ -19,6 +19,8 @@ export interface TableContextType {
   vacancies: Vacancy[];
   loading: boolean;
   error: string | null;
+  fetchVacancies: () => Promise<void>;
+  deleteVacancy: (id: number) => Promise<void>;
 }
 
 export interface VacanciesProviderProps {

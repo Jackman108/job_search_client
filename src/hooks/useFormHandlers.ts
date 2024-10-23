@@ -4,7 +4,7 @@ import { Errors, HandleSubmitParams, UseFormHandlersParams } from '../Interfaces
 import { DEFAULT_VACANCY_PARAMS, FormParams } from '../config/formConfigs';
 import { useAuth } from '../context/useAuthContext';
 import { buildVacancyUrl } from '../utils/buildVacancyUrl';
-import { handleStop, handleSubmit } from './useSubmitHandlers';
+import useSubmitHandlers from './useSubmitHandlers';
 
 const useFormHandlers = (): UseFormHandlersParams => {
   const [email, setEmail] = useState('');
@@ -13,7 +13,8 @@ const useFormHandlers = (): UseFormHandlersParams => {
   const [message, setMessage] = useState('');
   const [vacancyUrl, setVacancyUrl] = useState(buildVacancyUrl(DEFAULT_VACANCY_PARAMS));
   const [errors, setErrors] = useState<Errors>({});
-  const { userId, isLoading, setIsLoading  } = useAuth();
+  const { token, isLoading, setIsLoading  } = useAuth();
+  const { handleSubmit, handleStop } = useSubmitHandlers();
 
   const handleInputChange = (setter: Dispatch<SetStateAction<string>>) => (
     e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
@@ -33,7 +34,7 @@ const useFormHandlers = (): UseFormHandlersParams => {
     setIsLoading(true);
 
     const params: HandleSubmitParams = {
-      userId: userId ?? '',
+      token,
       email,
       password,
       position,
@@ -47,12 +48,12 @@ const useFormHandlers = (): UseFormHandlersParams => {
     } finally {
       setIsLoading(false); 
     }
-  }, [userId, email, password, position, message, vacancyUrl, setIsLoading]);
+  }, [token, email, password, position, message, vacancyUrl, setIsLoading, handleSubmit]);
 
   const stopHandler = useCallback(async () => {
     await handleStop();
     setIsLoading(false);
-  }, [setIsLoading]);
+  }, [setIsLoading, handleStop]);
 
   return {
     email,

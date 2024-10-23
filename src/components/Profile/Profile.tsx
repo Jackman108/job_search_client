@@ -10,7 +10,6 @@ import { useUserHandlers } from '../../hooks/useUserHandlers';
 import UserChange from '../UserChange/UserChange';
 import UserInfo from '../UserInfo/UserInfo';
 import styles from './Profile.module.css';
-import useFetchUserProfile from '../../hooks/useFetchUserProfile';
 
 const Profile: FC<ProfileProps> = () => {
   const {

@@ -6,7 +6,6 @@ import { RenderArrayProps } from '../../Interfaces/InterfaceDataDisplay.types';
 
 const RenderArray: FC<RenderArrayProps> = ({ config, userId , data}) => {
     const {
-
         formData,
         isEditing,
         handleEditClick,
