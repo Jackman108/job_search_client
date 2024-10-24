@@ -3,7 +3,7 @@ import { ConfigItem } from "../Interfaces/InterfaceDataDisplay.types";
 export const dataDisplayConfig: Record<string, ConfigItem> = {
     resume: {
         title: 'Резюме',
-        apiEndpoint: (userId: string) => `/resume/${userId}`,
+        apiEndpoint: () => `/resume`,
         fields: {
             full_name: 'Полное имя',
             position: 'Должность',
@@ -15,7 +15,7 @@ export const dataDisplayConfig: Record<string, ConfigItem> = {
     },
     contacts: {
         title: 'Контакты',
-        apiEndpoint: (userId: string) => `/contacts/${userId}`,
+        apiEndpoint: () => `/contacts`,
         fields: {
             phone: 'Телефон',
             email: 'Email',
@@ -25,7 +25,7 @@ export const dataDisplayConfig: Record<string, ConfigItem> = {
 
     skills: {
         title: 'Навыки',
-        apiEndpoint: (userId: string) => `/skills/${userId}`,
+        apiEndpoint: () => `/skills`,
         fields: {
             skill_name: 'Навык',
             proficiency_level: 'Уровень'
@@ -33,7 +33,7 @@ export const dataDisplayConfig: Record<string, ConfigItem> = {
     },
     workExperience: {
         title: 'Опыт работы',
-        apiEndpoint: (userId: string) => `/work_experience/${userId}`,
+        apiEndpoint: () => `/work_experience`,
         fields: {
             company_name: 'Компания',
             position: 'Должность',

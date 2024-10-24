@@ -1,16 +1,17 @@
 import { useEffect, useState } from 'react';
 import { ConfigItem } from '../Interfaces/InterfaceDataDisplay.types';
-import { API_URL } from '../config/serverConfig';
 import { createDataForType, deleteDataForType, updateDataForType } from './useFetchData';
+import { useAuth } from '../context/useAuthContext';
 
-export const useRenderArray = (config: ConfigItem, userId: string, initialData: any[]) => {
+export const useRenderArray = (config: ConfigItem, initialData: any[]) => {
     const [formData, setFormData] = useState<Record<string, any>>({});
     const [isEditing, setIsEditing] = useState<Record<string, boolean>>({});
     const [fetchedData, setFetchedData] = useState<any[]>(initialData);
+    const { token } = useAuth();
 
     useEffect(() => {
         setFetchedData(initialData);
-    }, [initialData]);
+    }, [initialData, fetchedData]);
 
     const handleEditClick = (item: any) => {
         setFormData({ ...item });
@@ -23,7 +24,8 @@ export const useRenderArray = (config: ConfigItem, userId: string, initialData: 
     };
 
     const handleDeleteClick = async (id: number) => {
-        const { error } = await deleteDataForType(`${config.apiEndpoint(userId)}/${id}`);
+        if (!token) return;
+        const { error } = await deleteDataForType(`${config.apiEndpoint()}/${id}`, token);
         if (!error) {
             setFetchedData((prev) => prev.filter(item => item.id !== id));
         } else {
@@ -33,14 +35,19 @@ export const useRenderArray = (config: ConfigItem, userId: string, initialData: 
 
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>, id: number) => {
         e.preventDefault();
+        if (!token) {
+            return;
+        }
+
         const method = isEditing[id] ? updateDataForType : createDataForType;
-        const endpoint = `${API_URL}${config.apiEndpoint(userId)}/${id || ''}`;
+        const endpoint = id ? `${config.apiEndpoint()}/${id}` : `${config.apiEndpoint()}`;
 
         try {
-            const { error } = await method(endpoint, formData);
+            const { error } = await method(endpoint, formData, token);
             if (!error) {
-                setIsEditing((prev) => ({ ...prev, [id]: true }));
                 setFetchedData((prev) => prev.map(item => (item.id === id ? { ...formData, id } : item)));
+                setIsEditing((prev) => ({ ...prev, [id]: false }));
+                setFormData({});
             }
         } catch (error) {
             console.error('Ошибка при сохранении', error);
@@ -52,17 +59,14 @@ export const useRenderArray = (config: ConfigItem, userId: string, initialData: 
         setFormData((prev) => ({ ...prev, [key]: value }));
     };
 
-
-
     return {
-        data: fetchedData,
         formData,
         isEditing,
+        fetchedData,
         handleEditClick,
         handleCancelEdit,
         handleDeleteClick,
-        handleSubmit,
         handleInputChange,
-        setFormData,
+        handleSubmit,
     };
 };

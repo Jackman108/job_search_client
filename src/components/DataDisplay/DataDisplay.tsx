@@ -15,7 +15,6 @@ export const DataDisplay: FC<DataDisplayProps> = ({ config }) => {
     formData,
     isCreating,
     isEditing,
-    userId,
     handleCreateClick,
     handleEditClick,
     handleDeleteClick,
@@ -24,7 +23,7 @@ export const DataDisplay: FC<DataDisplayProps> = ({ config }) => {
     handleCancelClick,
   } = useDataDisplay(config);
 
-  if (!userId) return <div>Ошибка: Не задан userId</div>;
+  if (!data) return <div>Ошибка: Нет data</div>;
   
   const renderField = (key: string, label: string) => (
     <div key={key} className={styles.formField}>
@@ -67,7 +66,7 @@ export const DataDisplay: FC<DataDisplayProps> = ({ config }) => {
     <div className={styles.dataContainer}>
       {type === 'skills' || type === 'workExperience' ? (
         <>
-          <RenderArray config={config[type]} data={data[type]} userId={userId} />
+          <RenderArray config={config[type]} data={data[type]} />
           <Button onClick={() => handleCreateClick(type)} variant="primary">Добавить +</Button>
         </>
       ) : (

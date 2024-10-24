@@ -4,16 +4,17 @@ import Button from '../../UI/Button/Button';
 import styles from './RenderArray.module.css';
 import { RenderArrayProps } from '../../Interfaces/InterfaceDataDisplay.types';
 
-const RenderArray: FC<RenderArrayProps> = ({ config, userId , data}) => {
+const RenderArray: FC<RenderArrayProps> = ({ config, data}) => {
     const {
         formData,
         isEditing,
+        fetchedData,
         handleEditClick,
+        handleCancelEdit,
         handleDeleteClick,
         handleInputChange,
         handleSubmit,
-        handleCancelEdit,
-    } = useRenderArray(config, userId, data);
+} = useRenderArray(config, data);
 
     const renderForm = (item: any) => (
       <form onSubmit={(e) => handleSubmit(e, item.id)}>
@@ -21,19 +22,11 @@ const RenderArray: FC<RenderArrayProps> = ({ config, userId , data}) => {
               <div key={key} className={styles.formField}>
                   <label>
                       {label}
-                      {key === 'start_date' || key === 'end_date' ? (
-                            <input
-                                type="date"
-                                value={formData[key] || ''}
-                                onChange={(e) => handleInputChange(e, key)}
-                            />
-                        ) : (
-                            <input
-                                type="text"
-                                value={formData[key] || ''}
-                                onChange={(e) => handleInputChange(e, key)}
-                            />
-                        )}
+                        <input
+                            type={key === 'start_date' || key === 'end_date' ? 'date' : 'text'}
+                            value={formData[key] || ''} 
+                            onChange={(e) => handleInputChange(e, key)}
+                        />
                   </label>
               </div>
           ))}
@@ -63,8 +56,8 @@ const RenderArray: FC<RenderArrayProps> = ({ config, userId , data}) => {
 
 return (
     <ul className={styles.dataContainer}>
-        {data?.length ? (
-            data.map(renderDataItem)
+        {fetchedData?.length ? (
+            fetchedData.map(renderDataItem)
         ) : (
             <div>Нет данных для отображения</div>
         )}

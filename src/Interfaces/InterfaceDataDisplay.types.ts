@@ -5,7 +5,7 @@ export interface FieldConfig {
 
 export interface ConfigItem {
     title: string;
-    apiEndpoint: (userId: string) => string;
+    apiEndpoint: () => string;
     fields: FieldConfig;
 }
 
@@ -20,6 +20,5 @@ export interface DataItem {
 
 export interface RenderArrayProps {
   config: ConfigItem;
-  userId: string;
   data: any[];
 }

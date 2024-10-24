@@ -11,34 +11,55 @@ interface FetchDataForTypeResponse<T = any> {
 const handleRequest = async <T>(
   request: () => Promise<AxiosResponse<T>>
 ): Promise<FetchDataForTypeResponse<T>> => {
-    try {
+  try {
     const response = await request();
     return { data: response.data, error: null, notFound: false };
   } catch (error: any) {
-    if (error.response && error.response.status === 404) {
-      return { data: null, error: 'Нет данных', notFound: true };
+    if (error.response) {
+      console.error('Error response from server:', error.response.data);
+      return { data: null, error: error.response.data.message || 'Ошибка при выполнении запроса', notFound: false };
     }
+    console.error('Unexpected error:', error);
     return { data: null, error: 'Ошибка при выполнении запроса', notFound: false };
   }
 };
+
 export const fetchDataForType = async <T = any>(
-  endpoint: string
+  endpoint: string,
+  token: string
 ): Promise<FetchDataForTypeResponse<T>> =>
-  handleRequest(() => axios.get<T>(`${API_URL}${endpoint}`, { withCredentials: true }));
+  handleRequest(() => axios.get<T>(
+    `${API_URL}${endpoint}`,
+    { headers: { Authorization: token }, withCredentials: true }
+  ));
 
 export const createDataForType = async <T = any>(
   endpoint: string,
-  data: T
+  data: T,
+  token: string
 ): Promise<FetchDataForTypeResponse<T>> =>
-  handleRequest(() => axios.post<T>(`${API_URL}${endpoint}`, data, { withCredentials: true }));
+  handleRequest(() => axios.post<T>(
+    `${API_URL}${endpoint}`,
+    data,
+    { headers: { Authorization: token }, withCredentials: true }
+  ));
 
 export const updateDataForType = async <T = any>(
   endpoint: string,
-  data: T
+  data: T,
+  token: string
 ): Promise<FetchDataForTypeResponse<T>> =>
-  handleRequest(() => axios.put<T>(`${API_URL}${endpoint}`, data, { withCredentials: true }));
+  handleRequest(() => axios.put<T>(
+    `${API_URL}${endpoint}`,
+    data,
+    { headers: { Authorization: token }, withCredentials: true }
+  ));
 
 export const deleteDataForType = async (
-  endpoint: string
+  endpoint: string,
+  token: string
 ): Promise<FetchDataForTypeResponse<null>> =>
-  handleRequest(() => axios.delete(`${API_URL}${endpoint}`, { withCredentials: true }))
+  handleRequest(() => axios.delete(
+    `${API_URL}${endpoint}`,
+    { headers: { Authorization: token }, withCredentials: true }
+    ))

@@ -3,7 +3,7 @@
 import { useCallback, useEffect, useState } from 'react';
 import { Vacancy } from '../Interfaces/InterfaceVacancy.types';
 import useApi from '../api/api';
-import { formatAndSortVacancies } from '../utils/formaUtils';
+import { formatAndSortVacancies } from '../utils/formatUtils';
 
 const useFetchVacancies = () => {
   const [vacancies, setVacancies] = useState<Vacancy[]>([]);

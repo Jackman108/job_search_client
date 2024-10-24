@@ -4,7 +4,6 @@ import { DataDisplayProps } from '../Interfaces/InterfaceDataDisplay.types';
 import { useAuth } from '../context/useAuthContext';
 import { createDataForType, deleteDataForType, fetchDataForType, updateDataForType } from './useFetchData';
 
-
 export const useDataDisplay = (config: DataDisplayProps['config']) => {
     const [data, setData] = useState<Record<string, any>>({});
     const [loading, setLoading] = useState<Record<string, boolean>>({});
@@ -13,10 +12,10 @@ export const useDataDisplay = (config: DataDisplayProps['config']) => {
     const [formData, setFormData] = useState<Record<string, any>>({});
     const [isCreating, setIsCreating] = useState<Record<string, boolean>>({});
     const [isEditing, setIsEditing] = useState<Record<string, boolean>>({});
-        const { userId } = useAuth();
+    const { token } = useAuth();
 
     const loadData = useCallback(async () => {
-        if (!userId) {
+        if (!token) {
             setError({ global: 'Ошибка: Не задан userId' });
             return;
         }
@@ -27,7 +26,7 @@ export const useDataDisplay = (config: DataDisplayProps['config']) => {
 
         await Promise.all(Object.entries(config).map(async ([type, item]) => {
             newLoading[type] = true;
-            const { data: fetchedData, error } = await fetchDataForType(item.apiEndpoint(userId));
+            const { data: fetchedData, error } = await fetchDataForType(item.apiEndpoint(), token);
             newData[type] = fetchedData;
             newLoading[type] = false;
             newNotFound[type] = !fetchedData;
@@ -37,7 +36,7 @@ export const useDataDisplay = (config: DataDisplayProps['config']) => {
         setData(newData);
         setLoading(newLoading);
         setNotFound(newNotFound);
-    }, [config, userId]);
+    }, [config, token]);
 
     useEffect(() => {
         loadData();
@@ -60,8 +59,8 @@ export const useDataDisplay = (config: DataDisplayProps['config']) => {
     };
 
     const handleDeleteClick = async (type: string) => {
-        if (userId) {
-            const { error } = await deleteDataForType(config[type].apiEndpoint(userId));
+        if (token) {
+            const { error } = await deleteDataForType(config[type].apiEndpoint(), token);
             if (!error) {
                 await loadData();
             } else {
@@ -77,11 +76,11 @@ export const useDataDisplay = (config: DataDisplayProps['config']) => {
 
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>, type: string) => {
         e.preventDefault();
-        if (config[type] && userId) {
-            const endpoint = config[type].apiEndpoint(userId);
+        if (config[type] && token) {
+            const endpoint = config[type].apiEndpoint();
             try {
                 const method = isCreating[type] ? createDataForType : updateDataForType;
-                const { error } = await method(endpoint, formData);
+                const { error } = await method(endpoint, formData, token);
                 if (!error) {
                     await loadData();
                     handleCancelClick(type);
@@ -105,7 +104,6 @@ export const useDataDisplay = (config: DataDisplayProps['config']) => {
         formData,
         isCreating,
         isEditing,
-        userId,
         handleCreateClick,
         handleEditClick,
         handleDeleteClick,
