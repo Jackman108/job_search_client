@@ -1,0 +1,35 @@
+// hooks/useDataOperationsById.ts
+import { useState, useCallback } from 'react';
+import { ConfigItem } from '../Interfaces/InterfaceDataDisplay.types';
+import useApi from '../api/api';
+
+export const useDataOperationsById = (config: ConfigItem) => {
+  const { request, loading, error } = useApi();
+  const [fetchedData, setFetchedData] = useState<any[]>([]);
+
+  const loadData = useCallback(async () => {
+    if (!config.apiEndpoint) return;
+    const data = await request('get', config.apiEndpoint());
+    setFetchedData(data);
+  }, [config, request]);
+
+  const deleteItem = async (id: number) => {
+    await request('delete', `${config.apiEndpoint()}/${id}`);
+    setFetchedData((prev) => prev.filter(item => item.id !== id));
+  };
+
+  const saveItem = async (id: number, formData: any, isEditing: boolean) => {
+    const method = isEditing ? 'put' : 'post';
+    await request(method, `${config.apiEndpoint()}/${id}`, formData);
+    loadData();
+  };
+
+  return {
+    fetchedData,
+    loadData,
+    deleteItem,
+    saveItem,
+    loading,
+    error,
+  };
+};

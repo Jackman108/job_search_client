@@ -1,39 +1,122 @@
-.container {
-  max-width: 800px;
-  margin: 0 auto;
-  padding: 20px;
-  background-color: #ffffff;
+/* Основной контейнер для DataDisplay */
+.dataDisplaySection {
+  margin: 20px auto;
+  padding: 16px;
+  max-width: 600px;
+  border: 1px solid #e0e0e0;
   border-radius: 8px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  background-color: #f9f9f9;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
 }
 
-h1 {
-  font-size: 28px;
+/* Стиль для заголовка */
+.dataDisplaySection h1 {
+  font-size: 1.5rem;
   color: #333;
-  margin-bottom: 20px;
+  margin-bottom: 16px;
+  text-align: center;
 }
 
-.form {
-  margin-bottom: 20px;
+/* Кнопки */
+.buttonGroup button,
+.dataField button {
+  padding: 8px 16px;
+  font-size: 1rem;
+  border-radius: 4px;
+  border: none;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.buttonGroup button.primary {
+  background-color: #007bff;
+  color: #fff;
+}
+
+.buttonGroup button.secondary,
+.dataField button.secondary {
+  background-color: #6c757d;
+  color: #fff;
+}
+
+.buttonGroup button.primary:hover {
+  background-color: #0056b3;
+}
+
+.buttonGroup button.secondary:hover,
+.dataField button.secondary:hover {
+  background-color: #5a6268;
+}
+
+/* Формы */
+.formField {
   display: flex;
   flex-direction: column;
+  margin-bottom: 12px;
 }
 
-.form h2 {
-  font-size: 22px;
+.formField label {
+  font-size: 1rem;
   color: #555;
-  margin-bottom: 10px;
+  margin-bottom: 4px;
 }
 
-.saveButton {
-  padding: 10px 20px;
-  background-color: #007bff;
-  color: #ffffff;
-  border: none;
-  border-radius: 5px;
-  cursor: pointer;
+.formField input[type="text"],
+.formField input[type="date"],
+.formField input[type="checkbox"] {
+  padding: 8px;
+  font-size: 1rem;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  width: 100%;
+  box-sizing: border-box;
 }
 
-.saveButton:hover {
-  background-color: #0056b3;
+/* Стиль для индикации ошибок или загрузки */
+.dataDisplaySection .loading,
+.dataDisplaySection .notFound {
+  text-align: center;
+  color: #666;
+  font-style: italic;
+  margin-top: 16px;
+}
+
+/* Контейнер данных */
+.dataContainer {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.dataField {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 8px;
+  border-bottom: 1px solid #e0e0e0;
+}
+
+.dataField strong {
+  font-weight: 500;
+  color: #333;
+}
+
+/* Иконка для кнопки редактирования */
+.editIcon {
+  width: 16px;
+  height: 16px;
+  margin-right: 8px;
+}
+
+/* Отдельная стилизация для кнопок на телефонах */
+@media (max-width: 768px) {
+  .buttonGroup button,
+  .dataField button {
+    padding: 10px 12px;
+    font-size: 0.875rem;
+  }
+
+  .dataDisplaySection h1 {
+    font-size: 1.25rem;
+  }
 }

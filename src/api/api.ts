@@ -18,14 +18,11 @@ const useApi = () => {
       setLoading(true);
       setError(null);
       try {
-        const config = {
-          headers: { Authorization: token },
-        };
         const response = await axiosInstance.request({
           method,
           url: endpoint,
           data,
-          ...config,
+          headers: { Authorization: token },
         });
         return response.data;
       } catch (err) {

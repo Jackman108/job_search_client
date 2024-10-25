@@ -7,7 +7,6 @@ const useSubmitHandlers = () => {
   const { request } = useApi();
 
   const handleSubmit = async ({
-    token,
     email,
     password,
     position,
@@ -23,7 +22,6 @@ const useSubmitHandlers = () => {
       return;
     }
     setIsLoading(true);
-
     await request('post', '/start', { email, password, position, message, vacancyUrl });
     setIsLoading(false);
   };

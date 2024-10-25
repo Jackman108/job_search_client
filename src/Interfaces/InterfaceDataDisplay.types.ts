@@ -18,7 +18,6 @@ export interface DataItem {
   [key: string]: any; 
 }
 
-export interface RenderArrayProps {
+export interface RenderFormArrayProps {
   config: ConfigItem;
-  data: any[];
 }

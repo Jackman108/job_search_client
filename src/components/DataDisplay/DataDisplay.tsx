@@ -2,7 +2,7 @@ import { FC } from 'react';
 import { Link } from 'react-router-dom';
 import { DataDisplayProps } from '../../Interfaces/InterfaceDataDisplay.types';
 import Button from '../../UI/Button/Button';
-import RenderArray from '../../UI/RenderArray/RenderArray';
+import RenderFormArray from '../RenderFormArray/RenderFormArray';
 import { useDataDisplay } from '../../hooks/useDataDisplay';
 import styles from './DataDisplay.module.css';
 
@@ -22,6 +22,7 @@ export const DataDisplay: FC<DataDisplayProps> = ({ config }) => {
     handleInputChange,
     handleCancelClick,
   } = useDataDisplay(config);
+  
 
   if (!data) return <div>Ошибка: Нет data</div>;
   
@@ -66,7 +67,7 @@ export const DataDisplay: FC<DataDisplayProps> = ({ config }) => {
     <div className={styles.dataContainer}>
       {type === 'skills' || type === 'workExperience' ? (
         <>
-          <RenderArray config={config[type]} data={data[type]} />
+          <RenderFormArray config={config[type]}  />
           <Button onClick={() => handleCreateClick(type)} variant="primary">Добавить +</Button>
         </>
       ) : (

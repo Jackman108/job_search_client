@@ -1,0 +1,117 @@
+/* Основной контейнер данных */
+.dataContainer {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+/* Стиль для отдельного элемента данных */
+.dataField {
+  padding: 16px;
+  border: 1px solid #e0e0e0;
+  border-radius: 8px;
+  background-color: #ffffff;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.05);
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.dataItem {
+  display: flex;
+  justify-content: space-between;
+  font-size: 1rem;
+  color: #333;
+}
+
+.dataItem strong {
+  font-weight: 500;
+  color: #555;
+}
+
+/* Поля формы */
+.formField {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  margin-bottom: 12px;
+}
+
+.formField label {
+  font-size: 1rem;
+  color: #555;
+}
+
+.formField input[type="text"],
+.formField input[type="date"] {
+  padding: 8px;
+  font-size: 1rem;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  width: 100%;
+  box-sizing: border-box;
+  transition: border-color 0.3s;
+}
+
+.formField input[type="text"]:focus,
+.formField input[type="date"]:focus {
+  border-color: #007bff;
+  outline: none;
+}
+
+/* Кнопки */
+.buttonGroup {
+  display: flex;
+  gap: 8px;
+  justify-content: space-around;
+}
+
+.dataField button {
+  padding: 8px 16px;
+  font-size: 1rem;
+  border-radius: 4px;
+  border: none;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.dataField button.primary {
+  background-color: #007bff;
+  color: #fff;
+}
+
+.dataField button.secondary {
+  background-color: #6c757d;
+  color: #fff;
+}
+
+.dataField button.primary:hover {
+  background-color: #0056b3;
+}
+
+.dataField button.secondary:hover {
+  background-color: #5a6268;
+}
+
+/* Ошибки и загрузка */
+.error {
+  color: #d9534f;
+  font-size: 0.875rem;
+  text-align: center;
+  padding: 8px;
+}
+
+.loading {
+  text-align: center;
+  color: #555;
+  font-style: italic;
+}
+/* Иконка для кнопки редактирования */
+.editIcon {
+  width: 16px;
+  height: 16px;
+  margin-right: 8px;
+}

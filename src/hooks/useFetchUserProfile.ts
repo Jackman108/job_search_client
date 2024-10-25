@@ -1,9 +1,6 @@
 // src/hooks/useFetchUserProfile.ts
-import { useState, useCallback } from 'react';
-import axios from 'axios';
+import { useCallback, useState } from 'react';
 import { UserProfile } from '../Interfaces/InterfaceProfile.types';
-import { API_URL } from '../config/serverConfig';
-import { useAuth } from '../context/useAuthContext';
 import useApi from '../api/api';
 
 const useFetchUserProfile = () => {
