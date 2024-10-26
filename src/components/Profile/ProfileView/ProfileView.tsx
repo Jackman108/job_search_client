@@ -1,13 +1,13 @@
 // src/components/User/ProfileInfo.tsx
 import React from 'react';
-import styles from './UserInfo.module.css';
-import { UserInfoProps } from '../../Interfaces/InterfaceProfile.types';
-import Button from '../../UI/Button/Button';
-import { USER_TEXTS, BUTTON_TEXTS } from '../../config/formConfigs';
-import Avatar from '../../UI/Avatar/Avatar';
-import RenderRow from '../../UI/RenderRow/RenderRow';
+import { UserInfoProps } from '../../../Interfaces/InterfaceProfile.types';
+import Avatar from '../../../UI/Avatar/Avatar';
+import Button from '../../../UI/Button/Button';
+import RenderRow from '../../../UI/RenderRow/RenderRow';
+import { BUTTON_TEXTS, USER_TEXTS } from '../../../config/formConfigs';
+import styles from './ProfileView.module.css';
 
-const UserInfo: React.FC<UserInfoProps> = ({ userInfo, onEdit, onSignOut }) => (
+const ProfileView: React.FC<UserInfoProps> = ({ userInfo, onEdit, onSignOut }) => (
   <div className={styles.profileInfo}>
     <Avatar src={userInfo.avatar} className={styles.avatar} />
     
@@ -31,4 +31,4 @@ const UserInfo: React.FC<UserInfoProps> = ({ userInfo, onEdit, onSignOut }) => (
   </div>
 );
 
-export default UserInfo;
+export default ProfileView;

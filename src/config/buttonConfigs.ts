@@ -1,8 +1,8 @@
 // src/config/buttonConfigs.ts
-import VacancyForm from '../components/VacancyForm/VacancyForm';
-import Profile from '../components/Profile/Profile';
 import { ButtonConfig } from '../Interfaces/InterfaceComponent.types';
-import Resume from '../components/Resume/Resume';
+import Profile from '../components/Profile/Profile';
+import Resume from '../components/Resume/ResumeButton/ResumeButton';
+import VacancyForm from '../components/VacancyForm/VacancyForm';
 
 export const buttonConfigs: ButtonConfig<any>[] = [
     {

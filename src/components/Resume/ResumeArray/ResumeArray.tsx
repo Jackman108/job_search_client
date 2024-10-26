@@ -1,18 +1,18 @@
 import { FC, useEffect } from 'react';
-import { RenderFormArrayProps } from '../../Interfaces/InterfaceDataDisplay.types';
-import Button from '../../UI/Button/Button';
-import { useDataOperationsById } from '../../hooks/useDataOperationsById';
-import { useFormById } from '../../hooks/useFormById';
-import styles from './RenderFormArray.module.css';
+import { ResumeArrayProps } from '../../../Interfaces/InterfaceResume.types';
+import Button from '../../../UI/Button/Button';
+import { useFeatchResumeById } from '../../../hooks/useFeatchResumeById';
+import { useResumeHandlersById } from '../../../hooks/useResumeHandlersById';
+import styles from './ResumeArray.module.css';
 
-const RenderFormArray: FC<RenderFormArrayProps> = ({ config }) => {
+const ResumeArray: FC<ResumeArrayProps> = ({ config }) => {
     const {
         formData,
         isEditing,
         handleEditClick,
         handleCancelClick,
         handleInputChange,
-    } = useFormById();
+    } = useResumeHandlersById();
     
     const { 
         fetchedData, 
@@ -20,7 +20,7 @@ const RenderFormArray: FC<RenderFormArrayProps> = ({ config }) => {
         loadData,
         deleteItem, 
         saveItem 
-    } = useDataOperationsById(config);
+    } = useFeatchResumeById(config);
 
     useEffect(() => {
         loadData();
@@ -82,4 +82,4 @@ const RenderFormArray: FC<RenderFormArrayProps> = ({ config }) => {
     );
 };
 
-export default RenderFormArray;
+export default ResumeArray;

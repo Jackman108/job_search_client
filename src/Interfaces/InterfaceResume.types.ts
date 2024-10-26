@@ -1,41 +1,52 @@
-export interface ResumeData {
-  user_id: string;
-  full_name: string;
-  position: string;
-  employment_type: string;
-  work_schedule: string;
-  travel_time: string;
-  business_trip_readiness: boolean;
-  created_at: string;
-  updated_at: string;
+
+export interface FieldConfig {
+  [key: string]: string;
 }
 
-export interface ContactData {
-  id: number;
-  resume_id: number;
-  phone: string;
-  email: string;
-  personal_site: string;
+export interface ConfigItem {
+  title: string;
+  apiEndpoint: () => string;
+  fields: FieldConfig;
 }
 
-export interface SkillData {
-  id: number;
-  resume_id: number;
-  skill_name: string;
-  proficiency_level: string;
+export interface ResumeConfigProps {
+  config: Record<string, ConfigItem>
 }
 
-export interface WorkExperienceData {
-  id: number;
-  resume_id: number;
-  company_name: string;
-  position: string;
-  start_date: string;
-  end_date: string;
-  description: string;
+export interface ResumeArrayProps {
+  config: ConfigItem;
 }
 
 export interface ResumeProps {
   onClose: () => void;
   isOpen: boolean;
+}
+
+export interface ResumeFieldProps {
+  fieldKey: string;
+  label: string;
+  value: any;
+  onChange: (e: React.ChangeEvent<HTMLInputElement>, key: string) => void;
+  formData: Record<string, any>;
+  fieldType: 'text' | 'checkbox' | 'radio';
+  options?: string[];
+}
+
+export interface ResumeViewProps {
+  type: string;
+  fields: Record<string, string>;
+  data: Record<string, any>;
+  config: Record<string, any>;
+  onEditClick: (type: string, data: any) => void;
+  onDeleteClick: (type: string) => void;
+  onCreateClick: (type: string) => void;
+}
+
+export interface ResumeChangeProps {
+  type: string;
+  fields: Record<string, string>;
+  formData: Record<string, any>;
+  onCancel: () => void;
+  handleSubmit: (e: React.FormEvent<HTMLFormElement>, type: string) => Promise<void>;
+  handleInputChange: (e: React.ChangeEvent<HTMLInputElement>, key: string) => void;
 }

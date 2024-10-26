@@ -1,8 +1,8 @@
 // src/App.tsx
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import './App.css';
-import { DataDisplay } from './components/DataDisplay/DataDisplay';
 import Layout from './components/Layout/Layout';
+import { Resume } from './components/Resume/Resume';
 import VacanciesTable from './components/VacanciesTable/VacanciesTable';
 import { AuthProvider } from './context/AuthProvider';
 import TableProvider from './context/TableProvider';
@@ -20,7 +20,7 @@ function App() {
               <TableProvider>
                 <Routes>
                   <Route path="/" element={<VacanciesTable />} />
-                  <Route path="/resume" element={<DataDisplay  />} />
+                  <Route path="/resume" element={<Resume  />} />
                 </Routes>
               </TableProvider>
             </Layout>

@@ -7,9 +7,9 @@ import SignUp from '../../UI/SignUp/SignUp';
 import { FORM_BUTTONS, USER_TEXTS } from '../../config/formConfigs';
 import { useProfileHandlers } from '../../hooks/useProfileHandlers';
 import { useUserHandlers } from '../../hooks/useUserHandlers';
-import UserChange from '../UserChange/UserChange';
-import UserInfo from '../UserInfo/UserInfo';
 import styles from './Profile.module.css';
+import UserChange from './ProfileChange/ProfileChange';
+import ProfileView from './ProfileView/ProfileView';
 
 const Profile: FC<ProfileProps> = () => {
   const {
@@ -51,7 +51,7 @@ const Profile: FC<ProfileProps> = () => {
               handleAvatarChange={handleAvatarChange}
             />
           ) : (
-            <UserInfo
+            <ProfileView
               userInfo={userProfile}
               onEdit={() => setIsEditing(true)}
               onSignOut={handleSignOut}

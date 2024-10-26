@@ -1,18 +1,10 @@
 // src/components/Resume/ResumeChange.tsx
 import React from 'react';
-import Button from '../../UI/Button/Button';
-import { businessTripReadiness, employmentTypes, travelTimes, workSchedules } from '../../config/resumeLinesConfig';
-import styles from './DataDisplay.module.css';
+import { ResumeChangeProps } from '../../../Interfaces/InterfaceResume.types';
+import Button from '../../../UI/Button/Button';
+import { businessTripReadiness, employmentTypes, travelTimes, workSchedules } from '../../../config/resumeLinesConfig';
+import styles from '../Resume.module.css';
 import ResumeField from './ResumeField';
-
-interface ResumeChangeProps {
-  type: string;
-  fields: Record<string, string>;
-  formData: Record<string, any>;
-  onCancel: () => void;
-  handleSubmit: (e: React.FormEvent<HTMLFormElement>, type: string) => Promise<void>; 
-  handleInputChange: (e: React.ChangeEvent<HTMLInputElement>, key: string) => void;
-}
 
 const ResumeChange: React.FC<ResumeChangeProps> = ({ type, fields, formData, onCancel, handleSubmit, handleInputChange }) => (
   <form className={styles.createForm} onSubmit={(e) => handleSubmit(e, type)}>

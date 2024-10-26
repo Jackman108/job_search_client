@@ -1,26 +1,17 @@
 // src/components/Resume/ResumeView.tsx
 import { FC } from 'react';
-import Button from '../../UI/Button/Button';
-import RenderRow from '../../UI/RenderRow/RenderRow';
-import { formatValue } from '../../utils/formatValue';
-import RenderFormArray from '../RenderFormArray/RenderFormArray';
-import styles from './DataDisplay.module.css';
-
-interface ResumeViewProps {
-  type: string;
-  fields: Record<string, string>;
-  data: Record<string, any>;
-  config: Record<string, any>;
-  onEditClick: (type: string, data: any) => void;
-  onDeleteClick: (type: string) => void;
-  onCreateClick: (type: string) => void;
-}
+import { ResumeViewProps } from '../../../Interfaces/InterfaceResume.types';
+import Button from '../../../UI/Button/Button';
+import RenderRow from '../../../UI/RenderRow/RenderRow';
+import { formatValue } from '../../../utils/formatValue';
+import styles from '../Resume.module.css';
+import ResumeArray from '../ResumeArray/ResumeArray';
 
 const ResumeView: FC<ResumeViewProps> = ({ type, fields, data, config, onEditClick, onDeleteClick, onCreateClick }) => (
   <div className={styles.dataContainer}>
     {type === 'skills' || type === 'workExperience' ? (
         <>
-            <RenderFormArray config={config[type]} />
+            <ResumeArray config={config[type]} />
             <Button onClick={() => onCreateClick(type)} variant="primary">
                 Добавить +
             </Button>

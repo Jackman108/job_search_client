@@ -1,9 +1,9 @@
-// hooks/useDataOperationsById.ts
-import { useState, useCallback } from 'react';
-import { ConfigItem } from '../Interfaces/InterfaceDataDisplay.types';
+// hooks/useFeatchResumeById.ts
+import { useCallback, useState } from 'react';
+import { ConfigItem } from '../Interfaces/InterfaceResume.types';
 import useApi from '../api/api';
 
-export const useDataOperationsById = (config: ConfigItem) => {
+export const useFeatchResumeById = (config: ConfigItem) => {
   const { request, loading, error } = useApi();
   const [fetchedData, setFetchedData] = useState<any[]>([]);
 

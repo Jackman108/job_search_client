@@ -1,16 +1,7 @@
 // src/components/Resume/ResumeField.tsx
 import React from 'react';
-import styles from './DataDisplay.module.css';
-
-interface ResumeFieldProps {
-  fieldKey: string; 
-  label: string;
-  value: any;
-  onChange: (e: React.ChangeEvent<HTMLInputElement>, key: string) => void;
-  formData: Record<string, any>;
-  fieldType: 'text' | 'checkbox' | 'radio';
-  options?: string[];
-}
+import { ResumeFieldProps } from '../../../Interfaces/InterfaceResume.types';
+import styles from '../Resume.module.css';
 
 const ResumeField: React.FC<ResumeFieldProps> = ({ fieldKey, label, value, onChange, formData, fieldType, options }) => {
   const renderField = () => {

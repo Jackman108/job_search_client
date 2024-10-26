@@ -1,12 +1,12 @@
 // src/components/User/UserChange.tsx
 import React from 'react';
-import styles from '../UserChange/UserChange.module.css';
-import { UserChangeProps } from '../../Interfaces/InterfaceProfile.types';
-import Button from '../../UI/Button/Button';
-import { USER_TEXTS, BUTTON_TEXTS } from '../../config/formConfigs';
-import RenderInput from '../../UI/RenderInput/RenderInput';
-import ImagePreview from '../../UI/ImagePreview/ImagePreview';
-import ImageUploader from '../../UI/ImageUploader/ImageUploader';
+import { UserChangeProps } from '../../../Interfaces/InterfaceProfile.types';
+import Button from '../../../UI/Button/Button';
+import ImagePreview from '../../../UI/ImagePreview/ImagePreview';
+import ImageUploader from '../../../UI/ImageUploader/ImageUploader';
+import RenderInput from '../../../UI/RenderInput/RenderInput';
+import { BUTTON_TEXTS, USER_TEXTS } from '../../../config/formConfigs';
+import styles from '../ProfileChange/ProfileChange.module.css';
 
 const UserChange: React.FC<UserChangeProps> = ({
   onSave,

@@ -1,7 +1,7 @@
-// hooks/useFormById.ts
+// hooks/useResumeHandlersById.ts
 import { useState } from 'react';
 
-export const useFormById = () => {
+export const useResumeHandlersById = () => {
     const [formData, setFormData] = useState<Record<string, any>>({});
     const [isEditing, setIsEditing] = useState<Record<string, boolean>>({});
     const [isCreating, setIsCreating] = useState<Record<string, boolean>>({});

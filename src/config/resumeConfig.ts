@@ -1,4 +1,4 @@
-import { ConfigItem } from "../Interfaces/InterfaceDataDisplay.types";
+import { ConfigItem } from "../Interfaces/InterfaceResume.types";
 
 export const dataDisplayConfig: Record<string, ConfigItem> = {
     resume: {

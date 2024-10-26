@@ -1,10 +1,10 @@
 import { useCallback, useEffect } from 'react';
-import { DataDisplayProps } from '../Interfaces/InterfaceDataDisplay.types';
+import { ResumeConfigProps } from '../Interfaces/InterfaceResume.types';
 import useApi from '../api/api';
-import { useDataOperationsByType } from './useDataOperationsByType';
-import { useFormByType } from './useFormByType';
+import { useDataOperationsByType } from './useFeatchResumeByType';
+import { useResumeHandlersByType } from './useResumeHandlersByType';
 
-export const useDataDisplay = (config: DataDisplayProps['config']) => {
+export const useResume = (config: ResumeConfigProps['config']) => {
     const {
         data,
         loading,
@@ -22,7 +22,7 @@ export const useDataDisplay = (config: DataDisplayProps['config']) => {
         handleEditClick,
         handleCreateClick,
         handleCancelClick
-    } = useFormByType(data);
+    } = useResumeHandlersByType(data);
 
     const { request } = useApi();
 

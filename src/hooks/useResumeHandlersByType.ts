@@ -1,7 +1,8 @@
-import { useState, useCallback } from 'react';
+// hooks/useResumeHandlersByType.ts
+import { useCallback, useState } from 'react';
 import { businessTripReadiness } from '../config/resumeLinesConfig';
 
-export const useFormByType = (initialFormData = {}) => {
+export const useResumeHandlersByType = (initialFormData = {}) => {
     const [formData, setFormData] = useState<Record<string, any>>(initialFormData);
     const [isCreating, setIsCreating] = useState<Record<string, boolean>>({});
     const [isEditing, setIsEditing] = useState<Record<string, boolean>>({});
