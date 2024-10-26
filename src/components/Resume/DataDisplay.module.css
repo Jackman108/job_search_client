@@ -116,6 +116,7 @@
 
 /* Отдельная стилизация для кнопок на телефонах */
 @media (max-width: 768px) {
+
   .buttonGroup button,
   .dataField button {
     padding: 10px 12px;

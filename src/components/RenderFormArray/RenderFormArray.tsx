@@ -14,7 +14,8 @@ const RenderFormArray: FC<RenderFormArrayProps> = ({ config }) => {
         handleInputChange,
     } = useFormById();
     
-    const { fetchedData, 
+    const { 
+        fetchedData, 
         error, 
         loadData,
         deleteItem, 
@@ -52,7 +53,11 @@ const RenderFormArray: FC<RenderFormArrayProps> = ({ config }) => {
 
     const renderDataItem = (item: any) => (
         <li key={item.id} className={styles.dataField}>
-            {isEditing[item.id] ? renderForm(item) : (
+            {isEditing[item.id] ? renderForm(item) : renderItemData(item)}
+        </li>
+    );
+
+    const renderItemData = (item: any) => (
                 <>
                     {Object.entries(config.fields).map(([key, label]) => (
                         <div key={key} className={styles.dataItem}>
@@ -66,8 +71,7 @@ const RenderFormArray: FC<RenderFormArrayProps> = ({ config }) => {
                     <Button onClick={() => deleteItem(item.id)} variant="secondary">Удалить</Button>
                     </div>
                 </>
-            )}
-        </li>
+            
     );
 
     return (

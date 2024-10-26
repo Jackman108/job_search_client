@@ -1,4 +1,3 @@
-// useDataDisplay.ts
 import { useCallback, useEffect } from 'react';
 import { DataDisplayProps } from '../Interfaces/InterfaceDataDisplay.types';
 import useApi from '../api/api';
@@ -23,7 +22,7 @@ export const useDataDisplay = (config: DataDisplayProps['config']) => {
         handleEditClick,
         handleCreateClick,
         handleCancelClick
-    } = useFormByType();
+    } = useFormByType(data);
 
     const { request } = useApi();
 
@@ -45,6 +44,9 @@ export const useDataDisplay = (config: DataDisplayProps['config']) => {
     const saveData = async (type: string) => {
         const endpoint = config[type].apiEndpoint();
         const method = isCreating[type] ? 'post' : 'put';
+        if (formData.business_trip_readiness) {
+            formData.business_trip_readiness = formData.business_trip_readiness === 'Готов';
+        }
         try {
             await request(method, endpoint, formData);
             await loadData();

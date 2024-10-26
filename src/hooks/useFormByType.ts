@@ -1,4 +1,5 @@
 import { useState, useCallback } from 'react';
+import { businessTripReadiness } from '../config/resumeLinesConfig';
 
 export const useFormByType = (initialFormData = {}) => {
     const [formData, setFormData] = useState<Record<string, any>>(initialFormData);
@@ -6,9 +7,28 @@ export const useFormByType = (initialFormData = {}) => {
     const [isEditing, setIsEditing] = useState<Record<string, boolean>>({});
 
     const handleInputChange = useCallback((e: React.ChangeEvent<HTMLInputElement>, key: string) => {
-        const value = e.target.type === 'checkbox' ? e.target.checked : e.target.value;
-        setFormData(prev => ({ ...prev, [key]: value }));
+
+        const value = e.target.value;
+        setFormData(prev => {
+            if (e.target.type === 'radio') {
+                if (key === 'business_trip_readiness') {
+                    return { ...prev, [key]: value }; 
+                }
+                return { ...prev, [key]: value }; 
+            } else if (e.target.type === 'checkbox') {
+                const currentValues = Array.isArray(prev[key]) ? prev[key] : [];
+                if (e.target.checked) {
+                    return { ...prev, [key]: [...currentValues, value] };
+                } else {
+                    return { ...prev, [key]: currentValues.filter((item: string) => item !== value) };
+                }
+            } else {
+                return { ...prev, [key]: value };
+            }
+        });
     }, []);
+
+
 
     const resetFormData = useCallback(() => setFormData({}), []);
 
@@ -17,10 +37,14 @@ export const useFormByType = (initialFormData = {}) => {
         resetFormData();
     };
 
-    const handleEditClick = (type: string, item: any) => {
+    const handleEditClick = useCallback((type: string, item: any) => {
         setIsEditing(prev => ({ ...prev, [type]: true }));
-        setFormData({ ...item });
-    };
+        
+        setFormData({
+            ...item,
+            business_trip_readiness: item.business_trip_readiness ? businessTripReadiness[0] : businessTripReadiness[1],
+        });
+    }, []);
 
     const handleCancelClick = (type: string) => {
         setIsEditing(prev => ({ ...prev, [type]: false }));
