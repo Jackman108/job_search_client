@@ -8,7 +8,7 @@ import RenderInput from '../../../UI/RenderInput/RenderInput';
 import { BUTTON_TEXTS, USER_TEXTS } from '../../../config/formConfigs';
 import styles from '../ProfileChange/ProfileChange.module.css';
 
-const UserChange: React.FC<UserChangeProps> = ({
+const ProfileChange: React.FC<UserChangeProps> = ({
   onSave,
   onCancel,
   editProfile,
@@ -16,7 +16,6 @@ const UserChange: React.FC<UserChangeProps> = ({
   handleInputChange,
   handleAvatarChange
 }) => {
-  console.log(editProfile)
 
   return (
     <div className={styles.editForm}>
@@ -63,4 +62,4 @@ const UserChange: React.FC<UserChangeProps> = ({
   );
 };
 
-export default UserChange;
+export default ProfileChange;

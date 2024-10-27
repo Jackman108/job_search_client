@@ -5,35 +5,39 @@ import Button from '../../UI/Button/Button';
 import SignIn from '../../UI/SignIn/SignIn';
 import SignUp from '../../UI/SignUp/SignUp';
 import { FORM_BUTTONS, USER_TEXTS } from '../../config/formConfigs';
+import { useAuthHandlers } from '../../hooks/useAuthHandlers';
 import { useProfileHandlers } from '../../hooks/useProfileHandlers';
-import { useUserHandlers } from '../../hooks/useUserHandlers';
+import { useProfileFormHandlers } from '../../hooks/useProfileFormHandlers';
 import styles from './Profile.module.css';
-import UserChange from './ProfileChange/ProfileChange';
+import ProfileChange from './ProfileChange/ProfileChange';
 import ProfileView from './ProfileView/ProfileView';
 
 const Profile: FC<ProfileProps> = () => {
-  const {
+ 
+  const {  
     userProfile,
+    handleUpdateProfile,
+  } = useProfileHandlers();
+
+  const {
     isSign,
     setIsSign,
     handleSignIn,
     handleRegister,
     handleSignOut,
-    handleUpdateProfile,
     authLoading,
     authError,
-  } = useProfileHandlers();
+  } = useAuthHandlers();
 
   const {
     isEditing,
     editProfile,
     avatarPreview,
-    setEditProfile,
     setIsEditing,
     handleSave,    
     handleInputChange,
-    handleAvatarChange,    
-  } = useUserHandlers(userProfile || ({} as UserProfile));
+    handleAvatarChange,
+  } = useProfileFormHandlers(userProfile || ({} as UserProfile));
 
   
   return (
@@ -42,7 +46,7 @@ const Profile: FC<ProfileProps> = () => {
         <div className={styles.userContainer}>
           <h2>{USER_TEXTS.profileTitle}</h2>
           {isEditing ? (
-            <UserChange
+            <ProfileChange
               onSave={() => handleSave(handleUpdateProfile)}
               onCancel={() => setIsEditing(false)}
               editProfile={editProfile}
@@ -78,7 +82,7 @@ const Profile: FC<ProfileProps> = () => {
               {FORM_BUTTONS.SignUpButton}
             </Button>
           </div>
-          {isSign ? (
+          {userProfile ? (
             <SignUp onSignUp={handleRegister} error={authError} loading={authLoading} />
           ) : (
             <SignIn onSignIn={handleSignIn} error={authError} loading={authLoading} />

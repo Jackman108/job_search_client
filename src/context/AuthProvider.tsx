@@ -17,11 +17,6 @@ export const AuthProvider: FC<{ children: ReactNode }> = ({ children }) => {
         else localStorage.removeItem('token');
     }, [token]);
 
-
-    useEffect(() => {
-        localStorage.setItem('isLoading', String(isLoading));
-  }, [isLoading]);
-
     return (
         <AuthContext.Provider value={{ userId, token, isLoading, setUserId, setToken,  setIsLoading }}>
             {children}

@@ -20,15 +20,7 @@ export interface UserProps {
 
 export interface UseProfileHandlers {
   userProfile: UserProfile | null;
-  isSign: boolean;
-  setIsSign: React.Dispatch<React.SetStateAction<boolean>>;
-  formError: string | null;
-  handleSignIn: (email: string, password: string) => Promise<void>;
-  handleRegister: (email: string, password: string, passwordRepeat: string) => Promise<void>;
-  handleSignOut: () => void;
   handleUpdateProfile: (updatedProfile: UserProfile) => Promise<void>;
-  authLoading: boolean;
-  authError: string | null;
 }
 
 export interface UserInfoProps {

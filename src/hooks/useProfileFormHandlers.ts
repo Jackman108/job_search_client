@@ -1,18 +1,23 @@
-import { useCallback, useEffect, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import { UserProfile } from '../Interfaces/InterfaceProfile.types';
 import useFetchUserProfile from './useFetchUserProfile';
 
-export const useUserHandlers = (initialUserInfo: UserProfile) => {
+export const useProfileFormHandlers = (initialUserInfo: UserProfile) => {
   const [isEditing, setIsEditing] = useState(false);
   const [editProfile, setEditProfile] = useState<UserProfile>(initialUserInfo);
   const [avatarPreview, setAvatarPreview] = useState<string>(initialUserInfo.avatar || '');
-  
-  useEffect(() => {
-    setEditProfile(initialUserInfo);
-    setAvatarPreview(initialUserInfo.avatar || '');
-  }, [initialUserInfo]);
-
   const { changeUserProfile } = useFetchUserProfile();
+
+  const prevInitialUserInfo = useRef(JSON.stringify(initialUserInfo));
+
+  useEffect(() => {
+    if (prevInitialUserInfo.current !== JSON.stringify(initialUserInfo)) {
+      setEditProfile(initialUserInfo);
+      setAvatarPreview(initialUserInfo.avatar || '');
+      setIsEditing(false);
+      prevInitialUserInfo.current = JSON.stringify(initialUserInfo);
+    }
+  }, [initialUserInfo]);
 
   const handleInputChange = useCallback((e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target;
@@ -32,7 +37,7 @@ export const useUserHandlers = (initialUserInfo: UserProfile) => {
   }, []);
 
   const handleSave = useCallback(async (onUpdateProfile: (editProfile: UserProfile) => void) => {
-        try {
+    try {
       const updatedProfile = await changeUserProfile(editProfile);
       onUpdateProfile(updatedProfile);
       setIsEditing(false);
@@ -45,8 +50,7 @@ export const useUserHandlers = (initialUserInfo: UserProfile) => {
     isEditing,
     editProfile,
     avatarPreview,
-    setEditProfile,
-    setIsEditing,    
+    setIsEditing,
     handleInputChange,
     handleAvatarChange,
     handleSave,

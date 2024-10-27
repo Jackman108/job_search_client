@@ -26,7 +26,7 @@ const useFetchUserProfile = () => {
     }
   }, [request]);
   
-  return { loading, error, userProfile, fetchUserProfile, changeUserProfile, };
+  return { loading, error, userProfile, fetchUserProfile, changeUserProfile, setUserProfile};
 };
 
 export default useFetchUserProfile;

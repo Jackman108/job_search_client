@@ -1,74 +1,32 @@
-import { useState, useCallback, useEffect } from 'react';
-import useFetchAuth from '../hooks/useFetchAuth';
-import useFetchUserProfile from '../hooks/useFetchUserProfile';
+import { useCallback, useEffect } from 'react';
 import { UseProfileHandlers } from '../Interfaces/InterfaceProfile.types';
 import { useAuth } from '../context/useAuthContext';
+import useFetchUserProfile from '../hooks/useFetchUserProfile';
 
 export const useProfileHandlers = (): UseProfileHandlers => {
-    const { login, register, logout, error: authError, loading: authLoading } = useFetchAuth();
     const { token } = useAuth();
-    const { fetchUserProfile, userProfile, error: profileError } = useFetchUserProfile();
-    
-    const [isSign, setIsSign] = useState<boolean>(!!token);
-    const [formError, setFormError] = useState<string | null>(null);
+    const { fetchUserProfile, userProfile, setUserProfile } = useFetchUserProfile();
 
     useEffect(() => {
-        if (token && !userProfile) {
+        if (token ) {
             fetchUserProfile();
+        } else {
+            setUserProfile(null); 
         }
-    }, [token, fetchUserProfile, userProfile]);
-
-    const handleSignIn = useCallback(async (email: string, password: string) => {
-        setFormError(null);
-        try {
-            await login(email, password);
-        } catch {
-            setFormError('Login error: invalid email or password');
-        }
-    }, [login]);
-
-    const handleRegister = useCallback(async (email: string, password: string, passwordRepeat: string) => {
-        setFormError(null);
-        try {
-            await register(email, password, passwordRepeat);
-        } catch {
-            setFormError('Registration error: check if the data entered is correct');
-        }
-    }, [register]);
+    }, [token, fetchUserProfile, setUserProfile]);
 
     const handleUpdateProfile = useCallback(async (): Promise<void> => {
         try {
             await fetchUserProfile();
         } catch (error) {
-            setFormError('Profile update error');
+            console.error('Profile update error');
         }
     }, [fetchUserProfile]);
 
-    const handleSignOut = useCallback(async () => {
-        setFormError(null);
-        try {
-            await logout();
-          } catch {
-            setFormError('Exit error');
-          }
-    }, [logout]);
 
-    useEffect(() => {
-        if (profileError || authError) {
-      setFormError(profileError || authError);
-    }
-  }, [profileError, authError]);
 
     return {
         userProfile,
-        isSign,
-        setIsSign,
-        formError,
-        handleSignIn,
-        handleRegister,
-        handleSignOut,
         handleUpdateProfile,
-        authLoading,
-        authError,
     };
 };
