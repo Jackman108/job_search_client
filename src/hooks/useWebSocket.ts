@@ -6,6 +6,7 @@ const RECONNECT_INTERVAL = 5000;
 
 export const useWebSocket = ({
   WS_URL,
+  API_URL,
   fetchVacancies,
   setAlert
 }: UseWebSocketParams): WebSocketHook => {

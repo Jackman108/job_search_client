@@ -5,12 +5,13 @@ import { AuthResponse, RegisterResponse } from '../Interfaces/InterfaceAuth.type
 import { AUTH_URL } from '../config/serverConfig';
 import { useAuth } from '../context/useAuthContext';
 import { decodeToken, isTokenExpired } from '../utils/tokenUtils';
+import useFetchDefault from './useFetchDefault';
 
 const useFetchAuth = () => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const { token, setUserId, setToken } = useAuth();
-
+  const { createDefaultTables } = useFetchDefault()
   const handleError = useCallback((message: string) => {
     setError(message);
   }, []);
@@ -43,17 +44,19 @@ const useFetchAuth = () => {
       const { data } = await axios.post<RegisterResponse>(`${AUTH_URL}/auth/register`, {
         email, password, passwordRepeat
       });
-      setUserId(data.id);
+      setUserId(data.id)
+      await createDefaultTables(data.id);
+      console.log(data)
     } catch (err) {
       handleError('Registration error');
     } finally {
       setLoading(false);
     }
-  }, [loading,  handleError, setUserId]);
+  }, [loading, handleError, setUserId, createDefaultTables]);
 
   const logout = useCallback(async () => {
     if (loading) return;
-    setUserId(null);    
+    setUserId(null);
     setLoading(true);
     try {
       await axios.get(`${AUTH_URL}/auth/logout`, {

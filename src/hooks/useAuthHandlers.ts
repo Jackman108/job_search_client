@@ -5,7 +5,7 @@ import useFetchAuth from '../hooks/useFetchAuth';
 export const useAuthHandlers = () => {
   const { login, register, logout, error: authError, loading: authLoading } = useFetchAuth();
   const { token } = useAuth();
-  
+
   const [isSign, setIsSign] = useState<boolean>(!!token);
   const [, setFormError] = useState<string | null>(null);
 
@@ -22,6 +22,7 @@ export const useAuthHandlers = () => {
     setFormError(null);
     try {
       await register(email, password, passwordRepeat);
+
     } catch {
       setFormError('Registration error: check if the data entered is correct');
     }

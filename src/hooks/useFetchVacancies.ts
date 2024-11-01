@@ -1,5 +1,4 @@
 // src/hooks/useFetchVacancies.ts
-
 import { useCallback, useEffect, useState } from 'react';
 import { Vacancy } from '../Interfaces/InterfaceVacancy.types';
 import useApi from '../api/api';
@@ -9,22 +8,19 @@ const useFetchVacancies = () => {
   const [vacancies, setVacancies] = useState<Vacancy[]>([]);
   const { loading, error, request } = useApi();
 
-
   const fetchVacancies = useCallback(async () => {
     try {
       const data = await request('get', '/vacancy');
       setVacancies(formatAndSortVacancies(data));
-    } catch {}
+    } catch { }
   }, [request]);
-
 
   const deleteVacancy = useCallback(async (id: number) => {
     try {
       await request('delete', `/vacancy/${id}`);
       setVacancies((prevVacancies) => prevVacancies.filter((vacancy) => vacancy.id !== id));
-    } catch {}
+    } catch { }
   }, [request]);
-
 
   useEffect(() => {
     fetchVacancies();

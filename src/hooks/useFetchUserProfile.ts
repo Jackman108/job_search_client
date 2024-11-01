@@ -9,7 +9,7 @@ const useFetchUserProfile = () => {
 
   const fetchUserProfile = useCallback(async () => {
     try {
-      const data = await request('get', '/profile');      
+      const data = await request('get', '/profile');
       setUserProfile(data);
       return data;
     } catch {
@@ -25,8 +25,8 @@ const useFetchUserProfile = () => {
       throw new Error('Error saving profile');
     }
   }, [request]);
-  
-  return { loading, error, userProfile, fetchUserProfile, changeUserProfile, setUserProfile};
+
+  return { loading, error, userProfile, fetchUserProfile, changeUserProfile, setUserProfile };
 };
 
 export default useFetchUserProfile;

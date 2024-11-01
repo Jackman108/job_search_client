@@ -8,10 +8,10 @@ export const useProfileHandlers = (): UseProfileHandlers => {
     const { fetchUserProfile, userProfile, setUserProfile } = useFetchUserProfile();
 
     useEffect(() => {
-        if (token ) {
+        if (token) {
             fetchUserProfile();
         } else {
-            setUserProfile(null); 
+            setUserProfile(null);
         }
     }, [token, fetchUserProfile, setUserProfile]);
 

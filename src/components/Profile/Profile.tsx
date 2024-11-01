@@ -6,8 +6,8 @@ import SignIn from '../../UI/SignIn/SignIn';
 import SignUp from '../../UI/SignUp/SignUp';
 import { FORM_BUTTONS, USER_TEXTS } from '../../config/formConfigs';
 import { useAuthHandlers } from '../../hooks/useAuthHandlers';
-import { useProfileHandlers } from '../../hooks/useProfileHandlers';
 import { useProfileFormHandlers } from '../../hooks/useProfileFormHandlers';
+import { useProfileHandlers } from '../../hooks/useProfileHandlers';
 import styles from './Profile.module.css';
 import ProfileChange from './ProfileChange/ProfileChange';
 import ProfileView from './ProfileView/ProfileView';
@@ -82,7 +82,7 @@ const Profile: FC<ProfileProps> = () => {
               {FORM_BUTTONS.SignUpButton}
             </Button>
           </div>
-          {userProfile ? (
+          {isSign ? (
             <SignUp onSignUp={handleRegister} error={authError} loading={authLoading} />
           ) : (
             <SignIn onSignIn={handleSignIn} error={authError} loading={authLoading} />
