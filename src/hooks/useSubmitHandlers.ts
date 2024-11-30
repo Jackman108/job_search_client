@@ -1,40 +1,47 @@
 // src/hooks/useVacancyHandlers.ts
-import { HandleSubmitParams } from '../Interfaces/InterfaceForm.types';
+import {HandleSubmitParams} from '../Interfaces/InterfaceForm.types';
 import useApi from '../api/api';
-import { validateUtils } from '../utils/validateUtils';
+import {validateEmail, validateSearchUrl} from '../utils/validateUtils';
 
 const useSubmitHandlers = () => {
-  const { request } = useApi();
+    const {request} = useApi();
 
-  const handleSubmit = async ({
-    email,
-    password,
-    position,
-    message,
-    vacancyUrl,
-    setErrors,
-    setIsLoading,
-  }: HandleSubmitParams): Promise<void> => {
-    const { isValid, errors: validationErrors } = validateUtils({ email, vacancyUrl });
+    const handleSubmit = async ({
+                                    email,
+                                    password,
+                                    position,
+                                    message,
+                                    vacancyUrl,
+                                    setErrors,
+                                    setIsLoading,
+                                }: HandleSubmitParams): Promise<void> => {
+                                  
+        const {isValidSearchUrl, searchUrlError} = validateSearchUrl(vacancyUrl);
+        const {isValidEmail, emailError} = validateEmail(email);
 
-    if (!isValid) {
-      setErrors(validationErrors);
-      return;
-    }
-    setIsLoading(true);
-    await request('post', '/start', { email, password, position, message, vacancyUrl });
-    setIsLoading(false);
-  };
+        if (!isValidSearchUrl) {
+            setErrors(searchUrlError);
+            return;
+        }
 
-  const handleStop = async (): Promise<void> => {
-    try {
-      await request('post', '/stop');
-    } catch (error) {
-      console.error('Stop error:', error);
-    }
-  };
+        if (!isValidEmail) {
+            setErrors(emailError);
+            return;
+        }
+        setIsLoading(true);
+        await request('post', '/start', {email, password, position, message, vacancyUrl});
+        setIsLoading(false);
+    };
 
-  return { handleSubmit, handleStop };
+    const handleStop = async (): Promise<void> => {
+        try {
+            await request('post', '/stop');
+        } catch (error) {
+            console.error('Stop error:', error);
+        }
+    };
+
+    return {handleSubmit, handleStop};
 };
 
 export default useSubmitHandlers;

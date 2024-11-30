@@ -1,8 +1,8 @@
-import { useCallback, useEffect } from 'react';
-import { ResumeConfigProps } from '../Interfaces/InterfaceResume.types';
+import {useCallback, useEffect} from 'react';
+import {ResumeConfigProps} from '../Interfaces/InterfaceResume.types';
 import useApi from '../api/api';
-import { useDataOperationsByType } from './useFeatchResumeByType';
-import { useResumeHandlersByType } from './useResumeHandlersByType';
+import {useFeatchResumeByType} from './useFeatchResumeByType';
+import {useResumeHandlersByType} from './useResumeHandlersByType';
 
 export const useResume = (config: ResumeConfigProps['config']) => {
     const {
@@ -12,7 +12,7 @@ export const useResume = (config: ResumeConfigProps['config']) => {
         error,
         loadData,
         deleteItem
-    } = useDataOperationsByType(config);
+    } = useFeatchResumeByType(config);
 
     const {
         formData,
@@ -24,7 +24,7 @@ export const useResume = (config: ResumeConfigProps['config']) => {
         handleCancelClick
     } = useResumeHandlersByType(data);
 
-    const { request } = useApi();
+    const {request} = useApi();
 
     useEffect(() => {
         loadData();
