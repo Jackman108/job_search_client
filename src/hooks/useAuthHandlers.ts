@@ -1,6 +1,6 @@
 import {useCallback, useState} from 'react';
 import {useAuth} from '../context/useAuthContext';
-import useFetchAuth from '../hooks/useFetchAuth';
+import useFetchAuth from './fetch/useFetchAuth';
 import {validateEmail, validatePassword} from '../utils/validateUtils';
 import {getErrorValidate} from '../utils/errorHandler';
 

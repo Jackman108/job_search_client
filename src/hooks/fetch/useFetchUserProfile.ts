@@ -1,7 +1,7 @@
 // src/hooks/useFetchUserProfile.ts
 import { useCallback, useState } from 'react';
-import { UserProfile } from '../Interfaces/InterfaceProfile.types';
-import useApi from '../api/api';
+import { UserProfile } from '../../Interfaces/InterfaceProfile.types';
+import useApi from '../../api/api';
 
 const useFetchUserProfile = () => {
   const [userProfile, setUserProfile] = useState<UserProfile | null>(null);

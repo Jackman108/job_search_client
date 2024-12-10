@@ -1,7 +1,7 @@
 import { useCallback, useEffect } from 'react';
 import { UseProfileHandlers } from '../Interfaces/InterfaceProfile.types';
 import { useAuth } from '../context/useAuthContext';
-import useFetchUserProfile from '../hooks/useFetchUserProfile';
+import useFetchUserProfile from './fetch/useFetchUserProfile';
 
 export const useProfileHandlers = (): UseProfileHandlers => {
     const { token } = useAuth();

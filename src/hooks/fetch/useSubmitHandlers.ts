@@ -1,7 +1,7 @@
 // src/hooks/useVacancyHandlers.ts
-import {HandleSubmitParams} from '../Interfaces/InterfaceForm.types';
-import useApi from '../api/api';
-import {validateEmail, validateSearchUrl} from '../utils/validateUtils';
+import {HandleSubmitParams} from '../../Interfaces/InterfaceForm.types';
+import useApi from '../../api/api';
+import {validateEmail, validateSearchUrl} from '../../utils/validateUtils';
 
 const useSubmitHandlers = () => {
     const {request} = useApi();

@@ -1,7 +1,7 @@
 // src/hooks/useFetchDefault.ts
 import {useCallback, useState} from 'react';
-import useApi from '../api/api';
-import {useAuth} from '../context/useAuthContext';
+import useApi from '../../api/api';
+import {useAuth} from '../../context/useAuthContext';
 
 const useFetchDefault = () => {
     const [loading, setLoading] = useState(false);

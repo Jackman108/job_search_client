@@ -4,7 +4,7 @@ import { Errors, HandleSubmitParams, UseFormHandlersParams } from '../Interfaces
 import { DEFAULT_VACANCY_PARAMS, FormParams } from '../config/formConfigs';
 import { useAuth } from '../context/useAuthContext';
 import { buildVacancyUrl } from '../utils/buildVacancyUrl';
-import useSubmitHandlers from './useSubmitHandlers';
+import useSubmitHandlers from './fetch/useSubmitHandlers';
 
 const useFormHandlers = (): UseFormHandlersParams => {
   const [email, setEmail] = useState('');

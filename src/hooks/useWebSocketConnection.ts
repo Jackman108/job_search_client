@@ -1,5 +1,5 @@
 import { useEffect } from 'react';
-import { useWebSocket } from './useWebSocket';
+import { useWebSocket } from './fetch/useWebSocket';
 import { WS_URL, API_URL } from '../config/serverConfig';
 
 const useWebSocketConnection = (fetchVacancies: () => void, setAlert: (message: string) => void) => {

@@ -1,7 +1,7 @@
 import { FC, ReactNode, useMemo } from 'react';
 import CaptchaAlert from '../UI/CaptchaAlert/CaptchaAlert';
 import useAlert from '../hooks/useAlert';
-import useFetchVacancies from '../hooks/useFetchVacancies';
+import useFetchVacancies from '../hooks/fetch/useFetchVacancies';
 import useWebSocketConnection from '../hooks/useWebSocketConnection';
 import TableContext from './useTableContext';
 

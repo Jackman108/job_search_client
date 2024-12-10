@@ -1,6 +1,6 @@
 // useFeatchResumeByType.ts
 import {useCallback, useState} from 'react';
-import useApi from '../api/api';
+import useApi from '../../api/api';
 
 export const useFeatchResumeByType = (config: Record<string, any>) => {
     const {request} = useApi();

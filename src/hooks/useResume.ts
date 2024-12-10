@@ -1,7 +1,7 @@
 import {useCallback, useEffect} from 'react';
 import {ResumeConfigProps} from '../Interfaces/InterfaceResume.types';
 import useApi from '../api/api';
-import {useFeatchResumeByType} from './useFeatchResumeByType';
+import {useFeatchResumeByType} from './fetch/useFeatchResumeByType';
 import {useResumeHandlersByType} from './useResumeHandlersByType';
 
 export const useResume = (config: ResumeConfigProps['config']) => {

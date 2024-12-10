@@ -1,7 +1,7 @@
 // src/components/SignOut.tsx
 
 import React from 'react';
-import useFetchAuth from '../../hooks/useFetchAuth';
+import useFetchAuth from '../../hooks/fetch/useFetchAuth';
 
 const SignOut: React.FC = () => {
   const { logout } = useFetchAuth();

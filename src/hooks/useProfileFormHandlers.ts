@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { UserProfile } from '../Interfaces/InterfaceProfile.types';
-import useFetchUserProfile from './useFetchUserProfile';
+import useFetchUserProfile from './fetch/useFetchUserProfile';
 
 export const useProfileFormHandlers = (initialUserInfo: UserProfile) => {
   const [isEditing, setIsEditing] = useState(false);

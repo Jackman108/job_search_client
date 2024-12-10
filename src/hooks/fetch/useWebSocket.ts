@@ -1,6 +1,6 @@
 import {useCallback, useEffect, useRef, useState} from 'react';
-import {UseWebSocketParams, WebSocketHook} from '../Interfaces/InterfaceWebSocket.types';
-import {useAuth} from '../context/useAuthContext';
+import {UseWebSocketParams, WebSocketHook} from '../../Interfaces/InterfaceWebSocket.types';
+import {useAuth} from '../../context/useAuthContext';
 
 const RECONNECT_INTERVAL = 5000;
 
@@ -41,7 +41,6 @@ export const useWebSocket = ({
 
         wsRef.current.onmessage = (event) => {
             const data = event.data;
-            console.log('WebSocket message received:', data);
             setMessage(data);
 
             switch (true) {

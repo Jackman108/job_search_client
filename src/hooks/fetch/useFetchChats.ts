@@ -1,7 +1,7 @@
 // src/hooks/useFetchFeedback.ts
 import { useCallback, useState } from 'react';
-import { Vacancy } from '../Interfaces/InterfaceVacancy.types';
-import useApi from '../api/api';
+import { Vacancy } from '../../Interfaces/InterfaceVacancy.types';
+import useApi from '../../api/api';
 
 const useFetchFeedback = () => {
   const [chats, setChats] = useState<Vacancy[]>([]);

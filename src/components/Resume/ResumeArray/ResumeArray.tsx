@@ -1,7 +1,7 @@
 import { FC, useEffect } from 'react';
 import { ResumeArrayProps } from '../../../Interfaces/InterfaceResume.types';
 import Button from '../../../UI/Button/Button';
-import { useFeatchResumeById } from '../../../hooks/useFeatchResumeById';
+import { useFetchById } from '../../../hooks/fetch/useFetchById';
 import { useResumeHandlersById } from '../../../hooks/useResumeHandlersById';
 import styles from './ResumeArray.module.css';
 
@@ -20,7 +20,7 @@ const ResumeArray: FC<ResumeArrayProps> = ({ config }) => {
         loadData,
         deleteItem, 
         saveItem 
-    } = useFeatchResumeById(config);
+    } = useFetchById(config);
 
     useEffect(() => {
         loadData();

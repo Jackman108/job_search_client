@@ -1,18 +1,31 @@
 // src/hooks/useFetchAuth.ts
 import axios from 'axios';
 import {useCallback, useState} from 'react';
-import {AuthResponse, RegisterResponse} from '../Interfaces/InterfaceAuth.types';
-import {AUTH_URL} from '../config/serverConfig';
-import {useAuth} from '../context/useAuthContext';
-import {decodeToken, isTokenExpired} from '../utils/tokenUtils';
+import {AuthResponse, RegisterResponse} from '../../Interfaces/InterfaceAuth.types';
+import {AUTH_URL} from '../../config/serverConfig';
+import {useAuth} from '../../context/useAuthContext';
+import {decodeToken, isTokenExpired} from '../../utils/tokenUtils';
 import useFetchDefault from './useFetchDefault';
-import { handleAuthError } from '../utils/errorHandler';
+import { handleAuthError } from '../../utils/errorHandler';
 
 const useFetchAuth = () => {
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState<string | null>(null);
     const {token, setUserId, setToken} = useAuth();
     const {createDefaultTables} = useFetchDefault()
+
+    const refreshAuthToken = useCallback(async () => {
+        try {
+            const { data } = await axios.get(`${AUTH_URL}/auth/refresh-tokens`, {
+                withCredentials: true,
+            });
+            const { accessToken } = data;
+            setToken(accessToken);
+        } catch (err) {
+            handleAuthError(setError, err);
+        }
+    }, [setToken]);
+
 
     const login = useCallback(async (email: string, password: string) => {
         if (loading) return;
@@ -25,8 +38,11 @@ const useFetchAuth = () => {
             const decodedToken = decodeToken(accessToken);
 
             if (isTokenExpired(decodedToken.exp)) {
-                throw new Error('The token has expired');
+                await refreshAuthToken();
+                return;
             }
+
+
             setToken(accessToken);
             setUserId(decodedToken.id);
         } catch (err) {
@@ -34,7 +50,7 @@ const useFetchAuth = () => {
         } finally {
             setLoading(false);
         }
-    }, [loading, setUserId, setToken]);
+    }, [loading, setUserId, setToken, refreshAuthToken]);
 
     const register = useCallback(async (email: string, password: string, passwordRepeat: string) => {
         if (loading) return;
