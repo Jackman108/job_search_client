@@ -43,7 +43,7 @@ export const useResumeHandlersByType = (initialFormData = {}) => {
         
         setFormData({
             ...item,
-            business_trip_readiness: item.business_trip_readiness ? businessTripReadiness[0] : businessTripReadiness[1],
+            business_trip_readiness: type === 'resume' ? (item.business_trip_readiness ? businessTripReadiness[0] : businessTripReadiness[1]) : item.business_trip_readiness,
         });
     }, []);
 

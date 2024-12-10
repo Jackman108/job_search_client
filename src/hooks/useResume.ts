@@ -44,9 +44,11 @@ export const useResume = (config: ResumeConfigProps['config']) => {
     const saveData = async (type: string) => {
         const endpoint = config[type].apiEndpoint();
         const method = isCreating[type] ? 'post' : 'put';
-        if (formData.business_trip_readiness) {
+
+        if (type === 'resume' && formData.business_trip_readiness) {
             formData.business_trip_readiness = formData.business_trip_readiness === 'Готов';
         }
+
         try {
             await request(method, endpoint, formData);
             await loadData();
