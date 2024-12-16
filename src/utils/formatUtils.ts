@@ -1,11 +1,18 @@
-import { Vacancy } from '../Interfaces/InterfaceVacancy.types';
-import { formatDate } from './dateUtils';
+import {FormattedDate} from "../Interfaces/InterfaceForm.types";
 
-export const formatAndSortVacancies = (vacancies: Vacancy[]): Vacancy[] => {
-  return vacancies.map(vacancy => ({
-    ...vacancy,
-    response_date_time: formatDate(vacancy.response_date).time,
-    response_date_date: formatDate(vacancy.response_date).date,
-  })).sort((a, b) => new Date(b.response_date).getTime() - new Date(a.response_date).getTime());
+export const formatAndSortData = <T>(data: T[], formatFn: (item: T) => T, sortKey: keyof T): T[] => {
+    return data.map(formatFn).sort((a, b) => new Date(b[sortKey] as any).getTime() - new Date(a[sortKey] as any).getTime());
+};
+
+
+export const formatDate = (isoDateString: string): FormattedDate => {
+    const date = new Date(isoDateString);
+    const time = date.toISOString().slice(11, 16);
+    const day = date.getUTCDate().toString().padStart(2, '0');
+    const month = (date.getUTCMonth() + 1).toString().padStart(2, '0');
+    const year = date.getUTCFullYear();
+    const formattedDate = `${day}-${month}-${year}`;
+
+    return {time, date: formattedDate};
 };
   

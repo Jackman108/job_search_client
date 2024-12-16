@@ -1,17 +1,25 @@
 // src/components/VacancyForm/VacancyForm.tsx
 import {FC} from 'react';
-import useFormHandlers from '../../hooks/useFormHandlers';
+import useVacancyHandlers from '../../hooks/useVacancyHandlers';
 import styles from './VacancyForm.module.css';
-import {FORM_BUTTONS, FORM_LABELS, FORM_PARAMS, FORM_TEXTS, OPTIONS} from '../../config/formConfigs';
+import {
+    FORM_BUTTONS,
+    FORM_LABELS,
+    FORM_PARAMS,
+    FORM_TEXTS,
+    FormLabelKeys,
+    FormParamKeys,
+    OPTIONS,
+} from '../../config/formConfigs';
 import {useAuth} from '../../context/useAuthContext';
 import Button from '../../UI/Button/Button';
 import RenderInput from '../../UI/RenderInput/RenderInput';
 import RenderSelect from '../../UI/RenderSelect/RenderSelect';
 import RenderTextarea from '../../UI/RenderTextarea/RenderTextarea';
-import {VacancyFormProps} from '../../Interfaces/InterfaceComponent.types';
+import {FormProps} from '../../Interfaces/InterfaceComponent.types';
 import UnauthorizedMessage from '../../UI/UnauthorizedMessage/UnauthorizedMessage';
 
-const VacancyForm: FC<VacancyFormProps> = ({onClose}) => {
+const VacancyForm: FC<FormProps> = ({onClose}) => {
     const {token, isLoading} = useAuth();
     const {
         email,
@@ -28,7 +36,7 @@ const VacancyForm: FC<VacancyFormProps> = ({onClose}) => {
         handlePositionChange,
         handleMessageChange,
         handleSelectChange,
-    } = useFormHandlers();
+    } = useVacancyHandlers();
 
     if (!token) {
         return (
@@ -94,36 +102,15 @@ const VacancyForm: FC<VacancyFormProps> = ({onClose}) => {
                     />
                 </div>
                 <div className={styles.selectsContainer}>
-                    <RenderSelect
-                        label={FORM_LABELS.schedule}
-                        options={OPTIONS.schedule}
-                        onChange={handleSelectChange(FORM_PARAMS.schedule)}
-                        isLoading={isLoading}
-                    />
-                    <RenderSelect
-                        label={FORM_LABELS.orderBy}
-                        options={OPTIONS.orderBy}
-                        onChange={handleSelectChange(FORM_PARAMS.orderBy)}
-                        isLoading={isLoading}
-                    />
-                    <RenderSelect
-                        label={FORM_LABELS.searchField}
-                        options={OPTIONS.searchField}
-                        onChange={handleSelectChange(FORM_PARAMS.searchField)}
-                        isLoading={isLoading}
-                    />
-                    <RenderSelect
-                        label={FORM_LABELS.experience}
-                        options={OPTIONS.experience}
-                        onChange={handleSelectChange(FORM_PARAMS.experience)}
-                        isLoading={isLoading}
-                    />
-                    <RenderSelect
-                        label={FORM_LABELS.searchPeriod}
-                        options={OPTIONS.searchPeriod}
-                        onChange={handleSelectChange(FORM_PARAMS.searchPeriod)}
-                        isLoading={isLoading}
-                    />
+                    {Object.entries(OPTIONS).map(([key, options]) => (
+                        <RenderSelect
+                            key={key}
+                            label={FORM_LABELS[key as FormLabelKeys]}
+                            options={options}
+                            onChange={handleSelectChange(FORM_PARAMS[key as FormParamKeys])}
+                            isLoading={isLoading}
+                        />
+                    ))}
                 </div>
                 <div className={styles.buttonsContainer}>
                     <Button

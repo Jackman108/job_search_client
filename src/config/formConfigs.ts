@@ -9,34 +9,35 @@ export const DEFAULT_VACANCY_PARAMS = {
     searchPeriod: '3',
 };
 
+
 export const OPTIONS = {
     schedule: [
-        { value: 'remote', label: 'Удаленная работа' },
-        { value: 'fullDay', label: 'Полный день' },
-        { value: 'flexible', label: 'Гибкий график' },
-        { value: 'shift', label: 'Сменный график' },
+        {value: 'remote', label: 'Удаленная работа'},
+        {value: 'fullDay', label: 'Полный день'},
+        {value: 'flexible', label: 'Гибкий график'},
+        {value: 'shift', label: 'Сменный график'},
     ],
     orderBy: [
-        { value: 'salary_desc', label: 'По убыванию зарплаты' },
-        { value: 'salary_asc', label: 'По возрастанию зарплаты' },
-        { value: 'publication_time', label: 'По дате' },
-        { value: 'relevance', label: 'По соответствию' },
+        {value: 'salary_desc', label: 'По убыванию зарплаты'},
+        {value: 'salary_asc', label: 'По возрастанию зарплаты'},
+        {value: 'publication_time', label: 'По дате'},
+        {value: 'relevance', label: 'По соответствию'},
     ],
     searchField: [
-        { value: 'name', label: 'По названию' },
-        { value: 'company', label: 'По компании' },
-        { value: 'description', label: 'По описанию' },
+        {value: 'name', label: 'По названию'},
+        {value: 'company', label: 'По компании'},
+        {value: 'description', label: 'По описанию'},
     ],
     experience: [
-        { value: 'between1And3', label: 'От 1 до 3 лет' },
-        { value: 'between3And6', label: 'От 3 до 6 лет' },
-        { value: 'moreThan6', label: 'Более 6 лет' },
-        { value: '', label: 'Нет опыта' },
+        {value: 'between1And3', label: 'От 1 до 3 лет'},
+        {value: 'between3And6', label: 'От 3 до 6 лет'},
+        {value: 'moreThan6', label: 'Более 6 лет'},
+        {value: '', label: 'Нет опыта'},
     ],
     searchPeriod: [
-        { value: '1', label: '1 день' },
-        { value: '3', label: '3 дня' },
-        { value: '7', label: 'Неделя' },
+        {value: '1', label: '1 день'},
+        {value: '3', label: '3 дня'},
+        {value: '7', label: 'Неделя'},
     ],
 };
 
@@ -68,9 +69,11 @@ export const FORM_BUTTONS = {
 };
 
 export const ERROR_MESSAGES = {
-    vacancyUrl: 'Укажите ссылку на вакансии',
+    vacancyUrl: 'URL должен начинаться с https://hh.ru/',
     email: 'Укажите корректный e-mail',
-    password: 'Введите пароль',
+    password: 'Пароль должен быть не менее 8 символов',
+    passwordUppercase: 'Пароль должен содержать хотя бы одну заглавную букву',
+    passwordNumber: 'Пароль должен содержать хотя бы одну цифру',
     position: 'Введите название вакансии',
 };
 
@@ -82,6 +85,7 @@ export const FORM_PARAMS = {
     searchPeriod: 'searchPeriod',
 } as const;
 
+
 export const USER_TEXTS = {
     profileTitle: 'Профиль',
     firstNameLabel: 'Имя',
@@ -92,9 +96,9 @@ export const USER_TEXTS = {
     successfulResponsesLabel: 'Успешные отклики',
     currentStatusLabel: 'Текущий статус',
     noAvatar: 'Нет',
-  };
-  
-  export const BUTTON_TEXTS = {
+};
+
+export const BUTTON_TEXTS = {
     saveButton: 'Сохранить',
     cancelButton: 'Отмена',
     editButton: 'Редактировать',
@@ -107,14 +111,14 @@ export const USER_TEXTS = {
     registerButton: 'Зарегистрироваться',
     insertPasswordButton: 'Введиите пароль',
     replacePasswordButton: 'Повторите пароль',
-  };
+};
 
-  export const BUTTON_SYMBOL = {
+export const BUTTON_SYMBOL = {
     deleteButton: '\u2716',
     pencilButton: '\u270F',
-  };
+};
 
-  export const TABLE_HEADER = {
+export const TABLE_HEADER = {
     tableTitle: 'Обработанные вакансии',
     tableNumde: '№',
     tablePosition: 'Должность',
@@ -124,10 +128,21 @@ export const USER_TEXTS = {
     tableResponded: 'Откликнулся',
     tableMissed: 'Пропустил',
     deletedButton: 'Удалить',
-  };
+};
 
-  export const DEFAULT_AVATAR_URL = 'https://polinka.top/uploads/posts/2023-06/1686471538_polinka-top-p-kartinka-dlya-profilya-muzhskoi-vkontakte-17.jpg';
+export const FEEDBACK_HEADER = {
+    tableTitle: 'Результаты',
+    feedbackId: '№ чата',
+    vacancyId: '№ вакансии',
+    feedbackText: 'Текст',
+    feedbackDate: 'Дата',
+    feedbackStatus: 'Статус',
+    deletedButton: 'Удалить',
+};
 
-  
+export const DEFAULT_AVATAR_URL = 'https://polinka.top/uploads/posts/2023-06/1686471538_polinka-top-p-kartinka-dlya-profilya-muzhskoi-vkontakte-17.jpg';
+
+
 export type FormParams = keyof typeof FORM_PARAMS;
-
+export type FormLabelKeys = keyof typeof FORM_LABELS;
+export type FormParamKeys = keyof typeof FORM_PARAMS;

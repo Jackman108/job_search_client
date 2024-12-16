@@ -9,7 +9,9 @@ export const useProfileHandlers = (): UseProfileHandlers => {
 
     useEffect(() => {
         if (token) {
-            fetchUserProfile();
+            fetchUserProfile().catch((error) => {
+                console.error('Profile fetch error', error);
+            });
         } else {
             setUserProfile(null);
         }

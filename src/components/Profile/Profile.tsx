@@ -39,7 +39,7 @@ const Profile: FC<ProfileProps> = () => {
     handleAvatarChange,
   } = useProfileFormHandlers(userProfile || ({} as UserProfile));
 
-  
+  console.log(userProfile)
   return (
     <section className={styles.sectionContainer}>
       {userProfile ? (

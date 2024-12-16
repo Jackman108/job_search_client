@@ -16,6 +16,14 @@ export interface HandleSubmitParams {
     setIsLoading: Dispatch<SetStateAction<boolean>>;
 }
 
+export interface HandleFeedbackParams {
+    token: string | null;
+    email: string;
+    password: string;
+    setErrors: Dispatch<SetStateAction<Errors>>;
+    setIsLoading: Dispatch<SetStateAction<boolean>>;
+}
+
 export interface UseFormHandlersParams {
     email: string;
     setEmail: Dispatch<SetStateAction<string>>;
@@ -39,14 +47,15 @@ export interface UseFormHandlersParams {
     handleSelectChange: (param: keyof typeof OPTIONS) => (e: ChangeEvent<HTMLSelectElement>) => void;
 }
 
-export interface ValidationParams {
+export interface UseFeedbackHandlersParams {
     email: string;
-    vacancyUrl: string;
-}
-
-export interface ValidationResult {
-    isValid: boolean;
+    password: string;
     errors: Errors;
+    feedbackHandler: (event: FormEvent) => Promise<void>;
+    feedbackStopHandler: () => Promise<void>;
+    isLoading: boolean | null;
+    handleEmailChange: (e: ChangeEvent<HTMLInputElement>) => void;
+    handlePasswordChange: (e: ChangeEvent<HTMLInputElement>) => void;
 }
 
 export interface ValidationSearchUrl {
@@ -64,23 +73,9 @@ export interface ValidationPassword {
     passwordError: Errors;
 }
 
-export interface FormHandlers {
-    handleVacancyUrlChange: (e: ChangeEvent<HTMLInputElement>) => void;
-    handleEmailChange: (e: ChangeEvent<HTMLInputElement>) => void;
-    handlePasswordChange: (e: ChangeEvent<HTMLInputElement>) => void;
-    handlePositionChange: (e: ChangeEvent<HTMLInputElement>) => void;
-    handleMessageChange: (e: ChangeEvent<HTMLTextAreaElement>) => void;
-}
-
 export interface FormattedDate {
     time: string;
     date: string;
-}
-
-export interface SubmitRequestProps {
-    token: string | null;
-    endpoint: string;
-    data?: Record<string, any>;
 }
 
 export interface RenderInputProps {
@@ -102,7 +97,7 @@ export interface RenderInputProps {
 export interface RenderSelectProps {
     label: string;
     options: Option[];
-    onChange: (e: React.ChangeEvent<HTMLSelectElement>) => void;
+    onChange: (e: ChangeEvent<HTMLSelectElement>) => void;
     isLoading: boolean;
 }
 
@@ -110,7 +105,7 @@ export interface RenderTextareaProps {
     label: string;
     name: string;
     value: string;
-    onChange: (e: React.ChangeEvent<HTMLTextAreaElement>) => void;
+    onChange: (e: ChangeEvent<HTMLTextAreaElement>) => void;
     isLoading: boolean;
 }
 

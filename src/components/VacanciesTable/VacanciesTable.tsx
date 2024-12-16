@@ -1,14 +1,15 @@
 import {FC} from 'react';
 import Button from '../../UI/Button/Button';
 import {BUTTON_SYMBOL, TABLE_HEADER} from '../../config/formConfigs';
-import {useTableContext} from '../../context/useTableContext';
-import {useSortedVacancies} from '../../hooks/useSortedVacancies';
-import './VacanciesTable.css';
+import {useVacancyContext} from '../../context/useVacancyContext';
+import {useSortedData} from '../../hooks/useSortedData';
+import styles from './VacanciesTable.module.css';
+
 import UnauthorizedMessage from '../../UI/UnauthorizedMessage/UnauthorizedMessage';
 
 const VacanciesTable: FC = () => {
-    const {vacancies, loading, deleteVacancy, fetchVacancies} = useTableContext();
-    const {sortedVacancies, handleSort, getSortArrow} = useSortedVacancies(vacancies);
+    const {vacancies, loading, deleteVacancy, fetchVacancies} = useVacancyContext();
+    const {sortedData: sortedVacancies, handleSort, getSortArrow} = useSortedData(vacancies);
 
     if (loading) return <div>Загрузка...</div>;
     if (vacancies.length === 0) {
@@ -25,7 +26,7 @@ const VacanciesTable: FC = () => {
     };
 
     return (
-        <div className="vacanciesTable">
+        <div className={styles.vacanciesTable}>
             <h1>{TABLE_HEADER.tableTitle}</h1>
             <table>
                 <thead>
@@ -49,8 +50,8 @@ const VacanciesTable: FC = () => {
                                rel="noopener noreferrer">{vacancy.title_company}</a></td>
                         <td>{vacancy.vacancy_status === 'true' ? TABLE_HEADER.tableResponded : TABLE_HEADER.tableMissed}</td>
                         <td>
-                            <div className="tableDate">{vacancy.response_date_time}</div>
-                            <div className="tableDate">{vacancy.response_date_date}</div>
+                            <div className={styles.tableDate}>{vacancy.response_date_time}</div>
+                            <div className={styles.tableDate}>{vacancy.response_date_date}</div>
                         </td>
                         <td>
                             <Button variant="close"

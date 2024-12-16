@@ -3,7 +3,7 @@ import {HandleSubmitParams} from '../../Interfaces/InterfaceForm.types';
 import useApi from '../../api/api';
 import {validateEmail, validateSearchUrl} from '../../utils/validateUtils';
 
-const useSubmitHandlers = () => {
+const useSubmitVacancy = () => {
     const {request} = useApi();
 
     const handleSubmit = async ({
@@ -15,7 +15,7 @@ const useSubmitHandlers = () => {
                                     setErrors,
                                     setIsLoading,
                                 }: HandleSubmitParams): Promise<void> => {
-                                  
+
         const {isValidSearchUrl, searchUrlError} = validateSearchUrl(vacancyUrl);
         const {isValidEmail, emailError} = validateEmail(email);
 
@@ -44,4 +44,4 @@ const useSubmitHandlers = () => {
     return {handleSubmit, handleStop};
 };
 
-export default useSubmitHandlers;
+export default useSubmitVacancy;

@@ -1,7 +1,7 @@
-import {useCallback, useEffect} from 'react';
+import {FormEvent, useCallback, useEffect} from 'react';
 import {ResumeConfigProps} from '../Interfaces/InterfaceResume.types';
 import useApi from '../api/api';
-import {useFeatchResumeByType} from './fetch/useFeatchResumeByType';
+import {useFetchResumeByType} from './fetch/useFetchResumeByType';
 import {useResumeHandlersByType} from './useResumeHandlersByType';
 
 export const useResume = (config: ResumeConfigProps['config']) => {
@@ -12,7 +12,7 @@ export const useResume = (config: ResumeConfigProps['config']) => {
         error,
         loadData,
         deleteItem
-    } = useFeatchResumeByType(config);
+    } = useFetchResumeByType(config);
 
     const {
         formData,
@@ -27,14 +27,20 @@ export const useResume = (config: ResumeConfigProps['config']) => {
     const {request} = useApi();
 
     useEffect(() => {
-        loadData();
+        loadData().catch((error) => {
+            console.error('Resume fetch error', error);
+        });
     }, [loadData]);
 
-    const handleDeleteClick = useCallback((type: string) => {
-        deleteItem(type);
+    const handleDeleteClick = useCallback(async (type: string) => {
+        try {
+            await deleteItem(type);
+        } catch (error) {
+            console.error('Resume delete error', error);
+        }
     }, [deleteItem]);
 
-    const handleSubmit = async (e: React.FormEvent<HTMLFormElement>, type: string) => {
+    const handleSubmit = async (e: FormEvent<HTMLFormElement>, type: string) => {
         e.preventDefault();
         if (config[type]) {
             await saveData(type);

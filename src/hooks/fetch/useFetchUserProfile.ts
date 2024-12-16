@@ -12,7 +12,8 @@ const useFetchUserProfile = () => {
       const data = await request('get', '/profile');
       setUserProfile(data);
       return data;
-    } catch {
+    } catch (err) {
+      console.error('Error fetching user profile', err);
     }
   }, [request]);
 
@@ -21,7 +22,8 @@ const useFetchUserProfile = () => {
       const data = await request('put', '/profile', userProfile);
       setUserProfile(data);
       return data;
-    } catch (error) {
+    } catch (err) {
+      console.error('Error saving profile', err);
       throw new Error('Error saving profile');
     }
   }, [request]);

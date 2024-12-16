@@ -1,4 +1,3 @@
-import {FC} from 'react';
 import {Link} from 'react-router-dom';
 import Button from '../../UI/Button/Button';
 import {dataDisplayConfig} from '../../config/resumeConfig';
@@ -9,7 +8,7 @@ import ResumeView from './ResumeItems/ResumeView';
 import UnauthorizedMessage from '../../UI/UnauthorizedMessage/UnauthorizedMessage';
 import {useAuth} from "../../context/useAuthContext";
 
-export const Resume: FC = () => {
+const Resume = () => {
     const config = dataDisplayConfig
 
     const {
@@ -82,3 +81,5 @@ export const Resume: FC = () => {
         </div>
     );
 };
+
+export default Resume;
