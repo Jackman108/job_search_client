@@ -5,21 +5,19 @@ import {AuthResponse, RegisterResponse} from '../../Interfaces/InterfaceAuth.typ
 import {AUTH_URL} from '../../config/serverConfig';
 import {useAuth} from '../../context/useAuthContext';
 import {decodeToken, isTokenExpired} from '../../utils/tokenUtils';
-import useFetchDefault from './useFetchDefault';
-import { handleAuthError } from '../../utils/errorHandler';
+import {handleAuthError} from '../../utils/errorHandler';
 
 const useFetchAuth = () => {
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState<string | null>(null);
     const {token, setUserId, setToken} = useAuth();
-    const {createDefaultTables} = useFetchDefault()
 
     const refreshAuthToken = useCallback(async () => {
         try {
-            const { data } = await axios.get(`${AUTH_URL}/auth/refresh-tokens`, {
+            const {data} = await axios.get(`${AUTH_URL}/auth/refresh-tokens`, {
                 withCredentials: true,
             });
-            const { accessToken } = data;
+            const {accessToken} = data;
             setToken(accessToken);
         } catch (err) {
             handleAuthError(setError, err);
@@ -42,11 +40,11 @@ const useFetchAuth = () => {
                 return;
             }
 
-
             setToken(accessToken);
             setUserId(decodedToken.id);
+
         } catch (err) {
-          handleAuthError(setError, err);
+            handleAuthError(setError, err);
         } finally {
             setLoading(false);
         }
@@ -58,7 +56,7 @@ const useFetchAuth = () => {
         setError(null);
 
         if (password !== passwordRepeat) {
-          handleAuthError(setError,'Passwords do not match');
+            handleAuthError(setError, 'Passwords do not match');
             setLoading(false);
             return;
         }
@@ -68,13 +66,22 @@ const useFetchAuth = () => {
                 email, password, passwordRepeat
             });
             setUserId(data.id)
-            await createDefaultTables(data.id);
+
+
+            const loginResponse = await axios.post<AuthResponse>(`${AUTH_URL}/auth/login`, {
+                email,
+                password,
+            });
+
+            const {accessToken} = loginResponse.data;
+            setToken(accessToken);
+
         } catch (err) {
-          handleAuthError(setError, err);
+            handleAuthError(setError, err);
         } finally {
             setLoading(false);
         }
-    }, [loading, setUserId, createDefaultTables]);
+    }, [loading, setUserId, setToken,]);
 
     const logout = useCallback(async () => {
         if (loading) return;

@@ -1,11 +1,11 @@
-import { useCallback, useEffect } from 'react';
-import { UseProfileHandlers } from '../Interfaces/InterfaceProfile.types';
-import { useAuth } from '../context/useAuthContext';
+import {useCallback, useEffect} from 'react';
+import {UseProfileHandlers} from '../Interfaces/InterfaceProfile.types';
+import {useAuth} from '../context/useAuthContext';
 import useFetchUserProfile from './fetch/useFetchUserProfile';
 
 export const useProfileHandlers = (): UseProfileHandlers => {
-    const { token } = useAuth();
-    const { fetchUserProfile, userProfile, setUserProfile } = useFetchUserProfile();
+    const {token} = useAuth();
+    const {fetchUserProfile, userProfile, setUserProfile} = useFetchUserProfile();
 
     useEffect(() => {
         if (token) {
@@ -24,8 +24,6 @@ export const useProfileHandlers = (): UseProfileHandlers => {
             console.error('Profile update error');
         }
     }, [fetchUserProfile]);
-
-
 
     return {
         userProfile,
