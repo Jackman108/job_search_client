@@ -32,7 +32,7 @@ const useFetchVacancies = () => {
     }, [request]);
 
     useEffect(() => {
-        fetchVacancies();
+        fetchVacancies().catch((error) => console.error("Ошибка загрузки вакансий:", error));
     }, [fetchVacancies]);
 
     return {vacancies, loading, error, fetchVacancies, deleteVacancy};

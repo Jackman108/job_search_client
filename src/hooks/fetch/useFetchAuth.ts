@@ -10,7 +10,7 @@ import {handleAuthError} from '../../utils/errorHandler';
 const useFetchAuth = () => {
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState<string | null>(null);
-    const {token, setUserId, setToken} = useAuth();
+    const {token, setToken} = useAuth();
 
     const refreshAuthToken = useCallback(async () => {
         try {
@@ -41,14 +41,13 @@ const useFetchAuth = () => {
             }
 
             setToken(accessToken);
-            setUserId(decodedToken.id);
 
         } catch (err) {
             handleAuthError(setError, err);
         } finally {
             setLoading(false);
         }
-    }, [loading, setUserId, setToken, refreshAuthToken]);
+    }, [loading, setToken, refreshAuthToken]);
 
     const register = useCallback(async (email: string, password: string, passwordRepeat: string) => {
         if (loading) return;
@@ -62,18 +61,16 @@ const useFetchAuth = () => {
         }
 
         try {
-            const {data} = await axios.post<RegisterResponse>(`${AUTH_URL}/auth/register`, {
+            await axios.post<RegisterResponse>(`${AUTH_URL}/auth/register`, {
                 email, password, passwordRepeat
             });
-            setUserId(data.id)
 
-
-            const loginResponse = await axios.post<AuthResponse>(`${AUTH_URL}/auth/login`, {
+            const {data} = await axios.post<AuthResponse>(`${AUTH_URL}/auth/login`, {
                 email,
                 password,
             });
 
-            const {accessToken} = loginResponse.data;
+            const {accessToken} = data;
             setToken(accessToken);
 
         } catch (err) {
@@ -81,11 +78,10 @@ const useFetchAuth = () => {
         } finally {
             setLoading(false);
         }
-    }, [loading, setUserId, setToken,]);
+    }, [loading, setToken,]);
 
     const logout = useCallback(async () => {
         if (loading) return;
-        setUserId(null);
         setLoading(true);
         try {
             await axios.get(`${AUTH_URL}/auth/logout`, {
@@ -100,7 +96,7 @@ const useFetchAuth = () => {
             setLoading(false);
             setToken(null);
         }
-    }, [token, loading, setToken, setUserId]);
+    }, [token, loading, setToken]);
 
     return {login, register, logout, loading, error};
 };

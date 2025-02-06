@@ -31,7 +31,7 @@ const useFetchFeedback = () => {
     }, [request]);
 
     useEffect(() => {
-        fetchFeedbacks();
+        fetchFeedbacks().catch((error) => console.error("Ошибка загрузки отзывов:", error));
     }, [fetchFeedbacks]);
 
     return {feedbacks, loading, error, fetchFeedbacks, deleteFeedback};

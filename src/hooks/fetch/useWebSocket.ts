@@ -6,7 +6,6 @@ const RECONNECT_INTERVAL = 5000;
 
 export const useWebSocket = ({
                                  WS_URL,
-                                 API_URL,
                                  fetchVacancies,
                                  setAlert
                              }: UseWebSocketParams): WebSocketHook => {
@@ -57,7 +56,7 @@ export const useWebSocket = ({
                     setAlert(`Нужен ввод капчи, попробуйте позже ${captchaSrc}`);
                     break;
                 case data === 'hh closed':
-                    setAlert(`Сайт закрыт, попробуйте позже ${captchaSrc}`);
+                    setAlert(`Сайт закрыт, попробуйте позже `);
                     break;
                 default:
                     break;

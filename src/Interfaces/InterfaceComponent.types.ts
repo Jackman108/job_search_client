@@ -1,4 +1,4 @@
-import {ButtonHTMLAttributes, FC} from "react";
+import {ButtonHTMLAttributes, ChangeEvent, FC} from "react";
 
 export interface ButtonConfig<T> {
     icon: string;
@@ -42,7 +42,7 @@ export interface ImagePreviewProps {
 }
 
 export interface ImageUploaderProps {
-    onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
+    onChange: (e: ChangeEvent<HTMLInputElement>) => void;
 }
 
 export interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {

@@ -1,11 +1,11 @@
-import { FC, useEffect } from 'react';
-import { ResumeArrayProps } from '../../../Interfaces/InterfaceResume.types';
+import {FC, FormEvent, useEffect} from 'react';
+import {ResumeArrayProps} from '../../../Interfaces/InterfaceResume.types';
 import Button from '../../../UI/Button/Button';
-import { useFetchById } from '../../../hooks/fetch/useFetchById';
-import { useResumeHandlersById } from '../../../hooks/useResumeHandlersById';
+import {useFetchById} from '../../../hooks/fetch/useFetchById';
+import {useResumeHandlersById} from '../../../hooks/useResumeHandlersById';
 import styles from './ResumeArray.module.css';
 
-const ResumeArray: FC<ResumeArrayProps> = ({ config }) => {
+const ResumeArray: FC<ResumeArrayProps> = ({config}) => {
     const {
         formData,
         isEditing,
@@ -13,23 +13,30 @@ const ResumeArray: FC<ResumeArrayProps> = ({ config }) => {
         handleCancelClick,
         handleInputChange,
     } = useResumeHandlersById();
-    
-    const { 
-        fetchedData, 
-        error, 
+
+    const {
+        fetchedData,
+        error,
         loadData,
-        deleteItem, 
-        saveItem 
+        deleteItem,
+        saveItem
     } = useFetchById(config);
 
     useEffect(() => {
-        loadData();
+        loadData().catch((error) => {
+            console.error("Ошибка загрузки данных:", error);
+        });
     }, [loadData]);
 
-    const handleSubmit = (e: React.FormEvent<HTMLFormElement>, id: number) => {
+
+    const handleSubmit = async (e: FormEvent<HTMLFormElement>, id: number) => {
         e.preventDefault();
-        saveItem(id, formData, isEditing[id]);
-        handleCancelClick(id);
+        try {
+            await saveItem(id, formData, isEditing[id]); // Дожидаемся завершения запроса
+            handleCancelClick(id);
+        } catch (error) {
+            console.error("Ошибка при сохранении:", error);
+        }
     };
 
     const renderForm = (item: any) => (
@@ -58,20 +65,20 @@ const ResumeArray: FC<ResumeArrayProps> = ({ config }) => {
     );
 
     const renderItemData = (item: any) => (
-                <>
-                    {Object.entries(config.fields).map(([key, label]) => (
-                        <div key={key} className={styles.dataItem}>
-                            <strong>{label}:</strong> {item[key] || 'Не указано'}
-                        </div>
-                    ))}
-                    <div className={styles.buttonGroup}>
-                    <Button onClick={() => handleEditClick(item)} variant="secondary">
-                        <img src="/pen.png" alt="Edit" className={styles.editIcon} />
-                    </Button>
-                    <Button onClick={() => deleteItem(item.id)} variant="secondary">Удалить</Button>
-                    </div>
-                </>
-            
+        <>
+            {Object.entries(config.fields).map(([key, label]) => (
+                <div key={key} className={styles.dataItem}>
+                    <strong>{label}:</strong> {item[key] || 'Не указано'}
+                </div>
+            ))}
+            <div className={styles.buttonGroup}>
+                <Button onClick={() => handleEditClick(item)} variant="secondary">
+                    <img src="/pen.png" alt="Edit" className={styles.editIcon}/>
+                </Button>
+                <Button onClick={() => deleteItem(item.id)} variant="secondary">Удалить</Button>
+            </div>
+        </>
+
     );
 
     return (

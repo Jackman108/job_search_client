@@ -25,10 +25,8 @@ export interface SignInProps {
 }
 
 export interface AuthContextProps {
-  userId: string | null;
   token: string | null;
   isLoading: boolean;
-  setUserId: (id: string | null) => void;
   setToken: (token: string | null) => void;
   setIsLoading: Dispatch<SetStateAction<boolean>>;
 }
