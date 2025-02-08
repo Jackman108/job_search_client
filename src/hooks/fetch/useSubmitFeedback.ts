@@ -1,6 +1,6 @@
 // src/hooks/useVacancyHandlers.ts
 import {HandleFeedbackParams} from '../../Interfaces/InterfaceForm.types';
-import useApi from '../../api/api';
+import useApi from '../../api/useApi';
 import {validateEmail} from '../../utils/validateUtils';
 
 const useSubmitFeedback = () => {

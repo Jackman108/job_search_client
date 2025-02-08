@@ -1,7 +1,7 @@
 // src/hooks/useFetchVacancies.ts
 import {useCallback, useEffect, useState} from 'react';
 import {Vacancy} from '../../Interfaces/InterfaceVacancy.types';
-import useApi from '../../api/api';
+import useApi from '../../api/useApi';
 import {formatAndSortData, formatDate} from '../../utils/formatUtils';
 
 const useFetchVacancies = () => {

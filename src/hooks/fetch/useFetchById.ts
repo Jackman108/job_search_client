@@ -1,7 +1,7 @@
 // hooks/useFetchResumeById.ts
 import {useCallback, useState} from 'react';
 import {ConfigItem} from '../../Interfaces/InterfaceResume.types';
-import useApi from '../../api/api';
+import useApi from '../../api/useApi';
 
 export const useFetchById = (config: ConfigItem) => {
     const {request, loading, error} = useApi();

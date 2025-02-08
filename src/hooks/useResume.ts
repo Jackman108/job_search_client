@@ -1,6 +1,6 @@
 import {FormEvent, useCallback, useEffect} from 'react';
 import {ResumeConfigProps} from '../Interfaces/InterfaceResume.types';
-import useApi from '../api/api';
+import useApi from '../api/useApi';
 import {useFetchResumeByType} from './fetch/useFetchResumeByType';
 import {useResumeHandlersByType} from './useResumeHandlersByType';
 

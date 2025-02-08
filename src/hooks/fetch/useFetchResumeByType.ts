@@ -1,6 +1,6 @@
 // useFetchResumeByType.ts
 import {useCallback, useState} from 'react';
-import useApi from '../../api/api';
+import useApi from '../../api/useApi';
 
 export const useFetchResumeByType = (config: Record<string, any>) => {
     const {request} = useApi();

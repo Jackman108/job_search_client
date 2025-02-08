@@ -11,16 +11,26 @@ export const useAuthHandlers = () => {
     const [isSign, setIsSign] = useState<boolean>(!!token);
     const [, setFormError] = useState<string | null>(null);
 
-    const handleSignIn = useCallback(async (email: string, password: string) => {
-        setFormError(null);
-
+    const validateCredentials = (email: string, password: string, passwordRepeat?: string) => {
         const {isValidEmail, emailError} = validateEmail(email);
         const {isValidPassword, passwordError} = validatePassword(password);
 
         if (!isValidEmail || !isValidPassword) {
             setFormError(getErrorValidate(emailError?.email, passwordError?.password));
-            return;
+            return false;
         }
+
+        if (passwordRepeat && password !== passwordRepeat) {
+            setFormError('Пароли не совпадают');
+            return false;
+        }
+
+        return true;
+    };
+
+    const handleSignIn = useCallback(async (email: string, password: string) => {
+        setFormError(null);
+        if (!validateCredentials(email, password)) return;
 
         try {
             await login(email, password);
@@ -31,19 +41,7 @@ export const useAuthHandlers = () => {
 
     const handleRegister = useCallback(async (email: string, password: string, passwordRepeat: string) => {
         setFormError(null);
-
-        const {isValidEmail, emailError} = validateEmail(email);
-        const {isValidPassword, passwordError} = validatePassword(password);
-
-        if (!isValidEmail || !isValidPassword) {
-            setFormError(getErrorValidate(emailError?.email, passwordError?.password));
-            return;
-        }
-
-        if (password !== passwordRepeat) {
-            setFormError('Пароли не совпадают');
-            return;
-        }
+        if (!validateCredentials(email, password, passwordRepeat)) return;
 
         try {
             await register(email, password, passwordRepeat);
@@ -54,11 +52,10 @@ export const useAuthHandlers = () => {
 
     const handleSignOut = useCallback(async () => {
         setFormError(null);
-
         try {
             await logout();
         } catch {
-            setFormError('Exit error');
+            setFormError('SignOut error');
         }
     }, [logout]);
 

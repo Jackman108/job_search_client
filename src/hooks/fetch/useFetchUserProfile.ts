@@ -1,7 +1,7 @@
 // src/hooks/useFetchUserProfile.ts
 import {useCallback, useState} from 'react';
 import {UserProfile} from '../../Interfaces/InterfaceProfile.types';
-import useApi from '../../api/api';
+import useApi from '../../api/useApi';
 
 const useFetchUserProfile = () => {
     const [userProfile, setUserProfile] = useState<UserProfile | null>(null);
@@ -14,8 +14,8 @@ const useFetchUserProfile = () => {
             return data;
         } catch (err) {
             console.error('Error fetching user profile', err);
+            throw new Error('Error fetching profile');
         }
-
     }, [request]);
 
     const changeUserProfile = useCallback(async (userProfile: UserProfile): Promise<UserProfile> => {

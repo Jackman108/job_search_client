@@ -1,104 +1,103 @@
 // src/hooks/useFetchAuth.ts
-import axios from 'axios';
 import {useCallback, useState} from 'react';
 import {AuthResponse, RegisterResponse} from '../../Interfaces/InterfaceAuth.types';
-import {AUTH_URL} from '../../config/serverConfig';
 import {useAuth} from '../../context/useAuthContext';
 import {decodeToken, isTokenExpired} from '../../utils/tokenUtils';
 import {handleAuthError} from '../../utils/errorHandler';
+import useAuthApi from "../../api/useAuthApi";
 
 const useFetchAuth = () => {
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState<string | null>(null);
-    const {token, setToken} = useAuth();
+    const {setToken, setRefreshToken} = useAuth();
+    const {request} = useAuthApi();
 
     const refreshAuthToken = useCallback(async () => {
         try {
-            const {data} = await axios.get(`${AUTH_URL}/auth/refresh-tokens`, {
-                withCredentials: true,
-            });
-            const {accessToken} = data;
-            setToken(accessToken);
+            const response = await request('get', '/auth/refresh-tokens', undefined, {withCredentials: true});
+            setToken(response.data.accessToken);
         } catch (err) {
             handleAuthError(setError, err);
         }
-    }, [setToken]);
+    }, [request, setToken]);
 
-
-    const login = useCallback(async (email: string, password: string) => {
+    const handleAuthRequest = useCallback(async (action: () => Promise<any>) => {
         if (loading) return;
         setLoading(true);
         setError(null);
-
         try {
-            const {data} = await axios.post<AuthResponse>(`${AUTH_URL}/auth/login`, {email, password});
-            const {accessToken} = data;
-            const decodedToken = decodeToken(accessToken);
-
-            if (isTokenExpired(decodedToken.exp)) {
-                await refreshAuthToken();
-                return;
-            }
-
-            setToken(accessToken);
-
+            await action();
         } catch (err) {
             handleAuthError(setError, err);
         } finally {
             setLoading(false);
         }
-    }, [loading, setToken, refreshAuthToken]);
+    }, [loading]);
+
+    const login = useCallback(async (email: string, password: string) => {
+        await handleAuthRequest(async () => {
+
+            const response = await request<AuthResponse>(
+                'post',
+                '/auth/login',
+                {email, password},
+                {withCredentials: false}
+            );
+            const refreshToken = response.headers['x-refresh-token'];
+
+            if (refreshToken) setRefreshToken(refreshToken);
+
+            if (isTokenExpired(decodeToken(response.data.accessToken).exp)) {
+                await refreshAuthToken();
+                return;
+            }
+
+            setToken(response.data.accessToken);
+        });
+    }, [handleAuthRequest, request, setToken, setRefreshToken, refreshAuthToken]);
 
     const register = useCallback(async (email: string, password: string, passwordRepeat: string) => {
-        if (loading) return;
-        setLoading(true);
-        setError(null);
-
         if (password !== passwordRepeat) {
             handleAuthError(setError, 'Passwords do not match');
             setLoading(false);
             return;
         }
 
-        try {
-            await axios.post<RegisterResponse>(`${AUTH_URL}/auth/register`, {
-                email, password, passwordRepeat
-            });
+        await handleAuthRequest(async () => {
+            await request<RegisterResponse>(
+                'post',
+                '/auth/register',
+                {email, password, passwordRepeat},
+                {withCredentials: false}
+            );
 
-            const {data} = await axios.post<AuthResponse>(`${AUTH_URL}/auth/login`, {
-                email,
-                password,
-            });
+            const response = await request<AuthResponse>(
+                'post',
+                '/auth/login',
+                {email, password},
+                {withCredentials: false}
+            );
 
-            const {accessToken} = data;
-            setToken(accessToken);
+            setToken(response.data.accessToken);
+        });
 
-        } catch (err) {
-            handleAuthError(setError, err);
-        } finally {
-            setLoading(false);
-        }
-    }, [loading, setToken,]);
+    }, [handleAuthRequest, request, setToken]);
 
     const logout = useCallback(async () => {
-        if (loading) return;
-        setLoading(true);
-        try {
-            await axios.get(`${AUTH_URL}/auth/logout`, {
-                withCredentials: true,
-                headers: {
-                    Authorization: token,
-                },
-            });
-        } catch (err) {
-            setError('Logout error');
-        } finally {
-            setLoading(false);
-            setToken(null);
-        }
-    }, [token, loading, setToken]);
+        await handleAuthRequest(async () => {
 
-    return {login, register, logout, loading, error};
+            await request(
+                'get',
+                '/auth/logout',
+                undefined,
+                {withCredentials: true}
+            );
+            setToken(null);
+
+        });
+    }, [handleAuthRequest, request, setToken]);
+
+    return {request, login, register, logout, loading, error};
 };
 
 export default useFetchAuth;

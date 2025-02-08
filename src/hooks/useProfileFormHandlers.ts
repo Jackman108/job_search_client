@@ -37,6 +37,10 @@ export const useProfileFormHandlers = (initialUserInfo: UserProfile) => {
     }, []);
 
     const handleSave = useCallback(async (onUpdateProfile: (editProfile: UserProfile) => void) => {
+        if (JSON.stringify(editProfile) === prevInitialUserInfo.current) {
+            setIsEditing(false);
+            return;
+        }
         try {
             const updatedProfile = await changeUserProfile(editProfile);
             onUpdateProfile(updatedProfile);

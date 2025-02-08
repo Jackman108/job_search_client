@@ -1,7 +1,7 @@
 // src/hooks/useFetchFeedback.ts
 import {useCallback, useEffect, useState} from 'react';
 import {Feedback} from '../../Interfaces/InterfaceFeedback.types';
-import useApi from '../../api/api';
+import useApi from '../../api/useApi';
 import {formatAndSortData, formatDate} from '../../utils/formatUtils';
 
 const useFetchFeedback = () => {
