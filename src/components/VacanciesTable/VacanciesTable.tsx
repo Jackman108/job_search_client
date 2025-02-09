@@ -6,15 +6,13 @@ import {useSortedData} from '../../hooks/useSortedData';
 import styles from './VacanciesTable.module.css';
 
 import UnauthorizedMessage from '../../UI/UnauthorizedMessage/UnauthorizedMessage';
-import {useProfileHandlers} from "../../hooks/useProfileHandlers";
 
 const VacanciesTable: FC = () => {
-    const {vacancies, loading, deleteVacancy, fetchVacancies} = useVacancyContext();
+    const {vacancies, loading, error, deleteVacancy, fetchVacancies} = useVacancyContext();
     const {sortedData: sortedVacancies, handleSort, getSortArrow} = useSortedData(vacancies);
-    const {userProfile} = useProfileHandlers();
     if (loading) return <div>Загрузка...</div>;
-    if (!userProfile) return <UnauthorizedMessage/>;
     if (vacancies.length === 0) return <div>Приветствуем! Начните автоответ по вакансиям в панели слева...</div>;
+    if ( error) return <UnauthorizedMessage/>;
 
     const handleDelete = async (id: number) => {
         try {

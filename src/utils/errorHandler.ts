@@ -1,8 +1,11 @@
-import {Dispatch, SetStateAction} from "react";
-
-export const handleAuthError = (setError: Dispatch<SetStateAction<string | null>>, error: any) => {
-    const errorMessage = error?.response?.data?.message || 'Произошла ошибка';
-    setError(errorMessage);
+// src/utils/errorHandler.ts
+export const handleAuthError = (err: any): string => {
+    if (err.response && err.response.data && err.response.data.message) {
+        // Если сервер вернул сообщение об ошибке, используем его
+        return err.response.data.message;
+    }
+    // Если сообщение об ошибке отсутствует, возвращаем общее сообщение
+    return 'Произошла ошибка при выполнении запроса';
 };
 
 export const getErrorValidate = (emailError?: string, passwordError?: string) => {

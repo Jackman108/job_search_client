@@ -1,5 +1,4 @@
 import axios, {AxiosResponse} from 'axios';
-import {useCallback, useState} from 'react';
 import {AUTH_URL} from '../config/serverConfig';
 import {useAuth} from '../context/useAuthContext';
 
@@ -9,34 +8,24 @@ const axiosAuthInstance = axios.create({
 });
 
 const useAuthApi = () => {
-    const [loading, setLoading] = useState(false);
-    const [error, setError] = useState<string | null>(null);
     const {token} = useAuth();
 
-    const request = useCallback(
-        async <T = any>(method: 'get' | 'post', endpoint: string, data?: any, config = {}): Promise<AxiosResponse<T>> => {
-            setLoading(true);
-            setError(null);
+    const request = async <T = any>(
+        method: 'get' | 'post',
+        endpoint: string,
+        data?: any,
+        config = {}
+    ): Promise<AxiosResponse<T>> => {
+        return axiosAuthInstance.request({
+            method,
+            url: endpoint,
+            data,
+            headers: token ? {Authorization: `Bearer ${token}`} : {},
+            ...config,
+        });
+    };
 
-            try {
-                return await axiosAuthInstance.request({
-                    method,
-                    url: endpoint,
-                    data,
-                    headers: token ? {Authorization: `Bearer ${token}`} : {},
-                    ...config,
-                });
-            } catch (err) {
-                setError(err instanceof Error ? err.message : 'An unknown error occurred.');
-                throw err;
-            } finally {
-                setLoading(false);
-            }
-        },
-        [token]
-    );
-
-    return {loading, error, request};
+    return {request};
 };
 
 export default useAuthApi;

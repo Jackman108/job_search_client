@@ -13,7 +13,8 @@ export const useProfileHandlers = (): UseProfileHandlers => {
         } else {
             setUserProfile(null);
         }
-    }, [token, fetchUserProfile, setUserProfile]);
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [token]);
 
     const handleUpdateProfile = useCallback(async (): Promise<void> => {
         try {

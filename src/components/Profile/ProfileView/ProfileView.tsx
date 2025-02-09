@@ -12,12 +12,12 @@ const ProfileView: React.FC<UserInfoProps> = ({userInfo, onEdit, onSignOut}) => 
         <Avatar src={userInfo.avatar} className={styles.avatar}/>
 
         <div className={styles.infoContainer}>
-            <RenderRow label={USER_TEXTS.firstNameLabel} value={userInfo.firstName}/>
-            <RenderRow label={USER_TEXTS.lastNameLabel} value={userInfo.lastName}/>
+            <RenderRow label={USER_TEXTS.firstNameLabel} value={userInfo.first_name}/>
+            <RenderRow label={USER_TEXTS.lastNameLabel} value={userInfo.last_name}/>
             <RenderRow label={USER_TEXTS.balanceLabel} value={userInfo.balance}/>
-            <RenderRow label={USER_TEXTS.spinCountLabel} value={userInfo.spinCount}/>
-            <RenderRow label={USER_TEXTS.successfulResponsesLabel} value={userInfo.successfulResponsesCount}/>
-            <RenderRow label={USER_TEXTS.currentStatusLabel} value={userInfo.currentStatus}/>
+            <RenderRow label={USER_TEXTS.spinCountLabel} value={userInfo.spin_count}/>
+            <RenderRow label={USER_TEXTS.successfulResponsesLabel} value={userInfo.successful_responses_count}/>
+            <RenderRow label={USER_TEXTS.currentStatusLabel} value={userInfo.current_status}/>
         </div>
 
         <div className={styles.buttonGroup}>

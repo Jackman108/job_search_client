@@ -1,103 +1,112 @@
 // src/hooks/useFetchAuth.ts
-import {useCallback, useState} from 'react';
+import {useMutation, useQueryClient} from '@tanstack/react-query';
 import {AuthResponse, RegisterResponse} from '../../Interfaces/InterfaceAuth.types';
 import {useAuth} from '../../context/useAuthContext';
 import {decodeToken, isTokenExpired} from '../../utils/tokenUtils';
 import {handleAuthError} from '../../utils/errorHandler';
-import useAuthApi from "../../api/useAuthApi";
+import useAuthApi from '../../api/useAuthApi';
+import {AxiosResponse} from "axios";
 
 const useFetchAuth = () => {
-    const [loading, setLoading] = useState(false);
-    const [error, setError] = useState<string | null>(null);
+    const queryClient = useQueryClient();
     const {setToken, setRefreshToken} = useAuth();
     const {request} = useAuthApi();
 
-    const refreshAuthToken = useCallback(async () => {
-        try {
-            const response = await request('get', '/auth/refresh-tokens', undefined, {withCredentials: true});
-            setToken(response.data.accessToken);
-        } catch (err) {
-            handleAuthError(setError, err);
+    const refreshAuthToken = useMutation<string, Error>(
+        {
+            mutationFn: async () => {
+                const response = await request('get', '/auth/refresh-tokens', undefined, {withCredentials: true});
+                return response.data.accessToken;
+            },
+            onSuccess: (token: string) => {
+                setToken(token);
+            },
+            onError: (err: Error) => {
+                const errorMessage = handleAuthError(err);
+                throw new Error(errorMessage);
+            },
         }
-    }, [request, setToken]);
+    );
 
-    const handleAuthRequest = useCallback(async (action: () => Promise<any>) => {
-        if (loading) return;
-        setLoading(true);
-        setError(null);
-        try {
-            await action();
-        } catch (err) {
-            handleAuthError(setError, err);
-        } finally {
-            setLoading(false);
+    const login = useMutation<AxiosResponse<AuthResponse>, Error, { email: string; password: string }>(
+        {
+            mutationFn: async ({email, password}: { email: string; password: string }) => {
+                return await request<AuthResponse>('post', '/auth/login', {email, password}, {withCredentials: false});
+            },
+            onSuccess: (response: AxiosResponse<AuthResponse>) => {
+                const refreshToken = response.headers['x-refresh-token'];
+                if (refreshToken) setRefreshToken(refreshToken);
+
+                if (isTokenExpired(decodeToken(response.data.accessToken).exp)) {
+                    refreshAuthToken.mutate();
+                    return;
+                }
+
+                setToken(response.data.accessToken);
+            },
+            onError: (err: Error) => {
+                const errorMessage = handleAuthError(err);
+                throw new Error(errorMessage);
+            },
         }
-    }, [loading]);
+    );
 
-    const login = useCallback(async (email: string, password: string) => {
-        await handleAuthRequest(async () => {
+    const register = useMutation<AxiosResponse<AuthResponse>, Error, {
+        email: string;
+        password: string;
+        passwordRepeat: string
+    }>(
+        {
+            mutationFn: async ({email, password, passwordRepeat}: {
+                email: string;
+                password: string;
+                passwordRepeat: string
+            }) => {
+                if (password !== passwordRepeat) {
+                    throw new Error('Passwords do not match');
+                }
 
-            const response = await request<AuthResponse>(
-                'post',
-                '/auth/login',
-                {email, password},
-                {withCredentials: false}
-            );
-            const refreshToken = response.headers['x-refresh-token'];
-
-            if (refreshToken) setRefreshToken(refreshToken);
-
-            if (isTokenExpired(decodeToken(response.data.accessToken).exp)) {
-                await refreshAuthToken();
-                return;
-            }
-
-            setToken(response.data.accessToken);
-        });
-    }, [handleAuthRequest, request, setToken, setRefreshToken, refreshAuthToken]);
-
-    const register = useCallback(async (email: string, password: string, passwordRepeat: string) => {
-        if (password !== passwordRepeat) {
-            handleAuthError(setError, 'Passwords do not match');
-            setLoading(false);
-            return;
+                await request<RegisterResponse>('post', '/auth/register', {
+                    email,
+                    password,
+                    passwordRepeat
+                }, {withCredentials: false});
+                return await request<AuthResponse>('post', '/auth/login', {email, password}, {withCredentials: false});
+            },
+            onSuccess: (response: AxiosResponse<AuthResponse>) => {
+                setToken(response.data.accessToken);
+            },
+            onError: (err: Error) => {
+                const errorMessage = handleAuthError(err);
+                throw new Error(errorMessage);
+            },
         }
+    );
 
-        await handleAuthRequest(async () => {
-            await request<RegisterResponse>(
-                'post',
-                '/auth/register',
-                {email, password, passwordRepeat},
-                {withCredentials: false}
-            );
+    const logout = useMutation<void, Error>(
+        {
+            mutationFn: async () => {
+                await request('get', '/auth/logout', undefined, {withCredentials: true});
+            },
+            onSuccess: () => {
+                setToken(null);
+                setRefreshToken(null);
+                queryClient.clear();
+            },
+            onError: (err: Error) => {
+                const errorMessage = handleAuthError(err);
+                throw new Error(errorMessage);
+            },
+        }
+    );
 
-            const response = await request<AuthResponse>(
-                'post',
-                '/auth/login',
-                {email, password},
-                {withCredentials: false}
-            );
-
-            setToken(response.data.accessToken);
-        });
-
-    }, [handleAuthRequest, request, setToken]);
-
-    const logout = useCallback(async () => {
-        await handleAuthRequest(async () => {
-
-            await request(
-                'get',
-                '/auth/logout',
-                undefined,
-                {withCredentials: true}
-            );
-            setToken(null);
-
-        });
-    }, [handleAuthRequest, request, setToken]);
-
-    return {request, login, register, logout, loading, error};
+    return {
+        login: login.mutateAsync,
+        register: register.mutateAsync,
+        logout: logout.mutateAsync,
+        isLoading: login.isPending || register.isPending || logout.isPending,
+        error: login.error || register.error || logout.error,
+    };
 };
 
 export default useFetchAuth;

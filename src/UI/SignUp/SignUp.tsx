@@ -55,7 +55,7 @@ const SignUp: React.FC<SignUpProps> = ({ onSignUp, error, loading }) => {
       <Button type="submit" variant="secondary" disabled={loading}>
         {loading ? BUTTON_TEXTS.loadingButton : BUTTON_TEXTS.registerButton}
       </Button>
-      {error && <p>{error}</p>}
+        {error && <p>{typeof error === 'string' ? error : error.message}</p>}
     </form>
   );
 };

@@ -5,11 +5,11 @@ import {validateEmail, validatePassword} from '../utils/validateUtils';
 import {getErrorValidate} from '../utils/errorHandler';
 
 export const useAuthHandlers = () => {
-    const {login, register, logout, error: authError, loading: authLoading} = useFetchAuth();
+    const {login, register, logout, isLoading: authLoading, error: authError} = useFetchAuth();
     const {token} = useAuth();
 
     const [isSign, setIsSign] = useState<boolean>(!!token);
-    const [, setFormError] = useState<string | null>(null);
+    const [formError, setFormError] = useState<string | null>(null);
 
     const validateCredentials = (email: string, password: string, passwordRepeat?: string) => {
         const {isValidEmail, emailError} = validateEmail(email);
@@ -33,9 +33,9 @@ export const useAuthHandlers = () => {
         if (!validateCredentials(email, password)) return;
 
         try {
-            await login(email, password);
-        } catch {
-            setFormError('Login error: invalid email or password');
+            await login({email, password});
+        } catch (err) {
+            setFormError(err instanceof Error ? err.message : 'Ошибка при входе');
         }
     }, [login]);
 
@@ -44,9 +44,9 @@ export const useAuthHandlers = () => {
         if (!validateCredentials(email, password, passwordRepeat)) return;
 
         try {
-            await register(email, password, passwordRepeat);
-        } catch {
-            setFormError('Registration error: check if the data entered is correct');
+            await register({email, password, passwordRepeat});
+        } catch (err) {
+            setFormError(err instanceof Error ? err.message : 'Ошибка при регистрации');
         }
     }, [register]);
 
@@ -54,8 +54,8 @@ export const useAuthHandlers = () => {
         setFormError(null);
         try {
             await logout();
-        } catch {
-            setFormError('SignOut error');
+        } catch (err) {
+            setFormError(err instanceof Error ? err.message : 'Ошибка при выходе');
         }
     }, [logout]);
 
@@ -67,5 +67,6 @@ export const useAuthHandlers = () => {
         handleSignOut,
         authLoading,
         authError,
+        formError,
     };
 };

@@ -1,17 +1,16 @@
 import {ChangeEvent} from "react";
 
 export interface UserProfile {
-    id: string;
-    email: string;
-    updatedAt: string;
-    userId: string;
-    firstName: string;
-    lastName: string;
+    id: number;
+    first_name: string;
+    last_name: string;
     avatar: string;
     balance: number;
-    spinCount: number;
-    successfulResponsesCount: number;
-    currentStatus: string;
+    spin_count: number;
+    successful_responses_count: number;
+    current_status: string;
+    user_id: string | number;
+    updated_at: string | Date;
 }
 
 export interface UseProfileHandlers {

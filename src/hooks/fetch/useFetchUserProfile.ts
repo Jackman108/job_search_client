@@ -1,35 +1,51 @@
 // src/hooks/useFetchUserProfile.ts
-import {useCallback, useState} from 'react';
 import {UserProfile} from '../../Interfaces/InterfaceProfile.types';
-import useApi from '../../api/useApi';
+import useDataApi from '../../api/useApi';
+import {useMutation, useQuery, useQueryClient} from '@tanstack/react-query';
+import {useCallback} from "react";
 
 const useFetchUserProfile = () => {
-    const [userProfile, setUserProfile] = useState<UserProfile | null>(null);
-    const {loading, error, request} = useApi();
+    const queryClient = useQueryClient();
+    const {request} = useDataApi();
 
-    const fetchUserProfile = useCallback(async () => {
-        try {
-            const data = await request('get', '/profile');
-            setUserProfile(data);
-            return data;
-        } catch (err) {
-            console.error('Error fetching user profile', err);
-            throw new Error('Error fetching profile');
+    const {
+        data: userProfile,
+        isPending,
+        error
+    } = useQuery<UserProfile, Error>({
+        queryKey: ['userProfile'],
+        queryFn: async () => request('get', '/profile'),
+        staleTime: 1000 * 60 * 10,
+    });
+
+    const changeUserProfile = useMutation<UserProfile, Error, UserProfile>({
+            mutationFn: async (userProfile) => {
+                return await request('put', '/profile', userProfile);
+            },
+            onSuccess: (data) => {
+                queryClient.setQueryData(['userProfile'], data);
+            },
         }
-    }, [request]);
+    )
+    const fetchUserProfile = useCallback(() => {
+        return queryClient.invalidateQueries({ queryKey: ['userProfile'] });
+    }, [queryClient]);
 
-    const changeUserProfile = useCallback(async (userProfile: UserProfile): Promise<UserProfile> => {
-        try {
-            const data = await request('put', '/profile', userProfile);
-            setUserProfile(data);
-            return data;
-        } catch (err) {
-            console.error('Error saving profile', err);
-            throw new Error('Error saving profile');
-        }
-    }, [request]);
+    const setUserProfile = useCallback(
+        (data: UserProfile | null) => {
+            queryClient.setQueryData(['userProfile'], data);
+        },
+        [queryClient]
+    );
+    return {
+        userProfile: userProfile || null,
+        isLoading: isPending,
+        error,
+        fetchUserProfile,
+        changeUserProfile: changeUserProfile.mutateAsync,
+        setUserProfile,
+    };
 
-    return {loading, error, userProfile, fetchUserProfile, changeUserProfile, setUserProfile};
-};
+}
 
 export default useFetchUserProfile;

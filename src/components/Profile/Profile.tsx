@@ -27,6 +27,7 @@ const Profile: FC<ProfileProps> = () => {
         handleSignOut,
         authLoading,
         authError,
+        formError
     } = useAuthHandlers();
 
     const {
@@ -38,7 +39,7 @@ const Profile: FC<ProfileProps> = () => {
         handleInputChange,
         handleAvatarChange,
     } = useProfileFormHandlers(userProfile || ({} as UserProfile));
-
+    const error = formError || (authError ? authError.message : null);
     return (
         <section className={styles.sectionContainer}>
             {userProfile ? (
@@ -65,9 +66,9 @@ const Profile: FC<ProfileProps> = () => {
                 <>
                     <ProfileAuth isSign={isSign} setIsSign={setIsSign}/>
                     {isSign ? (
-                        <SignUp onSignUp={handleRegister} error={authError} loading={authLoading}/>
+                        <SignUp onSignUp={handleRegister} error={error} loading={authLoading}/>
                     ) : (
-                        <SignIn onSignIn={handleSignIn} error={authError} loading={authLoading}/>
+                        <SignIn onSignIn={handleSignIn} error={error} loading={authLoading}/>
                     )}
                 </>
             )}

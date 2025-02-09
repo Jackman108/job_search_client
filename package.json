@@ -10,6 +10,8 @@
     "eject": "react-scripts eject"
   },
   "dependencies": {
+    "@tanstack/react-query": "^5.66.0",
+    "@tanstack/react-query-devtools": "^5.66.0",
     "@testing-library/jest-dom": "^6.6.3",
     "@testing-library/react": "^16.2.0",
     "@testing-library/user-event": "^14.6.1",
@@ -18,6 +20,7 @@
     "@types/react": "^19.0.0",
     "@types/react-dom": "^19.0.0",
     "axios": "^1.7.9",
+    "caniuse-lite": "^1.0.30001699",
     "dotenv": "^16.4.7",
     "jwt-decode": "^4.0.0",
     "react": "^19.0.0",
@@ -47,6 +50,7 @@
   },
   "devDependencies": {
     "@babel/plugin-proposal-private-property-in-object": "^7.21.11",
+    "@tanstack/eslint-plugin-query": "^5.66.0",
     "@testing-library/dom": "^10.4.0",
     "@types/body-parser": "^1.19.5",
     "@types/jwt-decode": "^3.1.0",

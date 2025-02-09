@@ -13,13 +13,13 @@ export interface RegisterResponse {
 
 export interface SignUpProps {
     onSignUp: (email: string, password: string, passwordRepeat: string) => void;
-    error: string | null;
+    error: string | Error | null;
     loading: boolean;
 }
 
 export interface SignInProps {
     onSignIn: (email: string, password: string) => void;
-    error: string | null;
+    error: string | Error | null;
     loading: boolean;
 }
 

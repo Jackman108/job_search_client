@@ -21,8 +21,8 @@ const ProfileChange: React.FC<UserChangeProps> = ({
     <div className={styles.editForm}>
       <RenderInput
         label={USER_TEXTS.firstNameLabel}
-        name='firstName'
-        value={editProfile.firstName || ""}
+        name='first_name'
+        value={editProfile.first_name || ""}
         onChange={handleInputChange}
         isLoading={false}
         type="text"
@@ -30,8 +30,8 @@ const ProfileChange: React.FC<UserChangeProps> = ({
       />
       <RenderInput
         label={USER_TEXTS.lastNameLabel}
-        name='lastName'
-        value={editProfile.lastName || ""}
+        name='last_name'
+        value={editProfile.last_name || ""}
         onChange={handleInputChange}
         isLoading={false}
         type="text"
