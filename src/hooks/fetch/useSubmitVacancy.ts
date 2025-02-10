@@ -1,7 +1,7 @@
 // src/hooks/useVacancyHandlers.ts
-import {HandleSubmitParams} from '../../Interfaces/InterfaceForm.types';
 import useApi from '../../api/useApi';
 import {validateEmail, validateSearchUrl} from '../../utils/validateUtils';
+import {VacancySubmitParams} from "../../Interfaces/InterfaceVacancy.types";
 
 const useSubmitVacancy = () => {
     const {request} = useApi();
@@ -14,7 +14,7 @@ const useSubmitVacancy = () => {
                                     vacancyUrl,
                                     setErrors,
                                     setIsLoading,
-                                }: HandleSubmitParams): Promise<void> => {
+                                }: VacancySubmitParams): Promise<void> => {
 
         const {isValidSearchUrl, searchUrlError} = validateSearchUrl(vacancyUrl);
         const {isValidEmail, emailError} = validateEmail(email);

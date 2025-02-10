@@ -1,45 +1,45 @@
 // src/hooks/useVacancyHandlers.ts
-import {ChangeEvent, Dispatch, FormEvent, SetStateAction, useCallback, useState} from 'react';
-import {Errors, HandleSubmitParams, UseFormHandlersParams} from '../Interfaces/InterfaceForm.types';
+import {ChangeEvent, FormEvent, useCallback, useState} from 'react';
+import {Errors} from '../Interfaces/InterfaceForm.types';
 import {DEFAULT_VACANCY_PARAMS, FormParams} from '../config/formConfigs';
 import {useAuth} from '../context/useAuthContext';
 import {buildVacancyUrl} from '../utils/buildVacancyUrl';
 import useSubmitVacancy from './fetch/useSubmitVacancy';
+import {VacancySubmitParams, VacancyHandlersParams} from "../Interfaces/InterfaceVacancy.types";
 
-const useVacancyHandlers = (): UseFormHandlersParams => {
-    const [email, setEmail] = useState('');
-    const [password, setPassword] = useState('');
-    const [position, setPosition] = useState('');
-    const [message, setMessage] = useState('');
-    const [vacancyUrl, setVacancyUrl] = useState(buildVacancyUrl(DEFAULT_VACANCY_PARAMS));
+const useVacancyHandlers = (): VacancyHandlersParams => {
+    const [formValues, setFormValues] = useState({
+        email: '',
+        password: '',
+        position: '',
+        message: '',
+        vacancyUrl: buildVacancyUrl(DEFAULT_VACANCY_PARAMS),
+    });
     const [errors, setErrors] = useState<Errors>({});
     const {token, isLoading, setIsLoading} = useAuth();
     const {handleSubmit, handleStop} = useSubmitVacancy();
 
-    const handleInputChange = (setter: Dispatch<SetStateAction<string>>) => (
-        e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
-        setter(e.target.value);
+    const handleInputChange = (field: keyof typeof formValues) => (
+        e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+    ) => {
+        setFormValues(prev => ({...prev, [field]: e.target.value}));
     };
 
     const handleSelectChange = (param: FormParams) => (
         e: ChangeEvent<HTMLSelectElement>) => {
-        const newUrl = new URL(vacancyUrl);
+        const newUrl = new URL(formValues.vacancyUrl);
         const urlParams = new URLSearchParams(newUrl.search);
         urlParams.set(param, e.target.value);
-        setVacancyUrl(buildVacancyUrl(Object.fromEntries(urlParams.entries())));
+        setFormValues(prev => ({...prev, vacancyUrl: buildVacancyUrl(Object.fromEntries(urlParams.entries()))}));
     };
 
     const submitHandler = useCallback(async (event: FormEvent) => {
         event.preventDefault();
         setIsLoading(true);
 
-        const params: HandleSubmitParams = {
+        const params: VacancySubmitParams = {
             token,
-            email,
-            password,
-            position,
-            message,
-            vacancyUrl,
+            ...formValues,
             setErrors,
             setIsLoading,
         };
@@ -48,7 +48,7 @@ const useVacancyHandlers = (): UseFormHandlersParams => {
         } finally {
             setIsLoading(false);
         }
-    }, [token, email, password, position, message, vacancyUrl, setIsLoading, handleSubmit]);
+    }, [token, formValues, setIsLoading, handleSubmit]);
 
     const stopHandler = useCallback(async () => {
         await handleStop();
@@ -56,25 +56,16 @@ const useVacancyHandlers = (): UseFormHandlersParams => {
     }, [setIsLoading, handleStop]);
 
     return {
-        email,
-        setEmail,
-        password,
-        setPassword,
-        position,
-        setPosition,
-        message,
-        setMessage,
-        vacancyUrl,
-        setVacancyUrl,
+        ...formValues,
         errors,
         submitHandler,
         stopHandler,
         isLoading,
-        handleVacancyUrlChange: handleInputChange(setVacancyUrl),
-        handleEmailChange: handleInputChange(setEmail),
-        handlePasswordChange: handleInputChange(setPassword),
-        handlePositionChange: handleInputChange(setPosition),
-        handleMessageChange: handleInputChange(setMessage),
+        handleVacancyUrlChange: handleInputChange('vacancyUrl'),
+        handleEmailChange: handleInputChange('email'),
+        handlePasswordChange: handleInputChange('password'),
+        handlePositionChange: handleInputChange('position'),
+        handleMessageChange: handleInputChange('message'),
         handleSelectChange,
     };
 };

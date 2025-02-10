@@ -1,3 +1,7 @@
+import {ChangeEvent, Dispatch, FormEvent, SetStateAction} from "react";
+import {FormParams} from "../config/formConfigs";
+import {Errors} from "./InterfaceForm.types";
+
 export interface Vacancy {
     id: number;
     title_vacancy: string;
@@ -8,6 +12,35 @@ export interface Vacancy {
     response_date: string;
     response_date_time?: string;
     response_date_date?: string;
+}
+
+export interface VacancySubmitParams {
+    token: string | null;
+    email: string;
+    password: string;
+    position: string;
+    message: string;
+    vacancyUrl: string;
+    setErrors: Dispatch<SetStateAction<Errors>>;
+    setIsLoading: Dispatch<SetStateAction<boolean>>;
+}
+
+export interface VacancyHandlersParams {
+    email: string;
+    password: string;
+    position: string;
+    message: string;
+    vacancyUrl: string;
+    errors: Errors;
+    submitHandler: (event: FormEvent) => Promise<void>;
+    stopHandler: () => Promise<void>;
+    isLoading: boolean;
+    handleVacancyUrlChange: (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => void;
+    handleEmailChange: (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => void;
+    handlePasswordChange: (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => void;
+    handlePositionChange: (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => void;
+    handleMessageChange: (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => void;
+    handleSelectChange: (param: FormParams) => (e: ChangeEvent<HTMLSelectElement>) => void;
 }
 
 export interface VacancyContextType {
@@ -23,4 +56,56 @@ export type SortDirection = 'ascending' | 'descending';
 export interface SortConfig<T> {
     key: keyof T;
     direction: SortDirection;
+}
+
+export interface VacancyAuthData {
+    id?: number;
+    email: string;
+    password: string;
+    user_id: string;
+    created_at?: Date;
+    updated_at?: Date;
+}
+
+export interface VacancySubmitData {
+    id?: number;
+    user_id: string;
+    position: string;
+    message: string;
+    vacancy_url: string;
+    schedule: string;
+    order_by: string;
+    search_field: string;
+    experience: string;
+    search_period: string;
+    createdAt?: Date;
+    updatedAt?: Date;
+}
+
+export interface UpdateVacancyAuthData {
+    id: number;
+    user_id: string;
+    email?: string;
+    password?: string;
+}
+
+export interface UpdateVacancySubmitData {
+    id: number;
+    user_id: string;
+    position?: string;
+    message?: string;
+    vacancy_url?: string;
+    schedule?: string;
+    order_by?: string;
+    search_field?: string;
+    experience?: string;
+    search_period?: string;
+}
+
+export interface MultipleVacancyAuthData {
+    items: VacancyAuthData[];
+}
+
+export interface MultipleVacancySubmitData {
+    items: VacancySubmitData[];
 }

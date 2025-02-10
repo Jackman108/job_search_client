@@ -1,19 +1,7 @@
 import {ChangeEvent, Dispatch, FormEvent, SetStateAction} from 'react';
-import {OPTIONS} from '../config/formConfigs';
 
 export interface Errors {
     [key: string]: string | undefined;
-}
-
-export interface HandleSubmitParams {
-    token: string | null;
-    email: string;
-    password: string;
-    position: string;
-    message: string;
-    vacancyUrl: string;
-    setErrors: Dispatch<SetStateAction<Errors>>;
-    setIsLoading: Dispatch<SetStateAction<boolean>>;
 }
 
 export interface HandleFeedbackParams {
@@ -24,28 +12,6 @@ export interface HandleFeedbackParams {
     setIsLoading: Dispatch<SetStateAction<boolean>>;
 }
 
-export interface UseFormHandlersParams {
-    email: string;
-    setEmail: Dispatch<SetStateAction<string>>;
-    password: string;
-    setPassword: Dispatch<SetStateAction<string>>;
-    position: string;
-    setPosition: Dispatch<SetStateAction<string>>;
-    message: string;
-    setMessage: Dispatch<SetStateAction<string>>;
-    vacancyUrl: string;
-    setVacancyUrl: Dispatch<SetStateAction<string>>;
-    errors: Errors;
-    submitHandler: (event: FormEvent) => Promise<void>;
-    stopHandler: () => Promise<void>;
-    isLoading: boolean | null;
-    handleVacancyUrlChange: (e: ChangeEvent<HTMLInputElement>) => void;
-    handleEmailChange: (e: ChangeEvent<HTMLInputElement>) => void;
-    handlePasswordChange: (e: ChangeEvent<HTMLInputElement>) => void;
-    handlePositionChange: (e: ChangeEvent<HTMLInputElement>) => void;
-    handleMessageChange: (e: ChangeEvent<HTMLTextAreaElement>) => void;
-    handleSelectChange: (param: keyof typeof OPTIONS) => (e: ChangeEvent<HTMLSelectElement>) => void;
-}
 
 export interface UseFeedbackHandlersParams {
     email: string;

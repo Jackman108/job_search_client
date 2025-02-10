@@ -19,7 +19,8 @@ const useFetchVacancies = () => {
         try {
             const data = await request('get', '/vacancy');
             setVacancies(formatAndSortData(data, formatVacancy, 'response_date'));
-        } catch {
+        } catch (err) {
+            console.error("Ошибка загрузки вакансий:", err);
         }
     }, [request]);
 
@@ -27,7 +28,8 @@ const useFetchVacancies = () => {
         try {
             await request('delete', `/vacancy/${id}`);
             setVacancies((prevVacancies) => prevVacancies.filter((vacancy) => vacancy.id !== id));
-        } catch {
+        } catch (err) {
+            console.error("Ошибка удаления вакансии:", err);
         }
     }, [request]);
 

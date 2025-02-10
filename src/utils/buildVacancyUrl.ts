@@ -11,7 +11,7 @@ export function buildVacancyUrl(params: {
 
     const baseUrl = 'https://hh.ru/search/vacancy';
     const url = new URL(baseUrl);
-    const queryParams = new URLSearchParams(url.search);
+    const queryParams = new URLSearchParams();
 
     Object.entries(params).forEach(([key, value]) => {
         if (value) {
