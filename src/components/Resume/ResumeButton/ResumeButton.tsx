@@ -5,7 +5,7 @@ import Button from '../../../UI/Button/Button';
 import {useAuth} from '../../../context/useAuthContext';
 import styles from './ResumeButton.module.css';
 import UnauthorizedMessage from '../../../UI/UnauthorizedMessage/UnauthorizedMessage';
-import {FORM_BUTTONS} from '../../../config/formConfigs';
+import {FORM_BUTTONS} from "../../../config/searchConfig";
 
 const ResumeButton: FC<ResumeProps> = ({onClose}) => {
     const {token} = useAuth();

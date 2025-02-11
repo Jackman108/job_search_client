@@ -6,8 +6,8 @@ import useFeedbackHandlers from "../../hooks/useFeedbackHandlers";
 import styles from "../VacancyForm/VacancyForm.module.css";
 import UnauthorizedMessage from "../../UI/UnauthorizedMessage/UnauthorizedMessage";
 import Button from "../../UI/Button/Button";
-import {FORM_BUTTONS, FORM_TEXTS} from "../../config/formConfigs";
 import RenderInput from "../../UI/RenderInput/RenderInput";
+import {FORM_BUTTONS, FORM_TEXTS} from "../../config/searchConfig";
 
 const FeedbackForm: FC<FormProps> = ({onClose}) => {
     const {token, isLoading} = useAuth();

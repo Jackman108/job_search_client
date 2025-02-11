@@ -1,20 +1,15 @@
-// src/hooks/useVacancyHandlers.ts
+// src/hooks/useVacancySubmit.ts
 import useApi from '../../api/useApi';
 import {validateEmail, validateSearchUrl} from '../../utils/validateUtils';
-import {VacancySubmitParams} from "../../Interfaces/InterfaceVacancy.types";
+import {VacancySubmitParams} from '../../Interfaces/InterfaceVacancy.types';
 
-const useSubmitVacancy = () => {
+const useVacancySubmit = () => {
     const {request} = useApi();
 
-    const handleSubmit = async ({
-                                    email,
-                                    password,
-                                    position,
-                                    message,
-                                    vacancyUrl,
-                                    setErrors,
-                                    setIsLoading,
-                                }: VacancySubmitParams): Promise<void> => {
+    const handleSubmit = async (
+        formValues: VacancySubmitParams,
+    ): Promise<void> => {
+        const {email, password, position, message, vacancyUrl, setErrors, setIsLoading,} = formValues;
 
         const {isValidSearchUrl, searchUrlError} = validateSearchUrl(vacancyUrl);
         const {isValidEmail, emailError} = validateEmail(email);
@@ -28,6 +23,7 @@ const useSubmitVacancy = () => {
             setErrors(emailError);
             return;
         }
+
         setIsLoading(true);
         await request('post', '/start', {email, password, position, message, vacancyUrl});
         setIsLoading(false);
@@ -44,4 +40,4 @@ const useSubmitVacancy = () => {
     return {handleSubmit, handleStop};
 };
 
-export default useSubmitVacancy;
+export default useVacancySubmit;

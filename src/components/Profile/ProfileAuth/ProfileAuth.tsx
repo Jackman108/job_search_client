@@ -2,7 +2,7 @@
 import React, {FC} from "react";
 import styles from './ProfileAuth.module.css';
 import Button from "../../../UI/Button/Button";
-import {FORM_BUTTONS} from '../../../config/formConfigs';
+import {FORM_BUTTONS} from "../../../config/searchConfig";
 
 const ProfileAuth: FC<{ isSign: boolean; setIsSign: (value: boolean) => void }> = ({isSign, setIsSign}) => (
     <div className={styles.tabContainer}>

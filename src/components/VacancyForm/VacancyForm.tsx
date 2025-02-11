@@ -1,16 +1,7 @@
 // src/components/VacancyForm/VacancyForm.tsx
-import {FC} from 'react';
-import useVacancyHandlers from '../../hooks/useVacancyHandlers';
+import {FC, FormEvent} from 'react';
 import styles from './VacancyForm.module.css';
-import {
-    FORM_BUTTONS,
-    FORM_LABELS,
-    FORM_PARAMS,
-    FORM_TEXTS,
-    FormLabelKeys,
-    FormParamKeys,
-    OPTIONS,
-} from '../../config/formConfigs';
+
 import {useAuth} from '../../context/useAuthContext';
 import Button from '../../UI/Button/Button';
 import RenderInput from '../../UI/RenderInput/RenderInput';
@@ -18,25 +9,34 @@ import RenderSelect from '../../UI/RenderSelect/RenderSelect';
 import RenderTextarea from '../../UI/RenderTextarea/RenderTextarea';
 import {FormProps} from '../../Interfaces/InterfaceComponent.types';
 import UnauthorizedMessage from '../../UI/UnauthorizedMessage/UnauthorizedMessage';
+import useVacancyFormState from "../../hooks/vacancyForm/useVacancyFormState";
+import useVacancySubmit from "../../hooks/vacancyForm/useVacancySubmit";
+import {
+    FORM_BUTTONS,
+    FORM_LABELS,
+    FORM_PARAMS,
+    FORM_TEXTS,
+    FormLabelKeys,
+    FormParamKeys,
+    OPTIONS
+} from "../../config/searchConfig";
 
 const VacancyForm: FC<FormProps> = ({onClose}) => {
-    const {token, isLoading} = useAuth();
-    const {
-        email,
-        password,
-        position,
-        message,
-        vacancyUrl,
-        errors,
-        submitHandler,
-        stopHandler,
-        handleVacancyUrlChange,
-        handleEmailChange,
-        handlePasswordChange,
-        handlePositionChange,
-        handleMessageChange,
-        handleSelectChange,
-    } = useVacancyHandlers();
+    const {token, isLoading, setIsLoading} = useAuth();
+    const {formValues, errors, setErrors, handleInputChange, handleSelectChange,} = useVacancyFormState();
+    const {handleSubmit, handleStop} = useVacancySubmit();
+
+    const {email, password, position, message, vacancyUrl} = formValues;
+
+    const onSubmit = async (event: FormEvent) => {
+        event.preventDefault();
+        await handleSubmit({
+            ...formValues,
+            token,
+            setErrors,
+            setIsLoading,
+        });
+    };
 
     if (!token) {
         return (
@@ -55,21 +55,13 @@ const VacancyForm: FC<FormProps> = ({onClose}) => {
                 {FORM_BUTTONS.closeButton}
             </Button>
 
-            <form className={styles.formContainer} onSubmit={submitHandler}>
+            <form className={styles.formContainer} onSubmit={onSubmit}>
                 <div className={styles.inputsContainer}>
-                    <RenderInput
-                        label={FORM_TEXTS.vacancyUrlLabel}
-                        name="vacancyUrl"
-                        value={vacancyUrl}
-                        onChange={handleVacancyUrlChange}
-                        error={errors.vacancyUrl}
-                        isLoading={isLoading}
-                    />
                     <RenderInput
                         label={FORM_TEXTS.emailLabel}
                         name="email"
                         value={email}
-                        onChange={handleEmailChange}
+                        onChange={handleInputChange('email')}
                         error={errors.email}
                         isLoading={isLoading}
                         type="email"
@@ -78,16 +70,24 @@ const VacancyForm: FC<FormProps> = ({onClose}) => {
                         label={FORM_TEXTS.passwordLabel}
                         name="password"
                         value={password}
-                        onChange={handlePasswordChange}
+                        onChange={handleInputChange('password')}
                         error={errors.password}
                         isLoading={isLoading}
                         type="password"
                     />
                     <RenderInput
+                        label={FORM_TEXTS.vacancyUrlLabel}
+                        name="vacancyUrl"
+                        value={vacancyUrl}
+                        onChange={handleInputChange('vacancyUrl')}
+                        error={errors.vacancyUrl}
+                        isLoading={isLoading}
+                    />
+                    <RenderInput
                         label={FORM_TEXTS.positionLabel}
                         name="position"
                         value={position}
-                        onChange={handlePositionChange}
+                        onChange={handleInputChange('position')}
                         error={errors.position}
                         isLoading={isLoading}
                     />
@@ -97,7 +97,7 @@ const VacancyForm: FC<FormProps> = ({onClose}) => {
                         label={FORM_TEXTS.messageLabel}
                         name="letter"
                         value={message}
-                        onChange={handleMessageChange}
+                        onChange={handleInputChange('message')}
                         isLoading={isLoading}
                     />
                 </div>
@@ -123,7 +123,7 @@ const VacancyForm: FC<FormProps> = ({onClose}) => {
                     <Button
                         className={styles.button}
                         type="button"
-                        onClick={stopHandler}
+                        onClick={handleStop}
                         disabled={!isLoading}
                         variant="danger"
                     >

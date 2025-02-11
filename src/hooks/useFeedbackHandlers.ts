@@ -1,4 +1,3 @@
-// src/hooks/useVacancyHandlers.ts
 import {ChangeEvent, Dispatch, FormEvent, SetStateAction, useCallback, useState} from 'react';
 import {Errors, HandleFeedbackParams, UseFeedbackHandlersParams,} from '../Interfaces/InterfaceForm.types';
 import {useAuth} from '../context/useAuthContext';

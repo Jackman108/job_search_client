@@ -1,4 +1,3 @@
-// src/hooks/useVacancyHandlers.ts
 import {HandleFeedbackParams} from '../../Interfaces/InterfaceForm.types';
 import useApi from '../../api/useApi';
 import {validateEmail} from '../../utils/validateUtils';
@@ -7,10 +6,7 @@ const useSubmitFeedback = () => {
     const {request} = useApi();
 
     const feedbackSubmit = async ({
-                                      email,
-                                      password,
-                                      setErrors,
-                                      setIsLoading,
+                                      email, password, setErrors, setIsLoading,
                                   }: HandleFeedbackParams): Promise<void> => {
         const {isValidEmail, emailError} = validateEmail(email);
 

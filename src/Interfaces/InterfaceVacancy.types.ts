@@ -1,6 +1,6 @@
 import {ChangeEvent, Dispatch, FormEvent, SetStateAction} from "react";
-import {FormParams} from "../config/formConfigs";
 import {Errors} from "./InterfaceForm.types";
+import {FormParams} from "../config/searchConfig";
 
 export interface Vacancy {
     id: number;
@@ -35,6 +35,7 @@ export interface VacancyHandlersParams {
     submitHandler: (event: FormEvent) => Promise<void>;
     stopHandler: () => Promise<void>;
     isLoading: boolean;
+    setIsLoading: Dispatch<SetStateAction<boolean>>;
     handleVacancyUrlChange: (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => void;
     handleEmailChange: (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => void;
     handlePasswordChange: (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => void;
@@ -67,7 +68,7 @@ export interface VacancyAuthData {
     updated_at?: Date;
 }
 
-export interface VacancySubmitData {
+export interface VacancyFieldData {
     id?: number;
     user_id: string;
     position: string;
@@ -107,5 +108,5 @@ export interface MultipleVacancyAuthData {
 }
 
 export interface MultipleVacancySubmitData {
-    items: VacancySubmitData[];
+    items: VacancyFieldData[];
 }
