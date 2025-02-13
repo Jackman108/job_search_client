@@ -1,16 +1,11 @@
-// src/components/VacancyForm/VacancyForm.tsx
-import {FC, FormEvent} from 'react';
-import styles from './VacancyForm.module.css';
+import {FC} from 'react';
+import styles from './SearchForm.module.css';
 
-import {useAuth} from '../../context/useAuthContext';
 import Button from '../../UI/Button/Button';
 import RenderInput from '../../UI/RenderInput/RenderInput';
 import RenderSelect from '../../UI/RenderSelect/RenderSelect';
 import RenderTextarea from '../../UI/RenderTextarea/RenderTextarea';
-import {FormProps} from '../../Interfaces/InterfaceComponent.types';
 import UnauthorizedMessage from '../../UI/UnauthorizedMessage/UnauthorizedMessage';
-import useVacancyFormState from "../../hooks/vacancyForm/useVacancyFormState";
-import useVacancySubmit from "../../hooks/vacancyForm/useVacancySubmit";
 import {
     FORM_BUTTONS,
     FORM_LABELS,
@@ -18,25 +13,36 @@ import {
     FORM_TEXTS,
     FormLabelKeys,
     FormParamKeys,
-    OPTIONS
-} from "../../config/searchConfig";
+    OPTIONS,
+} from '../../config/searchConfig';
+import useSearchFormLogic from '../../hooks/searchForm/useSearchFormLogic';
 
-const VacancyForm: FC<FormProps> = ({onClose}) => {
-    const {token, isLoading, setIsLoading} = useAuth();
-    const {formValues, errors, setErrors, handleInputChange, handleSelectChange,} = useVacancyFormState();
-    const {handleSubmit, handleStop} = useVacancySubmit();
+const SearchForm: FC<{ onClose: () => void }> = ({onClose}) => {
+    const {
+        token,
+        isLoading,
+        errors,
+        formValues,
+        authVacancies,
+        vacancyFields,
+        selectedAuthId,
+        selectedFieldId,
+        setSelectedAuthId,
+        setSelectedFieldId,
+        handleInputChange,
+        handleSelectChange,
+        onSubmit,
+        handleStop,
+        handleCreateVacancy,
+        handleUpdateVacancy,
+        handleDeleteVacancy,
+        handleCreateField,
+        handleUpdateField,
+        handleDeleteField,
+    } = useSearchFormLogic(onClose);
+
 
     const {email, password, position, message, vacancyUrl} = formValues;
-
-    const onSubmit = async (event: FormEvent) => {
-        event.preventDefault();
-        await handleSubmit({
-            ...formValues,
-            token,
-            setErrors,
-            setIsLoading,
-        });
-    };
 
     if (!token) {
         return (
@@ -54,6 +60,51 @@ const VacancyForm: FC<FormProps> = ({onClose}) => {
             <Button className={styles.closeButton} onClick={onClose} variant="secondary">
                 {FORM_BUTTONS.closeButton}
             </Button>
+            <div className={styles.managementContainer}>
+                <h3>Управление Аккаунтами</h3>
+                <select
+                    value={selectedAuthId || ''}
+                    onChange={(e) => setSelectedAuthId(e.target.value ? Number(e.target.value) : null)}
+                >
+                    <option value="">Выберите Аккаунт</option>
+                    {authVacancies?.map(vacancy => (
+                        <option key={vacancy.id} value={vacancy.id}>
+                            {vacancy.email}
+                        </option>
+                    ))}
+                </select>
+                <Button onClick={handleCreateVacancy}>
+                    Создать Аккаунт
+                </Button>
+                <Button onClick={handleUpdateVacancy} disabled={!selectedAuthId}>
+                    Обновить Аккаунт
+                </Button>
+                <Button onClick={handleDeleteVacancy} disabled={!selectedAuthId} variant="danger">
+                    Удалить Аккаунт
+                </Button>
+            </div>
+
+            <div className={styles.managementContainer}>
+                <h3>Управление Опциями</h3>
+                <select
+                    value={selectedFieldId || ''}
+                    onChange={(e) => setSelectedFieldId(e.target.value ? Number(e.target.value) : null)}
+                >
+                    <option value="">Выберите Опции</option>
+                    {vacancyFields?.map(field => (
+                        <option key={field.id} value={field.id}>
+                            {field.position}
+                        </option>
+                    ))}
+                </select>
+                <Button onClick={handleCreateField}>Создать Опции </Button>
+                <Button onClick={handleUpdateField} disabled={!selectedFieldId}>
+                    Обновить Опции
+                </Button>
+                <Button onClick={handleDeleteField} disabled={!selectedFieldId} variant="danger">
+                    Удалить Опции
+                </Button>
+            </div>
 
             <form className={styles.formContainer} onSubmit={onSubmit}>
                 <div className={styles.inputsContainer}>
@@ -95,7 +146,7 @@ const VacancyForm: FC<FormProps> = ({onClose}) => {
                 <div className={styles.textareaContainer}>
                     <RenderTextarea
                         label={FORM_TEXTS.messageLabel}
-                        name="letter"
+                        name="message"
                         value={message}
                         onChange={handleInputChange('message')}
                         isLoading={isLoading}
@@ -107,6 +158,7 @@ const VacancyForm: FC<FormProps> = ({onClose}) => {
                             key={key}
                             label={FORM_LABELS[key as FormLabelKeys]}
                             options={options}
+                            value={formValues[key as keyof typeof formValues]}
                             onChange={handleSelectChange(FORM_PARAMS[key as FormParamKeys])}
                             isLoading={isLoading}
                         />
@@ -132,8 +184,9 @@ const VacancyForm: FC<FormProps> = ({onClose}) => {
                 </div>
             </form>
 
+
         </section>
     );
 };
 
-export default VacancyForm;
+export default SearchForm;

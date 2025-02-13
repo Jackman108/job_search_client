@@ -1,15 +1,14 @@
-// src/config/buttonConfigs.ts
 import {ButtonConfig} from '../Interfaces/InterfaceComponent.types';
 import Profile from '../components/Profile/Profile';
 import Resume from '../components/Resume/ResumeButton/ResumeButton';
-import VacancyForm from '../components/VacancyForm/VacancyForm';
+import SearchForm from '../components/VacancyForm/SearchForm';
 import FeedbackForm from "../components/FeedbackForm/FeedbackForm";
 
 export const buttonConfigs: ButtonConfig<any>[] = [
     {
         icon: '/run.png',
         tooltipText: 'Отправка заявок',
-        Component: VacancyForm,
+        Component: SearchForm,
         position: 'left',
     },
     {

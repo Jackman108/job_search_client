@@ -59,18 +59,16 @@ export interface SortConfig<T> {
     direction: SortDirection;
 }
 
-export interface VacancyAuthData {
+export interface SearchAuthData {
     id?: number;
     email: string;
     password: string;
-    user_id: string;
     created_at?: Date;
     updated_at?: Date;
 }
 
-export interface VacancyFieldData {
+export interface SearchFieldData {
     id?: number;
-    user_id: string;
     position: string;
     message: string;
     vacancy_url: string;
@@ -104,9 +102,9 @@ export interface UpdateVacancySubmitData {
 }
 
 export interface MultipleVacancyAuthData {
-    items: VacancyAuthData[];
+    items: SearchAuthData[];
 }
 
 export interface MultipleVacancySubmitData {
-    items: VacancyFieldData[];
+    items: SearchFieldData[];
 }

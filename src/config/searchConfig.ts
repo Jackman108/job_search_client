@@ -1,5 +1,4 @@
-// src/config/formConfigs.ts
-export const DEFAULT_VACANCY_PARAMS = {
+export const DEFAULT_SEARCH = {
     text: 'Middle frontend developer',
     schedule: 'remote',
     oredClusters: 'true',
@@ -74,8 +73,6 @@ export const FORM_PARAMS = {
     experience: 'experience',
     searchPeriod: 'searchPeriod',
 } as const;
-
-export const DEFAULT_AVATAR_URL = 'https://polinka.top/uploads/posts/2023-06/1686471538_polinka-top-p-kartinka-dlya-profilya-muzhskoi-vkontakte-17.jpg';
 
 
 export type FormParams = keyof typeof FORM_PARAMS;

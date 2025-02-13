@@ -25,6 +25,18 @@
 	gap: 15px;
 }
 
+.textareaContainer {
+	display: flex;
+	flex-direction: column;
+	gap: 15px;
+}
+
+.selectsContainer {
+	display: flex;
+	flex-direction: column;
+	gap: 15px;
+}
+
 .buttonsContainer {
 	display: flex;
 	gap: 10px;

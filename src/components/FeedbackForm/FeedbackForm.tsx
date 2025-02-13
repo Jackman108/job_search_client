@@ -3,7 +3,7 @@ import React, {FC} from "react";
 import {FormProps} from "../../Interfaces/InterfaceComponent.types";
 import {useAuth} from "../../context/useAuthContext";
 import useFeedbackHandlers from "../../hooks/useFeedbackHandlers";
-import styles from "../VacancyForm/VacancyForm.module.css";
+import styles from "../VacancyForm/SearchForm.module.css";
 import UnauthorizedMessage from "../../UI/UnauthorizedMessage/UnauthorizedMessage";
 import Button from "../../UI/Button/Button";
 import RenderInput from "../../UI/RenderInput/RenderInput";

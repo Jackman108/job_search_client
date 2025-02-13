@@ -1,4 +1,4 @@
-// src/components/VacancyForm/RenderTextarea.tsx
+// src/components/SearchForm/RenderTextarea.tsx
 import { FC } from 'react';
 import { RenderTextareaProps } from '../../Interfaces/InterfaceForm.types';
 import styles from './RenderTextarea.module.css';

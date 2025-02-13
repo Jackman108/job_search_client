@@ -63,6 +63,7 @@ export interface RenderInputProps {
 export interface RenderSelectProps {
     label: string;
     options: Option[];
+    value: string;
     onChange: (e: ChangeEvent<HTMLSelectElement>) => void;
     isLoading: boolean;
 }
@@ -88,4 +89,28 @@ export interface Option {
 export interface RenderRowProps {
     label: string;
     value: string | number;
+}
+
+export interface FormValues {
+    email: string;
+    password: string;
+    position: string;
+    message: string;
+    vacancyUrl: string;
+    schedule: string;
+    orderBy: string;
+    searchField: string;
+    experience: string;
+    searchPeriod: string;
+}
+
+export interface InitialFields {
+    position: string;
+    message: string;
+    vacancy_url: string;
+    schedule: string;
+    order_by: string;
+    search_field: string;
+    experience: string;
+    search_period: string;
 }
