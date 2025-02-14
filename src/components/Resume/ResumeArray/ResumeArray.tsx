@@ -19,7 +19,8 @@ const ResumeArray: FC<ResumeArrayProps> = ({config}) => {
         error,
         loadData,
         deleteItem,
-        saveItem
+        saveItem,
+        loading,
     } = useFetchById(config);
 
     useEffect(() => {
@@ -32,7 +33,9 @@ const ResumeArray: FC<ResumeArrayProps> = ({config}) => {
     const handleSubmit = async (e: FormEvent<HTMLFormElement>, id: number) => {
         e.preventDefault();
         try {
-            await saveItem(id, formData, isEditing[id]); // Дожидаемся завершения запроса
+            console.log("Sending request:", id, formData, isEditing[id]);
+
+            await saveItem({id, formData, isEditing: isEditing[id]});
             handleCancelClick(id);
         } catch (error) {
             console.error("Ошибка при сохранении:", error);
@@ -83,8 +86,12 @@ const ResumeArray: FC<ResumeArrayProps> = ({config}) => {
 
     return (
         <ul className={styles.dataContainer}>
-            {fetchedData?.length ? fetchedData.map(renderDataItem) : <div>Нет данных для отображения</div>}
-            {error && <div className="error">{error}</div>}
+            {
+                loading ?
+                    <div>Загрузка...</div> : fetchedData?.length
+                        ? fetchedData.map(renderDataItem) : <div>Нет данных для отображения</div>
+            }
+            {error && <div className="error">{error.message}</div>}
         </ul>
     );
 };

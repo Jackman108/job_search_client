@@ -3,6 +3,7 @@ import Layout from './components/Layout/Layout';
 import {AuthProvider} from './context/AuthProvider';
 import {AppRoutes} from "./routes/AppRoutes";
 import {SearchFormProvider} from "./context/SearchFormContext";
+import {BrowserRouter} from "react-router-dom";
 
 function App() {
     return (
@@ -13,9 +14,11 @@ function App() {
             <main>
                 <AuthProvider>
                     <SearchFormProvider>
-                        <Layout>
-                            <AppRoutes/>
-                        </Layout>
+                        <BrowserRouter>
+                            <Layout>
+                                <AppRoutes/>
+                            </Layout>
+                        </BrowserRouter>
                     </SearchFormProvider>
                 </AuthProvider>
             </main>

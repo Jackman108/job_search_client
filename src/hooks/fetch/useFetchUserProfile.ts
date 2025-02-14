@@ -1,4 +1,3 @@
-// src/hooks/useFetchUserProfile.ts
 import {UserProfile} from '../../Interfaces/InterfaceProfile.types';
 import useDataApi from '../../api/useApi';
 import {useMutation, useQuery, useQueryClient} from '@tanstack/react-query';
@@ -9,9 +8,7 @@ const useFetchUserProfile = () => {
     const {request} = useDataApi();
 
     const {
-        data: userProfile,
-        isPending,
-        error
+        data: userProfile, isPending, error
     } = useQuery<UserProfile, Error>({
         queryKey: ['userProfile'],
         queryFn: async () => request('get', '/profile'),
@@ -28,7 +25,7 @@ const useFetchUserProfile = () => {
         }
     )
     const fetchUserProfile = useCallback(() => {
-        return queryClient.invalidateQueries({ queryKey: ['userProfile'] });
+        return queryClient.invalidateQueries({queryKey: ['userProfile']});
     }, [queryClient]);
 
     const setUserProfile = useCallback(
@@ -38,6 +35,7 @@ const useFetchUserProfile = () => {
         [queryClient]
     );
     return {
+        queryClient,
         userProfile: userProfile || null,
         isLoading: isPending,
         error,

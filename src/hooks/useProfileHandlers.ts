@@ -5,12 +5,13 @@ import useFetchUserProfile from './fetch/useFetchUserProfile';
 
 export const useProfileHandlers = (): UseProfileHandlers => {
     const {token} = useAuth();
-    const {fetchUserProfile, userProfile, setUserProfile} = useFetchUserProfile();
+    const {queryClient, fetchUserProfile, userProfile, setUserProfile} = useFetchUserProfile();
 
     useEffect(() => {
         if (token) {
             fetchUserProfile().catch((error) => console.error('Profile fetch error', error));
         } else {
+            queryClient.removeQueries({queryKey: ['userProfile']});
             setUserProfile(null);
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps

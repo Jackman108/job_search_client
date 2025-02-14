@@ -1,35 +1,52 @@
-// hooks/useFetchResumeById.ts
-import {useCallback, useState} from 'react';
+import {useMutation, useQuery} from '@tanstack/react-query';
 import {ConfigItem} from '../../Interfaces/InterfaceResume.types';
-import useApi from '../../api/useApi';
+import useDataApi from "../../api/useDataApi";
 
 export const useFetchById = (config: ConfigItem) => {
-    const {request, loading, error} = useApi();
-    const [fetchedData, setFetchedData] = useState<any[]>([]);
+    const {request} = useDataApi();
+    const apiEndpoint = config.apiEndpoint ? config.apiEndpoint() : null;
+    const queryKey = [config.title, apiEndpoint];
 
-    const loadData = useCallback(async () => {
-        if (!config.apiEndpoint) return;
-        const data = await request('get', config.apiEndpoint());
-        setFetchedData(data);
-    }, [config, request]);
+    const {
+        data: fetchedData, isPending, error, refetch: loadData,
+    } = useQuery({
+        queryKey: queryKey,
+        queryFn: async () => {
+            if (!config.apiEndpoint) return [];
+            return await request('get', config.apiEndpoint());
+        },
+        staleTime: 1000 * 60 * 10,
+    });
 
-    const deleteItem = async (id: number) => {
-        await request('delete', `${config.apiEndpoint()}/${id}`);
-        setFetchedData((prev) => prev.filter(item => item.id !== id));
-    };
+    const deleteItemMutation = useMutation({
+        mutationFn: async (id: number) => {
+            await request('delete', `${config.apiEndpoint()}/${id}`);
+        },
+        onSuccess: async () => {
+            await loadData();
+        },
+    });
 
-    const saveItem = async (id: number, formData: any, isEditing: boolean) => {
-        const method = isEditing ? 'put' : 'post';
-        await request(method, `${config.apiEndpoint()}/${id}`, formData);
-        await loadData();
-    };
+    const saveItemMutation = useMutation({
+        mutationFn: async ({id, formData, isEditing}: { id: number, formData: any, isEditing: boolean }) => {
+            const method = isEditing ? 'put' : 'post';
+            const url = `${config.apiEndpoint()}/${id}`;
+            return await request(method, url, formData);
+        },
+        onSuccess: async () => {
+            await loadData();
+        },
+
+
+    });
+
 
     return {
-        fetchedData,
-        loadData,
-        deleteItem,
-        saveItem,
-        loading,
+        fetchedData: fetchedData || [],
+        loading: isPending,
         error,
+        deleteItem: deleteItemMutation.mutateAsync,
+        saveItem: saveItemMutation.mutateAsync,
+        loadData
     };
 };

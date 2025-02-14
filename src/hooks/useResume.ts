@@ -1,7 +1,7 @@
 import {FormEvent, useCallback, useEffect} from 'react';
 import {ResumeConfigProps} from '../Interfaces/InterfaceResume.types';
 import useApi from '../api/useApi';
-import {useFetchResumeByType} from './fetch/useFetchResumeByType';
+import {useFetchByType} from './fetch/useFetchByType';
 import {useResumeHandlersByType} from './useResumeHandlersByType';
 
 export const useResume = (config: ResumeConfigProps['config']) => {
@@ -12,7 +12,7 @@ export const useResume = (config: ResumeConfigProps['config']) => {
         error,
         loadData,
         deleteItem
-    } = useFetchResumeByType(config);
+    } = useFetchByType(config);
 
     const {
         formData,

@@ -23,7 +23,7 @@ const SearchForm: FC<{ onClose: () => void }> = ({onClose}) => {
         isLoading,
         errors,
         formValues,
-        authVacancies,
+        vacancyAuths,
         vacancyFields,
         selectedAuthId,
         selectedFieldId,
@@ -41,9 +41,7 @@ const SearchForm: FC<{ onClose: () => void }> = ({onClose}) => {
         handleDeleteField,
     } = useSearchFormLogic(onClose);
 
-
     const {email, password, position, message, vacancyUrl} = formValues;
-
     if (!token) {
         return (
             <section className={styles.sectionContainer}>
@@ -67,17 +65,17 @@ const SearchForm: FC<{ onClose: () => void }> = ({onClose}) => {
                     onChange={(e) => setSelectedAuthId(e.target.value ? Number(e.target.value) : null)}
                 >
                     <option value="">Выберите Аккаунт</option>
-                    {authVacancies?.map(vacancy => (
+                    {vacancyAuths?.map(vacancy => (
                         <option key={vacancy.id} value={vacancy.id}>
                             {vacancy.email}
                         </option>
                     ))}
                 </select>
-                <Button onClick={handleCreateVacancy}>
+                <Button onClick={handleCreateVacancy} variant="primary">
                     Создать Аккаунт
                 </Button>
-                <Button onClick={handleUpdateVacancy} disabled={!selectedAuthId}>
-                    Обновить Аккаунт
+                <Button onClick={handleUpdateVacancy} disabled={!selectedAuthId} variant="secondary">
+                    <img src="/pen.png" alt="Edit" className={styles.editIcon}/>
                 </Button>
                 <Button onClick={handleDeleteVacancy} disabled={!selectedAuthId} variant="danger">
                     Удалить Аккаунт

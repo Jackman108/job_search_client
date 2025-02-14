@@ -102,7 +102,7 @@ const useSearchFormLogic = (onClose: () => void) => {
         isLoading,
         errors,
         formValues,
-        authVacancies: vacancyAuths,
+        vacancyAuths,
         vacancyFields,
         selectedAuthId,
         selectedFieldId,

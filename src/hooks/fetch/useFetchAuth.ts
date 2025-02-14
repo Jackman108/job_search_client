@@ -9,7 +9,7 @@ import {AxiosResponse} from "axios";
 
 const useFetchAuth = () => {
     const queryClient = useQueryClient();
-    const {setToken, setRefreshToken} = useAuth();
+    const {setToken} = useAuth();
     const {request} = useAuthApi();
 
     const refreshAuthToken = useMutation<string, Error>(
@@ -34,8 +34,6 @@ const useFetchAuth = () => {
                 return await request<AuthResponse>('post', '/auth/login', {email, password}, {withCredentials: false});
             },
             onSuccess: (response: AxiosResponse<AuthResponse>) => {
-                const refreshToken = response.headers['x-refresh-token'];
-                if (refreshToken) setRefreshToken(refreshToken);
 
                 if (isTokenExpired(decodeToken(response.data.accessToken).exp)) {
                     refreshAuthToken.mutate();
@@ -90,7 +88,6 @@ const useFetchAuth = () => {
             },
             onSuccess: () => {
                 setToken(null);
-                setRefreshToken(null);
                 queryClient.clear();
             },
             onError: (err: Error) => {

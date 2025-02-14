@@ -1,17 +1,17 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
+import {Link} from 'react-router-dom';
 import styles from './Payment.module.css';
 import useFetchPayment from "../../hooks/fetch/useFetchPayment";
 
 const Payment = () => {
-    const { paymentData, loading, error } = useFetchPayment();
+    const {paymentData, loading, error} = useFetchPayment();
 
     return (
         <div className={styles.container}>
             <Link to="/" className="home-button">🏠</Link>
             <h1>Оплаты</h1>
             {loading && <p>Загрузка...</p>}
-            {error && <p>Ошибка: {error}</p>}
+            {error && <p>Ошибка: {error.message}</p>}
             {paymentData ? (
                 <table>
                     <thead>

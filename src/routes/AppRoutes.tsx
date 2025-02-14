@@ -1,4 +1,4 @@
-import {BrowserRouter, Route, Routes} from 'react-router-dom';
+import {Route, Routes} from 'react-router-dom';
 import VacanciesTable from '../components/VacanciesTable/VacanciesTable';
 import FeedbackTable from '../components/FeedbackTable/FeedbackTable';
 import Resume from '../components/Resume/Resume';
@@ -8,19 +8,19 @@ import FeedbackProvider from '../context/FeedbackProvider';
 import VacancyProvider from '../context/VacancyProvider';
 
 export const AppRoutes = () => (
+
     <VacancyProvider>
-        <BrowserRouter>
-            <Routes>
-                <Route path="/" element={<VacanciesTable/>}/>
-                <Route path="/feedback" element={
-                    <FeedbackProvider>
-                        <FeedbackTable/>
-                    </FeedbackProvider>
-                }/>
-                <Route path="/resume" element={<Resume/>}/>
-                <Route path="/payment" element={<Payment/>}/>
-                <Route path="/subscription" element={<Subscription/>}/>
-            </Routes>
-        </BrowserRouter>
+        <Routes>
+            <Route path="/" element={<VacanciesTable/>}/>
+            <Route path="/feedback" element={
+                <FeedbackProvider>
+                    <FeedbackTable/>
+                </FeedbackProvider>
+            }/>
+            <Route path="/resume" element={<Resume/>}/>
+            <Route path="/payment" element={<Payment/>}/>
+            <Route path="/subscription" element={<Subscription/>}/>
+        </Routes>
     </VacancyProvider>
+
 );

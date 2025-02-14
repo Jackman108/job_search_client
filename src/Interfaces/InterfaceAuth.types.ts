@@ -25,9 +25,7 @@ export interface SignInProps {
 
 export interface AuthContextProps {
     token: string | null;
-    refreshToken: string | null;
     isLoading: boolean;
     setToken: (token: string | null) => void;
-    setRefreshToken: (token: string | null) => void;
     setIsLoading: Dispatch<SetStateAction<boolean>>;
 }

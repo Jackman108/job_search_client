@@ -1,17 +1,17 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
+import {Link} from 'react-router-dom';
 import styles from './Subscription.module.css';
 import useFetchSubscription from "../../hooks/fetch/useFetchSubscription";
 
 const Subscription = () => {
-    const { subscriptionData, loading, error } = useFetchSubscription();
+    const {subscriptionData, loading, error} = useFetchSubscription();
 
     return (
         <div className={styles.container}>
             <Link to="/" className="home-button">🏠</Link>
             <h1>Подписки</h1>
             {loading && <p>Загрузка...</p>}
-            {error && <p>Ошибка: {error}</p>}
+            {error && <p>Ошибка: {error.message}</p>}
             {subscriptionData ? (
                 <table>
                     <thead>
