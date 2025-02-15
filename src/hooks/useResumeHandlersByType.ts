@@ -1,4 +1,3 @@
-// hooks/useResumeHandlersByType.ts
 import {ChangeEvent, useCallback, useState} from 'react';
 import {businessTripReadiness} from '../config/resumeLinesConfig';
 
@@ -42,7 +41,7 @@ export const useResumeHandlersByType = (initialFormData = {}) => {
 
         setFormData({
             ...item,
-            business_trip_readiness: type === 'resume' ? (item.business_trip_readiness ? businessTripReadiness[0] : businessTripReadiness[1]) : item.business_trip_readiness,
+            business_trip_readiness: type === 'resume' ? (item.business_trip_readiness ? businessTripReadiness[1] : businessTripReadiness[0]) : item.business_trip_readiness,
         });
     }, []);
 

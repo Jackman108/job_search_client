@@ -8,14 +8,15 @@ import RenderTextarea from '../../UI/RenderTextarea/RenderTextarea';
 import UnauthorizedMessage from '../../UI/UnauthorizedMessage/UnauthorizedMessage';
 import {
     FORM_BUTTONS,
+    FORM_CONFIG,
     FORM_LABELS,
     FORM_PARAMS,
     FORM_TEXTS,
     FormLabelKeys,
     FormParamKeys,
-    OPTIONS,
 } from '../../config/searchConfig';
 import useSearchFormLogic from '../../hooks/searchForm/useSearchFormLogic';
+import ManagementSection from "./ManagementSection";
 
 const SearchForm: FC<{ onClose: () => void }> = ({onClose}) => {
     const {
@@ -41,7 +42,6 @@ const SearchForm: FC<{ onClose: () => void }> = ({onClose}) => {
         handleDeleteField,
     } = useSearchFormLogic(onClose);
 
-    const {email, password, position, message, vacancyUrl} = formValues;
     if (!token) {
         return (
             <section className={styles.sectionContainer}>
@@ -58,100 +58,56 @@ const SearchForm: FC<{ onClose: () => void }> = ({onClose}) => {
             <Button className={styles.closeButton} onClick={onClose} variant="secondary">
                 {FORM_BUTTONS.closeButton}
             </Button>
-            <div className={styles.managementContainer}>
-                <h3>Управление Аккаунтами</h3>
-                <select
-                    value={selectedAuthId || ''}
-                    onChange={(e) => setSelectedAuthId(e.target.value ? Number(e.target.value) : null)}
-                >
-                    <option value="">Выберите Аккаунт</option>
-                    {vacancyAuths?.map(vacancy => (
-                        <option key={vacancy.id} value={vacancy.id}>
-                            {vacancy.email}
-                        </option>
-                    ))}
-                </select>
-                <Button onClick={handleCreateVacancy} variant="primary">
-                    Создать Аккаунт
-                </Button>
-                <Button onClick={handleUpdateVacancy} disabled={!selectedAuthId} variant="secondary">
-                    <img src="/pen.png" alt="Edit" className={styles.editIcon}/>
-                </Button>
-                <Button onClick={handleDeleteVacancy} disabled={!selectedAuthId} variant="danger">
-                    Удалить Аккаунт
-                </Button>
-            </div>
+            <ManagementSection
+                title="Управление Аккаунтами"
+                selectedId={selectedAuthId}
+                setSelectedId={setSelectedAuthId}
+                items={vacancyAuths?.map(auth => ({id: auth.id || 0, label: auth.email})) || []}
+                onCreate={handleCreateVacancy}
+                onUpdate={handleUpdateVacancy}
+                onDelete={handleDeleteVacancy}
+                disabled={isLoading}
+            />
 
-            <div className={styles.managementContainer}>
-                <h3>Управление Опциями</h3>
-                <select
-                    value={selectedFieldId || ''}
-                    onChange={(e) => setSelectedFieldId(e.target.value ? Number(e.target.value) : null)}
-                >
-                    <option value="">Выберите Опции</option>
-                    {vacancyFields?.map(field => (
-                        <option key={field.id} value={field.id}>
-                            {field.position}
-                        </option>
-                    ))}
-                </select>
-                <Button onClick={handleCreateField}>Создать Опции </Button>
-                <Button onClick={handleUpdateField} disabled={!selectedFieldId}>
-                    Обновить Опции
-                </Button>
-                <Button onClick={handleDeleteField} disabled={!selectedFieldId} variant="danger">
-                    Удалить Опции
-                </Button>
-            </div>
+            <ManagementSection
+                title="Управление Опциями"
+                selectedId={selectedFieldId}
+                setSelectedId={setSelectedFieldId}
+                items={vacancyFields?.map(field => ({id: field.id || 0, label: field.position})) || []}
+                onCreate={handleCreateField}
+                onUpdate={handleUpdateField}
+                onDelete={handleDeleteField}
+                disabled={isLoading}
+            />
 
             <form className={styles.formContainer} onSubmit={onSubmit}>
                 <div className={styles.inputsContainer}>
-                    <RenderInput
-                        label={FORM_TEXTS.emailLabel}
-                        name="email"
-                        value={email}
-                        onChange={handleInputChange('email')}
-                        error={errors.email}
-                        isLoading={isLoading}
-                        type="email"
-                    />
-                    <RenderInput
-                        label={FORM_TEXTS.passwordLabel}
-                        name="password"
-                        value={password}
-                        onChange={handleInputChange('password')}
-                        error={errors.password}
-                        isLoading={isLoading}
-                        type="password"
-                    />
-                    <RenderInput
-                        label={FORM_TEXTS.vacancyUrlLabel}
-                        name="vacancyUrl"
-                        value={vacancyUrl}
-                        onChange={handleInputChange('vacancyUrl')}
-                        error={errors.vacancyUrl}
-                        isLoading={isLoading}
-                    />
-                    <RenderInput
-                        label={FORM_TEXTS.positionLabel}
-                        name="position"
-                        value={position}
-                        onChange={handleInputChange('position')}
-                        error={errors.position}
-                        isLoading={isLoading}
-                    />
+                    {Object.entries(FORM_CONFIG.fields).map(([key, fieldConfig]) => (
+                        <RenderInput
+                            key={key}
+                            label={fieldConfig.label}
+                            name={key}
+                            value={formValues[key as keyof typeof formValues]}
+                            onChange={handleInputChange(key as keyof typeof formValues)}
+                            error={errors[key as keyof typeof errors]}
+                            isLoading={isLoading}
+                            type={fieldConfig.type}
+                            placeholder={fieldConfig.placeholder}
+                            required={fieldConfig.required}
+                        />
+                    ))}
                 </div>
                 <div className={styles.textareaContainer}>
                     <RenderTextarea
                         label={FORM_TEXTS.messageLabel}
                         name="message"
-                        value={message}
+                        value={formValues.message}
                         onChange={handleInputChange('message')}
                         isLoading={isLoading}
                     />
                 </div>
                 <div className={styles.selectsContainer}>
-                    {Object.entries(OPTIONS).map(([key, options]) => (
+                    {Object.entries(FORM_CONFIG.options).map(([key, options]) => (
                         <RenderSelect
                             key={key}
                             label={FORM_LABELS[key as FormLabelKeys]}
@@ -159,6 +115,7 @@ const SearchForm: FC<{ onClose: () => void }> = ({onClose}) => {
                             value={formValues[key as keyof typeof formValues]}
                             onChange={handleSelectChange(FORM_PARAMS[key as FormParamKeys])}
                             isLoading={isLoading}
+
                         />
                     ))}
                 </div>

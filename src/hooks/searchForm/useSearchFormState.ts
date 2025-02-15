@@ -1,12 +1,13 @@
 import {ChangeEvent, useCallback, useEffect, useState} from 'react';
 import {buildVacancyUrl} from "../../utils/buildVacancyUrl";
-import {Errors, FormValues, InitialFields} from "../../Interfaces/InterfaceForm.types";
+import {Errors, FormValues} from "../../Interfaces/InterfaceForm.types";
 import {DEFAULT_SEARCH} from "../../config/searchConfig";
+import {SearchFieldData} from "../../Interfaces/InterfaceVacancy.types";
 
 const useSearchFormState = (
     initialEmail: string = '',
     initialPassword: string = '',
-    initialFields: InitialFields | null = null
+    initialFields: SearchFieldData | null = null
 ) => {
     const [formValues, setFormValues] = useState<FormValues>({
         email: initialEmail,

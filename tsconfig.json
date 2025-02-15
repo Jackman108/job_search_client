@@ -1,6 +1,4 @@
 {
-  "extends": "./tsconfig.paths.json",
-  "baseUrl": "./src",
   "compilerOptions": {
     "target": "es6",
     "lib": [

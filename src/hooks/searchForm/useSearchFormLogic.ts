@@ -20,12 +20,12 @@ const useSearchFormLogic = (onClose: () => void) => {
         setIsLoading,
     } = useSearchFormContext();
 
-    const selectedVacancy = vacancyAuths?.find(v => v.id === selectedAuthId) || null;
+    const selectedAuth = vacancyAuths?.find(v => v.id === selectedAuthId) || null;
     const selectedField = vacancyFields?.find(f => f.id === selectedFieldId) || null;
 
     const {formValues, errors, setErrors, handleInputChange, handleSelectChange} = useSearchFormState(
-        selectedVacancy?.email || '',
-        selectedVacancy?.password || '',
+        selectedAuth?.email || '',
+        selectedAuth?.password || '',
         selectedField || null
     );
 
@@ -43,18 +43,18 @@ const useSearchFormLogic = (onClose: () => void) => {
         });
     };
 
-    const handleCreateVacancy = async () => {
+    const handleCreateAuth = async () => {
         await createSearchAuth({email, password});
         setSelectedAuthId(null);
     };
 
-    const handleUpdateVacancy = async () => {
+    const handleUpdateAuth = async () => {
         if (selectedAuthId) {
             await updateSearchAuth({id: selectedAuthId, email, password});
         }
     };
 
-    const handleDeleteVacancy = async () => {
+    const handleDeleteAuth = async () => {
         if (selectedAuthId) {
             await deleteSearchAuth(selectedAuthId);
             setSelectedAuthId(null);
@@ -112,9 +112,9 @@ const useSearchFormLogic = (onClose: () => void) => {
         handleSelectChange,
         onSubmit,
         handleStop,
-        handleCreateVacancy,
-        handleUpdateVacancy,
-        handleDeleteVacancy,
+        handleCreateVacancy: handleCreateAuth,
+        handleUpdateVacancy: handleUpdateAuth,
+        handleDeleteVacancy: handleDeleteAuth,
         handleCreateField,
         handleUpdateField,
         handleDeleteField,

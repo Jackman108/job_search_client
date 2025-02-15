@@ -62,10 +62,11 @@ export interface RenderInputProps {
 
 export interface RenderSelectProps {
     label: string;
-    options: Option[];
+    options?: readonly Option[]
     value: string;
     onChange: (e: ChangeEvent<HTMLSelectElement>) => void;
     isLoading: boolean;
+    required?: boolean;
 }
 
 export interface RenderTextareaProps {
