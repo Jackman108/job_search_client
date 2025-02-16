@@ -1,9 +1,9 @@
-import { ConfigItem } from "../Interfaces/InterfaceResume.types";
+import {ConfigItem} from "../Interfaces/InterfaceResume.types";
 
 export const dataDisplayConfig: Record<string, ConfigItem> = {
     resume: {
         title: 'Резюме',
-        apiEndpoint: () => `/resume`,
+        apiEndpoint: '/resume',
         fields: {
             full_name: 'Полное имя',
             position: 'Должность',
@@ -15,7 +15,7 @@ export const dataDisplayConfig: Record<string, ConfigItem> = {
     },
     contacts: {
         title: 'Контакты',
-        apiEndpoint: () => `/contacts`,
+        apiEndpoint: '/contacts',
         fields: {
             phone: 'Телефон',
             email: 'Email',
@@ -25,7 +25,7 @@ export const dataDisplayConfig: Record<string, ConfigItem> = {
 
     skills: {
         title: 'Навыки',
-        apiEndpoint: () => `/skills`,
+        apiEndpoint: '/skills',
         fields: {
             skill_name: 'Навык',
             proficiency_level: 'Уровень'
@@ -33,7 +33,7 @@ export const dataDisplayConfig: Record<string, ConfigItem> = {
     },
     workExperience: {
         title: 'Опыт работы',
-        apiEndpoint: () => `/work_experience`,
+        apiEndpoint: '/work_experience',
         fields: {
             company_name: 'Компания',
             position: 'Должность',

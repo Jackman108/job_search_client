@@ -1,11 +1,11 @@
 import {Payment} from '../../Interfaces/interfacePayment.types';
-import {useFetchById} from "./useFetchById";
 import {datPaymentConfig} from "../../config/paymentConfig";
+import {useFetchByType} from "./useFetchByType";
 
 
 const useFetchPayment = () => {
 
-    const { fetchedData, loading, error } = useFetchById(datPaymentConfig.payment);
+    const {fetchedData, loading, error} = useFetchByType(datPaymentConfig.payment);
 
     return {
         paymentData: fetchedData as Payment[],

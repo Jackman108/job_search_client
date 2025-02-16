@@ -1,9 +1,9 @@
-import { ConfigItem } from "../Interfaces/InterfaceResume.types";
+import {ConfigItem} from "../Interfaces/InterfaceResume.types";
 
 export const datPaymentConfig: Record<string, ConfigItem> = {
     payment: {
         title: 'Платежи',
-        apiEndpoint: () => `/payment`,
+        apiEndpoint: '/payment',
         fields: {
             id: 'ID',
             userId: 'User ID',

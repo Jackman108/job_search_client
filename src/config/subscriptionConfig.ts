@@ -1,9 +1,9 @@
-import { ConfigItem } from "../Interfaces/InterfaceResume.types";
+import {ConfigItem} from "../Interfaces/InterfaceResume.types";
 
 export const dateSubscriptionConfig: Record<string, ConfigItem> = {
     subscription: {
         title: 'Подписки',
-        apiEndpoint: () => `/subscription`,
+        apiEndpoint: '/subscription',
         fields: {
             id: 'ID',
             userId: 'User ID',

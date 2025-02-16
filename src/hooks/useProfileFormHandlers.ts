@@ -1,12 +1,12 @@
 import {ChangeEvent, useCallback, useEffect, useRef, useState} from 'react';
 import {UserProfile} from '../Interfaces/InterfaceProfile.types';
-import useFetchUserProfile from './fetch/useFetchUserProfile';
+import useFetchProfile from './fetch/useFetchProfile';
 
 export const useProfileFormHandlers = (initialUserInfo: UserProfile) => {
     const [isEditing, setIsEditing] = useState(false);
     const [editProfile, setEditProfile] = useState<UserProfile>(initialUserInfo);
     const [avatarPreview, setAvatarPreview] = useState<string>(initialUserInfo.avatar || '');
-    const {changeUserProfile} = useFetchUserProfile();
+    const {changeUserProfile} = useFetchProfile();
 
     const prevInitialUserInfo = useRef(JSON.stringify(initialUserInfo));
 

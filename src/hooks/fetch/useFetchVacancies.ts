@@ -1,43 +1,49 @@
-// src/hooks/useFetchVacancies.ts
-import {useCallback, useEffect, useState} from 'react';
+import {useMutation, useQuery, useQueryClient} from '@tanstack/react-query';
 import {Vacancy} from '../../Interfaces/InterfaceVacancy.types';
-import useApi from '../../api/useApi';
 import {formatAndSortData, formatDate} from '../../utils/formatUtils';
+import useDataApi from "../../api/useDataApi";
+
+const formatVacancy = (vacancy: Vacancy): Vacancy => ({
+    ...vacancy,
+    response_date_time: formatDate(vacancy.response_date).time,
+    response_date_date: formatDate(vacancy.response_date).date,
+});
 
 const useFetchVacancies = () => {
-    const [vacancies, setVacancies] = useState<Vacancy[]>([]);
-    const {loading, error, request} = useApi();
+    const {request} = useDataApi();
+    const queryClient = useQueryClient();
 
+    const fetchVacancies = async () => {
+        const data = await request('get', '/vacancy');
+        return formatAndSortData(data, formatVacancy, 'response_date');
+    };
 
-    const formatVacancy = (vacancy: Vacancy): Vacancy => ({
-        ...vacancy,
-        response_date_time: formatDate(vacancy.response_date).time,
-        response_date_date: formatDate(vacancy.response_date).date,
+    const {data: vacancies, isLoading: loading, error, refetch: loadData} = useQuery<Vacancy[], Error>({
+        queryKey: ['vacancies'],
+        queryFn: fetchVacancies,
+        staleTime: 1000 * 60 * 10,
     });
 
-    const fetchVacancies = useCallback(async () => {
-        try {
-            const data = await request('get', '/vacancy');
-            setVacancies(formatAndSortData(data, formatVacancy, 'response_date'));
-        } catch (err) {
-            console.error("Ошибка загрузки вакансий:", err);
-        }
-    }, [request]);
-
-    const deleteVacancy = useCallback(async (id: number) => {
-        try {
+    const deleteVacancyMutation = useMutation<void, Error, number>({
+        mutationFn: async (id: number) => {
             await request('delete', `/vacancy/${id}`);
-            setVacancies((prevVacancies) => prevVacancies.filter((vacancy) => vacancy.id !== id));
-        } catch (err) {
+        },
+        onSuccess: async () => {
+            await queryClient.invalidateQueries({queryKey: ['vacancies']});
+        },
+        onError: (err) => {
             console.error("Ошибка удаления вакансии:", err);
-        }
-    }, [request]);
+        },
+    });
 
-    useEffect(() => {
-        fetchVacancies().catch((error) => console.error("Ошибка загрузки вакансий:", error));
-    }, [fetchVacancies]);
-
-    return {vacancies, loading, error, fetchVacancies, deleteVacancy};
+    return {
+        vacancies: vacancies || [],
+        loading,
+        error: error ? error.message : null,
+        fetchVacancies: () => queryClient.invalidateQueries({queryKey: ['vacancies']}),
+        deleteVacancy: deleteVacancyMutation.mutateAsync,
+        loadData,
+    };
 };
 
 export default useFetchVacancies;

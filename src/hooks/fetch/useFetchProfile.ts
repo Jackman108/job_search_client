@@ -3,12 +3,12 @@ import useDataApi from '../../api/useApi';
 import {useMutation, useQuery, useQueryClient} from '@tanstack/react-query';
 import {useCallback} from "react";
 
-const useFetchUserProfile = () => {
+const useFetchProfile = () => {
     const queryClient = useQueryClient();
     const {request} = useDataApi();
 
     const {
-        data: userProfile, isPending, error
+        data: userProfile, isLoading, error
     } = useQuery<UserProfile, Error>({
         queryKey: ['userProfile'],
         queryFn: async () => request('get', '/profile'),
@@ -37,7 +37,7 @@ const useFetchUserProfile = () => {
     return {
         queryClient,
         userProfile: userProfile || null,
-        isLoading: isPending,
+        isLoading,
         error,
         fetchUserProfile,
         changeUserProfile: changeUserProfile.mutateAsync,
@@ -46,4 +46,4 @@ const useFetchUserProfile = () => {
 
 }
 
-export default useFetchUserProfile;
+export default useFetchProfile;

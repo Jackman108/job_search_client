@@ -6,7 +6,7 @@ export interface FieldConfig {
 
 export interface ConfigItem {
     title: string;
-    apiEndpoint: () => string;
+    apiEndpoint: string;
     fields: FieldConfig;
 }
 
@@ -15,7 +15,8 @@ export interface ResumeConfigProps {
 }
 
 export interface ResumeArrayProps {
-    config: ConfigItem;
+    config: Record<string, any>;
+    type: string;
 }
 
 export interface ResumeProps {

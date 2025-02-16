@@ -4,12 +4,10 @@ import {useAuth} from '../../context/useAuthContext';
 
 const RECONNECT_INTERVAL = 5000;
 
-export const useWebSocket = ({
-                                 WS_URL,
-                                 fetchVacancies,
-                                 setAlert
-                             }: UseWebSocketParams): WebSocketHook => {
-
+export const useWebSocket = (
+    {
+        WS_URL, loadData, setAlert
+    }: UseWebSocketParams): WebSocketHook => {
     const [message, setMessage] = useState<string | null>(null);
     const [error, setError] = useState<string | null>(null);
     const [open, setOpen] = useState<boolean>(false);
@@ -22,14 +20,7 @@ export const useWebSocket = ({
             return;
         }
 
-        if (wsRef.current?.readyState === WebSocket.OPEN) {
-            console.warn('WebSocket already connected');
-            return;
-        }
-
-        if (wsRef.current?.readyState === WebSocket.CONNECTING) {
-            return;
-        }
+        if (wsRef.current?.readyState === WebSocket.OPEN || wsRef.current?.readyState === WebSocket.CONNECTING) return;
 
         wsRef.current = new WebSocket(`${WS_URL}?token=${token.replace('Bearer ', '')}`);
 
@@ -46,7 +37,7 @@ export const useWebSocket = ({
                 case data.startsWith('Vacancy has been successfully saved with ID'):
                     const id = data.split('ID ')[1];
                     console.log(`Vacancy with ID ${id} was saved`);
-                    fetchVacancies();
+                    loadData();
                     break;
                 case data === 'ERROR detected restart':
                     setAlert('Некорректный Email или Пароль');
@@ -76,7 +67,7 @@ export const useWebSocket = ({
         };
 
 
-    }, [token, WS_URL, setAlert, fetchVacancies]);
+    }, [token, WS_URL, setAlert, loadData]);
 
     useEffect(() => {
         if (!token) {
@@ -95,7 +86,7 @@ export const useWebSocket = ({
 
     return {
         connect,
-        fetchVacancies,
+        loadData,
         message,
         error,
         open,

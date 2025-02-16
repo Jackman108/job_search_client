@@ -1,45 +1,69 @@
-import {useCallback, useState} from 'react';
-import useApi from '../../api/useApi';
+import {useMutation, useQuery} from '@tanstack/react-query';
+import {ConfigItem} from '../../Interfaces/InterfaceResume.types';
+import useDataApi from '../../api/useDataApi';
+import {
+    DeleteItemMutationParams,
+    FetchByTypeConfig,
+    FetchDataResponse,
+    SaveItemMutationParams,
+} from '../../Interfaces/useFetchByType.types';
 
-export const useFetchByType = (config: Record<string, any>) => {
-    const {request} = useApi();
-    const [data, setData] = useState<Record<string, any>>({});
-    const [loading, setLoading] = useState<Record<string, boolean>>({});
-    const [notFound, setNotFound] = useState<Record<string, boolean>>({});
-    const [error, setError] = useState<Record<string, string | null>>({});
+const getQueryKey = (config: FetchByTypeConfig['config']) => {
+    return Object.keys(config).map(key => [(config as Record<string, ConfigItem>)[key].apiEndpoint]);
+};
 
-    const fetchData = useCallback(async (type: string, endpoint: string) => {
-        setLoading(prev => ({...prev, [type]: true}));
-        try {
-            const fetchedData = await request('get', endpoint);
-            setData(prev => ({...prev, [type]: fetchedData}));
-            setNotFound(prev => ({...prev, [type]: !fetchedData}));
-        } catch (err) {
-            handleError(type, err);
-        } finally {
-            setLoading(prev => ({...prev, [type]: false}));
-        }
-    }, [request]);
+export const useFetchByType = (config: FetchByTypeConfig['config']) => {
+    const {request} = useDataApi();
 
-    const loadData = useCallback(async () => {
-        const promises = Object.entries(config).map(([type, item]) => fetchData(type, item.apiEndpoint()));
-        await Promise.all(promises);
-    }, [config, fetchData]);
-
-
-    const handleError = (type: string, error: any) => {
-        setNotFound(prev => ({...prev, [type]: true}));
-        setError(prev => ({...prev, [type]: (error as Error).message}));
+    const fetchData = async (endpoint: string) => {
+        return await request('get', endpoint);
     };
 
-    const deleteItem = useCallback(async (type: string) => {
-        try {
-            await request('delete', config[type].apiEndpoint());
-            setData(prev => ({...prev, [type]: null}));
-        } catch (error) {
-            console.error('Error deleting item', error);
-        }
-    }, [request, config]);
+    const {data: fetchedData, isLoading: loading, error, refetch: loadData} = useQuery<FetchDataResponse>({
+        queryKey: getQueryKey(config),
+        queryFn: async () => {
+            const results: FetchDataResponse = {};
+            for (const key of Object.keys(config)) {
+                results[key] = await fetchData((config as Record<string, ConfigItem>)[key].apiEndpoint);
+            }
+            return results;
+        },
+        staleTime: 1000 * 60 * 10,
+    });
 
-    return {data, loading, notFound, error, loadData, deleteItem};
+    const deleteItemMutation = useMutation<void, Error, DeleteItemMutationParams>({
+        mutationFn: async ({type, id}: DeleteItemMutationParams) => {
+            const endpoint = (config as Record<string, ConfigItem>)[type].apiEndpoint;
+            const url = (type === 'skills' || type === 'workExperience')
+                ? `${endpoint}/${id}`
+                : endpoint;
+            await request('delete', url);
+        },
+        onSuccess: async () => {
+            await loadData();
+        },
+    });
+
+    const saveItemMutation = useMutation<any, Error, SaveItemMutationParams>({
+        mutationFn: async ({type, id, formData, isEditing}: SaveItemMutationParams) => {
+            const endpoint = (config as Record<string, ConfigItem>)[type].apiEndpoint;
+            const url = (type === 'skills' || type === 'workExperience') && isEditing
+                ? `${endpoint}/${id}`
+                : endpoint;
+            const method = isEditing ? 'put' : 'post';
+            return await request(method, url, formData);
+        },
+        onSuccess: async () => {
+            await loadData();
+        },
+    });
+
+    return {
+        fetchedData: fetchedData || {},
+        loading,
+        error,
+        deleteItem: deleteItemMutation.mutateAsync,
+        saveItem: saveItemMutation.mutateAsync,
+        loadData,
+    };
 };

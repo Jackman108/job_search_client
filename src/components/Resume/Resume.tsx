@@ -1,7 +1,7 @@
 import {Link} from 'react-router-dom';
 import Button from '../../UI/Button/Button';
 import {dataDisplayConfig} from '../../config/resumeConfig';
-import {useResume} from '../../hooks/useResume';
+import {useResume} from '../../hooks/resumeForm/useResume';
 import styles from './Resume.module.css';
 import ResumeChange from './ResumeItems/ResumeChange';
 import ResumeView from './ResumeItems/ResumeView';
@@ -12,15 +12,15 @@ const Resume = () => {
     const config = dataDisplayConfig
 
     const {
-        data,
+        fetchedData,
         loading,
-        notFound,
+        error,
         formData,
         isCreating,
         isEditing,
         handleCreateClick,
         handleEditClick,
-        handleDeleteClick,
+        deleteItem,
         handleSubmit,
         handleInputChange,
         handleCancelClick,
@@ -42,21 +42,21 @@ const Resume = () => {
             {Object.entries(config).map(([type, item]) => (
                 <section key={type} className={styles.dataDisplaySection}>
                     <h1>{item.title}</h1>
-                    {loading[type] && <div>Загрузка...</div>}
-                    {notFound[type] && (
+                    {loading && <div>Загрузка...</div>}
+                    {error && (
                         <div>
                             Нет данных
                             <Button onClick={() => handleCreateClick(type)} variant="primary">Создать запись</Button>
                         </div>
                     )}
-                    {!isEditing[type] && !isCreating[type] && data[type] && (
+                    {!isEditing[type] && !isCreating[type] && fetchedData[type] && (
                         <ResumeView
                             type={type}
                             fields={item.fields}
-                            data={data[type]}
+                            data={fetchedData[type]}
                             config={config}
                             onEditClick={handleEditClick}
-                            onDeleteClick={handleDeleteClick}
+                            onDeleteClick={() => deleteItem({type})}
                             onCreateClick={handleCreateClick}
                         />
                     )}
@@ -71,7 +71,7 @@ const Resume = () => {
                             handleInputChange={handleInputChange}
                         />
                     )}
-                    {!loading[type] && !notFound[type] && !isEditing[type] && !data[type] && !isCreating[type] && (
+                    {!loading && !error && !isEditing[type] && !fetchedData[type] && !isCreating[type] && (
                         <Button onClick={() => handleCreateClick(type)} variant="primary">
                             Создать запись
                         </Button>

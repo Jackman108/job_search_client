@@ -1,11 +1,11 @@
-import {FC, FormEvent, useEffect} from 'react';
+import {FC, FormEvent} from 'react';
 import {ResumeArrayProps} from '../../../Interfaces/InterfaceResume.types';
 import Button from '../../../UI/Button/Button';
-import {useFetchById} from '../../../hooks/fetch/useFetchById';
-import {useResumeHandlersById} from '../../../hooks/useResumeHandlersById';
+import {useFetchByType} from '../../../hooks/fetch/useFetchByType';
+import {useResumeHandlersById} from '../../../hooks/resumeForm/useResumeHandlersById';
 import styles from './ResumeArray.module.css';
 
-const ResumeArray: FC<ResumeArrayProps> = ({config}) => {
+const ResumeArray: FC<ResumeArrayProps> = ({config, type}) => {
     const {
         formData,
         isEditing,
@@ -16,26 +16,17 @@ const ResumeArray: FC<ResumeArrayProps> = ({config}) => {
 
     const {
         fetchedData,
+        loading,
         error,
-        loadData,
         deleteItem,
         saveItem,
-        loading,
-    } = useFetchById(config);
-
-    useEffect(() => {
-        loadData().catch((error) => {
-            console.error("Ошибка загрузки данных:", error);
-        });
-    }, [loadData]);
+    } = useFetchByType(config);
 
 
     const handleSubmit = async (e: FormEvent<HTMLFormElement>, id: number) => {
         e.preventDefault();
         try {
-            console.log("Sending request:", id, formData, isEditing[id]);
-
-            await saveItem({id, formData, isEditing: isEditing[id]});
+            await saveItem({type, id, formData, isEditing: isEditing[id]});
             handleCancelClick(id);
         } catch (error) {
             console.error("Ошибка при сохранении:", error);
@@ -44,10 +35,10 @@ const ResumeArray: FC<ResumeArrayProps> = ({config}) => {
 
     const renderForm = (item: any) => (
         <form onSubmit={(e) => handleSubmit(e, item.id)}>
-            {Object.entries(config.fields).map(([key, label]) => (
+            {Object.entries(config[type].fields).map(([key, label]) => (
                 <div key={key} className={styles.formField}>
                     <label>
-                        {label}
+                        {label as string}
                         <input
                             type={key === 'start_date' || key === 'end_date' ? 'date' : 'text'}
                             value={formData[key] || ''}
@@ -69,28 +60,29 @@ const ResumeArray: FC<ResumeArrayProps> = ({config}) => {
 
     const renderItemData = (item: any) => (
         <>
-            {Object.entries(config.fields).map(([key, label]) => (
+            {Object.entries(config[type].fields).map(([key, label]) => (
                 <div key={key} className={styles.dataItem}>
-                    <strong>{label}:</strong> {item[key] || 'Не указано'}
+                    <strong> {label as string}:</strong> {item[key] || 'Не указано'}
                 </div>
             ))}
             <div className={styles.buttonGroup}>
                 <Button onClick={() => handleEditClick(item)} variant="secondary">
                     <img src="/pen.png" alt="Edit" className={styles.editIcon}/>
                 </Button>
-                <Button onClick={() => deleteItem(item.id)} variant="secondary">Удалить</Button>
+                <Button onClick={() => deleteItem({type, id: item.id})} variant="secondary">Удалить</Button>
             </div>
         </>
-
     );
 
     return (
         <ul className={styles.dataContainer}>
-            {
-                loading ?
-                    <div>Загрузка...</div> : fetchedData?.length
-                        ? fetchedData.map(renderDataItem) : <div>Нет данных для отображения</div>
-            }
+            {loading ? (
+                <div>Загрузка...</div>
+            ) : Array.isArray(fetchedData[type]) && fetchedData[type].length > 0 ? (
+                fetchedData[type].map(renderDataItem)
+            ) : (
+                <div>Нет данных для отображения</div>
+            )}
             {error && <div className="error">{error.message}</div>}
         </ul>
     );
