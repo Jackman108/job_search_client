@@ -4,7 +4,7 @@ import {Errors, FormValues} from "../../Interfaces/InterfaceForm.types";
 import {DEFAULT_SEARCH} from "../../config/searchConfig";
 import {SearchFieldData} from "../../Interfaces/InterfaceVacancy.types";
 
-const useSearchFormState = (
+const useFormState = (
     initialEmail: string = '',
     initialPassword: string = '',
     initialFields: SearchFieldData | null = null
@@ -74,4 +74,4 @@ const useSearchFormState = (
     };
 };
 
-export default useSearchFormState;
+export default useFormState;

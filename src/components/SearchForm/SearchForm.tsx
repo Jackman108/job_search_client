@@ -5,7 +5,6 @@ import Button from '../../UI/Button/Button';
 import RenderInput from '../../UI/RenderInput/RenderInput';
 import RenderSelect from '../../UI/RenderSelect/RenderSelect';
 import RenderTextarea from '../../UI/RenderTextarea/RenderTextarea';
-import UnauthorizedMessage from '../../UI/UnauthorizedMessage/UnauthorizedMessage';
 import {
     FORM_BUTTONS,
     FORM_CONFIG,
@@ -15,8 +14,9 @@ import {
     FormLabelKeys,
     FormParamKeys,
 } from '../../config/searchConfig';
-import useSearchFormLogic from '../../hooks/searchForm/useSearchFormLogic';
+import useSearchFormLogic from '../../hooks/submitForms/searchForm/useSearchFormLogic';
 import ManagementSection from "./ManagementSection";
+import FormContainer from "./FormContainer";
 
 const SearchForm: FC<{ onClose: () => void }> = ({onClose}) => {
     const {
@@ -40,24 +40,11 @@ const SearchForm: FC<{ onClose: () => void }> = ({onClose}) => {
         handleCreateField,
         handleUpdateField,
         handleDeleteField,
-    } = useSearchFormLogic(onClose);
-
-    if (!token) {
-        return (
-            <section className={styles.sectionContainer}>
-                <UnauthorizedMessage/>
-                <Button className={styles.closeButton} onClick={onClose} variant="secondary">
-                    {FORM_BUTTONS.closeButton}
-                </Button>
-            </section>
-        );
-    }
+    } = useSearchFormLogic();
 
     return (
-        <section className={styles.sectionContainer}>
-            <Button className={styles.closeButton} onClick={onClose} variant="secondary">
-                {FORM_BUTTONS.closeButton}
-            </Button>
+        <FormContainer token={token} onClose={onClose}>
+
             <ManagementSection
                 title="Управление Аккаунтами"
                 selectedId={selectedAuthId}
@@ -138,9 +125,7 @@ const SearchForm: FC<{ onClose: () => void }> = ({onClose}) => {
                     </Button>
                 </div>
             </form>
-
-
-        </section>
+        </FormContainer>
     );
 };
 

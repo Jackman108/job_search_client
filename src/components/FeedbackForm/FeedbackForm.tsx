@@ -1,65 +1,61 @@
 // src/components/FeedbackForm/FeedbackForm.tsx
 import React, {FC} from "react";
 import {FormProps} from "../../Interfaces/InterfaceComponent.types";
-import {useAuth} from "../../context/useAuthContext";
-import useFeedbackHandlers from "../../hooks/useFeedbackHandlers";
 import styles from "../SearchForm/SearchForm.module.css";
-import UnauthorizedMessage from "../../UI/UnauthorizedMessage/UnauthorizedMessage";
 import Button from "../../UI/Button/Button";
 import RenderInput from "../../UI/RenderInput/RenderInput";
-import {FORM_BUTTONS, FORM_TEXTS} from "../../config/searchConfig";
+import {FORM_BUTTONS, FORM_CONFIG} from "../../config/searchConfig";
+import ManagementSection from "../SearchForm/ManagementSection";
+import FormContainer from "../SearchForm/FormContainer";
+import useFeedbackLogic from "../../hooks/submitForms/feedbackForm/useFeedbackLogic";
 
 const FeedbackForm: FC<FormProps> = ({onClose}) => {
-    const {token, isLoading} = useAuth();
-
     const {
-        email,
-        password,
+        token,
+        isLoading,
         errors,
-        feedbackHandler,
-        feedbackStopHandler,
-        handleEmailChange,
-        handlePasswordChange,
-    } = useFeedbackHandlers();
-
-    if (!token) {
-        return (
-            <section className={styles.sectionContainer}>
-                <UnauthorizedMessage/>
-                <Button className={styles.closeButton} onClick={onClose} variant="secondary">
-                    {FORM_BUTTONS.closeButton}
-                </Button>
-            </section>
-        );
-    }
-
+        formValues,
+        vacancyAuths,
+        selectedAuthId,
+        setSelectedAuthId,
+        handleInputChange,
+        onSubmit,
+        feedbackStop,
+        handleCreateAuth,
+        handleUpdateAuth,
+        handleDeleteAuth,
+    } = useFeedbackLogic();
 
     return (
-        <section className={styles.sectionContainer}>
-            <Button className={styles.closeButton} onClick={onClose} variant="secondary">
-                {FORM_BUTTONS.closeButton}
-            </Button>
-
-            <form className={styles.formContainer} onSubmit={feedbackHandler}>
+        <FormContainer token={token} onClose={onClose}>
+            <ManagementSection
+                title="Управление Аккаунтами"
+                selectedId={selectedAuthId}
+                setSelectedId={setSelectedAuthId}
+                items={vacancyAuths?.map(auth => ({id: auth.id || 0, label: auth.email})) || []}
+                onCreate={handleCreateAuth}
+                onUpdate={handleUpdateAuth}
+                onDelete={handleDeleteAuth}
+                disabled={isLoading}
+            />
+            <form className={styles.formContainer} onSubmit={onSubmit}>
                 <div className={styles.inputsContainer}>
-                    <RenderInput
-                        label={FORM_TEXTS.emailLabel}
-                        name="email"
-                        value={email}
-                        onChange={handleEmailChange}
-                        error={errors.email}
-                        isLoading={isLoading}
-                        type="email"
-                    />
-                    <RenderInput
-                        label={FORM_TEXTS.passwordLabel}
-                        name="password"
-                        value={password}
-                        onChange={handlePasswordChange}
-                        error={errors.password}
-                        isLoading={isLoading}
-                        type="password"
-                    />
+                    {Object.entries(FORM_CONFIG.fields)
+                        .filter(([key]) => key === 'email' || key === 'password')
+                        .map(([key, fieldConfig]) => (
+                            <RenderInput
+                                key={key}
+                                label={fieldConfig.label}
+                                name={key}
+                                value={formValues[key as keyof typeof formValues]}
+                                onChange={handleInputChange(key as keyof typeof formValues)}
+                                error={errors[key as keyof typeof errors]}
+                                isLoading={isLoading}
+                                type={fieldConfig.type}
+                                placeholder={fieldConfig.placeholder}
+                                required={fieldConfig.required}
+                            />
+                        ))}
                 </div>
 
                 <div className={styles.buttonsContainer}>
@@ -73,7 +69,7 @@ const FeedbackForm: FC<FormProps> = ({onClose}) => {
                     <Button
                         className={styles.button}
                         type="button"
-                        onClick={feedbackStopHandler}
+                        onClick={feedbackStop}
                         disabled={!isLoading}
                         variant="danger"
                     >
@@ -81,8 +77,7 @@ const FeedbackForm: FC<FormProps> = ({onClose}) => {
                     </Button>
                 </div>
             </form>
-
-        </section>
+        </FormContainer>
     );
 };
 

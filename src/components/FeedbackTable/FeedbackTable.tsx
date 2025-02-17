@@ -7,13 +7,12 @@ import {useFeedbackContext} from "../../context/useFeedbackContext";
 import {useSortedData} from "../../hooks/useSortedData";
 
 const FeedbackTable: FC = () => {
-    const {feedbacks, loading, deleteFeedback, fetchFeedbacks} = useFeedbackContext();
+    const {feedbacks, loading, error, deleteFeedback, fetchFeedbacks} = useFeedbackContext();
     const {sortedData: sortedFeedbacks, handleSort, getSortArrow} = useSortedData(feedbacks);
 
     if (loading) return <div>Загрузка...</div>;
-    if (feedbacks.length === 0) {
-        return <UnauthorizedMessage/>;
-    }
+    if (feedbacks.length === 0) return <div>Приветствуем! Начните автоответ по вакансиям в панели слева...</div>;
+    if (error) return <UnauthorizedMessage/>;
 
     const handleDelete = async (id: number) => {
         try {
