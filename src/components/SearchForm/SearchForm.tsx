@@ -1,6 +1,5 @@
 import {FC} from 'react';
 import styles from './SearchForm.module.css';
-
 import Button from '../../UI/Button/Button';
 import RenderInput from '../../UI/RenderInput/RenderInput';
 import RenderSelect from '../../UI/RenderSelect/RenderSelect';
@@ -17,15 +16,16 @@ import {
 import useSearchFormLogic from '../../hooks/submitForms/searchForm/useSearchFormLogic';
 import ManagementSection from "./ManagementSection";
 import FormContainer from "./FormContainer";
+import {FormProps} from "../../Interfaces/InterfaceComponent.types";
 
-const SearchForm: FC<{ onClose: () => void }> = ({onClose}) => {
+const SearchForm: FC<FormProps> = ({onClose}) => {
     const {
         token,
         isLoading,
         errors,
         formValues,
-        vacancyAuths,
-        vacancyFields,
+        searchAuths,
+        searchFields,
         selectedAuthId,
         selectedFieldId,
         setSelectedAuthId,
@@ -34,9 +34,9 @@ const SearchForm: FC<{ onClose: () => void }> = ({onClose}) => {
         handleSelectChange,
         onSubmit,
         handleStop,
-        handleCreateVacancy,
-        handleUpdateVacancy,
-        handleDeleteVacancy,
+        handleCreateAuth,
+        handleUpdateAuth,
+        handleDeleteAuth,
         handleCreateField,
         handleUpdateField,
         handleDeleteField,
@@ -49,10 +49,10 @@ const SearchForm: FC<{ onClose: () => void }> = ({onClose}) => {
                 title="Управление Аккаунтами"
                 selectedId={selectedAuthId}
                 setSelectedId={setSelectedAuthId}
-                items={vacancyAuths?.map(auth => ({id: auth.id || 0, label: auth.email})) || []}
-                onCreate={handleCreateVacancy}
-                onUpdate={handleUpdateVacancy}
-                onDelete={handleDeleteVacancy}
+                items={searchAuths?.map(auth => ({id: auth.id || 0, label: auth.email})) || []}
+                onCreate={handleCreateAuth}
+                onUpdate={handleUpdateAuth}
+                onDelete={handleDeleteAuth}
                 disabled={isLoading}
             />
 
@@ -60,7 +60,7 @@ const SearchForm: FC<{ onClose: () => void }> = ({onClose}) => {
                 title="Управление Опциями"
                 selectedId={selectedFieldId}
                 setSelectedId={setSelectedFieldId}
-                items={vacancyFields?.map(field => ({id: field.id || 0, label: field.position})) || []}
+                items={searchFields?.map(field => ({id: field.id || 0, label: field.position})) || []}
                 onCreate={handleCreateField}
                 onUpdate={handleUpdateField}
                 onDelete={handleDeleteField}

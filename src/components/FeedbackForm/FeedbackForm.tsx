@@ -1,4 +1,3 @@
-// src/components/FeedbackForm/FeedbackForm.tsx
 import React, {FC} from "react";
 import {FormProps} from "../../Interfaces/InterfaceComponent.types";
 import styles from "../SearchForm/SearchForm.module.css";
@@ -15,7 +14,7 @@ const FeedbackForm: FC<FormProps> = ({onClose}) => {
         isLoading,
         errors,
         formValues,
-        vacancyAuths,
+        searchAuths,
         selectedAuthId,
         setSelectedAuthId,
         handleInputChange,
@@ -32,7 +31,7 @@ const FeedbackForm: FC<FormProps> = ({onClose}) => {
                 title="Управление Аккаунтами"
                 selectedId={selectedAuthId}
                 setSelectedId={setSelectedAuthId}
-                items={vacancyAuths?.map(auth => ({id: auth.id || 0, label: auth.email})) || []}
+                items={searchAuths?.map(auth => ({id: auth.id || 0, label: auth.email})) || []}
                 onCreate={handleCreateAuth}
                 onUpdate={handleUpdateAuth}
                 onDelete={handleDeleteAuth}

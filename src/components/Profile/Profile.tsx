@@ -14,10 +14,7 @@ import ProfileAuth from "./ProfileAuth/ProfileAuth";
 
 const Profile: FC<ProfileProps> = () => {
 
-    const {
-        userProfile,
-        handleUpdateProfile,
-    } = useProfileHandlers();
+    const {userProfile, handleUpdateProfile} = useProfileHandlers();
 
     const {
         isSign,
@@ -39,6 +36,7 @@ const Profile: FC<ProfileProps> = () => {
         handleInputChange,
         handleAvatarChange,
     } = useProfileFormHandlers(userProfile || ({} as UserProfile));
+
     const error = formError || (authError ? authError.message : null);
     return (
         <section className={styles.sectionContainer}>

@@ -1,6 +1,6 @@
 import {useMutation, useQuery, useQueryClient} from '@tanstack/react-query';
-import useDataApi from "../../api/useDataApi";
-import {SearchFieldData} from "../../Interfaces/InterfaceVacancy.types";
+import useDataApi from "../../../api/useDataApi";
+import {SearchFieldData} from "../../../Interfaces/InterfaceForm.types";
 
 const useSearchFields = () => {
     const {request} = useDataApi();

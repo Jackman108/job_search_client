@@ -1,3 +1,5 @@
+import {FormConfig} from "../Interfaces/InterfaceForm.types";
+
 export const DEFAULT_SEARCH = {
     text: 'Middle frontend developer',
     schedule: 'remote',
@@ -43,7 +45,7 @@ export const FORM_PARAMS = {
     searchPeriod: 'searchPeriod',
 } as const;
 
-export const FORM_CONFIG = {
+export const FORM_CONFIG: FormConfig = {
     fields: {
         email: {
             label: 'E-mail',

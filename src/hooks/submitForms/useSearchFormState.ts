@@ -1,17 +1,15 @@
-import {ChangeEvent, useCallback, useEffect, useState} from 'react';
+import {ChangeEvent, useCallback, useEffect, useMemo, useState} from 'react';
 import {buildVacancyUrl} from "../../utils/buildVacancyUrl";
-import {Errors, FormValues} from "../../Interfaces/InterfaceForm.types";
+import {Errors, FormValues, SearchAuthData, SearchFieldData} from "../../Interfaces/InterfaceForm.types";
 import {DEFAULT_SEARCH} from "../../config/searchConfig";
-import {SearchFieldData} from "../../Interfaces/InterfaceVacancy.types";
 
-const useFormState = (
-    initialEmail: string = '',
-    initialPassword: string = '',
+const useSearchFormState = (
+    initialAuths: SearchAuthData | null = null,
     initialFields: SearchFieldData | null = null
 ) => {
-    const [formValues, setFormValues] = useState<FormValues>({
-        email: initialEmail,
-        password: initialPassword,
+    const initialFormValues = useMemo<FormValues>(() => ({
+        email: initialAuths?.email || '',
+        password: initialAuths?.password || '',
         position: initialFields?.position || '',
         message: initialFields?.message || '',
         vacancyUrl: initialFields?.vacancy_url || buildVacancyUrl(DEFAULT_SEARCH),
@@ -20,25 +18,14 @@ const useFormState = (
         searchField: initialFields?.search_field || DEFAULT_SEARCH.searchField,
         experience: initialFields?.experience || DEFAULT_SEARCH.experience,
         searchPeriod: initialFields?.search_period || DEFAULT_SEARCH.searchPeriod,
-    });
+    }), [initialAuths, initialFields]);
 
+    const [formValues, setFormValues] = useState<FormValues>(initialFormValues);
     const [errors, setErrors] = useState<Errors>({});
 
     useEffect(() => {
-        setFormValues(prev => ({
-            ...prev,
-            email: initialEmail,
-            password: initialPassword,
-            position: initialFields?.position || '',
-            message: initialFields?.message || '',
-            vacancyUrl: initialFields?.vacancy_url || buildVacancyUrl(DEFAULT_SEARCH),
-            schedule: initialFields?.schedule || DEFAULT_SEARCH.schedule,
-            orderBy: initialFields?.order_by || DEFAULT_SEARCH.orderBy,
-            searchField: initialFields?.search_field || DEFAULT_SEARCH.searchField,
-            experience: initialFields?.experience || DEFAULT_SEARCH.experience,
-            searchPeriod: initialFields?.search_period || DEFAULT_SEARCH.searchPeriod,
-        }));
-    }, [initialEmail, initialPassword, initialFields]);
+        setFormValues(initialFormValues);
+    }, [initialFormValues]);
 
     const handleInputChange = useCallback((field: keyof FormValues) => (
         e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
@@ -74,4 +61,4 @@ const useFormState = (
     };
 };
 
-export default useFormState;
+export default useSearchFormState;

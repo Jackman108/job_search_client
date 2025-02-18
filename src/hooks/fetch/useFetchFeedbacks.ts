@@ -1,40 +1,47 @@
-// src/hooks/useFetchFeedback.ts
-import {useCallback, useEffect, useState} from 'react';
 import {Feedback} from '../../Interfaces/InterfaceFeedback.types';
-import useApi from '../../api/useApi';
 import {formatAndSortData, formatDate} from '../../utils/formatUtils';
+import {useMutation, useQuery, useQueryClient} from "@tanstack/react-query";
+import useDataApi from "../../api/useDataApi";
+
+const formatFeedback = (feedback: Feedback): Feedback => ({
+    ...feedback,
+    feedback_date_time: formatDate(feedback.feedback_date).time,
+    feedback_date_date: formatDate(feedback.feedback_date).date,
+});
 
 const useFetchFeedback = () => {
-    const [feedbacks, setFeedbacks] = useState<Feedback[]>([]);
-    const {loading, error, request} = useApi();
+    const {request} = useDataApi();
+    const queryClient = useQueryClient();
 
-    const formatFeedback = (feedback: Feedback): Feedback => ({
-        ...feedback,
-        feedback_date_time: formatDate(feedback.feedback_date).time,
-        feedback_date_date: formatDate(feedback.feedback_date).date,
+    const fetchFeedbacks = async () => {
+        const data = await request('get', '/feedback');
+        return formatAndSortData(data, formatFeedback, 'feedback_date')
+    };
+    const {data: feedbacks, isLoading: loading, error, refetch: loadData} = useQuery<Feedback[], Error>({
+        queryKey: ['feedbacks'],
+        queryFn: fetchFeedbacks,
+        staleTime: 1000 * 60 * 10,
+    });
+    const deleteFeedbackMutation = useMutation<void, Error, number>({
+        mutationFn: async (id: number) => {
+            await request('delete', `/feedback/${id}`);
+        },
+        onSuccess: async () => {
+            await queryClient.invalidateQueries({queryKey: ['feedbacks']});
+        },
+        onError: (err) => {
+            console.error("Ошибка удаления feedback:", err);
+        },
     });
 
-    const fetchFeedbacks = useCallback(async () => {
-        try {
-            const data = await request('get', '/feedback');
-            setFeedbacks(formatAndSortData(data, formatFeedback, 'feedback_date'));
-        } catch {
-        }
-    }, [request]);
-
-    const deleteFeedback = useCallback(async (id: number) => {
-        try {
-            await request('delete', `/feedback${id}`);
-            setFeedbacks((prevFeedbacks) => prevFeedbacks.filter((feedback) => feedback.id !== id));
-        } catch {
-        }
-    }, [request]);
-
-    useEffect(() => {
-        fetchFeedbacks().catch((error) => console.error("Ошибка загрузки отзывов:", error));
-    }, [fetchFeedbacks]);
-
-    return {feedbacks, loading, error, fetchFeedbacks, deleteFeedback};
+    return {
+        feedbacks: feedbacks || [],
+        loading,
+        error: error ? error.message : null,
+        fetchFeedbacks: () => queryClient.invalidateQueries({queryKey: ['feedbacks']}),
+        deleteFeedback: deleteFeedbackMutation.mutateAsync,
+        loadData,
+    };
 };
 
 export default useFetchFeedback;

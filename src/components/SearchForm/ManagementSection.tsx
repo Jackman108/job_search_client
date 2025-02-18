@@ -1,17 +1,7 @@
 import {FC} from 'react';
 import Button from '../../UI/Button/Button';
 import styles from './SearchForm.module.css';
-
-interface ManagementSectionProps {
-    title: string;
-    selectedId: number | null;
-    setSelectedId: (id: number | null) => void;
-    items: { id: number | undefined; label: string }[];
-    onCreate: () => void;
-    onUpdate: () => void;
-    onDelete: () => void;
-    disabled?: boolean;
-}
+import {ManagementSectionProps} from "../../Interfaces/InterfaceForm.types";
 
 const ManagementSection: FC<ManagementSectionProps> = ({
                                                            title,
@@ -43,7 +33,6 @@ const ManagementSection: FC<ManagementSectionProps> = ({
             <Button onClick={onCreate} disabled={!!selectedId || disabled} variant="primary">
                 Создать
             </Button>
-
             <Button onClick={onDelete} disabled={!selectedId || disabled} variant="danger">
                 Удалить
             </Button>

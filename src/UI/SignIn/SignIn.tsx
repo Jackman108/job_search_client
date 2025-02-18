@@ -1,6 +1,6 @@
 // src/components/SignIn/SignIn.tsx
 
-import React, {useState} from 'react';
+import React, {ChangeEvent, useState} from 'react';
 import {SignInProps} from '../../Interfaces/InterfaceAuth.types';
 import {BUTTON_TEXTS} from '../../config/formConfigs';
 import Button from '../Button/Button';
@@ -21,7 +21,7 @@ const SignIn: React.FC<SignInProps> = ({onSignIn, error, loading}) => {
                 label={FORM_TEXTS.emailLabel}
                 name={BUTTON_TEXTS.emailButton}
                 value={email}
-                onChange={(e: any) => setEmail(e.target.value)}
+                onChange={(e: ChangeEvent<HTMLInputElement>) => setEmail(e.target.value)}
                 isLoading={false}
                 type={BUTTON_TEXTS.emailButton}
                 placeholder={BUTTON_TEXTS.emailButton}
@@ -31,7 +31,7 @@ const SignIn: React.FC<SignInProps> = ({onSignIn, error, loading}) => {
                 label={FORM_TEXTS.passwordLabel}
                 name={BUTTON_TEXTS.passwordButton}
                 value={password}
-                onChange={(e) => setPassword(e.target.value)}
+                onChange={(e: ChangeEvent<HTMLInputElement>) => setPassword(e.target.value)}
                 isLoading={false}
                 type={BUTTON_TEXTS.passwordButton}
                 placeholder={BUTTON_TEXTS.passwordButton}

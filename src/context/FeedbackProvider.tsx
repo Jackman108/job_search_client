@@ -6,14 +6,14 @@ import FeedbackContext from "./useFeedbackContext";
 import useFetchFeedbacks from "../hooks/fetch/useFetchFeedbacks";
 
 const FeedbackProvider: FC<{ children: ReactNode }> = ({children}) => {
-    const {feedbacks, loading, error, fetchFeedbacks, deleteFeedback} = useFetchFeedbacks();
+    const {feedbacks, loading, error, fetchFeedbacks, deleteFeedback, loadData} = useFetchFeedbacks();
     const {alertState, setAlert, handleCloseAlert} = useAlert();
 
-    useWebSocketConnection(fetchFeedbacks, setAlert);
+    useWebSocketConnection(loadData, setAlert);
 
     const contextValue = useMemo(
-        () => ({feedbacks, loading, error, fetchFeedbacks, deleteFeedback}),
-        [feedbacks, loading, error, fetchFeedbacks, deleteFeedback]);
+        () => ({feedbacks, loading, error, fetchFeedbacks, deleteFeedback, loadData}),
+        [feedbacks, loading, error, fetchFeedbacks, deleteFeedback, loadData]);
 
     return (
         <FeedbackContext.Provider value={contextValue}>

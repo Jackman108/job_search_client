@@ -1,30 +1,22 @@
 import {useAuth} from '../../../context/useAuthContext';
 import {useSearchFormContext} from '../../../context/SearchFormContext';
-import useFormState from '../useFormState';
+import useSearchFormState from '../useSearchFormState';
 import useFeedbackSubmit from './useFeedbackSubmit';
 import {FormEvent} from "react";
 import useAuthManagement from "../useAuthManagement";
+import useSearchAuth from "../query/useSearchAuth";
 
 const useFeedbackLogic = () => {
     const {token} = useAuth();
     const {feedbackSubmit, feedbackStop} = useFeedbackSubmit();
-    const {isLoading, setIsLoading} = useSearchFormContext();
+    const {isLoading, setIsLoading, selectedAuthId, setSelectedAuthId,} = useSearchFormContext();
+    const {auths: searchAuths} = useSearchAuth();
 
-    const {
-        vacancyAuths,
-        selectedAuthId,
-        setSelectedAuthId,
-        handleCreateAuth,
-        handleUpdateAuth,
-        handleDeleteAuth,
-    } = useAuthManagement();
-
-    const selectedAuth = vacancyAuths?.find(v => v.id === selectedAuthId) || null;
-
-    const {formValues, errors, setErrors, handleInputChange} = useFormState(
-        selectedAuth?.email || '',
-        selectedAuth?.password || ''
+    const {formValues, errors, setErrors, handleInputChange} = useSearchFormState(
+        searchAuths?.find(v => v.id === selectedAuthId) || null
     );
+
+    const {handleCreateAuth, handleUpdateAuth, handleDeleteAuth} = useAuthManagement(formValues);
 
     const onSubmit = async (event: FormEvent) => {
         event.preventDefault();
@@ -41,7 +33,7 @@ const useFeedbackLogic = () => {
         isLoading,
         errors,
         formValues,
-        vacancyAuths,
+        searchAuths,
         selectedAuthId,
         setSelectedAuthId,
         handleInputChange,

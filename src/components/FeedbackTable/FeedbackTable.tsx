@@ -1,27 +1,18 @@
 import {FC} from 'react';
 import Button from '../../UI/Button/Button';
 import {BUTTON_SYMBOL, FEEDBACK_HEADER} from '../../config/formConfigs';
-import styles from './FeedbacksTable.module.css';
+import styles from '../VacanciesTable/VacanciesTable.module.css';
 import UnauthorizedMessage from '../../UI/UnauthorizedMessage/UnauthorizedMessage';
 import {useFeedbackContext} from "../../context/useFeedbackContext";
 import {useSortedData} from "../../hooks/useSortedData";
 
 const FeedbackTable: FC = () => {
-    const {feedbacks, loading, error, deleteFeedback, fetchFeedbacks} = useFeedbackContext();
+    const {feedbacks, loading, error, deleteFeedback} = useFeedbackContext();
     const {sortedData: sortedFeedbacks, handleSort, getSortArrow} = useSortedData(feedbacks);
-
     if (loading) return <div>Загрузка...</div>;
     if (feedbacks.length === 0) return <div>Приветствуем! Начните автоответ по вакансиям в панели слева...</div>;
     if (error) return <UnauthorizedMessage/>;
 
-    const handleDelete = async (id: number) => {
-        try {
-            await deleteFeedback(id);
-            await fetchFeedbacks();
-        } catch (err) {
-            console.error('Ошибка удаления обратной связи:', err);
-        }
-    };
     return (
         <div className={styles.vacanciesTable}>
             <h1>{FEEDBACK_HEADER.tableTitle}</h1>
@@ -50,7 +41,7 @@ const FeedbackTable: FC = () => {
                         <td>{feedback.response_status}</td>
 
                         <td>
-                            <Button variant="close" onClick={() => handleDelete(feedback.id)}>
+                            <Button variant="close" onClick={() => deleteFeedback(feedback.id)}>
                                 {BUTTON_SYMBOL.deleteButton}
                             </Button>
                         </td>

@@ -1,14 +1,9 @@
-import React, {FC, ReactNode} from "react";
+import React, {FC} from "react";
 import styles from "./SearchForm.module.css";
 import Button from "../../UI/Button/Button";
 import UnauthorizedMessage from "../../UI/UnauthorizedMessage/UnauthorizedMessage";
 import {FORM_BUTTONS} from "../../config/searchConfig";
-
-interface FormContainerProps {
-    token: string | null;
-    onClose: () => void;
-    children: ReactNode;
-}
+import {FormContainerProps} from "../../Interfaces/InterfaceForm.types";
 
 const FormContainer: FC<FormContainerProps> = ({token, onClose, children}) => {
     if (!token) {

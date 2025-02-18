@@ -1,21 +1,32 @@
-import useApi from '../../api/useApi';
-import {validateEmail, validateSearchUrl} from '../../utils/validateUtils';
-import {Dispatch, SetStateAction} from "react";
-import {Errors} from "../../Interfaces/InterfaceForm.types";
+import {validateEmail, validateSearchUrl} from '../../../utils/validateUtils';
+import {SubmitParams} from "../../../Interfaces/InterfaceForm.types";
+import useDataApi from "../../../api/useDataApi";
+import {useMutation} from "@tanstack/react-query";
 
-interface SubmitParams {
-    email: string;
-    password: string;
-    position?: string;
-    message?: string;
-    vacancyUrl?: string;
-    setErrors: Dispatch<SetStateAction<Errors>>
-    setIsLoading: (loading: boolean) => void;
-    endpoint: string;
-}
 
 const useSubmitRequest = () => {
-    const {request} = useApi();
+    const {request} = useDataApi();
+
+    const submitMutation = useMutation<
+        unknown,
+        Error,
+        { endpoint: string; data: any }
+    >({
+        mutationFn: async (params) => {
+            const {endpoint, data} = params;
+            return request('post', endpoint, data);
+        },
+    });
+
+    const stopMutation = useMutation<
+        unknown,
+        Error,
+        void
+    >({
+        mutationFn: async () => {
+            return request('post', '/stop', {});
+        },
+    });
 
     const handleSubmitRequest = async ({
                                            email,
@@ -28,6 +39,7 @@ const useSubmitRequest = () => {
                                            endpoint
                                        }: SubmitParams): Promise<void> => {
         const {isValidEmail, emailError} = validateEmail(email);
+
         if (!isValidEmail) {
             setErrors(emailError);
             return;
@@ -41,11 +53,14 @@ const useSubmitRequest = () => {
             }
         }
 
+        setIsLoading(true);
         try {
-            setIsLoading(true);
-            await request('post', endpoint, {email, password, position, message, vacancyUrl});
+            await submitMutation.mutateAsync({
+                endpoint,
+                data: {email, password, position, message, vacancyUrl},
+            });
         } catch (error) {
-            setErrors(emailError);
+            setErrors({email: (error as Error).message});
         } finally {
             setIsLoading(false);
         }
@@ -53,7 +68,7 @@ const useSubmitRequest = () => {
 
     const handleStopRequest = async (): Promise<void> => {
         try {
-            await request('post', '/stop');
+            await stopMutation.mutateAsync();
         } catch (error) {
             console.error('Stop error:', error);
         }

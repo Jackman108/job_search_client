@@ -4,24 +4,14 @@ import {BUTTON_SYMBOL, TABLE_HEADER} from '../../config/formConfigs';
 import {useVacancyContext} from '../../context/useVacancyContext';
 import {useSortedData} from '../../hooks/useSortedData';
 import styles from './VacanciesTable.module.css';
-
 import UnauthorizedMessage from '../../UI/UnauthorizedMessage/UnauthorizedMessage';
 
 const VacanciesTable: FC = () => {
-    const {vacancies, loading, error, deleteVacancy, fetchVacancies} = useVacancyContext();
+    const {vacancies, loading, error, deleteVacancy} = useVacancyContext();
     const {sortedData: sortedVacancies, handleSort, getSortArrow} = useSortedData(vacancies);
     if (loading) return <div>Загрузка...</div>;
     if (vacancies.length === 0) return <div>Приветствуем! Начните автоответ по вакансиям в панели слева...</div>;
-    if ( error) return <UnauthorizedMessage/>;
-
-    const handleDelete = async (id: number) => {
-        try {
-            await deleteVacancy(id);
-            await fetchVacancies();
-        } catch (err) {
-            console.error('Ошибка удаления вакансии:', err);
-        }
-    };
+    if (error) return <UnauthorizedMessage/>;
 
     return (
         <div className={styles.vacanciesTable}>
@@ -53,7 +43,7 @@ const VacanciesTable: FC = () => {
                         </td>
                         <td>
                             <Button variant="close"
-                                    onClick={() => handleDelete(vacancy.id)}>{BUTTON_SYMBOL.deleteButton}</Button>
+                                    onClick={() => deleteVacancy(vacancy.id)}>{BUTTON_SYMBOL.deleteButton}</Button>
                         </td>
                     </tr>
                 ))}

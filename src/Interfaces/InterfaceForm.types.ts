@@ -1,4 +1,4 @@
-import {ChangeEvent, Dispatch, FormEvent, SetStateAction} from 'react';
+import {ChangeEvent, Dispatch, ReactNode, SetStateAction} from 'react';
 
 export interface Errors {
     [key: string]: string | undefined;
@@ -10,18 +10,6 @@ export interface HandleFeedbackParams {
     password: string;
     setErrors: Dispatch<SetStateAction<Errors>>;
     setIsLoading: Dispatch<SetStateAction<boolean>>;
-}
-
-
-export interface UseFeedbackHandlersParams {
-    email: string;
-    password: string;
-    errors: Errors;
-    feedbackHandler: (event: FormEvent) => Promise<void>;
-    feedbackStopHandler: () => Promise<void>;
-    isLoading: boolean | null;
-    handleEmailChange: (e: ChangeEvent<HTMLInputElement>) => void;
-    handlePasswordChange: (e: ChangeEvent<HTMLInputElement>) => void;
 }
 
 export interface ValidationSearchUrl {
@@ -62,7 +50,7 @@ export interface RenderInputProps {
 
 export interface RenderSelectProps {
     label: string;
-    options?: readonly Option[]
+    options?: readonly FormOption[]
     value: string;
     onChange: (e: ChangeEvent<HTMLSelectElement>) => void;
     isLoading: boolean;
@@ -82,7 +70,7 @@ export interface ProfileProps {
     isOpen: boolean;
 }
 
-export interface Option {
+export interface FormOption {
     value: string;
     label: string;
 }
@@ -105,7 +93,27 @@ export interface FormValues {
     searchPeriod: string;
 }
 
-export interface InitialFields {
+export interface SubmitParams {
+    email: string;
+    password: string;
+    position?: string;
+    message?: string;
+    vacancyUrl?: string;
+    setErrors: Dispatch<SetStateAction<Errors>>
+    setIsLoading: (loading: boolean) => void;
+    endpoint: string;
+}
+
+export interface SearchAuthData {
+    id?: number;
+    email: string;
+    password: string;
+    created_at?: Date;
+    updated_at?: Date;
+}
+
+export interface SearchFieldData {
+    id?: number;
     position: string;
     message: string;
     vacancy_url: string;
@@ -114,4 +122,36 @@ export interface InitialFields {
     search_field: string;
     experience: string;
     search_period: string;
+    createdAt?: Date;
+    updatedAt?: Date;
+}
+
+export interface FormContainerProps {
+    token: string | null;
+    onClose: () => void;
+    children: ReactNode;
+}
+
+export interface ManagementSectionProps {
+    title: string;
+    selectedId: number | null;
+    setSelectedId: (id: number | null) => void;
+    items: { id: number | undefined; label: string }[];
+    onCreate: () => void;
+    onUpdate: () => void;
+    onDelete: () => void;
+    disabled?: boolean;
+}
+
+export interface FormFieldConfig {
+    label: string;
+    type: string;
+    placeholder: string;
+    required: boolean;
+}
+
+
+export interface FormConfig {
+    fields: Record<string, FormFieldConfig>;
+    options: Record<string, FormOption[]>;
 }

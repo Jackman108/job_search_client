@@ -1,41 +1,34 @@
-import useSearchFields from '../fetch/useSearchFields';
+import useSearchFields from './query/useSearchFields';
 import {useSearchFormContext} from '../../context/SearchFormContext';
-import useFormState from "./useFormState";
+import {FormValues} from "../../Interfaces/InterfaceForm.types";
 
-const useFieldManagement = () => {
-    const {fields: vacancyFields, createSearchField, updateSearchField, deleteSearchField} = useSearchFields();
+const useFieldManagement = (formValues: FormValues) => {
+    const {createSearchField, updateSearchField, deleteSearchField} = useSearchFields();
     const {selectedFieldId, setSelectedFieldId} = useSearchFormContext();
-    const selectedField = vacancyFields?.find(f => f.id === selectedFieldId) || null;
-
-    const {formValues} = useFormState(
-        '', // initialEmail
-        '', // initialPassword
-        selectedField // initialFields
-    );
-
-    const {position, message, vacancyUrl} = formValues;
 
     const handleCreateField = async () => {
-        await createSearchField({
-            position,
-            message,
-            vacancy_url: vacancyUrl,
+        const newField = await createSearchField({
+            position: formValues.position,
+            message: formValues.message,
+            vacancy_url: formValues.vacancyUrl,
             schedule: formValues.schedule,
             order_by: formValues.orderBy,
             search_field: formValues.searchField,
             experience: formValues.experience,
             search_period: formValues.searchPeriod,
         });
-        setSelectedFieldId(null);
+        if (newField?.id) {
+            setSelectedFieldId(newField.id);
+        }
     };
 
     const handleUpdateField = async () => {
         if (selectedFieldId) {
             await updateSearchField({
                 id: selectedFieldId,
-                position,
-                message,
-                vacancy_url: vacancyUrl,
+                position: formValues.position,
+                message: formValues.message,
+                vacancy_url: formValues.vacancyUrl,
                 schedule: formValues.schedule,
                 order_by: formValues.orderBy,
                 search_field: formValues.searchField,
@@ -53,9 +46,6 @@ const useFieldManagement = () => {
     };
 
     return {
-        vacancyFields,
-        selectedFieldId,
-        setSelectedFieldId,
         handleCreateField,
         handleUpdateField,
         handleDeleteField,

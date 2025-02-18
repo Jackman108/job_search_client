@@ -1,5 +1,5 @@
 import {VacancySubmitParams} from '../../../Interfaces/InterfaceVacancy.types';
-import useSubmitRequest from "../useSubmitRequest";
+import useSubmitRequest from "../query/useSubmitRequest";
 
 const useVacancySubmit = () => {
     const {handleSubmitRequest, handleStopRequest} = useSubmitRequest();

@@ -1,5 +1,5 @@
 import {HandleFeedbackParams} from '../../../Interfaces/InterfaceForm.types';
-import useSubmitRequest from "../useSubmitRequest";
+import useSubmitRequest from "../query/useSubmitRequest";
 
 const useFeedbackSubmit = () => {
     const {handleSubmitRequest, handleStopRequest} = useSubmitRequest();

@@ -1,27 +1,21 @@
-import useSearchAuth from '../fetch/useSearchAuth';
+import useSearchAuth from './query/useSearchAuth';
 import {useSearchFormContext} from '../../context/SearchFormContext';
-import useFormState from "./useFormState";
+import {SearchAuthData} from "../../Interfaces/InterfaceForm.types";
 
-const useAuthManagement = () => {
-    const {auths: vacancyAuths, createSearchAuth, updateSearchAuth, deleteSearchAuth} = useSearchAuth();
+const useAuthManagement = (formValues: SearchAuthData) => {
+    const {createSearchAuth, updateSearchAuth, deleteSearchAuth} = useSearchAuth();
     const {selectedAuthId, setSelectedAuthId} = useSearchFormContext();
 
-    const selectedAuth = vacancyAuths?.find(v => v.id === selectedAuthId) || null;
-
-    const {formValues} = useFormState(
-        selectedAuth?.email || '',
-        selectedAuth?.password || '',
-    );
-    const {email, password} = formValues;
-
     const handleCreateAuth = async () => {
-        await createSearchAuth({email, password});
-        setSelectedAuthId(null);
+        const newAuth = await createSearchAuth({email: formValues.email, password: formValues.password});
+        if (newAuth?.id) {
+            setSelectedAuthId(newAuth.id);
+        }
     };
 
     const handleUpdateAuth = async () => {
         if (selectedAuthId) {
-            await updateSearchAuth({id: selectedAuthId, email, password});
+            await updateSearchAuth({id: selectedAuthId, email: formValues.email, password: formValues.password});
         }
     };
 
@@ -33,9 +27,6 @@ const useAuthManagement = () => {
     };
 
     return {
-        vacancyAuths,
-        selectedAuthId,
-        setSelectedAuthId,
         handleCreateAuth,
         handleUpdateAuth,
         handleDeleteAuth,
