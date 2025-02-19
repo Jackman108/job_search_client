@@ -1,9 +1,17 @@
 {
   "compilerOptions": {
+    "baseUrl": "src/",
     "paths": {
-      "@components/*": [
-        "components/*"
-      ]
+      "@app/*": ["app/*"],
+      "@processes/*": ["processes/*"],
+      "@features/*": ["features/*"],
+      "@shared/*": ["shared/*"],
+      "@widgets/*": ["widgets/*"],
+      "@api/*": ["shared/api/*"],
+      "@ui/*": ["shared/ui/*"],
+      "@hooks/*": ["shared/hooks/*"],
+      "@utils/*": ["shared/utils/*"],
+      "@config/*": ["shared/config/*"]
     }
   }
 }

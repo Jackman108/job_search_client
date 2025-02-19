@@ -1,0 +1,20 @@
+.sectionContainer {
+	width: 100%;
+	margin: 0 auto;
+	height: 100%;
+	padding: 20px;
+	box-sizing: border-box;
+	display: flex;
+	flex-direction: column;
+	gap: 15px;
+	overflow-y: auto;
+	position: static;
+	box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+	background-color: #D5D5D5;
+}
+
+.closeButton {
+	align-self: flex-end;
+	margin: 10px auto;
+	width: 80%;
+}

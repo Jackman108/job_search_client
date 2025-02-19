@@ -1,46 +1,99 @@
-# Getting Started with Create React App
+# Job Search
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+## Description
+This project is a full-stack web application built with React, TypeScript, and a variety of tools to facilitate a user-friendly interface for job seekers, recruiters, and subscription management. The project enables users to view job vacancies, submit feedback, manage resumes, handle payments, and manage subscriptions.
 
-## Available Scripts
+### Features:
+- Job vacancy listings
+- Feedback system for users
+- Resume management
+- Subscription management
+- Payment tracking
 
-In the project directory, you can run:
+## Technologies Used
+- **React** (Frontend framework)
+- **TypeScript** (Type-safe JavaScript)
+- **React Router** (Routing)
+- **Axios** (API requests)
+- **React Query** (Data fetching and caching)
+- **JWT** (Authentication)
 
-### `npm start`
+## Installation
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+Follow these steps to set up the project on your local machine:
 
-The page will reload if you make edits.\
-You will also see any lint errors in the console.
+### 1. Clone the repository:
+```bash
+git clone <repository-url>
+cd <project-directory>
+```
 
-### `npm test`
+### 2. Install dependencies:
+```bash
+npm install
+```
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+### 3. Environment Setup:
+```bash
+REACT_APP_API_URL=http://localhost:8000
+REACT_APP_WS_URL=ws://localhost:8080
 
-### `npm run build`
+NODE_ENV === 'development'
+```
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+### 4. Running the Application:
+```bash
+npm start
+```
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+### 5. Build for Production:
+```bash
+npm run build
+```
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+### 6. Run Tests:
+```bash
+npm test
+```
 
-### `npm run eject`
+### 7. Eject (Optional):
+```bash
+npm run eject
+```
 
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
+## File Structure
+```bash
+/src
+    /api          - Contains API request helpers using Axios
+    /components   - Reusable UI components
+    /features     - Individual feature modules (e.g., Feedback, Vacancy, Resume)
+    /providers    - React Context Providers for global state management
+    /routes       - Defines application routes
+    /services     - Business logic and service functions
+    /widgets      - Generic layout and presentation components
+    App.tsx       - Main application file
+    index.tsx     - Entry point for React application
+    /assets       - Static assets like images, styles, and fonts
+```
 
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
+## Dependencies
+#### @tanstack/react-query: Data fetching and caching.
+#### axios: HTTP client for making requests to the backend API.
+#### jwt-decode: Decoding JWT tokens.
+#### react-router-dom: Routing library for React.
+#### typescript: TypeScript for type safety.
 
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
+## License
 
-## Learn More
+This project is licensed under the **Proprietary License**. Please contact the repository owner for more details.
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+## Contributing
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+If you would like to contribute to this project, feel free to fork it and create a pull request. Make sure to follow the project's coding standards and include relevant tests for any new features or bug fixes.
+
+---
+
+This `README.md` is designed to give new developers and users a comprehensive overview of the project, its setup, and the folder structure. If you need to adjust or add any other details, feel free to customize it further!
+
+Let me know if you need any changes or additions!

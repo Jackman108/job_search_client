@@ -1,0 +1,64 @@
+.formContainer {
+	display: flex;
+	flex-direction: column;
+	gap: 15px;
+}
+
+.inputsContainer {
+	display: flex;
+	flex-direction: column;
+	gap: 15px;
+}
+
+.textareaContainer {
+	display: flex;
+	flex-direction: column;
+	gap: 15px;
+}
+
+.selectsContainer {
+	display: flex;
+	flex-direction: column;
+	gap: 15px;
+}
+
+.buttonsContainer {
+	display: flex;
+	gap: 10px;
+	margin-top: 15px;
+	flex-direction: column;
+	width: 100%;
+}
+
+.error {
+	border-color: red;
+}
+
+.errorText {
+	color: red;
+	font-size: 0.875em;
+	margin-top: 5px;
+}
+
+
+@media (max-width: 768px) {
+	.sectionContainer {
+		padding: 16px;
+	}
+
+	.managementContainer {
+		padding: 12px;
+	}
+
+	.formContainer {
+		padding: 12px;
+	}
+
+	.buttonsContainer {
+		flex-direction: column;
+	}
+
+	.button {
+		width: 100%;
+	}
+}

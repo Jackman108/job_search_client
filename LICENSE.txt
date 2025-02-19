@@ -1,0 +1,62 @@
+                                  PROPRIETARY LICENSE AGREEMENT
+
+This Proprietary License Agreement ("Agreement") is made and entered into by and between:
+
+Eugene Korobov, an Individual Entrepreneur ("Licensor"), and the user ("Licensee") of the Software (defined below).
+
+**1. DEFINITIONS**
+
+- "Software" means the proprietary software product developed and owned by Licensor, including but not limited to the executable code, libraries, libraries, scripts, documentation, and any related materials provided to Licensee.
+- "Licensee" means the individual or entity who obtains a copy of the Software under the terms of this Agreement.
+
+**2. GRANT OF LICENSE**
+
+Licensor grants Licensee a non-exclusive, non-transferable, revocable license to use the Software, subject to the following conditions:
+
+- The Software may only be used for internal purposes within the Licensee's organization.
+- Licensee is prohibited from copying, modifying, reverse engineering, or distributing the Software, except as expressly authorized by Licensor.
+- Licensee is prohibited from sublicensing or transferring the Software to any third party.
+
+**3. RESTRICTIONS**
+
+Licensee agrees not to:
+
+- Distribute, sublicense, lease, rent, or transfer the Software to third parties, in whole or in part.
+- Reverse engineer, decompile, disassemble, or attempt to discover the source code of the Software, except to the extent expressly permitted by applicable law.
+- Use the Software for any purpose other than as specified by Licensor.
+
+**4. OWNERSHIP**
+
+The Software is the exclusive property of Licensor, and Licensor retains all rights, title, and interest in and to the Software, including all intellectual property rights (e.g., copyrights, trademarks, patents) associated therewith. Licensee acknowledges that the Software is licensed, not sold.
+
+**5. TERM AND TERMINATION**
+
+- This Agreement shall remain in effect until terminated by either party.
+- Licensor may terminate this Agreement at any time if Licensee breaches any term of this Agreement.
+- Upon termination, Licensee shall immediately stop using the Software and destroy all copies of the Software in their possession.
+
+**6. NO WARRANTY**
+
+The Software is provided "as is" without warranty of any kind, either express or implied, including but not limited to warranties of merchantability, fitness for a particular purpose, or non-infringement. Licensor does not guarantee that the Software will be error-free or meet Licensee's requirements.
+
+**7. LIMITATION OF LIABILITY**
+
+To the fullest extent permitted by law, Licensor shall not be liable for any indirect, incidental, special, or consequential damages, or for any loss of profits, data, or use, whether in contract, tort, or otherwise, arising out of or in connection with the use or inability to use the Software.
+
+**8. CONFIDENTIALITY**
+
+Licensee agrees to treat all Software and related documentation as confidential and shall not disclose or use the Software for any purpose other than the purpose for which it was provided.
+
+**9. GOVERNING LAW**
+
+This Agreement shall be governed by and construed in accordance with the laws of the jurisdiction where Licensor is located, without regard to its conflict of law principles.
+
+**10. ENTIRE AGREEMENT**
+
+This Agreement constitutes the entire understanding between the parties with respect to the Software and supersedes any prior agreements or understandings, whether written or oral, relating to the Software.
+
+By installing, copying, or using the Software, Licensee acknowledges that they have read, understood, and agreed to the terms of this Agreement.
+
+Eugene Korobov
+Individual Entrepreneur
+Date: 01,03,2025

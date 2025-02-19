@@ -2,12 +2,13 @@
   "name": "client",
   "version": "0.1.0",
   "private": true,
+  "license": "Proprietary License",
   "scripts": {
-    "build": "react-scripts build",
-    "dev": "react-scripts start",
+    "build": "react-app-rewired build",
+    "dev": "react-app-rewired start",
     "start": "serve -s build -l 3000",
-    "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "test": "react-app-rewired test",
+    "eject": "react-app-rewired eject"
   },
   "dependencies": {
     "@tanstack/react-query": "^5.66.0",
@@ -54,6 +55,9 @@
     "@testing-library/dom": "^10.4.0",
     "@types/body-parser": "^1.19.5",
     "@types/jwt-decode": "^3.1.0",
+    "customize-cra": "^1.0.0",
+    "react-app-rewire-alias": "^1.1.7",
+    "react-app-rewired": "^2.2.1",
     "serve": "^14.2.3"
   }
 }
