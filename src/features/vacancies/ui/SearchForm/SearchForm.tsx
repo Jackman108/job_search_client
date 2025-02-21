@@ -33,7 +33,7 @@ const SearchForm: FC<PanelProps> = ({onClose}) => {
         handleInputChange,
         handleSelectChange,
         onSubmit,
-        handleStop,
+        onStop,
         handleCreateAuth,
         handleUpdateAuth,
         handleDeleteAuth,
@@ -117,7 +117,7 @@ const SearchForm: FC<PanelProps> = ({onClose}) => {
                     <Button
                         className={styles.button}
                         type="button"
-                        onClick={handleStop}
+                        onClick={onStop}
                         disabled={!isLoading}
                         variant="danger"
                     >

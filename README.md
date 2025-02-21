@@ -24,8 +24,8 @@ Follow these steps to set up the project on your local machine:
 
 ### 1. Clone the repository:
 ```bash
-git clone <repository-url>
-cd <project-directory>
+git clone https://github.com/Jackman108/job_search_client.git
+cd client
 ```
 
 ### 2. Install dependencies:

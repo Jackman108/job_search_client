@@ -4,11 +4,11 @@ import useSubmitRequest from "@hooks/forms/useSubmitRequest";
 const useVacancySubmit = () => {
     const {handleSubmitRequest, handleStopRequest} = useSubmitRequest();
 
-    const handleSubmit = async (formValues: VacancySubmitParams): Promise<void> => {
+    const vacancySubmit = async (formValues: VacancySubmitParams): Promise<void> => {
         await handleSubmitRequest({...formValues, endpoint: '/start'});
     };
 
-    return {handleSubmit, handleStop: handleStopRequest};
+    return {vacancySubmit, vacancyStop: handleStopRequest};
 };
 
 export default useVacancySubmit;

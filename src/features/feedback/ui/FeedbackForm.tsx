@@ -20,7 +20,7 @@ const FeedbackForm: FC<PanelProps> = ({onClose}) => {
         setSelectedAuthId,
         handleInputChange,
         onSubmit,
-        feedbackStop,
+        onStop,
         handleCreateAuth,
         handleUpdateAuth,
         handleDeleteAuth,
@@ -69,7 +69,7 @@ const FeedbackForm: FC<PanelProps> = ({onClose}) => {
                     <Button
                         className={styles.button}
                         type="button"
-                        onClick={feedbackStop}
+                        onClick={onStop}
                         disabled={!isLoading}
                         variant="danger"
                     >

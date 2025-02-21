@@ -33,7 +33,6 @@ const InteractiveButton = ({
                         className={`${styles.backdrop} ${position === 'left' ? styles.backdropLeft : styles.backdropRight}
           ${isComponentOpen ? styles.open : ''}`}
                         onClick={toggleComponent}>
-                        role="presentation"
                     </div>
                     <div className={`${styles.drawer} ${position === 'left' ? styles.drawerLeft : styles.drawerRight} 
           ${isComponentOpen ? styles.open : ''}`}

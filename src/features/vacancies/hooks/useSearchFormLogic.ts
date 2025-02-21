@@ -10,7 +10,7 @@ import useSearchFormState from "@hooks/forms/useSearchFormState";
 
 const useSearchFormLogic = () => {
     const {token} = useAuth();
-    const {handleSubmit, handleStop} = useVacancySubmit();
+    const {vacancySubmit, vacancyStop} = useVacancySubmit();
     const {
         isLoading,
         setIsLoading,
@@ -36,13 +36,14 @@ const useSearchFormLogic = () => {
 
     const onSubmit = async (event: FormEvent) => {
         event.preventDefault();
-        await handleSubmit({
+        await vacancySubmit({
             ...formValues,
             token,
             setErrors,
             setIsLoading,
         });
     };
+
 
     return {
         token,
@@ -58,7 +59,7 @@ const useSearchFormLogic = () => {
         handleInputChange,
         handleSelectChange,
         onSubmit,
-        handleStop,
+        onStop: vacancyStop,
         handleCreateAuth,
         handleUpdateAuth,
         handleDeleteAuth,

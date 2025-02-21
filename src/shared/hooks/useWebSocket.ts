@@ -35,6 +35,7 @@ export const useWebSocket = (
 
             switch (true) {
                 case data.startsWith('Vacancy has been successfully saved with ID'):
+                case data.startsWith('Feedback has been successfully saved with ID'):
                     const id = data.split('ID ')[1];
                     console.log(`Vacancy with ID ${id} was saved`);
                     loadData();

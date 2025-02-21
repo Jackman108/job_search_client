@@ -28,6 +28,7 @@ const useFeedbackLogic = () => {
         });
     };
 
+
     return {
         token,
         isLoading,
@@ -38,7 +39,7 @@ const useFeedbackLogic = () => {
         setSelectedAuthId,
         handleInputChange,
         onSubmit,
-        feedbackStop,
+        onStop: feedbackStop,
         handleCreateAuth,
         handleUpdateAuth,
         handleDeleteAuth,
