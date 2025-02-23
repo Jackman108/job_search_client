@@ -1,18 +1,12 @@
-// src/contexts/AuthProvider.tsx
-import {FC, ReactNode, useEffect, useState} from 'react';
+import {FC, ReactNode} from 'react';
 import AuthContext from './useAuthContext';
+import useLocalStorage from "@hooks/useLocalStorage";
 
 export const AuthProvider: FC<{ children: ReactNode }> = ({children}) => {
-    const [token, setToken] = useState<string | null>(localStorage.getItem('token'));
-    const [isLoading, setIsLoading] = useState<boolean>(false);
-
-    useEffect(() => {
-        if (token) localStorage.setItem('token', token);
-        else localStorage.removeItem('token');
-    }, [token]);
+    const [token, setToken] = useLocalStorage<string | null>('token', null);
 
     return (
-        <AuthContext.Provider value={{token, isLoading, setToken, setIsLoading}}>
+        <AuthContext.Provider value={{token, setToken}}>
             {children}
         </AuthContext.Provider>
     );

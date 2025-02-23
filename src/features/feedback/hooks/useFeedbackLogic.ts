@@ -27,7 +27,10 @@ const useFeedbackLogic = () => {
             setIsLoading,
         });
     };
-
+    const onStop = async () => {
+        await feedbackStop();
+        setIsLoading(false);
+    };
 
     return {
         token,
@@ -39,7 +42,7 @@ const useFeedbackLogic = () => {
         setSelectedAuthId,
         handleInputChange,
         onSubmit,
-        onStop: feedbackStop,
+        onStop,
         handleCreateAuth,
         handleUpdateAuth,
         handleDeleteAuth,

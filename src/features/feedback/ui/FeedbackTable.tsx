@@ -1,6 +1,6 @@
 import {FC} from 'react';
 import Button from '@ui/Button/Button';
-import { FEEDBACK_HEADER} from '../config/feedbackConfigs';
+import {FEEDBACK_HEADER} from '../config/feedbackConfigs';
 import styles from '../../vacancies/ui/VacanciesTable/VacanciesTable.module.css';
 import UnauthorizedMessage from '@ui/UnauthorizedMessage/UnauthorizedMessage';
 import {useFeedbackContext} from "@app/providers/feedback/useFeedbackContext";
@@ -9,7 +9,7 @@ import {BUTTON_SYMBOL} from "@config/defaultConfig";
 
 const FeedbackTable: FC = () => {
     const {feedbacks, loading, error, deleteFeedback} = useFeedbackContext();
-    const {sortedData: sortedFeedbacks, handleSort, getSortArrow} = useSortedData(feedbacks);
+    const {sortedData: sortedFeedbacks, handleSort, getSortArrow} = useSortedData(feedbacks || []);
     if (loading) return <div>Загрузка...</div>;
     if (feedbacks.length === 0) return <div>Приветствуем! Начните автоответ по вакансиям в панели слева...</div>;
     if (error) return <UnauthorizedMessage/>;

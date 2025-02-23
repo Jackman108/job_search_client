@@ -43,7 +43,10 @@ const useSearchFormLogic = () => {
             setIsLoading,
         });
     };
-
+    const onStop = async () => {
+        await vacancyStop();
+        setIsLoading(false);
+    };
 
     return {
         token,
@@ -59,7 +62,7 @@ const useSearchFormLogic = () => {
         handleInputChange,
         handleSelectChange,
         onSubmit,
-        onStop: vacancyStop,
+        onStop,
         handleCreateAuth,
         handleUpdateAuth,
         handleDeleteAuth,

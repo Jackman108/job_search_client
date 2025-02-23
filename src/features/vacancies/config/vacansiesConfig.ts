@@ -1,6 +1,6 @@
 export const TABLE_VACANCIES = {
     tableTitle: 'Обработанные вакансии',
-    tableNumde: '№',
+    tableID: 'ID',
     tablePosition: 'Должность',
     tableCompany: 'Компания',
     tableResult: 'Результат',
@@ -8,4 +8,5 @@ export const TABLE_VACANCIES = {
     tableResponded: 'Откликнулся',
     tableMissed: 'Пропустил',
     deletedButton: 'Удалить',
+    feedbackStatus: 'Статус фидбека',
 };

@@ -1,18 +1,19 @@
-import {useCallback, useEffect, useRef, useState} from 'react';
-import {UseWebSocketParams, WebSocketHook} from '@shared/types/WebSocket.types';
-import {useAuth} from '@app/providers/auth/useAuthContext';
+import {useCallback, useEffect, useRef} from 'react';
+import {UseWebSocketParams, WebSocketHook} from "@shared/types/WebSocket.types";
+import {useAuth} from "@app/providers/auth/useAuthContext";
+import {useWebSocketReducer} from "@hooks/useWebSocketReducer";
+import {handleWebSocketMessage} from "@utils/handleWebSocketMessage";
 
 const RECONNECT_INTERVAL = 5000;
 
-export const useWebSocket = (
-    {
-        WS_URL, loadData, setAlert
-    }: UseWebSocketParams): WebSocketHook => {
-    const [message, setMessage] = useState<string | null>(null);
-    const [error, setError] = useState<string | null>(null);
-    const [open, setOpen] = useState<boolean>(false);
+export const useWebSocket = ({WS_URL, loadData, setAlert}: UseWebSocketParams): WebSocketHook => {
+    const [state, dispatch] = useWebSocketReducer();
     const wsRef = useRef<WebSocket | null>(null);
     const {token} = useAuth();
+
+    const handleMessage = useCallback((data: string) => {
+        handleWebSocketMessage(data, loadData, setAlert);
+    }, [loadData, setAlert]);
 
     const connect = useCallback(() => {
         if (!token) {
@@ -22,53 +23,40 @@ export const useWebSocket = (
 
         if (wsRef.current?.readyState === WebSocket.OPEN || wsRef.current?.readyState === WebSocket.CONNECTING) return;
 
-        wsRef.current = new WebSocket(`${WS_URL}?token=${token.replace('Bearer ', '')}`);
+        try {
+            wsRef.current = new WebSocket(`${WS_URL}?token=${token.replace('Bearer ', '')}`);
 
-        wsRef.current.onopen = () => {
-            console.log('WebSocket connection established');
-            setOpen(true);
-        };
+            wsRef.current.onopen = () => {
+                console.log('WebSocket connection established');
+                dispatch({type: 'SET_OPEN', payload: true});
+            };
 
-        wsRef.current.onmessage = (event) => {
-            const data = event.data;
-            setMessage(data);
+            wsRef.current.onmessage = (event) => {
+                dispatch({type: 'SET_MESSAGE', payload: event.data});
+                handleMessage(event.data);
+            };
 
-            switch (true) {
-                case data.startsWith('Vacancy has been successfully saved with ID'):
-                case data.startsWith('Feedback has been successfully saved with ID'):
-                    const id = data.split('ID ')[1];
-                    console.log(`Vacancy with ID ${id} was saved`);
-                    loadData();
-                    break;
-                case data === 'ERROR detected restart':
-                    setAlert('Некорректный Email или Пароль');
-                    break;
-                case data === 'CAPTCHA detected restart':
-                    const captchaSrc = data.split(' ')[2];
-                    setAlert(`Нужен ввод капчи, попробуйте позже ${captchaSrc}`);
-                    break;
-                case data === 'hh closed':
-                    setAlert(`Сайт закрыт, попробуйте позже `);
-                    break;
-                default:
-                    break;
-            }
-        };
+            wsRef.current.onerror = (err) => {
+                console.error('WebSocket Error:', err);
+                dispatch({type: 'SET_ERROR', payload: 'WebSocket Error'});
+            };
 
-        wsRef.current.onerror = (err) => {
-            console.error('WebSocket Error:', err);
-            setError('WebSocket Error');
-        };
+            wsRef.current.onclose = (event) => {
+                console.log('WebSocket connection closed:', event.code, event.reason);
+                dispatch({type: 'SET_OPEN', payload: false});
+                wsRef.current = null;
 
-        wsRef.current.onclose = () => {
-            console.log('WebSocket connection closed');
-            setOpen(false);
-            wsRef.current = null;
+                if (event.code !== 1000) {
+                    console.warn('WebSocket closed unexpectedly. Reconnecting...');
+                    setTimeout(connect, RECONNECT_INTERVAL);
+                }
+            };
+        } catch (error) {
+            console.error('WebSocket connection failed:', error);
+            dispatch({type: 'SET_ERROR', payload: 'WebSocket connection failed'});
             setTimeout(connect, RECONNECT_INTERVAL);
-        };
-
-
-    }, [token, WS_URL, setAlert, loadData]);
+        }
+    }, [dispatch, token, WS_URL, handleMessage]);
 
     useEffect(() => {
         if (!token) {
@@ -88,8 +76,8 @@ export const useWebSocket = (
     return {
         connect,
         loadData,
-        message,
-        error,
-        open,
+        message: state.message,
+        error: state.error,
+        open: state.open,
     };
 };

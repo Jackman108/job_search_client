@@ -10,17 +10,18 @@ import VacanciesTable from "@features/vacancies/ui/VacanciesTable/VacanciesTable
 export const AppRoutes = () => (
 
     <VacancyProvider>
-        <Routes>
-            <Route path="/" element={<VacanciesTable/>}/>
-            <Route path="/feedback" element={
-                <FeedbackProvider>
+        <FeedbackProvider>
+            <Routes>
+                <Route path="/" element={<VacanciesTable/>}/>
+                <Route path="/feedback" element={
+
                     <FeedbackTable/>
-                </FeedbackProvider>
-            }/>
-            <Route path="/resume" element={<Resume/>}/>
-            <Route path="/payment" element={<PaymentTable/>}/>
-            <Route path="/subscription" element={<Subscription/>}/>
-        </Routes>
+                }/>
+                <Route path="/resume" element={<Resume/>}/>
+                <Route path="/payment" element={<PaymentTable/>}/>
+                <Route path="/subscription" element={<Subscription/>}/>
+            </Routes>
+        </FeedbackProvider>
     </VacancyProvider>
 
 );

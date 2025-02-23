@@ -1,0 +1,12 @@
+.VacancyRow a {
+	color: #007bff;
+	text-decoration: none;
+}
+
+.VacancyRow a:hover {
+	color: #2675cbfc;
+}
+
+.tableDate {
+	width: 8vw;;
+}
