@@ -15,3 +15,9 @@ export const paymentConfig: Record<string, ConfigItem> = {
         },
     },
 };
+
+export const paymentStatusOptions = [
+    {value: 'pending', label: 'Pending'},
+    {value: 'completed', label: 'Completed'},
+    {value: 'failed', label: 'Failed'},
+];

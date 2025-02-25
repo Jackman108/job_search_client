@@ -1,6 +1,7 @@
 import {ChangeEvent, useCallback} from 'react';
 import {businessTripReadiness} from '@features/resume/config/resumeLinesConfig';
 import {useFormState} from "./useFormState";
+import {ACTION_TYPES} from "@config/actionTypes";
 
 export const useResumeHandlersByType = (initialFormData = {}) => {
     const {
@@ -39,7 +40,7 @@ export const useResumeHandlersByType = (initialFormData = {}) => {
     const prepareDataForSubmit = useCallback((type: string, formData: Record<string, any>) => {
         return {
             ...formData,
-            business_trip_readiness: type === 'resume'
+            business_trip_readiness: type === ACTION_TYPES.RESUME
                 ? formData.business_trip_readiness === 'Готов'
                 : formData.business_trip_readiness,
         };
@@ -54,7 +55,7 @@ export const useResumeHandlersByType = (initialFormData = {}) => {
         handleEditClick: (type: string, item: any) => {
             handleEditClick(type, {
                 ...item,
-                business_trip_readiness: type === 'resume'
+                business_trip_readiness: type === ACTION_TYPES.RESUME
                     ? item.business_trip_readiness ? businessTripReadiness[0] : businessTripReadiness[1]
                     : item.business_trip_readiness,
             });

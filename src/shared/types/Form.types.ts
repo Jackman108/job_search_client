@@ -1,4 +1,4 @@
-import {ChangeEvent} from "react";
+import {ChangeEvent, ReactNode} from "react";
 
 export interface RenderInputProps {
     id?: string;
@@ -41,5 +41,5 @@ export interface FormOption {
 
 export interface RenderRowProps {
     label: string;
-    value: string | number;
+    value: ReactNode;
 }

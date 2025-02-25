@@ -1,15 +1,17 @@
 import {Payment} from '../types/Payment.types';
-import {paymentConfig} from "../config/paymentConfig";
 import {useFetchByType} from "@hooks/useFetchByType";
+import {ResumeConfigProps} from "@features/resume/types/InterfaceResume.types";
 
-const useFetchPayment = () => {
-
-    const {fetchedData, loading, error} = useFetchByType(paymentConfig.payment);
+const useFetchPayment = (config: ResumeConfigProps['config']) => {
+    const {fetchedData, loading, error, saveItem, deleteItem} = useFetchByType(config);
+    const paymentData = fetchedData?.payment as Payment[] || [];
 
     return {
-        paymentData: fetchedData as Payment[],
+        paymentData,
         loading,
         error,
+        saveItem,
+        deleteItem
     };
 };
 

@@ -13,10 +13,7 @@ export const AppRoutes = () => (
         <FeedbackProvider>
             <Routes>
                 <Route path="/" element={<VacanciesTable/>}/>
-                <Route path="/feedback" element={
-
-                    <FeedbackTable/>
-                }/>
+                <Route path="/feedback" element={<FeedbackTable/>}/>
                 <Route path="/resume" element={<Resume/>}/>
                 <Route path="/payment" element={<PaymentTable/>}/>
                 <Route path="/subscription" element={<Subscription/>}/>

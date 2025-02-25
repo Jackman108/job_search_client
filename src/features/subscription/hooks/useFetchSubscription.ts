@@ -4,10 +4,14 @@ import {useFetchByType} from "@hooks/useFetchByType";
 
 const useFetchSubscription = () => {
 
-    const {fetchedData, loading, error} = useFetchByType(subscriptionConfig.subscription);
-
+    const {
+        fetchedData,
+        loading,
+        error
+    } = useFetchByType(subscriptionConfig);
+    const subscriptionData = fetchedData?.subscription as SubscriptionItem[] || [];
     return {
-        subscriptionData: fetchedData as SubscriptionItem[],
+        subscriptionData,
         loading,
         error,
     };

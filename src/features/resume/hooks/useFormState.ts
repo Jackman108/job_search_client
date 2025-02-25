@@ -1,6 +1,6 @@
 import {useCallback, useState} from 'react';
 
-export const useFormState = (initialFormData: Record<string, any> = {}) => {
+export const useFormState = <T extends Record<string, any>>(initialFormData: Partial<T> = {}) => {
     const [formData, setFormData] = useState<Record<string, any>>(initialFormData);
     const [isEditing, setIsEditing] = useState<Record<string, boolean>>({});
     const [isCreating, setIsCreating] = useState<Record<string, boolean>>({});

@@ -59,12 +59,12 @@ export interface FetchDataResponse {
 
 export interface DeleteItemMutationParams {
     type: string;
-    id?: number;
+    id?: number | string;
 }
 
 export interface SaveItemMutationParams {
     type: string;
-    id: number;
+    id?: number | string;
     formData: any;
     isEditing: boolean;
 }

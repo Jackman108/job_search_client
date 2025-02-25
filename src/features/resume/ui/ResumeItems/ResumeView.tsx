@@ -6,10 +6,11 @@ import RenderRow from '@ui/RenderRow/RenderRow';
 import {formatValue} from '@utils/formatValue';
 import styles from '../Resume.module.css';
 import ResumeArray from '../ResumeArray/ResumeArray';
+import {ACTION_TYPES} from "@config/actionTypes";
 
 const ResumeView: FC<ResumeViewProps> = ({type, fields, data, config, onEditClick, onDeleteClick, onCreateClick}) => (
     <div className={styles.dataContainer}>
-        {type === 'skills' || type === 'workExperience' ? (
+        {type === ACTION_TYPES.SKILLS || type === ACTION_TYPES.EXPERIENCE ? (
             <>
                 <ResumeArray config={config} type={type}/>
                 <Button onClick={() => onCreateClick(type)} variant="primary">

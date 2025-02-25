@@ -1,4 +1,3 @@
-// hooks/useResumeHandlersById.ts
 import {ChangeEvent} from 'react';
 import {useFormState} from "./useFormState";
 

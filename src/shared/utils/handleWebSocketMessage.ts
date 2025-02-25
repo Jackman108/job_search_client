@@ -40,7 +40,6 @@ export const handleWebSocketMessage = (data: string, loadData: () => void, setAl
             break;
 
         default:
-            console.warn('Unknown message received:', data);
             break;
     }
 };
