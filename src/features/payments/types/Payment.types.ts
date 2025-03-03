@@ -1,17 +1,17 @@
 export interface Payment {
-    id?: number;
-    userId: string;
+    id?: string;
+    user_id: string;
     amount: number;
-    paymentStatus: string;
-    paymentMethod?: string;
-    createdAt?: string;
-    updatedAt?: string;
+    payment_status: string;
+    payment_method?: string;
+    created_at?: string;
+    updated_at?: string;
 }
 
 export interface PaymentTableBodyProps {
     paymentData: Payment[];
     handleEditClick: (type: string, item: Payment) => void;
-    handleDelete: (id: string | number) => void;
+    handleDelete: (id: string) => void;
 }
 
 export interface PaymentFormProps {

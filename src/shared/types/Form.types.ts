@@ -20,6 +20,7 @@ export interface RenderSelectProps {
     label: string;
     options?: readonly FormOption[]
     value: string;
+    name: string;
     onChange: (e: ChangeEvent<HTMLSelectElement>) => void;
     isLoading: boolean;
     required?: boolean;

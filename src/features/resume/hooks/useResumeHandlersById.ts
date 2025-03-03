@@ -13,6 +13,7 @@ export const useResumeHandlersById = () => {
 
     const handleInputChange = (e: ChangeEvent<HTMLInputElement>, key: string) => {
         const value = e.target.type === 'checkbox' ? e.target.checked : e.target.value;
+
         setFormData((prev) => ({...prev, [key]: value}));
     };
 

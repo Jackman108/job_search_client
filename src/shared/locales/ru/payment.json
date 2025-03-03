@@ -1,0 +1,36 @@
+{
+  "payments": {
+    "title": "Оплаты",
+    "addPayment": "Добавить оплату",
+    "hideForm": "Скрыть форму",
+    "noData": "Нет данных по оплатам",
+    "actions": {
+      "edit": "Редактировать",
+      "delete": "Удалить",
+      "deleteConfirm": "Вы уверены, что хотите удалить эту оплату?"
+    }
+  },
+  "tableHeaders": {
+    "id": "ID",
+    "userId": "Пользователь ID",
+    "amount": "Сумма",
+    "paymentStatus": "Статус оплаты",
+    "paymentMethod": "Метод оплаты",
+    "createdAt": "Создано",
+    "updatedAt": "Обновлено",
+    "actions": "Действия"
+  },
+  "form": {
+    "userId": "Пользователь ID",
+    "amount": "Сумма",
+    "paymentStatus": "Статус оплаты",
+    "paymentMethod": "Метод оплаты",
+    "save": "Сохранить",
+    "create": "Создать",
+    "cancel": "Отменить"
+  },
+  "common": {
+    "loading": "Загрузка...",
+    "error": "Ошибка"
+  }
+}

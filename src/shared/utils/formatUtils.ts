@@ -11,7 +11,7 @@ export const formatDate = (isoDateString: string): FormattedDate => {
     const day = date.getUTCDate().toString().padStart(2, '0');
     const month = (date.getUTCMonth() + 1).toString().padStart(2, '0');
     const year = date.getUTCFullYear();
-    const formattedDate = `${day}-${month}-${year}`;
+    const formattedDate = `${year}-${month}-${day}`;
 
     return {time, date: formattedDate};
 };

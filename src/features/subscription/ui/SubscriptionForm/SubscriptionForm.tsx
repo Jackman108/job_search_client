@@ -1,25 +1,29 @@
-import React, {useEffect, useState} from 'react';
-import {SubscriptionItem} from '../../types/Subscription.types';
+import React, {useEffect} from 'react';
+import {SubscriptionFormProps, SubscriptionItem} from '../../types/Subscription.types';
+import {useFormState} from "@features/resume/hooks/useFormState";
+import Button from "@ui/Button/Button";
+import RenderSelect from "@ui/RenderSelect/RenderSelect";
+import {subscriptionTypeOptions} from "@features/subscription/config/subscriptionConfig";
+import {useTranslation} from 'react-i18next';
+import RenderInput from "@ui/RenderInput/RenderInput";
+import {formatDate} from "@utils/formatUtils";
 
-interface SubscriptionFormProps {
-    initialData?: SubscriptionItem | null;
-    onSubmit: (formData: Partial<SubscriptionItem>) => void;
-    onCancel: () => void;
-}
-
-const SubscriptionForm: React.FC<SubscriptionFormProps> = ({initialData, onSubmit, onCancel}) => {
-    const [formData, setFormData] = useState<Partial<SubscriptionItem>>({
-        subscriptionType: 'daily',
-        price: 0,
-        startDate: new Date().toISOString(),
-        endDate: new Date().toISOString(),
-    });
+const SubscriptionForm: React.FC<SubscriptionFormProps> = ({initialData, onSubmit, handleCancelClick, isLoading}) => {
+    const {formData, setFormData} = useFormState<Partial<SubscriptionItem>>();
+    const {t} = useTranslation('subscriptions');
 
     useEffect(() => {
         if (initialData) {
-            setFormData(initialData);
+            setFormData({
+                id: initialData.id,
+                userId: initialData.user_id || '',
+                subscriptionType: initialData.subscription_type || 'daily',
+                price: initialData.price || 0,
+                startDate: formatDate(initialData?.start_date!).date || '',
+                endDate: formatDate(initialData.end_date!).date || '',
+            });
         }
-    }, [initialData]);
+    }, [initialData, setFormData]);
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
         const {name, value} = e.target;
@@ -33,47 +37,54 @@ const SubscriptionForm: React.FC<SubscriptionFormProps> = ({initialData, onSubmi
 
     return (
         <form onSubmit={handleSubmit}>
-            <div>
-                <label>Subscription Type:</label>
-                <select
-                    name="subscriptionType"
-                    value={formData.subscriptionType}
-                    onChange={handleChange}
-                >
-                    <option value="daily">Daily</option>
-                    <option value="weekly">Weekly</option>
-                    <option value="monthly">Monthly</option>
-                </select>
-            </div>
-            <div>
-                <label>Price:</label>
-                <input
-                    type="number"
-                    name="price"
-                    value={formData.price}
-                    onChange={handleChange}
-                />
-            </div>
-            <div>
-                <label>Start Date:</label>
-                <input
-                    type="date"
-                    name="startDate"
-                    value={formData.startDate?.split('T')[0]}
-                    onChange={handleChange}
-                />
-            </div>
-            <div>
-                <label>End Date:</label>
-                <input
-                    type="date"
-                    name="endDate"
-                    value={formData.endDate?.split('T')[0]}
-                    onChange={handleChange}
-                />
-            </div>
-            <button type="submit">{initialData ? 'Обновить' : 'Создать'}</button>
-            <button type="button" onClick={onCancel}>Отмена</button>
+            <RenderInput
+                label={t('form.userId')}
+                name="user_id"
+                value={formData.userId || ''}
+                onChange={handleChange}
+                type="text"
+                isLoading={isLoading}
+            />
+            <RenderSelect
+                label={t('form.subscriptionType')}
+                options={subscriptionTypeOptions}
+                value={formData.subscriptionType || 'daily'}
+                name={"subscriptionType"}
+                onChange={handleChange}
+                isLoading={isLoading}
+            />
+            <RenderInput
+                label={t('form.price')}
+                name="price"
+                value={formData.price || 0}
+                onChange={handleChange}
+                type="number"
+                isLoading={isLoading}
+            />
+            <RenderInput
+                label={t('form.startDate')}
+                name="startDate"
+                value={formData.startDate || ''}
+                onChange={handleChange}
+                type="date"
+                isLoading={isLoading}
+            />
+            <RenderInput
+                label={t('form.endDate')}
+                name="endDate"
+                value={formData.endDate || ''}
+                onChange={handleChange}
+                type="date"
+                isLoading={isLoading}
+            />
+
+
+            <Button type="submit" variant="primary" disabled={isLoading}>
+                {initialData ? t('form.save') : t('form.create')}
+            </Button>
+            <Button type="button" variant="secondary" onClick={handleCancelClick} disabled={isLoading}>
+                {t('form.cancel')}
+            </Button>
         </form>
     );
 };

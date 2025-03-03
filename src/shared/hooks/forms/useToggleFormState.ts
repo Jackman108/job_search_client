@@ -1,6 +1,6 @@
 import {useCallback, useState} from 'react';
 
-export const usePaymentFormState = () => {
+export const useToggleFormState = () => {
     const [showForm, setShowForm] = useState(false);
 
     const handleToggleForm = useCallback(() => {

@@ -1,4 +1,3 @@
-// src/components/UI/RenderInput.tsx
 import {FC} from 'react';
 import styles from './RenderInput.module.css';
 import {RenderInputProps} from "@shared/types/Form.types";

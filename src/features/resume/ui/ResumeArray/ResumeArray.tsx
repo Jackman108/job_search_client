@@ -4,6 +4,7 @@ import Button from '@ui/Button/Button';
 import {useFetchByType} from '@hooks/useFetchByType';
 import {useResumeHandlersById} from '../../hooks/useResumeHandlersById';
 import styles from './ResumeArray.module.css';
+import {formatDate} from "@utils/formatUtils";
 
 const ResumeArray: FC<ResumeArrayProps> = ({config, type}) => {
     const {
@@ -35,18 +36,23 @@ const ResumeArray: FC<ResumeArrayProps> = ({config, type}) => {
 
     const renderForm = (item: any) => (
         <form onSubmit={(e) => handleSubmit(e, item.id)}>
-            {Object.entries(config[type].fields).map(([key, label]) => (
-                <div key={key} className={styles.formField}>
-                    <label>
-                        {label as string}
-                        <input
-                            type={key === 'start_date' || key === 'end_date' ? 'date' : 'text'}
-                            value={formData[key] || ''}
-                            onChange={(e) => handleInputChange(e, key)}
-                        />
-                    </label>
-                </div>
-            ))}
+            {Object.entries(config[type].fields).map(([key, label]) => {
+                const isDateField = key === 'start_date' || key === 'end_date';
+                const value = isDateField && formData[key] ? formatDate(formData[key]).date : formData[key] || '';
+
+                return (
+                    <div key={key} className={styles.formField}>
+                        <label>
+                            {label as string}
+                            <input
+                                type={key === 'start_date' || key === 'end_date' ? 'date' : 'text'}
+                                value={value}
+                                onChange={(e) => handleInputChange(e, key)}
+                            />
+                        </label>
+                    </div>
+                );
+            })}
             <Button type="submit" variant="primary">Сохранить</Button>
             <Button type="button" variant="secondary" onClick={() => handleCancelClick(item.id)}>Отменить</Button>
         </form>
@@ -60,11 +66,16 @@ const ResumeArray: FC<ResumeArrayProps> = ({config, type}) => {
 
     const renderItemData = (item: any) => (
         <>
-            {Object.entries(config[type].fields).map(([key, label]) => (
-                <div key={key} className={styles.dataItem}>
-                    <strong> {label as string}:</strong> {item[key] || 'Не указано'}
-                </div>
-            ))}
+            {Object.entries(config[type].fields).map(([key, label]) => {
+                const isDateField = key === 'start_date' || key === 'end_date';
+                const value = isDateField && item[key] ? formatDate(item[key]).date : item[key] || 'Не указано';
+
+                return (
+                    <div key={key} className={styles.dataItem}>
+                        <strong>{label as string}:</strong> {value}
+                    </div>
+                );
+            })}
             <div className={styles.buttonGroup}>
                 <Button onClick={() => handleEditClick(item)} variant="secondary">
                     <img src="/pen.png" alt="Edit" className={styles.editIcon}/>

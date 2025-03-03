@@ -1,0 +1,38 @@
+{
+  "subscriptions": {
+    "title": "Подписки",
+    "addSubscription": "Добавить подписку",
+    "hideForm": "Скрыть форму",
+    "noData": "Нет данных по подпискам",
+    "actions": {
+      "edit": "Редактировать",
+      "delete": "Удалить",
+      "deleteConfirm": "Вы уверены, что хотите удалить эту подписку?"
+    }
+  },
+  "tableHeaders": {
+    "id": "ID",
+    "userId": "Пользователь ID",
+    "subscriptionType": "Тип подписки",
+    "price": "Цена",
+    "startDate": "Дата начала",
+    "endDate": "Дата окончания",
+    "createdAt": "Создано",
+    "updatedAt": "Обновлено",
+    "actions": "Действия"
+  },
+  "form": {
+    "userId": "Пользователь ID",
+    "subscriptionType": "Тип подписки",
+    "price": "Цена",
+    "startDate": "Дата начала",
+    "endDate": "Дата окончания",
+    "save": "Сохранить",
+    "create": "Создать",
+    "cancel": "Отменить"
+  },
+  "common": {
+    "loading": "Загрузка...",
+    "error": "Ошибка"
+  }
+}

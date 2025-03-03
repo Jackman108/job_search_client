@@ -1,0 +1,38 @@
+{
+  "subscriptions": {
+    "title": "Subscriptions",
+    "addSubscription": "Add Subscription",
+    "hideForm": "Hide Form",
+    "noData": "No subscription data",
+    "actions": {
+      "edit": "Edit",
+      "delete": "Delete",
+      "deleteConfirm": "Are you sure you want to remove this subscription? Redux needs to be replaced with something more current"
+    }
+  },
+  "tableHeaders": {
+    "id": "ID",
+    "userId": "User ID",
+    "subscriptionType": "Subscription Type",
+    "price": "Price",
+    "startDate": "Start Date",
+    "endDate": "End Date",
+    "createdAt": "Created At",
+    "updatedAt": "Updated At",
+    "actions": "Actions"
+  },
+  "common": {
+    "loading": "Loading...",
+    "error": "Error"
+  },
+  "form": {
+    "userId": "User ID",
+    "subscriptionType": "Subscription Type",
+    "price": "Price",
+    "startDate": "Start Date",
+    "endDate": "End Date",
+    "save": "Save",
+    "create": "Create",
+    "cancel": "Cancel"
+  }
+}

@@ -1,0 +1,36 @@
+{
+  "payments": {
+    "title": "Payments",
+    "addPayment": "Add Payment",
+    "hideForm": "Hide Form",
+    "noData": "No payment data",
+    "actions": {
+      "edit": "Edit",
+      "delete": "Delete",
+      "deleteConfirm": "Are you sure you want to delete this payment?"
+    }
+  },
+  "tableHeaders": {
+    "id": "ID",
+    "userId": "User ID",
+    "amount": "Amount",
+    "paymentStatus": "Payment Status",
+    "paymentMethod": "Payment Method",
+    "createdAt": "Created At",
+    "updatedAt": "Updated At",
+    "actions": "Actions"
+  },
+  "form": {
+    "userId": "User ID",
+    "amount": "Amount",
+    "paymentStatus": "Payment Status",
+    "paymentMethod": "Payment Method",
+    "save": "Save",
+    "create": "Create",
+    "cancel": "Cancel"
+  },
+  "common": {
+    "loading": "Loading...",
+    "error": "Error"
+  }
+}

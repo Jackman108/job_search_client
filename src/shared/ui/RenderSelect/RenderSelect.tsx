@@ -2,7 +2,7 @@ import {FC} from 'react';
 import styles from './RenderSelect.module.css';
 import {RenderSelectProps} from "@shared/types/Form.types";
 
-const RenderSelect: FC<RenderSelectProps> = ({label, options, value, onChange, isLoading, required}) => (
+const RenderSelect: FC<RenderSelectProps> = ({label, options, value, name, onChange, isLoading, required}) => (
     <div className={styles.formGroup}>
         <label className={styles.label}>{label}:</label>
         <select
@@ -10,7 +10,7 @@ const RenderSelect: FC<RenderSelectProps> = ({label, options, value, onChange, i
             onChange={onChange}
             disabled={isLoading}
             value={value}
-            name={label}
+            name={name}
             required={required}
 
         >

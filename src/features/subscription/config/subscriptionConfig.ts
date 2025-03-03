@@ -6,13 +6,19 @@ export const subscriptionConfig: Record<string, ConfigItem> = {
         apiEndpoint: '/subscription',
         fields: {
             id: 'ID',
-            userId: 'User ID',
-            subscriptionType: 'Subscription Type',
+            user_id: 'User ID',
+            subscription_type: 'SubscriptionType',
             price: 'Price',
-            startDate: 'Start Date',
-            endDate: 'End Date',
-            createdAt: 'Created At',
-            updatedAt: 'Updated At'
+            start_date: 'Start Date',
+            end_date: 'End Date',
+            created_at: 'Created At',
+            updated_at: 'Updated At'
         },
     },
 };
+
+export const subscriptionTypeOptions = [
+    {value: 'daily', label: 'Basic'},
+    {value: 'weekly', label: 'Premium'},
+    {value: 'monthly', label: 'Gold'},
+];

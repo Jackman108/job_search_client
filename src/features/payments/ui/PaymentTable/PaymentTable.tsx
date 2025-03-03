@@ -1,51 +1,41 @@
 import React from 'react';
 import {Link} from 'react-router-dom';
 import styles from './PaymentTable.module.css';
-import useFetchPayment from '../../hooks/useFetchPayment';
 import PaymentForm from '../PaymentForm/PaymentForm';
-import {Payment} from "@features/payments/types/Payment.types";
-import {useFormState} from "@features/resume/hooks/useFormState";
 import PaymentTableBody from "@features/payments/ui/PaymentTableBody/PaymentTableBody";
-import {usePaymentFormState} from "@features/payments/hooks/usePaymentFormState";
-import { paymentConfig} from "@features/payments/config/paymentConfig";
 import {ACTION_TYPES} from "@config/actionTypes";
+import LanguageSwitcher from "@ui/LanguageSwitcher/LanguageSwitcher";
+import {useTableLogic} from "@hooks/useTableLogic";
+import {Payment} from "@features/payments/types/Payment.types";
+import {paymentConfig} from "@features/payments/config/paymentConfig";
+import useFetchPayment from "@features/payments/hooks/useFetchPayment";
+import {useTranslation} from "react-i18next";
 
 const PaymentTable = () => {
-    const {paymentData, loading, error, saveItem, deleteItem} = useFetchPayment(paymentConfig);
-    const {formData, isEditing, handleEditClick, resetFormData, handleCancelClick} = useFormState<Payment>();
-    const {showForm, handleToggleForm} = usePaymentFormState();
+    const {t} = useTranslation('payments');
 
-
-    const handleDelete = async (id: string | number) => {
-        try {
-            await deleteItem({type: ACTION_TYPES.PAYMENT, id});
-        } catch (error) {
-            console.error('Error deleting payment:', error);
-        }
-    };
-
-    const handleFormSubmit = async (formData: Partial<Payment>) => {
-        try {
-            await saveItem({
-                type: ACTION_TYPES.PAYMENT,
-                id: formData.id,
-                formData,
-                isEditing: isEditing[ACTION_TYPES.PAYMENT],
-            });
-            resetFormData();
-            handleCancelClick(ACTION_TYPES.PAYMENT);
-            handleToggleForm();
-        } catch (error) {
-            console.error('Error saving payment:', error);
-        }
-    };
+    const {
+        data: paymentData,
+        loading,
+        error,
+        formData,
+        isEditing,
+        showForm,
+        handleEditClick,
+        handleDelete,
+        handleFormSubmit,
+        handleToggleForm,
+        handleCancelClick,
+    } = useTableLogic<Payment>(paymentConfig, useFetchPayment, ACTION_TYPES.PAYMENT);
 
     return (
         <div className={styles.container}>
+            <LanguageSwitcher/>
+
             <Link to="/" className="home-button">🏠</Link>
-            <h1>Оплаты</h1>
+            <h1>{t('payments.title')}</h1>
             <button onClick={handleToggleForm}>
-                {showForm ? 'Скрыть форму' : 'Добавить оплату'}
+                {showForm ? t('payments.hideForm') : t('payments.addPayment')}
             </button>
             {(showForm || isEditing[ACTION_TYPES.PAYMENT]) && (
                 <PaymentForm
@@ -58,9 +48,9 @@ const PaymentTable = () => {
                     isLoading={loading}
                 />
             )}
-            {loading && <p>Загрузка...</p>}
-            {error && <p>Ошибка: {error.message}</p>}
-            {paymentData.length > 0 ? (
+            {loading && <p>{t('common.loading')}</p>}
+            {error && <p>{t('common.error')}: {error.message}</p>}
+            {paymentData && paymentData.length > 0 ? (
                 <PaymentTableBody
                     paymentData={paymentData}
                     handleEditClick={(type, item) => {
@@ -70,8 +60,7 @@ const PaymentTable = () => {
                     handleDelete={handleDelete}
                 />
             ) : (
-                !loading && !error && <p>Нет данных по оплатам.</p>
-            )}
+                !loading && !error && <p>{t('payments.noData')}</p>)}
         </div>
     );
 };

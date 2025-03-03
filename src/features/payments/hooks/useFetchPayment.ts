@@ -4,10 +4,10 @@ import {ResumeConfigProps} from "@features/resume/types/InterfaceResume.types";
 
 const useFetchPayment = (config: ResumeConfigProps['config']) => {
     const {fetchedData, loading, error, saveItem, deleteItem} = useFetchByType(config);
-    const paymentData = fetchedData?.payment as Payment[] || [];
+    const data = fetchedData?.payment as Payment[] || [];
 
     return {
-        paymentData,
+        data,
         loading,
         error,
         saveItem,

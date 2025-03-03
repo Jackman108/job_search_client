@@ -4,4 +4,5 @@ export const ACTION_TYPES = {
     CONTACTS: 'contacts',
     SKILLS: 'skills',
     EXPERIENCE: 'workExperience',
+    SUBSCRIPTION: 'subscription'
 } as const;

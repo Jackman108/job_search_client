@@ -98,6 +98,7 @@ const SearchForm: FC<PanelProps> = ({onClose}) => {
                         <RenderSelect
                             key={key}
                             label={FORM_LABELS[key as FormLabelKeys]}
+                            name={FORM_LABELS[key as FormLabelKeys]}
                             options={options}
                             value={formValues[key as keyof typeof formValues]}
                             onChange={handleSelectChange(FORM_PARAMS[key as FormParamKeys])}

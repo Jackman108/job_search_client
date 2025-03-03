@@ -9,7 +9,7 @@ import {
 import useDataApi from '@api/useDataApi';
 import {ACTION_TYPES} from "@config/actionTypes";
 
-const SPECIAL_TYPES = [ACTION_TYPES.SKILLS, ACTION_TYPES.EXPERIENCE, ACTION_TYPES.PAYMENT] as const;
+const SPECIAL_TYPES = [ACTION_TYPES.SKILLS, ACTION_TYPES.EXPERIENCE, ACTION_TYPES.PAYMENT, ACTION_TYPES.SUBSCRIPTION] as const;
 
 const getQueryKey = (config: FetchByTypeConfig['config']) => {
     return Object.keys(config).map(key => [(config as Record<string, ConfigItem>)[key].apiEndpoint]);
