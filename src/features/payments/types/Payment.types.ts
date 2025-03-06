@@ -1,22 +1,22 @@
-export interface Payment {
+export interface PaymentItem {
     id?: string;
-    user_id: string;
+    subscription_id: string;
     amount: number;
     payment_status: string;
     payment_method?: string;
-    created_at?: string;
-    updated_at?: string;
+    created_at?: Date;
+    updated_at?: Date;
 }
 
 export interface PaymentTableBodyProps {
-    paymentData: Payment[];
-    handleEditClick: (type: string, item: Payment) => void;
+    paymentData: PaymentItem[];
+    handleEditClick: (type: string, item: PaymentItem) => void;
     handleDelete: (id: string) => void;
 }
 
 export interface PaymentFormProps {
-    initialData?: Partial<Payment>;
-    onSubmit: (formData: Partial<Payment>) => void;
+    initialData?: Partial<PaymentItem>;
+    onSubmit: (formData: Partial<PaymentItem>) => void;
     handleCancelClick: () => void;
     isLoading: boolean;
 }

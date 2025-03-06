@@ -4,6 +4,7 @@ import {ACTION_TYPES} from "@config/actionTypes";
 import {useTranslation} from "react-i18next";
 import {useCurrency} from "@hooks/useCurrency";
 import {SubscriptionTableBodyProps} from "@features/subscription/types/Subscription.types";
+import {formatDate} from "@utils/formatUtils";
 
 const SubscriptionTableBody: React.FC<SubscriptionTableBodyProps> = ({
                                                                          subscriptionData, handleEditClick, handleDelete
@@ -33,10 +34,10 @@ const SubscriptionTableBody: React.FC<SubscriptionTableBodyProps> = ({
                     <td>{subscription.user_id}</td>
                     <td>{subscription.subscription_type}</td>
                     <td>{convertCurrency(subscription.price, 'RUB', currency)} {currency}</td>
-                    <td>{subscription.start_date}</td>
-                    <td>{subscription.end_date || 'N/A'}</td>
-                    <td>{subscription.created_at}</td>
-                    <td>{subscription.updated_at}</td>
+                    <td>{formatDate(subscription.start_date.toString()).date}</td>
+                    <td>{formatDate(subscription.end_date.toString()).date}</td>
+                    <td>{formatDate(subscription.created_at!.toString()).date}</td>
+                    <td>{formatDate(subscription.updated_at!.toString()).date}</td>
 
                     <td>
                         <Button onClick={() => handleEditClick(ACTION_TYPES.SUBSCRIPTION, subscription)}>

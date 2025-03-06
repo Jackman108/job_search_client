@@ -1,24 +1,21 @@
 import React, {useEffect} from 'react';
-import {PaymentFormProps, PaymentItem} from '../../types/Payment.types';
 import RenderSelect from "@ui/RenderSelect/RenderSelect";
 import Button from "@ui/Button/Button";
 import {useFormState} from "@features/resume/hooks/useFormState";
-import {paymentStatusOptions} from "@features/payments/config/paymentConfig";
 import {useTranslation} from "react-i18next";
 import RenderInput from "@ui/RenderInput/RenderInput";
+import {PaymentFormProps, PaymentItem} from "@features/payments/types/Payment.types";
+import {paymentMethodOptions, paymentStatusOptions} from "@features/payments/config/paymentConfig";
 
-const PaymentForm: React.FC<PaymentFormProps> = ({initialData, onSubmit, handleCancelClick, isLoading}) => {
+const PaymentUserForm: React.FC<PaymentFormProps> = ({initialData, onSubmit, handleCancelClick, isLoading}) => {
     const {formData, setFormData} = useFormState<Partial<PaymentItem>>();
     const {t} = useTranslation('payments');
-
     useEffect(() => {
         if (initialData) {
             setFormData({
-                id: initialData.id,
-                user_id: initialData.subscription_id || '',
-                amount: initialData.amount || 0,
-                payment_method: initialData.payment_method || '',
-                payment_status: initialData.payment_status || 'pending',
+                ...initialData,
+                payment_status: paymentStatusOptions[0].value,
+                payment_method: paymentMethodOptions[0].value
             });
         }
     }, [initialData, setFormData]);
@@ -31,44 +28,37 @@ const PaymentForm: React.FC<PaymentFormProps> = ({initialData, onSubmit, handleC
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();
         onSubmit(formData);
+        handleCancelClick()
     };
 
     return (
         <form onSubmit={handleSubmit}>
             <RenderInput
-                label={t('form.userId')}
-                name="user_id"
-                value={formData.user_id || ''}
+                label={t('form.subscriptionId')}
+                name="subscription_id"
+                value={formData.subscription_id || ''}
                 onChange={handleChange}
                 type="text"
-                isLoading={isLoading}
-            />
-            <RenderSelect
-                label={t('form.paymentStatus')}
-                options={paymentStatusOptions}
-                value={formData.payment_status || 'pending'}
-                name="payment_status"
-                onChange={handleChange}
                 isLoading={isLoading}
             />
             <RenderInput
                 label={t('form.amount')}
                 name="amount"
-                value={formData.amount || 0}
+                value={formData.amount}
                 onChange={handleChange}
                 type="number"
                 isLoading={isLoading}
             />
-            <RenderInput
+            <RenderSelect
                 label={t('form.paymentMethod')}
+                options={paymentMethodOptions}
                 name="payment_method"
-                value={formData.payment_method || ''}
+                value={formData.payment_method}
                 onChange={handleChange}
-                type="text"
                 isLoading={isLoading}
             />
             <Button type="submit" variant="primary" disabled={isLoading}>
-                {initialData ? t('form.save') : t('form.create')}
+                {t('form.pay')}
             </Button>
             <Button type="button" variant="secondary" onClick={handleCancelClick} disabled={isLoading}>
                 {t('form.cancel')}
@@ -77,4 +67,4 @@ const PaymentForm: React.FC<PaymentFormProps> = ({initialData, onSubmit, handleC
     );
 };
 
-export default PaymentForm;
+export default PaymentUserForm;

@@ -8,6 +8,7 @@ import VacancyProvider from '../providers/vacancy/VacancyProvider';
 import VacanciesTable from "@features/vacancies/ui/VacanciesTable/VacanciesTable";
 import {I18nextProvider} from "react-i18next";
 import i18n from "@config/i18n";
+import SubscriptionUserTable from "@features/subscriptionUser/SubscriptionUserTable/SubscriptionUserTable";
 
 export const AppRoutes = () => (
     <VacancyProvider>
@@ -18,7 +19,8 @@ export const AppRoutes = () => (
                     <Route path="/feedback" element={<FeedbackTable/>}/>
                     <Route path="/resume" element={<Resume/>}/>
                     <Route path="/payment" element={<PaymentTable/>}/>
-                    <Route path="/subscription" element={<SubscriptionTable/>}/>
+                    <Route path="/subscriptions" element={<SubscriptionTable/>}/>
+                    <Route path="/subscription" element={<SubscriptionUserTable/>}/>
                 </Routes>
             </I18nextProvider>
         </FeedbackProvider>

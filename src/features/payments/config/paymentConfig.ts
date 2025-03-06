@@ -6,12 +6,13 @@ export const paymentConfig: Record<string, ConfigItem> = {
         apiEndpoint: '/payment',
         fields: {
             id: 'ID',
-            userId: 'User ID',
+            user_id: 'User ID',
+            subscription_id: 'User ID',
             amount: 'Amount',
-            paymentStatus: 'Payment Status',
-            paymentMethod: 'Payment Method',
-            createdAt: 'Created At',
-            updatedAt: 'Updated At'
+            payment_status: 'Payment Status',
+            payment_method: 'Payment Method',
+            created_at: 'Created At',
+            updated_at: 'Updated At'
         },
     },
 };
@@ -20,4 +21,9 @@ export const paymentStatusOptions = [
     {value: 'pending', label: 'Pending'},
     {value: 'completed', label: 'Completed'},
     {value: 'failed', label: 'Failed'},
+];
+
+export const paymentMethodOptions = [
+    {value: 'webpay', label: 'WebPay'},
+    {value: 'erip', label: 'ERIP'},
 ];

@@ -1,6 +1,6 @@
 import React from 'react';
 import {Link} from 'react-router-dom';
-import styles from './Subscription.module.css';
+import styles from './SubscriptionTable.module.css';
 import {ACTION_TYPES} from "@config/actionTypes";
 import SubscriptionForm from "@features/subscription/ui/SubscriptionForm/SubscriptionForm";
 import LanguageSwitcher from "@ui/LanguageSwitcher/LanguageSwitcher";

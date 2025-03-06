@@ -12,7 +12,7 @@
   },
   "tableHeaders": {
     "id": "ID",
-    "userId": "Пользователь ID",
+    "subscriptionId": "Подписка ID",
     "amount": "Сумма",
     "paymentStatus": "Статус оплаты",
     "paymentMethod": "Метод оплаты",
@@ -22,9 +22,11 @@
   },
   "form": {
     "userId": "Пользователь ID",
+    "subscriptionId": "Подписка ID",
     "amount": "Сумма",
     "paymentStatus": "Статус оплаты",
     "paymentMethod": "Метод оплаты",
+    "pay": "Оплатить",
     "save": "Сохранить",
     "create": "Создать",
     "cancel": "Отменить"

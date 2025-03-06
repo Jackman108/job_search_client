@@ -16,11 +16,11 @@ const SubscriptionForm: React.FC<SubscriptionFormProps> = ({initialData, onSubmi
         if (initialData) {
             setFormData({
                 id: initialData.id,
-                userId: initialData.user_id || '',
-                subscriptionType: initialData.subscription_type || 'daily',
+                user_id: initialData.user_id || '',
+                subscription_type: initialData.subscription_type || 'daily',
                 price: initialData.price || 0,
-                startDate: formatDate(initialData?.start_date!).date || '',
-                endDate: formatDate(initialData.end_date!).date || '',
+                start_date: initialData?.start_date! || '',
+                end_date: initialData.end_date! || '',
             });
         }
     }, [initialData, setFormData]);
@@ -40,7 +40,7 @@ const SubscriptionForm: React.FC<SubscriptionFormProps> = ({initialData, onSubmi
             <RenderInput
                 label={t('form.userId')}
                 name="user_id"
-                value={formData.userId || ''}
+                value={formData.user_id || ''}
                 onChange={handleChange}
                 type="text"
                 isLoading={isLoading}
@@ -48,8 +48,8 @@ const SubscriptionForm: React.FC<SubscriptionFormProps> = ({initialData, onSubmi
             <RenderSelect
                 label={t('form.subscriptionType')}
                 options={subscriptionTypeOptions}
-                value={formData.subscriptionType || 'daily'}
-                name={"subscriptionType"}
+                value={formData.subscription_type || 'daily'}
+                name="subscription_type"
                 onChange={handleChange}
                 isLoading={isLoading}
             />
@@ -63,16 +63,17 @@ const SubscriptionForm: React.FC<SubscriptionFormProps> = ({initialData, onSubmi
             />
             <RenderInput
                 label={t('form.startDate')}
-                name="startDate"
-                value={formData.startDate || ''}
+                name="start_date"
+                value={formatDate(formData.start_date).date || ''}
+
                 onChange={handleChange}
                 type="date"
                 isLoading={isLoading}
             />
             <RenderInput
                 label={t('form.endDate')}
-                name="endDate"
-                value={formData.endDate || ''}
+                name="end_date"
+                value={formatDate(formData.end_date).date || ''}
                 onChange={handleChange}
                 type="date"
                 isLoading={isLoading}

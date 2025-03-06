@@ -6,7 +6,11 @@ export const formatAndSortData = <T>(data: T[], formatFn: (item: T) => T, sortKe
 
 
 export const formatDate = (isoDateString: string): FormattedDate => {
+
     const date = new Date(isoDateString);
+    if (isNaN(date.getTime())) {
+        return {time: '', date: ''};
+    }
     const time = date.toISOString().slice(11, 16);
     const day = date.getUTCDate().toString().padStart(2, '0');
     const month = (date.getUTCMonth() + 1).toString().padStart(2, '0');
