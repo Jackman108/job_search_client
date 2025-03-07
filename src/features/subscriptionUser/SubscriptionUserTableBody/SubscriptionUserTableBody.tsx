@@ -9,13 +9,22 @@ import {subscriptionTypeOptions} from "@features/subscription/config/subscriptio
 
 const SubscriptionUserTableBody: React.FC<SubscriptionTableBodyProps> = ({
                                                                              subscriptionData,
-                                                                             paymentData,
+                                                                             paymentData = [],
                                                                              handleEditClick,
                                                                              handleDelete,
                                                                              handlePaymentClick
                                                                          }) => {
     const {t} = useTranslation('subscriptions')
     const {currency, convertCurrency} = useCurrency();
+
+    const getPaymentStatuses = (subscriptionId: string) => {
+        if (!paymentData) return '';
+        return paymentData
+            .filter(payment => payment.subscription_id === subscriptionId)
+            .map(payment => payment.payment_status)
+            .join(', ');
+    };
+
     const getSubscriptionLabel = (subscriptionType: string) => {
         const option = subscriptionTypeOptions.find(option => option.value === subscriptionType);
         return option ? option.label : subscriptionType;
@@ -29,6 +38,7 @@ const SubscriptionUserTableBody: React.FC<SubscriptionTableBodyProps> = ({
                 <th>{t('tableHeaders.price')}</th>
                 <th>{t('tableHeaders.startDate')}</th>
                 <th>{t('tableHeaders.endDate')}</th>
+                <th>{t('tableHeaders.paymentStatus')}</th>
                 <th>{t('tableHeaders.actions')}</th>
             </tr>
             </thead>
@@ -40,6 +50,7 @@ const SubscriptionUserTableBody: React.FC<SubscriptionTableBodyProps> = ({
                     <td>{convertCurrency(subscription.price!, 'RUB', currency)} {currency}</td>
                     <td>{formatDate(subscription.start_date!.toString()).date}</td>
                     <td>{formatDate(subscription.end_date!.toString()).date}</td>
+                    <td>{getPaymentStatuses(subscription.id!)}</td>
 
                     <td>
                         <Button onClick={() => handleEditClick(ACTION_TYPES.SUBSCRIPTION, subscription)}>

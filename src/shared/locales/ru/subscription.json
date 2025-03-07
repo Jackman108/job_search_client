@@ -21,6 +21,7 @@
     "price": "Цена",
     "startDate": "Дата начала",
     "endDate": "Дата окончания",
+    "paymentStatus": "Статус платежей",
     "createdAt": "Создано",
     "updatedAt": "Обновлено",
     "actions": "Действия"

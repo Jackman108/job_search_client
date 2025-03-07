@@ -27,3 +27,16 @@ export const paymentMethodOptions = [
     {value: 'webpay', label: 'WebPay'},
     {value: 'erip', label: 'ERIP'},
 ];
+
+export const paymentSystemsConfig: Record<string, ConfigItem> = {
+    webpay: {
+        title: 'WebPay',
+        apiEndpoint: '/payment/webpay',
+        fields: {}
+    },
+    erip: {
+        title: 'ERIP',
+        apiEndpoint: '/payment/erip',
+        fields: {}
+    },
+};

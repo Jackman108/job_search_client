@@ -1,9 +1,9 @@
 import {FormEvent} from 'react';
-import {ResumeConfigProps} from '../types/InterfaceResume.types';
+import {QueryConfigProps} from '../types/InterfaceResume.types';
 import {useResumeHandlersByType} from "./useResumeHandlersByType";
 import {useFetchByType} from "@hooks/useFetchByType";
 
-export const useResume = (config: ResumeConfigProps['config']) => {
+export const useResume = (config: QueryConfigProps['config']) => {
     const {
         fetchedData,
         loading,

@@ -7,6 +7,7 @@ import useFetchSubscription from "@features/subscription/hooks/useFetchSubscript
 import {PaymentItem} from "@features/payments/types/Payment.types";
 import useFetchPayment from "@features/payments/hooks/useFetchPayment";
 import {paymentConfig} from "@features/payments/config/paymentConfig";
+import {useProcessHandler} from "@features/subscriptionUser/hooks/useProcessHandler";
 
 export const useSubscriptionLogic = () => {
     const [selectedSubscription, setSelectedSubscription] = useState<SubscriptionItem | null>(null);
@@ -42,6 +43,33 @@ export const useSubscriptionLogic = () => {
         handleFormSubmit: handlePaymentSubmit,
     } = paymentLogic;
 
+    const {
+        handleProcess,
+        loadingProcess,
+        errorProcess,
+    } = useProcessHandler();
+
+
+    const handlePaymentSubmitWithProcess = useCallback(async (formData: Partial<PaymentItem>) => {
+        if (!formData) return;
+        try {
+            await handlePaymentSubmit(formData);
+
+
+            await handleProcess(formData as PaymentItem);
+
+        } catch (error) {
+            console.error('Ошибка при создании платежа:', error);
+        }
+    }, [handlePaymentSubmit, handleProcess]);
+
+
+    const handlePaymentClick = useCallback((subscription: SubscriptionItem) => {
+        setSelectedSubscription(subscription);
+        paymentToggleForm();
+    }, [paymentToggleForm]);
+
+
     useEffect(() => {
         if (subscriptionData && subscriptionData.length > 0 && !isEditing[ACTION_TYPES.SUBSCRIPTION]) {
             const latestSubscription = subscriptionData[subscriptionData.length - 1];
@@ -50,12 +78,6 @@ export const useSubscriptionLogic = () => {
 
         }
     }, [subscriptionData, isEditing, paymentToggleForm, paymentData]);
-
-    const handlePaymentClick = useCallback((subscription: SubscriptionItem) => {
-        setSelectedSubscription(subscription);
-        paymentToggleForm();
-    }, [paymentToggleForm]);
-
 
     return {
         selectedSubscription,
@@ -76,6 +98,8 @@ export const useSubscriptionLogic = () => {
         paymentShowForm,
         paymentToggleForm,
         handlePaymentClick,
-        handlePaymentSubmit,
+        handlePaymentSubmitWithProcess,
+        loadingProcess,
+        errorProcess,
     };
 };

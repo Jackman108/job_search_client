@@ -10,7 +10,7 @@ export interface ConfigItem {
     fields: FieldConfig;
 }
 
-export interface ResumeConfigProps {
+export interface QueryConfigProps {
     config: Record<string, ConfigItem>
 }
 

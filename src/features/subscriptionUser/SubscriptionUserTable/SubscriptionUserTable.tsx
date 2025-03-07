@@ -32,8 +32,11 @@ const SubscriptionUserTable: FC = () => {
         paymentShowForm,
         paymentToggleForm,
         handlePaymentClick,
-        handlePaymentSubmit,
+        handlePaymentSubmitWithProcess,
+        loadingProcess,
+        errorProcess,
     } = useSubscriptionLogic();
+
 
     return (
         <div className={styles.containerSubscription}>
@@ -45,7 +48,7 @@ const SubscriptionUserTable: FC = () => {
                 <>
                     <SubscriptionUserTableBody
                         subscriptionData={subscriptionData}
-                        paymentData={paymentData || []}
+                        paymentData={paymentData}
                         handleEditClick={(type, item) => {
                             handleEditClick(type, item);
                             subscriptionToggleForm();
@@ -79,13 +82,14 @@ const SubscriptionUserTable: FC = () => {
                         subscription_id: selectedSubscription.id,
                         amount: selectedSubscription.price,
                     }}
-                    onSubmit={handlePaymentSubmit}
+                    onSubmit={handlePaymentSubmitWithProcess}
                     handleCancelClick={() => paymentToggleForm()}
                     isLoading={paymentLoading}
                 />
             )}
             <LoadingOrError loading={subscriptionLoading} error={subscriptionError} t={t}/>
             <LoadingOrError loading={paymentLoading} error={paymentError} t={t} className="custom-loading-error"/>
+            <LoadingOrError loading={loadingProcess} error={errorProcess} t={t} className="custom-loading-error"/>
         </div>
     );
 };
