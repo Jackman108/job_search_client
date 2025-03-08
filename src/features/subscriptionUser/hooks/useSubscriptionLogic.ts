@@ -1,4 +1,4 @@
-import {useCallback, useEffect, useState} from 'react';
+import {useCallback, useEffect, useMemo, useState} from 'react';
 import {ACTION_TYPES} from "@config/actionTypes";
 import {useTableLogic} from "@hooks/useTableLogic";
 import {SubscriptionItem} from "@features/subscription/types/Subscription.types";
@@ -11,6 +11,7 @@ import {useProcessHandler} from "@features/subscriptionUser/hooks/useProcessHand
 
 export const useSubscriptionLogic = () => {
     const [selectedSubscription, setSelectedSubscription] = useState<SubscriptionItem | null>(null);
+    const [isPaymentSubmitted, setIsPaymentSubmitted] = useState(false);
 
     const subscriptionLogic = useTableLogic<SubscriptionItem>(
         subscriptionConfig, useFetchSubscription, ACTION_TYPES.SUBSCRIPTION
@@ -31,7 +32,7 @@ export const useSubscriptionLogic = () => {
         handleDelete,
         handleFormSubmit: handleSubscriptionSubmit,
         handleToggleForm: subscriptionToggleForm,
-        handleCancelClick,
+        handleCancelAction: cancelSubscription,
     } = subscriptionLogic;
 
     const {
@@ -41,6 +42,7 @@ export const useSubscriptionLogic = () => {
         showForm: paymentShowForm,
         handleToggleForm: paymentToggleForm,
         handleFormSubmit: handlePaymentSubmit,
+        handleCancelAction: cancelPayment
     } = paymentLogic;
 
     const {
@@ -49,20 +51,21 @@ export const useSubscriptionLogic = () => {
         errorProcess,
     } = useProcessHandler();
 
-
     const handlePaymentSubmitWithProcess = useCallback(async (formData: Partial<PaymentItem>) => {
         if (!formData) return;
         try {
             await handlePaymentSubmit(formData);
 
-
-            await handleProcess(formData as PaymentItem);
-
+            setIsPaymentSubmitted(true);
         } catch (error) {
             console.error('Ошибка при создании платежа:', error);
         }
-    }, [handlePaymentSubmit, handleProcess]);
+    }, [handlePaymentSubmit]);
 
+    const handleEditSubscription = useCallback((type: string, item: any) => {
+        handleEditClick(type, item);
+        subscriptionToggleForm();
+    }, [handleEditClick, subscriptionToggleForm]);
 
     const handlePaymentClick = useCallback((subscription: SubscriptionItem) => {
         setSelectedSubscription(subscription);
@@ -70,14 +73,24 @@ export const useSubscriptionLogic = () => {
     }, [paymentToggleForm]);
 
 
-    useEffect(() => {
-        if (subscriptionData && subscriptionData.length > 0 && !isEditing[ACTION_TYPES.SUBSCRIPTION]) {
-            const latestSubscription = subscriptionData[subscriptionData.length - 1];
-            setSelectedSubscription(latestSubscription);
-            paymentToggleForm();
-
+    const latestPayment = useMemo(() => {
+        if (paymentData && paymentData.length > 0) {
+            return paymentData[paymentData.length - 1];
         }
-    }, [subscriptionData, isEditing, paymentToggleForm, paymentData]);
+        return null;
+    }, [paymentData]);
+
+    useEffect(() => {
+        if (isPaymentSubmitted && latestPayment) {
+            handleProcess(latestPayment)
+                .then(() => {
+                    setIsPaymentSubmitted(false);
+                })
+                .catch((error) => {
+                    console.error('Ошибка при обработке платежа:', error);
+                });
+        }
+    }, [isPaymentSubmitted, latestPayment, handleProcess]);
 
     return {
         selectedSubscription,
@@ -87,18 +100,19 @@ export const useSubscriptionLogic = () => {
         subscriptionFormData,
         isEditing,
         subscriptionShowForm,
-        handleEditClick,
         handleDelete,
         handleSubscriptionSubmit,
         subscriptionToggleForm,
-        handleCancelClick,
+        handleEditSubscription,
+        handleCancelSubscription: cancelSubscription,
+        handleCancelPayment: cancelPayment,
         paymentData,
         paymentLoading,
         paymentError,
         paymentShowForm,
         paymentToggleForm,
         handlePaymentClick,
-        handlePaymentSubmitWithProcess,
+        handlePaymentSubmit: handlePaymentSubmitWithProcess,
         loadingProcess,
         errorProcess,
     };

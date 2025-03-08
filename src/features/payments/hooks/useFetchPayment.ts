@@ -3,7 +3,7 @@ import {useFetchByType} from "@hooks/useFetchByType";
 import {QueryConfigProps} from "@features/resume/types/InterfaceResume.types";
 
 const useFetchPayment = (config: QueryConfigProps['config']) => {
-    const {fetchedData, loading, error, saveItem, deleteItem} = useFetchByType(config);
+    const {fetchedData, loading, error, saveItem, deleteItem, loadData} = useFetchByType(config);
     const data = fetchedData?.payment as PaymentItem[] || [];
 
     return {
@@ -11,7 +11,8 @@ const useFetchPayment = (config: QueryConfigProps['config']) => {
         loading,
         error,
         saveItem,
-        deleteItem
+        deleteItem,
+        loadData
     };
 };
 

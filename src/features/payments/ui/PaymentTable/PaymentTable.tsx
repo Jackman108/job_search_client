@@ -25,7 +25,7 @@ const PaymentTable = () => {
         handleDelete,
         handleFormSubmit,
         handleToggleForm,
-        handleCancelClick,
+        handleCancelAction,
     } = useTableLogic<PaymentItem>(paymentConfig, useFetchPayment, ACTION_TYPES.PAYMENT);
 
     return (
@@ -41,10 +41,7 @@ const PaymentTable = () => {
                 <PaymentForm
                     initialData={formData}
                     onSubmit={handleFormSubmit}
-                    handleCancelClick={() => {
-                        handleCancelClick(ACTION_TYPES.PAYMENT);
-                        handleToggleForm();
-                    }}
+                    handleCancelClick={handleCancelAction}
                     isLoading={loading}
                 />
             )}

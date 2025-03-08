@@ -8,8 +8,8 @@ export const useTableLogic = <T extends { id?: string }>(
     fetchHook: (config: Record<string, any>) => any,
     actionType: string
 ) => {
-    const {data, loading, error, saveItem, deleteItem} = fetchHook(config);
-    const {formData, isEditing, handleEditClick, resetFormData, handleCancelClick} = useFormState<T>();
+    const {data, loading, error, saveItem, deleteItem, loadData} = fetchHook(config);
+    const {formData, isEditing, handleEditClick, handleCancelClick} = useFormState<T>();
     const {showForm, handleToggleForm} = useToggleFormState();
     const configKey = Object.keys(config)[0];
     const {t} = useTranslation(configKey);
@@ -24,6 +24,18 @@ export const useTableLogic = <T extends { id?: string }>(
         }
     }, [actionType, deleteItem, t, configKey]);
 
+
+    const handleCancelAction = useCallback(async () => {
+        try {
+            handleCancelClick(actionType);
+            handleToggleForm();
+        } catch (error) {
+            console.error(`Error deleting ${actionType}:`, error);
+        }
+
+    }, [actionType, handleCancelClick, handleToggleForm]);
+
+
     const handleFormSubmit = useCallback(async (formData: Partial<T>) => {
         try {
             await saveItem({
@@ -32,18 +44,19 @@ export const useTableLogic = <T extends { id?: string }>(
                 formData,
                 isEditing: isEditing[actionType],
             });
-            resetFormData();
-            handleCancelClick(actionType);
-            handleToggleForm();
+
+            await handleCancelAction();
         } catch (error) {
             console.error(`Error saving ${actionType}:`, error);
         }
-    }, [actionType, saveItem, isEditing, resetFormData, handleCancelClick, handleToggleForm]);
+    }, [actionType, saveItem, isEditing, handleCancelAction]);
 
     return {
         data,
+        saveItem,
         loading,
         error,
+        loadData,
         formData,
         isEditing,
         showForm,
@@ -51,6 +64,6 @@ export const useTableLogic = <T extends { id?: string }>(
         handleDelete,
         handleFormSubmit,
         handleToggleForm,
-        handleCancelClick,
+        handleCancelAction,
     };
 };

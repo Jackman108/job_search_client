@@ -7,7 +7,7 @@ export const paymentConfig: Record<string, ConfigItem> = {
         fields: {
             id: 'ID',
             user_id: 'User ID',
-            subscription_id: 'User ID',
+            subscription_id: 'Subscription ID',
             amount: 'Amount',
             payment_status: 'Payment Status',
             payment_method: 'Payment Method',
@@ -32,11 +32,17 @@ export const paymentSystemsConfig: Record<string, ConfigItem> = {
     webpay: {
         title: 'WebPay',
         apiEndpoint: '/payment/webpay',
-        fields: {}
+        fields: {
+            subscription_id: 'Subscription ID',
+            amount: 'Amount',
+        }
     },
     erip: {
         title: 'ERIP',
         apiEndpoint: '/payment/erip',
-        fields: {}
+        fields: {
+            subscription_id: 'Subscription ID',
+            amount: 'Amount',
+        }
     },
 };

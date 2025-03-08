@@ -8,6 +8,7 @@ import {
 } from '@features/resume/types/InterfaceResume.types';
 import useDataApi from '@api/useDataApi';
 import {ACTION_TYPES} from "@config/actionTypes";
+import {useCallback} from "react";
 
 const SPECIAL_TYPES = [ACTION_TYPES.SKILLS, ACTION_TYPES.EXPERIENCE, ACTION_TYPES.PAYMENT, ACTION_TYPES.SUBSCRIPTION] as const;
 
@@ -18,9 +19,9 @@ const getQueryKey = (config: FetchByTypeConfig['config']) => {
 export const useFetchByType = (config: FetchByTypeConfig['config']) => {
     const {request} = useDataApi();
 
-    const fetchData = async (endpoint: string) => {
+    const fetchData = useCallback(async (endpoint: string) => {
         return await request('get', endpoint);
-    };
+    }, [request]);
 
     const {data: fetchedData, isLoading: loading, error, refetch: loadData} = useQuery<FetchDataResponse>({
         queryKey: getQueryKey(config),

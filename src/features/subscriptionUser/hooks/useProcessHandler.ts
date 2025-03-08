@@ -4,6 +4,8 @@ import {useFetchByType} from '@hooks/useFetchByType';
 import {ACTION_TYPES} from '@config/actionTypes';
 import {paymentConfig, paymentSystemsConfig} from '@features/payments/config/paymentConfig';
 import {usePostByType} from "@features/subscriptionUser/hooks/usePostByType";
+import {mockWebPayResponse} from "@features/payments/config/mockWebPayResponse";
+import {WebPayResponse} from "@features/payments/types/WebPayResponse.types";
 
 export const useProcessHandler = () => {
     const navigate = useNavigate();
@@ -18,16 +20,22 @@ export const useProcessHandler = () => {
 
 
     const handleProcess = async (paymentData: PaymentItem) => {
-        if (!paymentData) return;
+        if (!paymentData || !paymentData.id) {
+            console.error('Payment data or payment ID is missing');
+            return;
+        }
 
         const paymentSystem = paymentData.payment_method as keyof typeof paymentSystemsConfig;
 
-        const handleProcessSuccess = async () => {
+        const handleProcessSuccess = async (response: WebPayResponse) => {
             try {
                 await updatePaymentStatus({
                     type: ACTION_TYPES.PAYMENT,
                     id: paymentData.id,
-                    formData: {payment_status: 'completed'},
+                    formData: {
+                        payment_status: 'completed',
+                        updated_at: response.invoice_date
+                    },
                     isEditing: true,
                 });
                 navigate('/payment/success');
@@ -53,12 +61,21 @@ export const useProcessHandler = () => {
         };
 
         try {
-            await processRequest({
-                type: paymentSystem,
-                formData: paymentData,
-                isEditing: false,
-            });
-            await handleProcessSuccess();
+            let response: WebPayResponse;
+            if (process.env.NODE_ENV === 'development') {
+                response = mockWebPayResponse;
+            } else {
+                response = await processRequest({
+                    type: paymentSystem,
+                    formData: paymentData,
+                    isEditing: false,
+                }) as WebPayResponse;
+            }
+            if (response.page === "success") {
+                await handleProcessSuccess(response);
+            } else {
+                await handleProcessFailure();
+            }
         } catch (error) {
             await handleProcessFailure();
         }

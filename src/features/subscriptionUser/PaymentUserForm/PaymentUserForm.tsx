@@ -1,11 +1,11 @@
-import React, {useEffect} from 'react';
+import React, {useCallback, useEffect} from 'react';
 import RenderSelect from "@ui/RenderSelect/RenderSelect";
 import Button from "@ui/Button/Button";
 import {useFormState} from "@features/resume/hooks/useFormState";
 import {useTranslation} from "react-i18next";
-import RenderInput from "@ui/RenderInput/RenderInput";
 import {PaymentFormProps, PaymentItem} from "@features/payments/types/Payment.types";
 import {paymentMethodOptions, paymentStatusOptions} from "@features/payments/config/paymentConfig";
+import RenderRow from "@ui/RenderRow/RenderRow";
 
 const PaymentUserForm: React.FC<PaymentFormProps> = ({initialData, onSubmit, handleCancelClick, isLoading}) => {
     const {formData, setFormData} = useFormState<Partial<PaymentItem>>();
@@ -20,10 +20,10 @@ const PaymentUserForm: React.FC<PaymentFormProps> = ({initialData, onSubmit, han
         }
     }, [initialData, setFormData]);
 
-    const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
+    const handleChange = useCallback((e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
         const {name, value} = e.target;
         setFormData(prev => ({...prev, [name]: value}));
-    };
+    }, [setFormData]);
 
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();
@@ -33,22 +33,7 @@ const PaymentUserForm: React.FC<PaymentFormProps> = ({initialData, onSubmit, han
 
     return (
         <form onSubmit={handleSubmit}>
-            <RenderInput
-                label={t('form.subscriptionId')}
-                name="subscription_id"
-                value={formData.subscription_id || ''}
-                onChange={handleChange}
-                type="text"
-                isLoading={isLoading}
-            />
-            <RenderInput
-                label={t('form.amount')}
-                name="amount"
-                value={formData.amount}
-                onChange={handleChange}
-                type="number"
-                isLoading={isLoading}
-            />
+            <RenderRow label={t('form.amount')} value={formData.amount}/>
             <RenderSelect
                 label={t('form.paymentMethod')}
                 options={paymentMethodOptions}

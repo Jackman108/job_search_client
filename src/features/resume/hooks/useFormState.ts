@@ -31,6 +31,5 @@ export const useFormState = <T extends Record<string, any>>(initialFormData: Par
         handleEditClick,
         handleCancelClick,
         handleCreateClick,
-        resetFormData,
     };
 };

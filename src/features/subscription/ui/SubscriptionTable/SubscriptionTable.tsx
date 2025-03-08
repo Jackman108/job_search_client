@@ -24,7 +24,7 @@ const SubscriptionTable = () => {
         handleDelete,
         handleFormSubmit,
         handleToggleForm,
-        handleCancelClick,
+        handleCancelAction,
     } = useTableLogic<SubscriptionItem>(subscriptionConfig, useFetchSubscription, ACTION_TYPES.SUBSCRIPTION);
 
     return (
@@ -40,10 +40,7 @@ const SubscriptionTable = () => {
                 <SubscriptionForm
                     initialData={formData}
                     onSubmit={handleFormSubmit}
-                    handleCancelClick={() => {
-                        handleCancelClick(ACTION_TYPES.SUBSCRIPTION);
-                        handleToggleForm();
-                    }}
+                    handleCancelClick={handleCancelAction}
                     isLoading={loading}
                 />
             )}

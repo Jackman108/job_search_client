@@ -21,20 +21,19 @@ const SubscriptionUserTable: FC = () => {
         subscriptionFormData,
         isEditing,
         subscriptionShowForm,
-        handleEditClick,
         handleDelete,
         handleSubscriptionSubmit,
         subscriptionToggleForm,
-        handleCancelClick,
+        handleEditSubscription,
+        handleCancelSubscription,
+        handleCancelPayment,
         paymentData,
         paymentLoading,
         paymentError,
         paymentShowForm,
-        paymentToggleForm,
         handlePaymentClick,
-        handlePaymentSubmitWithProcess,
-        loadingProcess,
-        errorProcess,
+        handlePaymentSubmit,
+
     } = useSubscriptionLogic();
 
 
@@ -45,20 +44,14 @@ const SubscriptionUserTable: FC = () => {
             <h1>{t('subscriptions.title')}</h1>
 
             {subscriptionData && subscriptionData.length > 0 ? (
-                <>
-                    <SubscriptionUserTableBody
-                        subscriptionData={subscriptionData}
-                        paymentData={paymentData}
-                        handleEditClick={(type, item) => {
-                            handleEditClick(type, item);
-                            subscriptionToggleForm();
-                        }}
-                        handleDelete={handleDelete}
-                        handlePaymentClick={handlePaymentClick}
-                    />
-                </>
+                <SubscriptionUserTableBody
+                    subscriptionData={subscriptionData}
+                    paymentData={paymentData}
+                    handleEditClick={handleEditSubscription}
+                    handleDelete={handleDelete}
+                    handlePaymentClick={handlePaymentClick}
+                />
             ) : (
-
                 <Button type="button" variant="primary" onClick={subscriptionToggleForm}>
                     {t('subscriptions.addSubscription')}
                 </Button>
@@ -68,28 +61,24 @@ const SubscriptionUserTable: FC = () => {
                 <SubscriptionUserForm
                     initialData={subscriptionFormData}
                     onSubmit={handleSubscriptionSubmit}
-                    handleCancelClick={() => {
-                        handleCancelClick(ACTION_TYPES.SUBSCRIPTION);
-                        subscriptionToggleForm();
-                    }}
+                    handleCancelClick={handleCancelSubscription}
                     isLoading={subscriptionLoading}
                     isEditing={isEditing[ACTION_TYPES.SUBSCRIPTION]}
                 />
             )}
-            {!paymentShowForm && selectedSubscription && (
+            {paymentShowForm && selectedSubscription && (
                 <PaymentUserForm
                     initialData={{
                         subscription_id: selectedSubscription.id,
                         amount: selectedSubscription.price,
                     }}
-                    onSubmit={handlePaymentSubmitWithProcess}
-                    handleCancelClick={() => paymentToggleForm()}
+                    onSubmit={handlePaymentSubmit}
+                    handleCancelClick={handleCancelPayment}
                     isLoading={paymentLoading}
                 />
             )}
             <LoadingOrError loading={subscriptionLoading} error={subscriptionError} t={t}/>
             <LoadingOrError loading={paymentLoading} error={paymentError} t={t} className="custom-loading-error"/>
-            <LoadingOrError loading={loadingProcess} error={errorProcess} t={t} className="custom-loading-error"/>
         </div>
     );
 };
