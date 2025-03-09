@@ -1,5 +1,5 @@
 import {UserProfile} from '@features/profile/types/InterfaceProfile.types';
-import useDataApi from '@api/useDataApi';
+import {useDataApi} from "@api";
 import {useMutation, useQuery, useQueryClient} from '@tanstack/react-query';
 import {useCallback} from "react";
 

@@ -1,13 +1,10 @@
 import React, {FC} from "react";
-import {PanelProps} from "@shared/types/Component.types";
+import {PanelProps} from "@type";
 import styles from "../../vacancies/ui/SearchForm/SearchForm.module.css";
-import Button from "@ui/Button/Button";
-import RenderInput from "@ui/RenderInput/RenderInput";
+import {Button, FormContainer, ManagementSection, RenderInput} from "@ui";
 import {FORM_CONFIG} from "../../vacancies/config/searchConfig";
-import ManagementSection from "@ui/ManagementSection/ManagementSection";
-import FormContainer from "@ui/FormContainer/FormContainer";
 import useFeedbackLogic from "../hooks/useFeedbackLogic";
-import {FORM_BUTTONS} from "@config/defaultConfig";
+import {FORM_BUTTONS} from "@config";
 
 const FeedbackForm: FC<PanelProps> = ({onClose}) => {
     const {

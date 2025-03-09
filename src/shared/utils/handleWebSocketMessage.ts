@@ -1,6 +1,4 @@
-// utils/websocketMessageHandler.ts
-
-import {WS_ERRORS, WS_EVENTS} from "@config/websocketConfig";
+import {WS_ERRORS, WS_EVENTS} from "@config";
 
 export const handleWebSocketMessage = (data: string, loadData: () => void, setAlert: (message: string) => void) => {
     const handleIdMessage = (data: string, prefix: string, loadData: () => void) => {

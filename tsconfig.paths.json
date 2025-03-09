@@ -7,11 +7,12 @@
       "@features/*": ["features/*"],
       "@shared/*": ["shared/*"],
       "@widgets/*": ["widgets/*"],
-      "@api/*": ["shared/api/*"],
-      "@ui/*": ["shared/ui/*"],
+      "@api": ["shared/api/index.ts"],
+      "@ui": ["shared/ui/index.ts"],
+      "@type": ["shared/types/index.ts"],
       "@hooks/*": ["shared/hooks/*"],
-      "@utils/*": ["shared/utils/*"],
-      "@config/*": ["shared/config/*"]
+      "@utils": ["shared/utils/index.ts"],
+      "@config": ["shared/config/index.ts"]
     }
   }
 }

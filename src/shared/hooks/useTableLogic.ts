@@ -1,5 +1,5 @@
 import {useCallback} from 'react';
-import {useFormState} from '@features/resume/hooks/useFormState';
+import {useFormState} from '@hooks/forms/useFormState';
 import {useToggleFormState} from '@hooks/forms/useToggleFormState';
 import {useTranslation} from 'react-i18next';
 

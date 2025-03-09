@@ -1,5 +1,5 @@
 import {ChangeEvent} from 'react';
-import {useFormState} from "./useFormState";
+import {useFormState} from "@hooks/forms/useFormState";
 
 export const useResumeHandlersById = () => {
     const {

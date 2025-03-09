@@ -7,7 +7,7 @@ import paymentEn from '@shared/locales/en/payment.json';
 
 export const defaultNS = 'subscriptions';
 
-const initializeI18n = async () => {
+export const initializeI18n = async () => {
     await i18next.use(initReactI18next).init({
         lng: 'ru',
         fallbackLng: 'ru',

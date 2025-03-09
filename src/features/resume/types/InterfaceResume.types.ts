@@ -1,19 +1,5 @@
 import {ChangeEvent, FormEvent} from "react";
 
-export interface FieldConfig {
-    [key: string]: string;
-}
-
-export interface ConfigItem {
-    title: string;
-    apiEndpoint: string;
-    fields: FieldConfig;
-}
-
-export interface QueryConfigProps {
-    config: Record<string, ConfigItem>
-}
-
 export interface ResumeArrayProps {
     config: Record<string, any>;
     type: string;
@@ -27,6 +13,7 @@ export interface ResumeFieldProps {
     formData: Record<string, any>;
     fieldType: 'text' | 'checkbox' | 'radio';
     options?: string[];
+    error?: string;
 }
 
 export interface ResumeViewProps {
@@ -46,25 +33,4 @@ export interface ResumeChangeProps {
     onCancel: () => void;
     handleSubmit: (e: FormEvent<HTMLFormElement>, type: string) => Promise<void>;
     handleInputChange: (e: ChangeEvent<HTMLInputElement>, key: string) => void;
-}
-
-export interface FetchByTypeConfig {
-    config: ConfigItem | Record<string, ConfigItem>;
-    type?: string;
-}
-
-export interface FetchDataResponse {
-    [key: string]: any;
-}
-
-export interface DeleteItemMutationParams {
-    type: string;
-    id?: number | string;
-}
-
-export interface SaveItemMutationParams {
-    type: string;
-    id?: number | string;
-    formData: any;
-    isEditing: boolean;
 }

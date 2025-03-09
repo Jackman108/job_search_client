@@ -1,4 +1,4 @@
-import {ButtonConfig} from '@shared/types/Component.types';
+import {ButtonConfig} from "@type";
 import Profile from '@features/profile/ui/Profile';
 import Resume from '@features/resume/ui/ResumeButton/ResumeButton';
 import SearchForm from '@features/vacancies/ui/SearchForm/SearchForm';

@@ -95,6 +95,5 @@ export const FORM_CONFIG: FormConfig = {
     },
 } as const;
 
-export type FormParams = keyof typeof FORM_PARAMS;
 export type FormLabelKeys = keyof typeof FORM_LABELS;
 export type FormParamKeys = keyof typeof FORM_PARAMS;

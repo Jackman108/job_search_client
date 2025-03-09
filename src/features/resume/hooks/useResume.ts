@@ -1,7 +1,7 @@
 import {FormEvent} from 'react';
-import {QueryConfigProps} from '../types/InterfaceResume.types';
 import {useResumeHandlersByType} from "./useResumeHandlersByType";
-import {useFetchByType} from "@hooks/useFetchByType";
+import {useFetchByType} from "@api";
+import {QueryConfigProps} from "@type";
 
 export const useResume = (config: QueryConfigProps['config']) => {
     const {
@@ -21,7 +21,7 @@ export const useResume = (config: QueryConfigProps['config']) => {
         handleCreateClick,
         handleCancelClick,
         prepareDataForSubmit
-    } = useResumeHandlersByType();
+    } = useResumeHandlersByType(fetchedData);
 
 
     const handleSubmit = async (e: FormEvent<HTMLFormElement>, type: string) => {

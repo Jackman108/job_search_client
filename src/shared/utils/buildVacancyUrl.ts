@@ -1,4 +1,3 @@
-// Функция для формирования URL на основе параметров
 export function buildVacancyUrl(params: {
     text?: string;
     schedule?: string;

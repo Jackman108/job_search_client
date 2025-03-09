@@ -1,7 +1,7 @@
 import {FC} from 'react';
-import Button from '@ui/Button/Button';
+import {Button} from '@ui';
 import {TABLE_VACANCIES} from "@features/vacancies/config/vacansiesConfig";
-import {BUTTON_SYMBOL} from "@config/defaultConfig";
+import {BUTTON_SYMBOL} from "@config";
 import styles from './VacancyRow.module.css';
 import {VacancyRowProps} from "@features/vacancies/types/VacancyRow.props";
 

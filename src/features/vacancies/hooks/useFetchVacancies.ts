@@ -1,7 +1,7 @@
 import {useMutation, useQuery, useQueryClient} from '@tanstack/react-query';
 import {Vacancy} from '../types/Vacancies.types';
-import {formatAndSortData, formatDate} from '@utils/formatUtils';
-import useDataApi from "@api/useDataApi";
+import {formatAndSortData, formatDate} from '@utils';
+import {useDataApi} from "@api";
 
 const formatVacancy = (vacancy: Vacancy): Vacancy => ({
     ...vacancy,

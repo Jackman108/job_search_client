@@ -1,9 +1,9 @@
 import {FC} from 'react';
 import styles from './SearchForm.module.css';
-import Button from '@ui/Button/Button';
-import RenderInput from '@ui/RenderInput/RenderInput';
-import RenderSelect from '@ui/RenderSelect/RenderSelect';
-import RenderTextarea from '@ui/RenderTextarea/RenderTextarea';
+import {PanelProps} from "@type";
+import {FORM_BUTTONS} from "@config";
+import useSearchFormLogic from '../../hooks/useSearchFormLogic';
+import {Button, FormContainer, ManagementSection, RenderInput, RenderSelect, RenderTextarea} from '@ui';
 import {
     FORM_CONFIG,
     FORM_LABELS,
@@ -12,11 +12,7 @@ import {
     FormLabelKeys,
     FormParamKeys,
 } from '../../config/searchConfig';
-import useSearchFormLogic from '../../hooks/useSearchFormLogic';
-import ManagementSection from "@ui/ManagementSection/ManagementSection";
-import FormContainer from "@ui/FormContainer/FormContainer";
-import {PanelProps} from "@shared/types/Component.types";
-import {FORM_BUTTONS} from "@config/defaultConfig";
+
 
 const SearchForm: FC<PanelProps> = ({onClose}) => {
     const {

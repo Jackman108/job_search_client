@@ -1,7 +1,7 @@
 import {FC} from 'react';
-import Button from '@ui/Button/Button';
+import {Button} from '@ui';
 import styles from '@shared/ui/ManagementSection/ManagementSection.module.css';
-import {ManagementSectionProps} from "@shared/types/ManagementSection.props";
+import {ManagementSectionProps} from "@type";
 
 const ManagementSection: FC<ManagementSectionProps> = ({
                                                            title,

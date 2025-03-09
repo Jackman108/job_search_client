@@ -8,7 +8,7 @@ import ProfileChange from '@features/profile/ui/ProfileChange/ProfileChange';
 import ProfileView from '@features/profile/ui/ProfileView/ProfileView';
 import {USER_TEXTS} from "@features/profile/config/profileConfigs";
 import Auth from "@features/auth/ui/Auth";
-import {PanelProps} from "@shared/types/Component.types";
+import {PanelProps} from "@type";
 
 
 const Profile: FC<PanelProps> = () => {

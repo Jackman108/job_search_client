@@ -1,11 +1,10 @@
 import {Link} from 'react-router-dom';
-import Button from '@ui/Button/Button';
+import {Button, UnauthorizedMessage} from '@ui';
 import {resumeConfig} from '../config/resumeConfig';
 import {useResume} from '../hooks/useResume';
 import styles from './Resume.module.css';
 import ResumeChange from './ResumeItems/ResumeChange';
 import ResumeView from './ResumeItems/ResumeView';
-import UnauthorizedMessage from '@ui/UnauthorizedMessage/UnauthorizedMessage';
 import {useAuth} from "@app/providers/auth/useAuthContext";
 
 const Resume = () => {

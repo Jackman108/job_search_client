@@ -1,8 +1,8 @@
 {
   "payments": {
     "title": "Payments",
-    "addPayment": "Add Payment",
-    "hideForm": "Hide Form",
+    "addPayment": "Add payment",
+    "hideForm": "Hide form",
     "noData": "No payment data",
     "actions": {
       "edit": "Edit",
@@ -12,19 +12,21 @@
   },
   "tableHeaders": {
     "id": "ID",
-    "userId": "User ID",
+    "subscriptionId": "Subscription ID",
     "amount": "Amount",
-    "paymentStatus": "Payment Status",
-    "paymentMethod": "Payment Method",
-    "createdAt": "Created At",
-    "updatedAt": "Updated At",
+    "paymentStatus": "Payment status",
+    "paymentMethod": "Payment method",
+    "createdAt": "Created at",
+    "updatedAt": "Updated at",
     "actions": "Actions"
   },
   "form": {
     "userId": "User ID",
+    "subscriptionId": "Subscription ID",
     "amount": "Amount",
-    "paymentStatus": "Payment Status",
-    "paymentMethod": "Payment Method",
+    "paymentStatus": "Payment status",
+    "paymentMethod": "Payment method",
+    "pay": "Pay",
     "save": "Save",
     "create": "Create",
     "cancel": "Cancel"

@@ -1,5 +1,5 @@
 import axios, {AxiosResponse} from 'axios';
-import {AUTH_URL} from '@config/serverConfig';
+import {AUTH_URL} from '@config';
 import {useAuth} from '@app/providers/auth/useAuthContext';
 
 const axiosAuthInstance = axios.create({
@@ -7,7 +7,7 @@ const axiosAuthInstance = axios.create({
     withCredentials: true,
 });
 
-const useAuthApi = () => {
+export const useAuthApi = () => {
     const {token} = useAuth();
 
     const request = async <T = any>(
@@ -27,5 +27,3 @@ const useAuthApi = () => {
 
     return {request};
 };
-
-export default useAuthApi;

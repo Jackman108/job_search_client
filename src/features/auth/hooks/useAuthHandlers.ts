@@ -1,8 +1,7 @@
 import {useCallback, useState} from 'react';
 import {useAuth} from '@app/providers/auth/useAuthContext';
 import useFetchAuth from './useFetchAuth';
-import {validateEmail, validatePassword} from '@utils/validateUtils';
-import {getErrorValidate} from '@utils/errorHandler';
+import {getErrorValidate, validateEmail, validatePassword} from '@utils';
 
 export const useAuthHandlers = () => {
     const {login, register, logout, isLoading: authLoading, error: authError} = useFetchAuth();

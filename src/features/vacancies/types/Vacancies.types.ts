@@ -1,5 +1,5 @@
 import {Dispatch, SetStateAction} from "react";
-import {Errors} from "@shared/types/Base.types";
+import {Errors} from "@type";
 
 export interface Vacancy {
     id: number;

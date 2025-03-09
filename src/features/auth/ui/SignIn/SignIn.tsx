@@ -1,9 +1,6 @@
-// src/components/SignIn/SignIn.tsx
-
 import React, {ChangeEvent, useState} from 'react';
 import {SignInProps} from '../../types/Auth.props';
-import Button from '@ui/Button/Button';
-import RenderInput from '@ui/RenderInput/RenderInput';
+import {Button, RenderInput} from '@ui';
 import {FORM_TEXTS} from "@features/vacancies/config/searchConfig";
 import {BUTTON_TEXTS} from "@features/profile/config/profileConfigs";
 

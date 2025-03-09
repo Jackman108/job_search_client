@@ -1,6 +1,6 @@
 import {FC} from 'react';
 import styles from './RenderSelect.module.css';
-import {RenderSelectProps} from "@shared/types/Form.types";
+import {RenderSelectProps} from "@type";
 
 const RenderSelect: FC<RenderSelectProps> = ({label, options, value, name, onChange, isLoading, required}) => (
     <div className={styles.formGroup}>

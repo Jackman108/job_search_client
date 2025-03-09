@@ -1,38 +1,50 @@
 {
   "subscriptions": {
     "title": "Subscriptions",
-    "addSubscription": "Add Subscription",
-    "hideForm": "Hide Form",
+    "addSubscription": "Add subscription",
+    "extendSubscription": "Extend subscription",
+    "success": "Subscription successfully updated!",
+    "error": "Error updating subscription.",
+    "hideForm": "Hide form",
     "noData": "No subscription data",
     "actions": {
+      "pay": "Pay",
       "edit": "Edit",
       "delete": "Delete",
-      "deleteConfirm": "Are you sure you want to remove this subscription? Redux needs to be replaced with something more current"
+      "deleteConfirm": "Are you sure you want to delete this subscription?"
     }
   },
   "tableHeaders": {
     "id": "ID",
     "userId": "User ID",
-    "subscriptionType": "Subscription Type",
+    "subscriptionType": "Subscription type",
     "price": "Price",
-    "startDate": "Start Date",
-    "endDate": "End Date",
-    "createdAt": "Created At",
-    "updatedAt": "Updated At",
+    "startDate": "Start date",
+    "endDate": "End date",
+    "paymentStatus": "Payment status",
+    "createdAt": "Created at",
+    "updatedAt": "Updated at",
     "actions": "Actions"
+  },
+  "form": {
+    "userId": "User ID",
+    "subscriptionType": "Subscription type",
+    "price": "Price",
+    "startDate": "Start date",
+    "endDate": "End date",
+    "save": "Save",
+    "create": "Create",
+    "cancel": "Cancel",
+    "extend": "Extend",
+    "update": "Update"
   },
   "common": {
     "loading": "Loading...",
     "error": "Error"
   },
-  "form": {
-    "userId": "User ID",
-    "subscriptionType": "Subscription Type",
-    "price": "Price",
-    "startDate": "Start Date",
-    "endDate": "End Date",
-    "save": "Save",
-    "create": "Create",
-    "cancel": "Cancel"
+  "variants": {
+    "day": "Day",
+    "weekly": "Week",
+    "monthly": "Month"
   }
 }

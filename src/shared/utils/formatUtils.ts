@@ -1,4 +1,4 @@
-import {FormattedDate} from "@shared/types/Base.types";
+import {FormattedDate} from "@type";
 
 export const formatAndSortData = <T>(data: T[], formatFn: (item: T) => T, sortKey: keyof T): T[] => {
     return data.map(formatFn).sort((a, b) => new Date(b[sortKey] as any).getTime() - new Date(a[sortKey] as any).getTime());

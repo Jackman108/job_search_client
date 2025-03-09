@@ -1,9 +1,8 @@
 import React, {FC} from "react";
 import styles from "@shared/ui/FormContainer/FormContainer.module.css";
-import Button from "@ui/Button/Button";
-import UnauthorizedMessage from "@ui/UnauthorizedMessage/UnauthorizedMessage";
-import {FORM_BUTTONS} from "@config/defaultConfig";
-import {FormContainerProps} from "@shared/types/FormContainer.props";
+import {Button, UnauthorizedMessage} from "@ui";
+import {FORM_BUTTONS} from "@config";
+import {FormContainerProps} from "@type";
 
 const FormContainer: FC<FormContainerProps> = ({token, onClose, children}) => {
     if (!token) {

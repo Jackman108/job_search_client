@@ -1,9 +1,6 @@
-// src/components/User/ProfileInfo.tsx
 import React from 'react';
 import {UserInfoProps} from '../../types/InterfaceProfile.types';
-import Avatar from '@ui/Avatar/Avatar';
-import Button from '@ui/Button/Button';
-import RenderRow from '@ui/RenderRow/RenderRow';
+import {Avatar, Button, RenderRow} from '@ui';
 import styles from './ProfileView.module.css';
 import {USER_TEXTS, BUTTON_TEXTS} from "@features/profile/config/profileConfigs";
 

@@ -1,5 +1,3 @@
-// hooks/useComponentToggle.ts
-
 import { useState, KeyboardEvent} from 'react';
 
 export const useComponentToggle = (initialState: boolean = false) => {

@@ -1,6 +1,6 @@
 import {FC, ReactNode} from 'react';
 import styles from './Layout.module.css';
-import InteractiveButton from '@ui/InteractiveButton/InteractiveButton';
+import {InteractiveButton} from '@ui';
 import {layoutConfig} from '../config/layoutConfig';
 
 const Layout: FC<{ children: ReactNode }> = ({children}) => {

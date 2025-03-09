@@ -1,5 +1,5 @@
-import {ERROR_MESSAGES} from "@config/validateConfig";
-import {Errors, ValidationEmail, ValidationPassword, ValidationSearchUrl} from "@shared/types/Base.types";
+import {ERROR_MESSAGES} from "@config";
+import {Errors, ValidationEmail, ValidationPassword, ValidationSearchUrl} from "@type";
 
 const EMAIL_REGEX = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 const PASSWORD_MIN_LENGTH = 6;

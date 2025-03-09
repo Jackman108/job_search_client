@@ -1,10 +1,8 @@
-// src/hooks/useFetchAuth.ts
 import {useMutation, useQueryClient} from '@tanstack/react-query';
 import {AuthResponse, RegisterResponse} from '@features/auth/types/Auth.props';
 import {useAuth} from '@app/providers/auth/useAuthContext';
-import {decodeToken, isTokenExpired} from '@utils/tokenUtils';
-import {handleAuthError} from '@utils/errorHandler';
-import useAuthApi from '@api/useAuthApi';
+import {decodeToken, handleAuthError, isTokenExpired} from '@utils';
+import {useAuthApi} from "@api";
 import {AxiosResponse} from "axios";
 
 const useFetchAuth = () => {

@@ -2,9 +2,8 @@ import React, {FC} from 'react';
 import {useNavigate} from 'react-router-dom';
 import {useAuth} from '@app/providers/auth/useAuthContext';
 import styles from './ResumeButton.module.css';
-import FormContainer from "@ui/FormContainer/FormContainer";
-import Button from '@ui/Button/Button';
-import {PanelProps} from "@shared/types/Component.types";
+import {Button, FormContainer} from "@ui";
+import {PanelProps} from "@type";
 
 const ResumeButton: FC<PanelProps> = ({onClose}) => {
     const {token} = useAuth();

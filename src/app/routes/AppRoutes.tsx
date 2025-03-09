@@ -1,30 +1,19 @@
 import {Route, Routes} from 'react-router-dom';
-import FeedbackTable from '@features/feedback/ui/FeedbackTable';
-import Resume from '@features/resume/ui/Resume';
-import PaymentTable from '@features/payments/ui/PaymentTable/PaymentTable';
-import SubscriptionTable from '@features/subscription/ui/SubscriptionTable/SubscriptionTable';
-import FeedbackProvider from '../providers/feedback/FeedbackProvider';
-import VacancyProvider from '../providers/vacancy/VacancyProvider';
-import VacanciesTable from "@features/vacancies/ui/VacanciesTable/VacanciesTable";
+import FeedbackProvider from '@app/providers/feedback/FeedbackProvider';
+import VacancyProvider from '@app//providers/vacancy/VacancyProvider';
 import {I18nextProvider} from "react-i18next";
-import i18n from "@config/i18n";
-import SubscriptionUserTable from "@features/subscriptionUser/SubscriptionUserTable/SubscriptionUserTable";
-import PaymentError from "@ui/PaymentError/PaymentError";
-import PaymentSuccess from "@ui/PaymentSuccess/PaymentSuccess";
+import {i18next} from "@config";
+import {routes} from "@app/routes/pathConfig";
+
 
 export const AppRoutes = () => (
     <VacancyProvider>
         <FeedbackProvider>
-            <I18nextProvider i18n={i18n}>
+            <I18nextProvider i18n={i18next}>
                 <Routes>
-                    <Route path="/" element={<VacanciesTable/>}/>
-                    <Route path="/feedback" element={<FeedbackTable/>}/>
-                    <Route path="/resume" element={<Resume/>}/>
-                    <Route path="/payment" element={<PaymentTable/>}/>
-                    <Route path="/subscriptions" element={<SubscriptionTable/>}/>
-                    <Route path="/subscription" element={<SubscriptionUserTable/>}/>
-                    <Route path="/payment/success" element={<PaymentSuccess/>}/>
-                    <Route path="/payment/error" element={<PaymentError/>}/>
+                    {routes.map((route, index) => (
+                        <Route key={index} path={route.path} element={route.element}/>
+                    ))}
                 </Routes>
             </I18nextProvider>
         </FeedbackProvider>

@@ -1,4 +1,4 @@
-import {ConfigItem} from "../../resume/types/InterfaceResume.types";
+import {ConfigItem} from "@type";
 
 export const paymentConfig: Record<string, ConfigItem> = {
     payment: {

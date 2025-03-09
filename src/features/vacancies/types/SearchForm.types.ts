@@ -1,6 +1,5 @@
 import {Dispatch, SetStateAction} from 'react';
-import {Errors} from "@shared/types/Base.types";
-import {FormOption} from "@shared/types/Form.types";
+import {FormOption, Errors} from "@type";
 
 
 export interface FormValues {

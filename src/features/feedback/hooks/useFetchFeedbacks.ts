@@ -1,7 +1,7 @@
 import {Feedback} from '../types/Feedback.types';
-import {formatAndSortData, formatDate} from '@utils/formatUtils';
+import {formatAndSortData, formatDate} from '@utils';
 import {useMutation, useQuery, useQueryClient} from "@tanstack/react-query";
-import useDataApi from "@api/useDataApi";
+import {useDataApi} from "@api";
 
 const formatFeedback = (feedback: Feedback): Feedback => ({
     ...feedback,

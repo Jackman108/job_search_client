@@ -1,4 +1,4 @@
-import {ConfigItem} from "@features/resume/types/InterfaceResume.types";
+import {ConfigItem} from "@type";
 
 export const subscriptionConfig: Record<string, ConfigItem> = {
     subscription: {

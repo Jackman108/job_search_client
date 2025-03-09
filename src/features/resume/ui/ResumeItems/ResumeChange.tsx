@@ -1,9 +1,8 @@
-// src/components/Resume/ResumeChange.tsx
 import React from 'react';
 import {ResumeChangeProps} from '../../types/InterfaceResume.types';
-import Button from '@ui/Button/Button';
+import {Button} from '@ui';
 import {businessTripReadiness, employmentTypes, travelTimes, workSchedules} from '../../config/resumeLinesConfig';
-import styles from '../Resume.module.css';
+import styles from './ResumeChange.module.css';
 import ResumeField from './ResumeField';
 
 const ResumeChange: React.FC<ResumeChangeProps> = ({
@@ -28,10 +27,10 @@ const ResumeChange: React.FC<ResumeChangeProps> = ({
                     key === 'employment_type' || key === 'work_schedule' ? 'checkbox' :
                         key === 'travel_time' || key === 'business_trip_readiness' ? 'radio' : 'text'
                 }
-                options={key === 'employment_type' ?
-                    employmentTypes : key === 'work_schedule' ?
-                        workSchedules : key === 'travel_time' ?
-                            travelTimes : businessTripReadiness
+                options={
+                    key === 'employment_type' ? employmentTypes :
+                        key === 'work_schedule' ? workSchedules :
+                            key === 'travel_time' ? travelTimes : businessTripReadiness
                 }
             />
         ))}

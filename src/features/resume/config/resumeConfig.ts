@@ -1,4 +1,4 @@
-import {ConfigItem} from "../types/InterfaceResume.types";
+import {ConfigItem} from "@type";
 
 export const resumeConfig: Record<string, ConfigItem> = {
     resume: {

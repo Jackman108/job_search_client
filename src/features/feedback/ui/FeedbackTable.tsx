@@ -1,11 +1,10 @@
 import {FC} from 'react';
-import Button from '@ui/Button/Button';
+import {Button, UnauthorizedMessage} from '@ui';
 import {FEEDBACK_HEADER} from '../config/feedbackConfigs';
 import styles from '../../vacancies/ui/VacanciesTable/VacanciesTable.module.css';
-import UnauthorizedMessage from '@ui/UnauthorizedMessage/UnauthorizedMessage';
 import {useFeedbackContext} from "@app/providers/feedback/useFeedbackContext";
 import {useSortedData} from "@hooks/useSortedData";
-import {BUTTON_SYMBOL} from "@config/defaultConfig";
+import {BUTTON_SYMBOL} from "@config";
 
 const FeedbackTable: FC = () => {
     const {feedbacks, loading, error, deleteFeedback} = useFeedbackContext();

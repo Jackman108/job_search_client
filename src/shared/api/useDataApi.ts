@@ -1,6 +1,6 @@
 import axios from 'axios';
 import {useCallback} from 'react';
-import {API_URL} from '@config/serverConfig';
+import {API_URL} from '@config';
 import {useAuth} from '@app/providers/auth/useAuthContext';
 
 const axiosInstance = axios.create({
@@ -8,7 +8,7 @@ const axiosInstance = axios.create({
     withCredentials: true,
 });
 
-const useDataApi = () => {
+export const useDataApi = () => {
     const {token} = useAuth();
 
     const request = useCallback(
@@ -29,5 +29,3 @@ const useDataApi = () => {
 
     return {request};
 };
-
-export default useDataApi;

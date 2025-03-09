@@ -1,5 +1,5 @@
 import { FC } from 'react';
-import { ImageUploaderProps } from '@shared/types/Component.types';
+import { ImageUploaderProps } from "@type";
 import styles from './ImageUploader.module.css';
 
 const ImageUploader: FC<ImageUploaderProps> = ({ onChange }) => (

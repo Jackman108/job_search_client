@@ -1,6 +1,6 @@
 import {PaymentItem} from '../types/Payment.types';
-import {useFetchByType} from "@hooks/useFetchByType";
-import {QueryConfigProps} from "@features/resume/types/InterfaceResume.types";
+import {useFetchByType} from "@api";
+import {QueryConfigProps} from "@type";
 
 const useFetchPayment = (config: QueryConfigProps['config']) => {
     const {fetchedData, loading, error, saveItem, deleteItem, loadData} = useFetchByType(config);

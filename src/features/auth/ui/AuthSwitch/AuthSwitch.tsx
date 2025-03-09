@@ -1,8 +1,8 @@
 import React, {FC} from "react";
 import styles from './AuthSwitch.module.css';
-import Button from "@ui/Button/Button";
+import {Button} from "@ui";
 import {AuthSwitchProps} from "@features/auth/types/Auth.props";
-import {FORM_BUTTONS} from "@config/defaultConfig";
+import {FORM_BUTTONS} from "@config";
 
 const AuthSwitch: FC<AuthSwitchProps> = ({isSign, setIsSign}) => (
     <div className={styles.tabContainer}>

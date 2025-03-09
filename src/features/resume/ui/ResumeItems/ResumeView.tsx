@@ -1,12 +1,10 @@
-// src/components/Resume/ResumeView.tsx
 import {FC} from 'react';
 import {ResumeViewProps} from '../../types/InterfaceResume.types';
-import Button from '@ui/Button/Button';
-import RenderRow from '@ui/RenderRow/RenderRow';
-import {formatValue} from '@utils/formatValue';
+import {Button, RenderRow} from '@ui';
+import {formatValue} from '@utils';
 import styles from '../Resume.module.css';
 import ResumeArray from '../ResumeArray/ResumeArray';
-import {ACTION_TYPES} from "@config/actionTypes";
+import {ACTION_TYPES} from "@config";
 
 const ResumeView: FC<ResumeViewProps> = ({type, fields, data, config, onEditClick, onDeleteClick, onCreateClick}) => (
     <div className={styles.dataContainer}>
