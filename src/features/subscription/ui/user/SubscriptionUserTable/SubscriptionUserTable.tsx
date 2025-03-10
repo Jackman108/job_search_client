@@ -1,7 +1,6 @@
 import React, {FC} from 'react';
 import {Link} from 'react-router-dom';
 import styles from './SubscriptionUserTable.module.css';
-import {ACTION_TYPES} from "@config";
 import {Button, LanguageSwitcher, LoadingOrError} from "@ui";
 import {useTranslation} from "react-i18next";
 import SubscriptionUserForm from "@features/subscription/ui/user/SubscriptionUserForm/SubscriptionUserForm";
@@ -14,68 +13,71 @@ const SubscriptionUserTable: FC = () => {
     const {t} = useTranslation('subscriptions');
     const {
         selectedSubscription,
-        subscriptionData,
-        subscriptionLoading,
-        subscriptionError,
-        subscriptionFormData,
-        isEditing,
-        subscriptionShowForm,
-        handleDelete,
-        handleSubscriptionSubmit,
-        subscriptionToggleForm,
+        subscribeData,
+        subscribeLoading,
+        subscribeError,
+        subscribeFormData,
+        subscribeIsEditing,
+        subscribeShowForm,
+        subscribeDelete,
+        subscribeToggleForm,
         handleEditSubscription,
-        handleCancelSubscription,
-        handleCancelPayment,
+        subscribeCancel,
+        paymentCancel,
+        handleSubscriptionSubmit,
         paymentData,
         paymentLoading,
         paymentError,
+        paymentFormData,
         paymentShowForm,
         handlePaymentClick,
-        handlePaymentSubmit,
+        paymentSubmit,
     } = useSubscriptionLogic();
 
 
     return (
         <div className={styles.containerSubscription}>
             <LanguageSwitcher/>
-            <Link to="/" className="home-button">🏠</Link>
-            <h1>{t('subscriptions.title')}</h1>
+            <Link to="/" className={styles.homeButton}>🏠</Link>
+            <h1 className={styles.title}>{t('subscriptions.title')}</h1>
 
-            {subscriptionData && subscriptionData.length > 0 ? (
+            {subscribeData && subscribeData.length > 0 ? (
                 <SubscriptionUserTableBody
-                    subscriptionData={subscriptionData}
+                    subscriptionData={subscribeData}
                     paymentData={paymentData}
                     handleEditClick={handleEditSubscription}
-                    handleDelete={handleDelete}
+                    handleDelete={subscribeDelete}
                     handlePaymentClick={handlePaymentClick}
                 />
             ) : (
-                <Button type="button" variant="primary" onClick={subscriptionToggleForm}>
+                <Button type="button" variant="primary" onClick={subscribeToggleForm}>
                     {t('subscriptions.addSubscription')}
                 </Button>
             )}
 
-            {(subscriptionShowForm || isEditing[ACTION_TYPES.SUBSCRIPTION]) && (
+            {(subscribeShowForm || subscribeIsEditing.subscription) && (
                 <SubscriptionUserForm
-                    initialData={subscriptionFormData}
+                    initialData={subscribeFormData}
                     onSubmit={handleSubscriptionSubmit}
-                    handleCancelClick={handleCancelSubscription}
-                    isLoading={subscriptionLoading}
-                    isEditing={isEditing[ACTION_TYPES.SUBSCRIPTION]}
+                    handleCancelClick={subscribeCancel}
+                    isLoading={subscribeLoading}
+                    isEditing={subscribeIsEditing.subscription}
                 />
             )}
-            {paymentShowForm && selectedSubscription && (
+            {subscribeData && paymentShowForm && selectedSubscription && (
                 <PaymentUserForm
-                    initialData={{
-                        subscription_id: selectedSubscription.id,
-                        amount: selectedSubscription.price,
-                    }}
-                    onSubmit={handlePaymentSubmit}
-                    handleCancelClick={handleCancelPayment}
+                    initialData={
+                        paymentFormData ||
+                        {
+                            subscription_id: selectedSubscription.id,
+                            amount: selectedSubscription.price,
+                        }}
+                    onSubmit={paymentSubmit}
+                    handleCancelClick={paymentCancel}
                     isLoading={paymentLoading}
                 />
             )}
-            <LoadingOrError loading={subscriptionLoading} error={subscriptionError} t={t}/>
+            <LoadingOrError loading={subscribeLoading} error={subscribeError} t={t}/>
             <LoadingOrError loading={paymentLoading} error={paymentError} t={t} className="custom-loading-error"/>
         </div>
     );

@@ -1,4 +1,4 @@
-import useSubmitRequest from "@hooks/forms/useSubmitRequest";
+import {useSubmitRequest} from "@hooks";
 import {HandleFeedbackParams} from "@features/feedback/types/Feedback.types";
 
 const useFeedbackSubmit = () => {

@@ -2,7 +2,7 @@ import {useCallback, useMemo, useState} from 'react';
 import {SortConfig, SortDirection} from '@features/vacancies/types/Vacancies.types';
 import {LOCALES} from "@config";
 
-export const useSortedData = <T extends Record<string, any>>(data: T[]) => {
+const useSortedData = <T extends Record<string, any>>(data: T[]) => {
     const [sortConfig, setSortConfig] = useState<SortConfig<T>>({
         key: (data[0] ? Object.keys(data[0])[0] : 'id') as keyof T,
         direction: 'ascending',
@@ -50,3 +50,5 @@ export const useSortedData = <T extends Record<string, any>>(data: T[]) => {
 
     return {sortedData, handleSort, getSortArrow, error: sortedData === data ? LOCALES.SORT_ERROR : null};
 };
+
+export default useSortedData;

@@ -3,7 +3,7 @@ import {UserProfile} from '@features/profile/types/InterfaceProfile.types';
 import {useAuthHandlers} from '@features/auth/hooks/useAuthHandlers';
 import {useProfileFormHandlers} from '@features/profile/hooks/useProfileFormHandlers';
 import {useProfileHandlers} from '@features/profile/hooks/useProfileHandlers';
-import styles from '@features/profile/ui/Profile.module.css';
+import styles from '@shared/styles/Container.module.css';
 import ProfileChange from '@features/profile/ui/ProfileChange/ProfileChange';
 import ProfileView from '@features/profile/ui/ProfileView/ProfileView';
 import {USER_TEXTS} from "@features/profile/config/profileConfigs";

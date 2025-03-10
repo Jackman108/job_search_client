@@ -1,12 +1,12 @@
 import {useCallback, useEffect, useRef} from 'react';
 import {UseWebSocketParams, WebSocketHook} from "@type";
 import {useAuth} from "@app/providers/auth/useAuthContext";
-import {useWebSocketReducer} from "@hooks/socket/useWebSocketReducer";
+import {useWebSocketReducer} from "@hooks";
 import {handleWebSocketMessage} from "@utils";
 
 const RECONNECT_INTERVAL = 5000;
 
-export const useWebSocket = ({WS_URL, loadData, setAlert}: UseWebSocketParams): WebSocketHook => {
+const useWebSocket = ({WS_URL, loadData, setAlert}: UseWebSocketParams): WebSocketHook => {
     const [state, dispatch] = useWebSocketReducer();
     const wsRef = useRef<WebSocket | null>(null);
     const {token} = useAuth();
@@ -81,3 +81,5 @@ export const useWebSocket = ({WS_URL, loadData, setAlert}: UseWebSocketParams): 
         open: state.open,
     };
 };
+
+export default useWebSocket;

@@ -12,6 +12,12 @@
       "edit": "Редактировать",
       "delete": "Удалить",
       "deleteConfirm": "Вы уверены, что хотите удалить эту подписку?"
+    },
+    "status": {
+      "active": "Активна",
+      "extended_unpaid": "Продлена, но не оплачена",
+      "expired": "Истекла",
+      "unknown": "Неизвестно"
     }
   },
   "tableHeaders": {
@@ -24,6 +30,7 @@
     "paymentStatus": "Статус платежей",
     "createdAt": "Создано",
     "updatedAt": "Обновлено",
+    "subscriptionStatus": "Статус подписки",
     "actions": "Действия"
   },
   "form": {

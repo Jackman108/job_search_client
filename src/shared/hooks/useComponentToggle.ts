@@ -1,6 +1,6 @@
-import { useState, KeyboardEvent} from 'react';
+import {KeyboardEvent, useState} from 'react';
 
-export const useComponentToggle = (initialState: boolean = false) => {
+const useComponentToggle = (initialState: boolean = false) => {
     const [isComponentOpen, setIsComponentOpen] = useState(initialState);
 
     const toggleComponent = () => {
@@ -13,5 +13,7 @@ export const useComponentToggle = (initialState: boolean = false) => {
         }
     };
 
-    return { isComponentOpen, toggleComponent, handleKeyPress };
+    return {isComponentOpen, toggleComponent, handleKeyPress};
 };
+
+export default useComponentToggle;

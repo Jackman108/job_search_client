@@ -1,7 +1,6 @@
 import {FC, ReactNode, useMemo} from 'react';
 import {CaptchaAlert} from '@ui';
-import useAlert from '@hooks/useAlert';
-import useWebSocketConnection from '@hooks/socket/useWebSocketConnection';
+import {useAlert, useWebSocketConnection} from '@hooks';
 import FeedbackContext from "./useFeedbackContext";
 import useFetchFeedbacks from "@features/feedback/hooks/useFetchFeedbacks";
 

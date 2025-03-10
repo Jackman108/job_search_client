@@ -1,9 +1,8 @@
 import {useCallback} from 'react';
-import {useFormState} from '@hooks/forms/useFormState';
-import {useToggleFormState} from '@hooks/forms/useToggleFormState';
+import {useFormState, useToggleFormState} from '@hooks';
 import {useTranslation} from 'react-i18next';
 
-export const useTableLogic = <T extends { id?: string }>(
+const useTableLogic = <T extends { id?: string }>(
     config: Record<string, any>,
     fetchHook: (config: Record<string, any>) => any,
     actionType: string
@@ -30,7 +29,7 @@ export const useTableLogic = <T extends { id?: string }>(
             handleCancelClick(actionType);
             handleToggleForm();
         } catch (error) {
-            console.error(`Error deleting ${actionType}:`, error);
+            console.error(`Error Cancel ${actionType}:`, error);
         }
 
     }, [actionType, handleCancelClick, handleToggleForm]);
@@ -67,3 +66,5 @@ export const useTableLogic = <T extends { id?: string }>(
         handleCancelAction,
     };
 };
+
+export default useTableLogic;

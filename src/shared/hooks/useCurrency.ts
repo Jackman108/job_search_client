@@ -6,7 +6,7 @@ const exchangeRates = {
     KZT: 5.5,
 };
 
-export const useCurrency = () => {
+const useCurrency = () => {
     const [currency, setCurrency] = useState<'RUB' | 'BYN' | 'KZT'>('RUB');
 
     const convertCurrency = useCallback((amount: number, from: 'RUB' | 'BYN' | 'KZT', to: 'RUB' | 'BYN' | 'KZT') => {
@@ -19,3 +19,5 @@ export const useCurrency = () => {
         convertCurrency,
     };
 };
+
+export default useCurrency;

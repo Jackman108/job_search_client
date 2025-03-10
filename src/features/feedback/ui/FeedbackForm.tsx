@@ -1,8 +1,8 @@
 import React, {FC} from "react";
 import {PanelProps} from "@type";
-import styles from "../../vacancies/ui/SearchForm/SearchForm.module.css";
+import styles from "@features/vacancies/ui/SearchForm/SearchForm.module.css";
 import {Button, FormContainer, ManagementSection, RenderInput} from "@ui";
-import {FORM_CONFIG} from "../../vacancies/config/searchConfig";
+import {FORM_CONFIG} from "@features/vacancies/config/searchConfig";
 import useFeedbackLogic from "../hooks/useFeedbackLogic";
 import {FORM_BUTTONS} from "@config";
 

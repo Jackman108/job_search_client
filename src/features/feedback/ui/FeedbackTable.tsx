@@ -3,7 +3,7 @@ import {Button, UnauthorizedMessage} from '@ui';
 import {FEEDBACK_HEADER} from '../config/feedbackConfigs';
 import styles from '../../vacancies/ui/VacanciesTable/VacanciesTable.module.css';
 import {useFeedbackContext} from "@app/providers/feedback/useFeedbackContext";
-import {useSortedData} from "@hooks/useSortedData";
+import {useSortedData} from "@hooks";
 import {BUTTON_SYMBOL} from "@config";
 
 const FeedbackTable: FC = () => {

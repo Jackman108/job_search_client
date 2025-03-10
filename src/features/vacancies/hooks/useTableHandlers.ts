@@ -1,6 +1,5 @@
 import {MouseEvent, useCallback} from 'react';
-import {useSortedData} from '@hooks/useSortedData';
-import useTooltip from "@hooks/useTooltip";
+import {useSortedData, useTooltip} from '@hooks';
 import {Vacancy} from "@features/vacancies/types/Vacancies.types";
 import {LOCALES} from "@config";
 

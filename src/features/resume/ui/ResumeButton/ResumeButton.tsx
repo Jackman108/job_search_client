@@ -1,7 +1,7 @@
 import React, {FC} from 'react';
 import {useNavigate} from 'react-router-dom';
 import {useAuth} from '@app/providers/auth/useAuthContext';
-import styles from './ResumeButton.module.css';
+import styles from '@shared/styles/Container.module.css';
 import {Button, FormContainer} from "@ui";
 import {PanelProps} from "@type";
 

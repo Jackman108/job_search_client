@@ -1,8 +1,7 @@
 import {FC, ReactNode, useMemo} from 'react';
 import {CaptchaAlert} from '@ui';
-import useAlert from '@hooks/useAlert';
+import {useAlert, useWebSocketConnection} from '@hooks';
 import useFetchVacancies from '@features/vacancies/hooks/useFetchVacancies';
-import useWebSocketConnection from '@hooks/socket/useWebSocketConnection';
 import TableContext from './useVacancyContext';
 
 const VacancyProvider: FC<{ children: ReactNode }> = ({children}) => {

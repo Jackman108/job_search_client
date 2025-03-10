@@ -2,8 +2,8 @@ import React from 'react';
 import {Button} from "@ui";
 import {ACTION_TYPES} from "@config";
 import {useTranslation} from "react-i18next";
-import {useCurrency} from "@hooks/useCurrency";
-import {SubscriptionTableBodyProps} from "@features/subscription/types/Subscription.types";
+import {useCurrency} from "@hooks";
+import {SubscriptionTableBodyProps} from "@features/subscription/props/Subscription.props";
 import {formatDate} from "@utils";
 
 const SubscriptionTableBody: React.FC<SubscriptionTableBodyProps> = ({

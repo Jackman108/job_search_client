@@ -1,13 +1,13 @@
 import React, {useEffect} from 'react';
-import {SubscriptionFormProps, SubscriptionItem} from '../../../types/Subscription.types';
-import {useFormState} from "@hooks/forms/useFormState";
+import {SubscriptionFormProps} from '@features/subscription/props/Subscription.props';
+import {useFormState} from "@hooks";
 import {Button, RenderInput, RenderSelect} from "@ui";
-import {subscriptionTypeOptions} from "@features/subscription/config/subscriptionConfig";
 import {useTranslation} from 'react-i18next';
 import {formatDate} from "@utils";
+import {SUBSCRIPTION_TYPE_OPTIONS, SubscriptionTypes} from "@entities/subscription";
 
 const SubscriptionForm: React.FC<SubscriptionFormProps> = ({initialData, onSubmit, handleCancelClick, isLoading}) => {
-    const {formData, setFormData} = useFormState<Partial<SubscriptionItem>>();
+    const {formData, setFormData} = useFormState<Partial<SubscriptionTypes>>();
     const {t} = useTranslation('subscriptions');
 
     useEffect(() => {
@@ -45,7 +45,7 @@ const SubscriptionForm: React.FC<SubscriptionFormProps> = ({initialData, onSubmi
             />
             <RenderSelect
                 label={t('form.subscriptionType')}
-                options={subscriptionTypeOptions}
+                options={SUBSCRIPTION_TYPE_OPTIONS}
                 value={formData.subscription_type || 'daily'}
                 name="subscription_type"
                 onChange={handleChange}

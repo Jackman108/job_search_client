@@ -28,4 +28,6 @@ const reducer = (state: State, action: Action): State =>
         }
     });
 
-export const useWebSocketReducer = () => useReducer(reducer, initialState);
+const useWebSocketReducer = () => useReducer(reducer, initialState);
+
+export default useWebSocketReducer;

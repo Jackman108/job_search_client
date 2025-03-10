@@ -1,13 +1,14 @@
 import React, {useEffect} from 'react';
-import {PaymentFormProps, PaymentItem} from '../../../types/Payment.types';
+import {PAYMENT_STATUS_OPTIONS, PaymentStatusOption, PaymentTypes} from "@entities/payment";
+import {PaymentFormProps} from '@features/payments/props/Payment.props';
 import {Button, RenderInput, RenderSelect} from "@ui";
-import {useFormState} from "@hooks/forms/useFormState";
-import {paymentStatusOptions} from "@features/payments/config/paymentConfig";
+import {useFormState} from "@hooks";
 import {useTranslation} from "react-i18next";
 
 const PaymentForm: React.FC<PaymentFormProps> = ({initialData, onSubmit, handleCancelClick, isLoading}) => {
-    const {formData, setFormData} = useFormState<Partial<PaymentItem>>();
+    const {formData, setFormData} = useFormState<Partial<PaymentTypes>>();
     const {t} = useTranslation('payments');
+    const statusOptions: PaymentStatusOption[] = PAYMENT_STATUS_OPTIONS;
 
     useEffect(() => {
         if (initialData) {
@@ -43,7 +44,7 @@ const PaymentForm: React.FC<PaymentFormProps> = ({initialData, onSubmit, handleC
             />
             <RenderSelect
                 label={t('form.paymentStatus')}
-                options={paymentStatusOptions}
+                options={statusOptions}
                 value={formData.payment_status || 'pending'}
                 name="payment_status"
                 onChange={handleChange}

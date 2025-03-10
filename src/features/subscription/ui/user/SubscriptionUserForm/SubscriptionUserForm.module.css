@@ -1,0 +1,26 @@
+.formContainer {
+	max-width: 500px;
+	margin: 20px auto;
+	padding: 20px;
+	border: 1px solid #ddd;
+	border-radius: 8px;
+}
+
+.form {
+	display: flex;
+	flex-direction: column;
+	gap: 15px;
+}
+
+.cardContainer {
+	display: flex;
+	gap: 10px;
+	flex-wrap: wrap;
+	justify-content: space-between;
+}
+
+.buttonGroup {
+	display: flex;
+	gap: 10px;
+	justify-content: flex-end;
+}

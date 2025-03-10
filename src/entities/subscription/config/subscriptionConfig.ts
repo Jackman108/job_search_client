@@ -16,9 +16,3 @@ export const subscriptionConfig: Record<string, ConfigItem> = {
         },
     },
 };
-
-export const subscriptionTypeOptions = [
-    {value: 'daily', label: 'Basic'},
-    {value: 'weekly', label: 'Premium'},
-    {value: 'monthly', label: 'Gold'},
-];

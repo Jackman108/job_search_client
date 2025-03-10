@@ -1,5 +1,5 @@
 import React from 'react';
-import {PaymentTableBodyProps} from "@features/payments/types/Payment.types";
+import {PaymentTableBodyProps} from "@features/payments/props/Payment.props";
 import {Button} from "@ui";
 import {ACTION_TYPES} from "@config";
 import {useTranslation} from "react-i18next";

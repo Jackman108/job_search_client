@@ -6,13 +6,15 @@
       "@processes/*": ["processes/*"],
       "@features/*": ["features/*"],
       "@shared/*": ["shared/*"],
+      "@entities/*": ["entities/*"],
       "@widgets/*": ["widgets/*"],
       "@api": ["shared/api/index.ts"],
       "@ui": ["shared/ui/index.ts"],
       "@type": ["shared/types/index.ts"],
-      "@hooks/*": ["shared/hooks/*"],
+      "@hooks": ["shared/hooks/index.ts"],
       "@utils": ["shared/utils/index.ts"],
-      "@config": ["shared/config/index.ts"]
+      "@config": ["shared/config/index.ts"],
+      "@styles": ["shared/styles/index.ts"]
     }
   }
 }

@@ -1,115 +1,135 @@
-import {useCallback, useEffect, useMemo, useState} from 'react';
+import {useCallback, useEffect, useState} from 'react';
 import {ACTION_TYPES} from "@config";
-import {useTableLogic} from "@hooks/useTableLogic";
-import {SubscriptionItem} from "@features/subscription/types/Subscription.types";
-import {subscriptionConfig} from "@features/subscription/config/subscriptionConfig";
+import {useTableLogic} from "@hooks";
 import useFetchSubscription from "@features/subscription/hooks/useFetchSubscription";
-import {PaymentItem} from "@features/payments/types/Payment.types";
+import {PAYMENT_STATUS, paymentConfig, PaymentTypes} from "@entities/payment";
 import useFetchPayment from "@features/payments/hooks/useFetchPayment";
-import {paymentConfig} from "@features/payments/config/paymentConfig";
 import {useProcessHandler} from "@features/payments/hooks/useProcessHandler";
+import {subscriptionConfig, SubscriptionTypes} from "@entities/subscription";
 
 export const useSubscriptionLogic = () => {
-    const [selectedSubscription, setSelectedSubscription] = useState<SubscriptionItem | null>(null);
-    const [isPaymentSubmitted, setIsPaymentSubmitted] = useState(false);
-
-    const subscriptionLogic = useTableLogic<SubscriptionItem>(
-        subscriptionConfig, useFetchSubscription, ACTION_TYPES.SUBSCRIPTION
-    );
-
-    const paymentLogic = useTableLogic<PaymentItem>(
-        paymentConfig, useFetchPayment, ACTION_TYPES.PAYMENT
-    );
+    const [selectedSubscription, setSelectedSubscription] = useState<SubscriptionTypes | null>(null);
 
     const {
-        data: subscriptionData,
-        loading: subscriptionLoading,
-        error: subscriptionError,
-        formData: subscriptionFormData,
-        isEditing,
-        showForm: subscriptionShowForm,
-        handleEditClick,
-        handleDelete,
-        handleFormSubmit: handleSubscriptionSubmit,
-        handleToggleForm: subscriptionToggleForm,
-        handleCancelAction: cancelSubscription,
-    } = subscriptionLogic;
+        data: subscribeData,
+        loading: subscribeLoading,
+        error: subscribeError,
+        formData: subscribeFormData,
+        isEditing: subscribeIsEditing,
+        showForm: subscribeShowForm,
+        handleEditClick: subscribeEditClick,
+        handleDelete: subscribeDelete,
+        handleFormSubmit: subscribeSubmit,
+        handleToggleForm: subscribeToggleForm,
+        handleCancelAction: subscribeCancel,
+    } = useTableLogic<SubscriptionTypes>(subscriptionConfig, useFetchSubscription, ACTION_TYPES.SUBSCRIPTION);
 
     const {
         data: paymentData,
         loading: paymentLoading,
         error: paymentError,
+        formData: paymentFormData,
+        isEditing: paymentsEditing,
         showForm: paymentShowForm,
+        handleEditClick: paymentEditClick,
         handleToggleForm: paymentToggleForm,
-        handleFormSubmit: handlePaymentSubmit,
-        handleCancelAction: cancelPayment
-    } = paymentLogic;
+        handleFormSubmit: paymentSubmit,
+        handleCancelAction: paymentCancel
+    } = useTableLogic<PaymentTypes>(paymentConfig, useFetchPayment, ACTION_TYPES.PAYMENT);
+
 
     const {handleProcess, loadingProcess, errorProcess} = useProcessHandler();
 
-    const handlePaymentSubmitWithProcess = useCallback(async (formData: Partial<PaymentItem>) => {
-        if (!formData) return;
+    const createDefaultPayment = useCallback(async (subscription: SubscriptionTypes) => {
         try {
-            await handlePaymentSubmit(formData);
+            await paymentSubmit({
+                subscription_id: subscription.id,
+                amount: subscription.price,
+                payment_status: PAYMENT_STATUS.PENDING,
+            });
+        } catch (error) {
+            console.error('Ошибка при создании платежа по умолчанию:', error);
+        }
+    }, [paymentSubmit]);
 
-            setIsPaymentSubmitted(true);
+
+    const handleSubscriptionSubmitWithPayment = useCallback(async (formData: Partial<SubscriptionTypes>) => {
+        try {
+            await subscribeSubmit(formData);
+
+            if (selectedSubscription) {
+                await createDefaultPayment(selectedSubscription);
+            }
+        } catch (error) {
+            console.error('Ошибка при создании подписки или оплаты:', error);
+        }
+    }, [subscribeSubmit, selectedSubscription, createDefaultPayment]);
+
+    const handlePaymentSubmitWithProcess = useCallback(async (formData: Partial<PaymentTypes>) => {
+        try {
+            const latestPayment = paymentData?.find((payment: PaymentTypes) => payment.payment_status === PAYMENT_STATUS.PENDING);
+
+
+            if (latestPayment) {
+                paymentEditClick(ACTION_TYPES.PAYMENT, {
+                    ...latestPayment,
+                    ...formData
+                });
+
+                await handleProcess(latestPayment);
+                console.log('Платеж успешно обработан');
+            } else {
+                console.error('Нет платежа со статусом PENDING для обработки');
+            }
+
         } catch (error) {
             console.error('Ошибка при создании платежа:', error);
         }
-    }, [handlePaymentSubmit]);
+    }, [paymentEditClick, paymentData, handleProcess]);
 
 
     const handleEditSubscription = useCallback((type: string, item: any) => {
-        handleEditClick(type, item);
-        subscriptionToggleForm();
-    }, [handleEditClick, subscriptionToggleForm]);
+        subscribeEditClick(type, item);
+        subscribeToggleForm();
+    }, [subscribeEditClick, subscribeToggleForm]);
 
-    const handlePaymentClick = useCallback((subscription: SubscriptionItem) => {
+    const handlePaymentClick = useCallback((subscription: SubscriptionTypes) => {
         setSelectedSubscription(subscription);
         paymentToggleForm();
     }, [paymentToggleForm]);
 
 
-    const latestPayment = useMemo(() => {
-        if (paymentData && paymentData.length > 0) {
-            return paymentData[paymentData.length - 1];
-        }
-        return null;
-    }, [paymentData]);
-
     useEffect(() => {
-        if (isPaymentSubmitted && latestPayment) {
-            handleProcess(latestPayment)
-                .then(() => {
-                    setIsPaymentSubmitted(false);
-                })
-                .catch((error) => {
-                    console.error('Ошибка при обработке платежа:', error);
-                });
+        if (subscribeData && subscribeData.length > 0 && !subscribeIsEditing.subscription) {
+            const latestSubscription = subscribeData[subscribeData.length - 1];
+            setSelectedSubscription(latestSubscription);
+
         }
-    }, [isPaymentSubmitted, latestPayment, handleProcess]);
+    }, [subscribeData, subscribeIsEditing.subscription, createDefaultPayment]);
 
     return {
         selectedSubscription,
-        subscriptionData,
-        subscriptionLoading,
-        subscriptionError,
-        subscriptionFormData,
-        isEditing,
-        subscriptionShowForm,
-        handleDelete,
-        handleSubscriptionSubmit,
-        subscriptionToggleForm,
+        subscribeData,
+        subscribeLoading,
+        subscribeError,
+        subscribeFormData,
+        subscribeIsEditing,
+        subscribeShowForm,
+        subscribeDelete,
+        handleSubscriptionSubmit: handleSubscriptionSubmitWithPayment,
+        subscribeToggleForm,
         handleEditSubscription,
-        handleCancelSubscription: cancelSubscription,
-        handleCancelPayment: cancelPayment,
+        subscribeCancel,
+        paymentFormData,
+        paymentsEditing,
+        paymentCancel,
         paymentData,
         paymentLoading,
         paymentError,
         paymentShowForm,
         paymentToggleForm,
         handlePaymentClick,
-        handlePaymentSubmit: handlePaymentSubmitWithProcess,
+        paymentSubmit: handlePaymentSubmitWithProcess,
         loadingProcess,
         errorProcess,
     };

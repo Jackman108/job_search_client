@@ -1,6 +1,6 @@
 import {useEffect} from 'react';
-import {useWebSocket} from './useWebSocket';
 import {API_URL, WS_URL} from '@config';
+import {useWebSocket} from "@hooks";
 
 const useWebSocketConnection = (loadData: () => void, setAlert: (message: string) => void
 ) => {

@@ -1,0 +1,29 @@
+.card {
+	border: 1px solid #ddd;
+	border-radius: 8px;
+	padding: 20px;
+	cursor: pointer;
+	transition: all 0.3s ease;
+	text-align: center;
+}
+
+.card:hover {
+	border-color: #007bff;
+	box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.selected {
+	border-color: #007bff;
+	background-color: #f0f8ff;
+}
+
+.label {
+	font-size: 18px;
+	margin-bottom: 10px;
+}
+
+.price {
+	font-size: 24px;
+	font-weight: bold;
+	color: #007bff;
+}

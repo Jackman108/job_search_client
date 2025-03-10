@@ -1,9 +1,16 @@
-import React, {useCallback, useEffect} from 'react';
-import {SubscriptionFormProps, SubscriptionItem} from '../../../types/Subscription.types';
-import {useFormState} from "@hooks/forms/useFormState";
-import {Button, RenderRow, RenderSelect} from "@ui";
-import {subscriptionTypeOptions} from "@features/subscription/config/subscriptionConfig";
+import React, {useCallback, useEffect, useState} from 'react';
+import {SubscriptionFormProps} from '@features/subscription/props/Subscription.props';
+import {useFormState} from "@hooks";
+import {Button} from "@ui";
 import {useTranslation} from 'react-i18next';
+import {
+    SUBSCRIPTION_TYPE_OPTIONS,
+    SUBSCRIPTION_TYPES,
+    SubscriptionTypes,
+    SubscriptionVariant
+} from "@entities/subscription";
+import styles from './SubscriptionUserForm.module.css';
+import SubscriptionCard from "@features/subscription/ui/user/SubscriptionCard/SubscriptionCard";
 
 const SubscriptionUserForm: React.FC<SubscriptionFormProps> = ({
                                                                    initialData,
@@ -12,22 +19,24 @@ const SubscriptionUserForm: React.FC<SubscriptionFormProps> = ({
                                                                    isLoading,
                                                                    isEditing
                                                                }) => {
-    const {formData, setFormData} = useFormState<Partial<SubscriptionItem>>();
+    const {formData, setFormData} = useFormState<Partial<SubscriptionTypes>>();
     const {t} = useTranslation('subscriptions');
+    const [selectedType, setSelectedType] = useState<string>(initialData?.subscription_type || SUBSCRIPTION_TYPES.WEEKLY);
 
     useEffect(() => {
         if (initialData) {
             setFormData({
                 id: initialData.id,
-                subscription_type: initialData.subscription_type || subscriptionTypeOptions[0].value,
-                price: initialData.price || 3
+                subscription_type: initialData.subscription_type || SUBSCRIPTION_TYPES.WEEKLY,
+                price: initialData.price
             });
+            setSelectedType(initialData.subscription_type || SUBSCRIPTION_TYPES.WEEKLY);
         }
     }, [initialData, setFormData]);
 
-    const handleChange = useCallback((e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
-        const {name, value} = e.target;
-        setFormData(prev => ({...prev, [name]: value}));
+    const handleCardClick = useCallback((type: SubscriptionVariant, price: number) => {
+        setSelectedType(type);
+        setFormData(prev => ({...prev, subscription_type: type, price}));
     }, [setFormData]);
 
     const handleSubmit = (e: React.FormEvent) => {
@@ -36,25 +45,30 @@ const SubscriptionUserForm: React.FC<SubscriptionFormProps> = ({
     };
 
     return (
-        <>
-            <RenderRow label={t('form.price')} value={formData.price}/>
-            <form onSubmit={handleSubmit}>
-                <RenderSelect
-                    label={t('form.subscriptionType')}
-                    options={subscriptionTypeOptions}
-                    value={formData.subscription_type}
-                    name="subscription_type"
-                    onChange={handleChange}
-                    isLoading={isLoading}
-                />
-                <Button type="submit" variant="primary" disabled={isLoading}>
-                    {isEditing ? t('form.update') : t('form.create')}
-                </Button>
-                <Button type="button" variant="secondary" onClick={handleCancelClick} disabled={isLoading}>
-                    {t('form.cancel')}
-                </Button>
+        <div className={styles.formContainer}>
+            <form onSubmit={handleSubmit} className={styles.form}>
+                <div className={styles.cardContainer}>
+                    {SUBSCRIPTION_TYPE_OPTIONS.map(option => (
+                        <SubscriptionCard
+                            key={option.value}
+                            label={option.label}
+                            price={option.price}
+                            currency="RUB"
+                            isSelected={selectedType === option.value}
+                            onClick={() => handleCardClick(option.value, option.price)}
+                        />
+                    ))}
+                </div>
+                <div className={styles.buttonGroup}>
+                    <Button type="submit" variant="primary" disabled={isLoading}>
+                        {isEditing ? t('form.update') : t('form.create')}
+                    </Button>
+                    <Button type="button" variant="secondary" onClick={handleCancelClick} disabled={isLoading}>
+                        {t('form.cancel')}
+                    </Button>
+                </div>
             </form>
-        </>
+        </div>
     );
 };
 
