@@ -4,8 +4,8 @@ import {PaymentTypes} from "@entities/payment";
 export interface SubscriptionTableBodyProps {
     subscriptionData: SubscriptionTypes [];
     paymentData?: PaymentTypes[];
-    handleEditClick: (type: string, item: SubscriptionTypes) => void;
-    handleDelete: (id: string) => void;
+    subscribeEditClick: (type: string, item: SubscriptionTypes) => void;
+    subscribeDelete: (id: string) => void;
     handlePaymentClick?: (subscription: SubscriptionTypes) => void;
 }
 

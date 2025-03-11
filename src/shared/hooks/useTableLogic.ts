@@ -3,6 +3,7 @@ import {useFormState, useToggleFormState} from '@hooks';
 import {useTranslation} from 'react-i18next';
 
 const useTableLogic = <T extends { id?: string }>(
+
     config: Record<string, any>,
     fetchHook: (config: Record<string, any>) => any,
     actionType: string
@@ -37,7 +38,7 @@ const useTableLogic = <T extends { id?: string }>(
 
     const handleFormSubmit = useCallback(async (formData: Partial<T>) => {
         try {
-            await saveItem({
+            const response = await saveItem({
                 type: actionType,
                 id: formData.id,
                 formData,
@@ -45,6 +46,7 @@ const useTableLogic = <T extends { id?: string }>(
             });
 
             await handleCancelAction();
+            return response;
         } catch (error) {
             console.error(`Error saving ${actionType}:`, error);
         }

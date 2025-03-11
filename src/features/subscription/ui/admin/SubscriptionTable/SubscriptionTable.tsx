@@ -48,11 +48,11 @@ const SubscriptionTable = () => {
             {subscriptionData && subscriptionData.length > 0 ? (
                 <SubscriptionTableBody
                     subscriptionData={subscriptionData}
-                    handleEditClick={(type, item) => {
+                    subscribeEditClick={(type, item) => {
                         handleEditClick(type, item);
                         handleToggleForm();
                     }}
-                    handleDelete={handleDelete}
+                    subscribeDelete={handleDelete}
                 />
             ) : (
                 !loading && !error && <p>{t('subscriptions.noData')}</p>

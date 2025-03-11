@@ -57,8 +57,9 @@ export const useFetchByType = (config: FetchByTypeConfig['config']) => {
             const method = isEditing ? 'put' : 'post';
             return await request(method, url, formData);
         },
-        onSuccess: async () => {
+        onSuccess: async (data) => {
             await loadData();
+            return data;
         },
     });
 

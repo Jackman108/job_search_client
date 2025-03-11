@@ -7,7 +7,7 @@ import {SubscriptionTableBodyProps} from "@features/subscription/props/Subscript
 import {formatDate} from "@utils";
 
 const SubscriptionTableBody: React.FC<SubscriptionTableBodyProps> = ({
-                                                                         subscriptionData, handleEditClick, handleDelete
+                                                                         subscriptionData, subscribeEditClick, subscribeDelete
                                                                      }) => {
     const {t} = useTranslation('subscriptions')
     const {currency, convertCurrency} = useCurrency();
@@ -40,10 +40,10 @@ const SubscriptionTableBody: React.FC<SubscriptionTableBodyProps> = ({
                     <td>{formatDate(subscription.updated_at!.toString()).date}</td>
 
                     <td>
-                        <Button onClick={() => handleEditClick(ACTION_TYPES.SUBSCRIPTION, subscription)}>
+                        <Button onClick={() => subscribeEditClick(ACTION_TYPES.SUBSCRIPTION, subscription)}>
                             {t('subscriptions.actions.edit')}
                         </Button>
-                        <Button onClick={() => handleDelete(subscription.id!)}>
+                        <Button onClick={() => subscribeDelete(subscription.id!)}>
                             {t('subscriptions.actions.delete')}
                         </Button>
                     </td>

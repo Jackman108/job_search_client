@@ -12,8 +12,8 @@ import {SUBSCRIPTION_TYPE_OPTIONS} from "@entities/subscription";
 const SubscriptionUserTableBody: React.FC<SubscriptionTableBodyProps> = ({
                                                                              subscriptionData,
                                                                              paymentData = [],
-                                                                             handleEditClick,
-                                                                             handleDelete,
+                                                                             subscribeEditClick,
+                                                                             subscribeDelete,
                                                                              handlePaymentClick
                                                                          }) => {
     const {t} = useTranslation('subscriptions')
@@ -47,10 +47,10 @@ const SubscriptionUserTableBody: React.FC<SubscriptionTableBodyProps> = ({
                     </td>
 
                     <td>
-                        <Button onClick={() => handleEditClick(ACTION_TYPES.SUBSCRIPTION, subscription)}>
+                        <Button onClick={() => subscribeEditClick(ACTION_TYPES.SUBSCRIPTION, subscription)}>
                             {t('subscriptions.extendSubscription')}
                         </Button>
-                        <Button onClick={() => handleDelete(subscription.id!)}>
+                        <Button onClick={() => subscribeDelete(subscription.id!)}>
                             {t('subscriptions.actions.delete')}
                         </Button>
                         <Button onClick={() => handlePaymentClick!(subscription)}>

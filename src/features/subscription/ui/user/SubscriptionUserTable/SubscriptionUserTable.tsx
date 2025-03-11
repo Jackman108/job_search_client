@@ -21,7 +21,7 @@ const SubscriptionUserTable: FC = () => {
         subscribeShowForm,
         subscribeDelete,
         subscribeToggleForm,
-        handleEditSubscription,
+        subscribeEditClick,
         subscribeCancel,
         paymentCancel,
         handleSubscriptionSubmit,
@@ -45,8 +45,8 @@ const SubscriptionUserTable: FC = () => {
                 <SubscriptionUserTableBody
                     subscriptionData={subscribeData}
                     paymentData={paymentData}
-                    handleEditClick={handleEditSubscription}
-                    handleDelete={subscribeDelete}
+                    subscribeEditClick={subscribeEditClick}
+                    subscribeDelete={subscribeDelete}
                     handlePaymentClick={handlePaymentClick}
                 />
             ) : (

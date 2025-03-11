@@ -17,7 +17,7 @@ export const useSubscriptionLogic = () => {
         formData: subscribeFormData,
         isEditing: subscribeIsEditing,
         showForm: subscribeShowForm,
-        handleEditClick: subscribeEditClick,
+        handleEditClick: subscribeEdit,
         handleDelete: subscribeDelete,
         handleFormSubmit: subscribeSubmit,
         handleToggleForm: subscribeToggleForm,
@@ -29,9 +29,8 @@ export const useSubscriptionLogic = () => {
         loading: paymentLoading,
         error: paymentError,
         formData: paymentFormData,
-        isEditing: paymentsEditing,
+        isEditing: paymentsIsEditing,
         showForm: paymentShowForm,
-        handleEditClick: paymentEditClick,
         handleToggleForm: paymentToggleForm,
         handleFormSubmit: paymentSubmit,
         handleCancelAction: paymentCancel
@@ -55,43 +54,44 @@ export const useSubscriptionLogic = () => {
 
     const handleSubscriptionSubmitWithPayment = useCallback(async (formData: Partial<SubscriptionTypes>) => {
         try {
-            await subscribeSubmit(formData);
-
+            const createdSubscription = await subscribeSubmit(formData);
             if (selectedSubscription) {
                 await createDefaultPayment(selectedSubscription);
+            } else if (createdSubscription.data) {
+                await createDefaultPayment(createdSubscription.data);
             }
         } catch (error) {
             console.error('Ошибка при создании подписки или оплаты:', error);
         }
-    }, [subscribeSubmit, selectedSubscription, createDefaultPayment]);
+    }, [subscribeSubmit, createDefaultPayment, selectedSubscription]);
+
 
     const handlePaymentSubmitWithProcess = useCallback(async (formData: Partial<PaymentTypes>) => {
         try {
             const latestPayment = paymentData?.find((payment: PaymentTypes) => payment.payment_status === PAYMENT_STATUS.PENDING);
 
-
             if (latestPayment) {
-                paymentEditClick(ACTION_TYPES.PAYMENT, {
+                const updatedPayment = {
+                    ...formData,
                     ...latestPayment,
-                    ...formData
-                });
 
-                await handleProcess(latestPayment);
-                console.log('Платеж успешно обработан');
+                };
+                await handleProcess(updatedPayment);
+                console.log('Процесс оплаты успешно завершён');
             } else {
                 console.error('Нет платежа со статусом PENDING для обработки');
             }
-
+            paymentToggleForm();
         } catch (error) {
             console.error('Ошибка при создании платежа:', error);
         }
-    }, [paymentEditClick, paymentData, handleProcess]);
+    }, [paymentData, handleProcess, paymentToggleForm]);
 
 
-    const handleEditSubscription = useCallback((type: string, item: any) => {
-        subscribeEditClick(type, item);
+    const subscribeEditClick = useCallback((type: string, item: any) => {
+        subscribeEdit(type, item);
         subscribeToggleForm();
-    }, [subscribeEditClick, subscribeToggleForm]);
+    }, [subscribeEdit, subscribeToggleForm]);
 
     const handlePaymentClick = useCallback((subscription: SubscriptionTypes) => {
         setSelectedSubscription(subscription);
@@ -103,9 +103,8 @@ export const useSubscriptionLogic = () => {
         if (subscribeData && subscribeData.length > 0 && !subscribeIsEditing.subscription) {
             const latestSubscription = subscribeData[subscribeData.length - 1];
             setSelectedSubscription(latestSubscription);
-
         }
-    }, [subscribeData, subscribeIsEditing.subscription, createDefaultPayment]);
+    }, [subscribeData, subscribeIsEditing.subscription]);
 
     return {
         selectedSubscription,
@@ -118,10 +117,10 @@ export const useSubscriptionLogic = () => {
         subscribeDelete,
         handleSubscriptionSubmit: handleSubscriptionSubmitWithPayment,
         subscribeToggleForm,
-        handleEditSubscription,
+        subscribeEditClick,
         subscribeCancel,
         paymentFormData,
-        paymentsEditing,
+        paymentsIsEditing,
         paymentCancel,
         paymentData,
         paymentLoading,
