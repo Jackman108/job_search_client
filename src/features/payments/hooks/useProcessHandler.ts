@@ -6,7 +6,6 @@ import {WebPayResponse} from "@entities/payment/types/WebPayResponse.types";
 
 export const useProcessHandler = () => {
     //const navigate = useNavigate();
-
     const {
         saveItem: processRequest,
         loading: loadingProcess,
@@ -14,7 +13,6 @@ export const useProcessHandler = () => {
     } = usePostByType(paymentProcessConfig);
 
     const {saveItem: updatePaymentStatus} = useFetchByType(paymentConfig);
-
 
     const handleProcess = async (paymentData: PaymentTypes) => {
         if (!paymentData || !paymentData.id) {
@@ -24,15 +22,15 @@ export const useProcessHandler = () => {
 
         const paymentSystem = paymentData.payment_method as keyof typeof paymentProcessConfig;
 
-
         const handleProcessSuccess = async (response: WebPayResponse) => {
-
             try {
                 await updatePaymentStatus({
                     type: ACTION_TYPES.PAYMENT,
                     id: paymentData.id,
                     formData: {
                         payment_status: PAYMENT_STATUS.COMPLETED,
+                        payment_method: paymentData.payment_method,
+                        amount: paymentData.amount,
                         updated_at: response.invoice_date
                     },
                     isEditing: true,
@@ -49,7 +47,11 @@ export const useProcessHandler = () => {
                 await updatePaymentStatus({
                     type: ACTION_TYPES.PAYMENT,
                     id: paymentData.id,
-                    formData: {payment_status: PAYMENT_STATUS.FAILED},
+                    formData: {
+                        payment_status: PAYMENT_STATUS.FAILED,
+                        payment_method: paymentData.payment_method,
+                        amount: paymentData.amount,
+                    },
                     isEditing: true,
                 });
                 //navigate('/payment/error');
@@ -63,7 +65,6 @@ export const useProcessHandler = () => {
             let response: WebPayResponse;
             if (process.env.NODE_ENV === 'development') {
                 response = mockWebPayResponse;
-                console.log("PAY")
             } else {
                 response = await processRequest({
                     type: paymentSystem,

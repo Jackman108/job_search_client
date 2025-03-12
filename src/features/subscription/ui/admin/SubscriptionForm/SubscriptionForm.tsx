@@ -81,7 +81,7 @@ const SubscriptionForm: React.FC<SubscriptionFormProps> = ({initialData, onSubmi
             <Button type="submit" variant="primary" disabled={isLoading}>
                 {initialData ? t('form.save') : t('form.create')}
             </Button>
-            <Button type="button" variant="secondary" onClick={handleCancelClick} disabled={isLoading}>
+            <Button type="button" variant="secondary" onClick={() => handleCancelClick(formData.id)} disabled={isLoading}>
                 {t('form.cancel')}
             </Button>
         </form>

@@ -4,20 +4,20 @@ import {PaymentTypes} from "@entities/payment";
 export interface SubscriptionTableBodyProps {
     subscriptionData: SubscriptionTypes [];
     paymentData?: PaymentTypes[];
-    subscribeEditClick: (type: string, item: SubscriptionTypes) => void;
+    subscribeEditClick: (id: string, item: SubscriptionTypes) => void;
     subscribeDelete: (id: string) => void;
-    handlePaymentClick?: (subscription: SubscriptionTypes) => void;
+    paymentEditClick?: (id: string, item: PaymentTypes) => void;
 }
 
 export interface SubscriptionFormProps {
     initialData?: Partial<SubscriptionTypes>;
     onSubmit: (formData: Partial<SubscriptionTypes>) => void;
-    handleCancelClick: () => void;
+    handleCancelClick: (id: string) => void;
     isLoading: boolean;
     isEditing?: boolean
 }
 
-export interface SubscriptionCardProps {
+export interface SubscriptionOptionProps {
     label: string;
     price: number;
     currency: string;

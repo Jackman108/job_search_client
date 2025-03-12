@@ -33,6 +33,14 @@
     "subscriptionStatus": "Статус подписки",
     "actions": "Действия"
   },
+  "cardHeaders": {
+    "editSubscription": "Продлить подписку",
+    "createSubscription": "Создать подписку",
+    "chooseSubscriptionType": "Выберите желаемый тип подписки",
+    "create": "Подписаться",
+    "update": "Продлить",
+    "cancel": "Отмена"
+  },
   "form": {
     "userId": "Пользователь ID",
     "subscriptionType": "Тип подписки",

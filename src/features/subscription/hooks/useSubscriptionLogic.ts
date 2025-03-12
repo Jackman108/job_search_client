@@ -31,11 +31,11 @@ export const useSubscriptionLogic = () => {
         formData: paymentFormData,
         isEditing: paymentsIsEditing,
         showForm: paymentShowForm,
+        handleEditClick: paymentEdit,
         handleToggleForm: paymentToggleForm,
         handleFormSubmit: paymentSubmit,
         handleCancelAction: paymentCancel
     } = useTableLogic<PaymentTypes>(paymentConfig, useFetchPayment, ACTION_TYPES.PAYMENT);
-
 
     const {handleProcess, loadingProcess, errorProcess} = useProcessHandler();
 
@@ -52,13 +52,13 @@ export const useSubscriptionLogic = () => {
     }, [paymentSubmit]);
 
 
-    const handleSubscriptionSubmitWithPayment = useCallback(async (formData: Partial<SubscriptionTypes>) => {
+    const subscriptionWithPayment = useCallback(async (formData: Partial<SubscriptionTypes>) => {
         try {
             const createdSubscription = await subscribeSubmit(formData);
-            if (selectedSubscription) {
-                await createDefaultPayment(selectedSubscription);
-            } else if (createdSubscription.data) {
-                await createDefaultPayment(createdSubscription.data);
+
+            const subscriptionToUse = selectedSubscription || createdSubscription.data;
+            if (subscriptionToUse) {
+                await createDefaultPayment(subscriptionToUse);
             }
         } catch (error) {
             console.error('Ошибка при создании подписки или оплаты:', error);
@@ -66,37 +66,34 @@ export const useSubscriptionLogic = () => {
     }, [subscribeSubmit, createDefaultPayment, selectedSubscription]);
 
 
-    const handlePaymentSubmitWithProcess = useCallback(async (formData: Partial<PaymentTypes>) => {
+    const paymentWithProcess = useCallback(async (formData: Partial<PaymentTypes>) => {
         try {
-            const latestPayment = paymentData?.find((payment: PaymentTypes) => payment.payment_status === PAYMENT_STATUS.PENDING);
+            const latestPayment: PaymentTypes = paymentData?.find((payment: PaymentTypes) => payment.payment_status === PAYMENT_STATUS.PENDING);
 
             if (latestPayment) {
-                const updatedPayment = {
-                    ...formData,
-                    ...latestPayment,
+                const updatedPayment = {...latestPayment, payment_method: formData.payment_method, amount: formData?.amount || latestPayment.amount};
 
-                };
                 await handleProcess(updatedPayment);
-                console.log('Процесс оплаты успешно завершён');
             } else {
                 console.error('Нет платежа со статусом PENDING для обработки');
             }
             paymentToggleForm();
         } catch (error) {
-            console.error('Ошибка при создании платежа:', error);
+            console.error('Ошибка при создании оплаты:', error);
         }
     }, [paymentData, handleProcess, paymentToggleForm]);
 
 
     const subscribeEditClick = useCallback((type: string, item: any) => {
         subscribeEdit(type, item);
+        setSelectedSubscription(item);
         subscribeToggleForm();
     }, [subscribeEdit, subscribeToggleForm]);
 
-    const handlePaymentClick = useCallback((subscription: SubscriptionTypes) => {
-        setSelectedSubscription(subscription);
+    const paymentEditClick = useCallback((type: string, item: any) => {
+        paymentEdit(item, item);
         paymentToggleForm();
-    }, [paymentToggleForm]);
+    }, [paymentToggleForm, paymentEdit]);
 
 
     useEffect(() => {
@@ -107,7 +104,6 @@ export const useSubscriptionLogic = () => {
     }, [subscribeData, subscribeIsEditing.subscription]);
 
     return {
-        selectedSubscription,
         subscribeData,
         subscribeLoading,
         subscribeError,
@@ -115,7 +111,7 @@ export const useSubscriptionLogic = () => {
         subscribeIsEditing,
         subscribeShowForm,
         subscribeDelete,
-        handleSubscriptionSubmit: handleSubscriptionSubmitWithPayment,
+        subscribeSubmit: subscriptionWithPayment,
         subscribeToggleForm,
         subscribeEditClick,
         subscribeCancel,
@@ -127,8 +123,8 @@ export const useSubscriptionLogic = () => {
         paymentError,
         paymentShowForm,
         paymentToggleForm,
-        handlePaymentClick,
-        paymentSubmit: handlePaymentSubmitWithProcess,
+        paymentEditClick,
+        paymentSubmit: paymentWithProcess,
         loadingProcess,
         errorProcess,
     };

@@ -3,7 +3,6 @@ import {useFormState, useToggleFormState} from '@hooks';
 import {useTranslation} from 'react-i18next';
 
 const useTableLogic = <T extends { id?: string }>(
-
     config: Record<string, any>,
     fetchHook: (config: Record<string, any>) => any,
     actionType: string
@@ -25,9 +24,9 @@ const useTableLogic = <T extends { id?: string }>(
     }, [actionType, deleteItem, t, configKey]);
 
 
-    const handleCancelAction = useCallback(async () => {
+    const handleCancelAction = useCallback(async (id: string) => {
         try {
-            handleCancelClick(actionType);
+            handleCancelClick(id);
             handleToggleForm();
         } catch (error) {
             console.error(`Error Cancel ${actionType}:`, error);
@@ -45,7 +44,7 @@ const useTableLogic = <T extends { id?: string }>(
                 isEditing: isEditing[actionType],
             });
 
-            await handleCancelAction();
+            await handleCancelAction(response.id);
             return response;
         } catch (error) {
             console.error(`Error saving ${actionType}:`, error);
@@ -54,7 +53,6 @@ const useTableLogic = <T extends { id?: string }>(
 
     return {
         data,
-        saveItem,
         loading,
         error,
         loadData,

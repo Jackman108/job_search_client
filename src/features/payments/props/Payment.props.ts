@@ -9,6 +9,6 @@ export interface PaymentTableBodyProps {
 export interface PaymentFormProps {
     initialData?: Partial<PaymentTypes>;
     onSubmit: (formData: Partial<PaymentTypes>) => void;
-    handleCancelClick: () => void;
+    handleCancelClick: (id: string) => void;
     isLoading: boolean;
 }
