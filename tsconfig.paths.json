@@ -7,7 +7,7 @@
       "@features/*": ["features/*"],
       "@shared/*": ["shared/*"],
       "@entities/*": ["entities/*"],
-      "@widgets/*": ["widgets/*"],
+      "@widgets": ["widgets/index.ts"],
       "@api": ["shared/api/index.ts"],
       "@ui": ["shared/ui/index.ts"],
       "@type": ["shared/types/index.ts"],

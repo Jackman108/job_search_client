@@ -8,7 +8,7 @@ module.exports = override(
         '@features': path.resolve(__dirname, 'src/features'),
         '@shared': path.resolve(__dirname, 'src/shared'),
         '@entities': path.resolve(__dirname, 'src/entities'),
-        '@widgets': path.resolve(__dirname, 'src/widgets'),
+        '@widgets': path.resolve(__dirname, 'src/widgets/index.ts'),
         '@api': path.resolve(__dirname, 'src/shared/api/index.ts'),
         '@ui': path.resolve(__dirname, 'src/shared/ui/index.ts'),
         '@type': path.resolve(__dirname, 'src/shared/types/index.ts'),

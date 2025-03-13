@@ -1,27 +1,32 @@
 import './App.css';
-import Layout from '@widgets/layout/ui/Layout';
-import {AuthProvider} from '../providers/auth/AuthProvider';
+import {AuthProvider, FeedbackProvider, SearchFormProvider, VacancyProvider} from '@app/providers';
 import {AppRoutes} from "../routes/AppRoutes";
 import {BrowserRouter} from "react-router-dom";
-import {SearchFormProvider} from "../providers/search/SearchFormProvider";
+import {i18next} from "@config";
+import {I18nextProvider} from "react-i18next";
+import {Header, Layout} from "@widgets";
 
 function App() {
     return (
         <div className="App">
-            <header className="App-header">
-                ТРУДОУСТРОЙСТВО
-            </header>
-            <main>
+            <I18nextProvider i18n={i18next}>
                 <AuthProvider>
                     <SearchFormProvider>
                         <BrowserRouter>
-                            <Layout>
-                                <AppRoutes/>
-                            </Layout>
+                            <Header/>
+                            <main>
+                                <Layout>
+                                    <VacancyProvider>
+                                        <FeedbackProvider>
+                                            <AppRoutes/>
+                                        </FeedbackProvider>
+                                    </VacancyProvider>
+                                </Layout>
+                            </main>
                         </BrowserRouter>
                     </SearchFormProvider>
                 </AuthProvider>
-            </main>
+            </I18nextProvider>
         </div>
     );
 }

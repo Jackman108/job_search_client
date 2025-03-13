@@ -1,0 +1,33 @@
+.header {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	padding: 1rem 2rem;
+	background: linear-gradient(145deg, #275795, #1a365d);
+	box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+	color: white;
+	position: sticky;
+	top: 0;
+	z-index: 1000;
+}
+
+.logo {
+	font-size: 1.5rem;
+	font-weight: bold;
+	text-decoration: none;
+	color: white;
+	display: flex;
+	align-items: center;
+	gap: 0.5rem;
+	transition: transform 0.3s ease;
+}
+
+.logo:hover {
+	transform: scale(1.05);
+}
+
+.controls {
+	display: flex;
+	align-items: center;
+	gap: 1rem;
+}

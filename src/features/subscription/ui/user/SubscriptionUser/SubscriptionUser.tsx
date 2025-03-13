@@ -1,7 +1,6 @@
 import React, {FC} from 'react';
-import {Link} from 'react-router-dom';
 import styles from './SubscriptionUser.module.css';
-import {Button, LanguageSwitcher, LoadingOrError} from "@ui";
+import {Button, LoadingOrError} from "@ui";
 import {useTranslation} from "react-i18next";
 import SubscriptionSelectionForm
     from "@features/subscription/ui/user/SubscriptionSelectionForm/SubscriptionSelectionForm";
@@ -45,8 +44,6 @@ const SubscriptionUser: FC = () => {
             <meta name="author" content="Your Company"/>
             <title>Subscription Management</title>
             <div className={styles.containerSubscription}>
-                <LanguageSwitcher/>
-                <Link to="/" className={styles.homeButton} aria-label="Home">🏠</Link>
                 <h1 className={styles.title}>{t('subscriptions.title')}</h1>
 
                 {!isFormVisible && subscribeData && subscribeData.length > 0 && (

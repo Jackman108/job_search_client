@@ -2,7 +2,7 @@ import {FC, ReactNode} from 'react';
 import AuthContext from './useAuthContext';
 import {useLocalStorage} from "@hooks";
 
-export const AuthProvider: FC<{ children: ReactNode }> = ({children}) => {
+const AuthProvider: FC<{ children: ReactNode }> = ({children}) => {
     const [token, setToken] = useLocalStorage<string | null>('token', null);
 
     return (
@@ -11,3 +11,5 @@ export const AuthProvider: FC<{ children: ReactNode }> = ({children}) => {
         </AuthContext.Provider>
     );
 };
+
+export default AuthProvider;
