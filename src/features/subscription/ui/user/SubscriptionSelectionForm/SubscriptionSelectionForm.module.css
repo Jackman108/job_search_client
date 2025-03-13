@@ -1,13 +1,10 @@
 .formContainer {
 	max-width: 400px;
 	margin: 20px auto;
-	padding: 20px;
+	padding: 100px 20px 20px;
 	background: linear-gradient(145deg, #ffffff, #f9f9f9);
 	box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-	border: 1px solid #e0e0e0;
-	border-radius: 8px;
 }
-
 
 .formTitle {
 	font-size: 1.5rem;
@@ -31,6 +28,7 @@
 
 .cardContainer {
 	display: flex;
+	flex-direction: column;
 	gap: 10px;
 	grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
 }

@@ -8,6 +8,7 @@ import {PAYMENT_STATUS, PaymentTypes} from "@entities/payment";
 import {useSubscriptionStatus} from "@features/subscription/hooks/useSubscriptionStatus";
 import {useCurrency} from "@hooks";
 import {ACTION_TYPES} from "@config";
+import {getCardBackground} from "@features/subscription/utils/getCardBackground";
 
 interface SubscriptionActiveCardProps {
     subscribeData: SubscriptionTypes[];
@@ -18,12 +19,11 @@ interface SubscriptionActiveCardProps {
 }
 
 const SubscriptionActive: React.FC<SubscriptionActiveCardProps> = ({
-                                                                           subscribeData,
-                                                                           paymentData,
-                                                                           subscribeEditClick,
-                                                                           subscribeDelete,
-                                                                           paymentEditClick,
-                                                                       }) => {
+                                                                       subscribeData,
+                                                                       paymentData,
+                                                                       subscribeEditClick,
+                                                                       paymentEditClick,
+                                                                   }) => {
     const {t} = useTranslation('subscriptions');
     const {currency, convertCurrency} = useCurrency();
     const {getSubscriptionLabel} = useSubscriptionStatus();
@@ -37,9 +37,6 @@ const SubscriptionActive: React.FC<SubscriptionActiveCardProps> = ({
                         {t('subscriptions.extendSubscription')}
                     </Button>
                 )}
-                <Button onClick={() => subscribeDelete(subscribe.id!)}>
-                    {t('subscriptions.actions.delete')}
-                </Button>
                 {latestPayment && (
                     <Button onClick={() => paymentEditClick!(latestPayment.id!, latestPayment)}>
                         {t('subscriptions.actions.pay')}
@@ -52,30 +49,32 @@ const SubscriptionActive: React.FC<SubscriptionActiveCardProps> = ({
     return (
         <section className={styles.cardContainer}>
             {subscribeData?.map((subscribe) => (
-                <article key={subscribe.id}>
-                    <div className={styles.card}>
-                        <div className={styles.cardHeader}>
-                            <h2>{getSubscriptionLabel(subscribe.subscription_type, SUBSCRIPTION_TYPE_OPTIONS)}</h2>
-                            <span className={styles.status}>
+                <article
+                    key={subscribe.id}
+                    className={styles.card}
+                    style={getCardBackground(subscribe.subscription_type)}
+                >
+                    <div className={styles.cardHeader}>
+                        <h2>{getSubscriptionLabel(subscribe.subscription_type, SUBSCRIPTION_TYPE_OPTIONS)}</h2>
+                        <span className={styles.status}>
                                 {t(`subscriptions.status.${getSubscriptionStatus(subscribe, paymentData)}`)}
                             </span>
-                        </div>
-                        <div className={styles.cardBody}>
-                            <p>
-                                <strong>{t('tableHeaders.price')}: </strong>
-                                {convertCurrency(subscribe.price, 'RUB', currency)} {currency}
-                            </p>
-                            <p>
-                                <strong>{t('tableHeaders.startDate')}: </strong>
-                                {formatDate(subscribe.start_date.toString()).date}
-                            </p>
-                            <p>
-                                <strong>{t('tableHeaders.endDate')}: </strong>
-                                {formatDate(subscribe.end_date.toString()).date}
-                            </p>
-                        </div>
-                        {renderActions(subscribe)}
                     </div>
+                    <div className={styles.cardBody}>
+                        <p>
+                            <strong>{t('tableHeaders.price')}: </strong>
+                            {convertCurrency(subscribe.price, 'RUB', currency)} {currency}
+                        </p>
+                        <p>
+                            <strong>{t('tableHeaders.startDate')}: </strong>
+                            {formatDate(subscribe.start_date.toString()).date}
+                        </p>
+                        <p>
+                            <strong>{t('tableHeaders.endDate')}: </strong>
+                            {formatDate(subscribe.end_date.toString()).date}
+                        </p>
+                    </div>
+                    {renderActions(subscribe)}
                 </article>
             ))}
         </section>

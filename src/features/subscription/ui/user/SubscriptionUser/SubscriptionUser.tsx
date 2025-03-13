@@ -39,7 +39,6 @@ const SubscriptionUser: FC = () => {
     const isFormVisible = subscribeShowForm || paymentShowForm;
     return (
         <>
-            {/* Мета-теги и SEO-оптимизация */}
             <meta name="description"
                   content="Manage your subscriptions with ease. View, edit, and delete your subscriptions in a modern and user-friendly interface."/>
             <meta name="keywords" content="subscriptions, manage subscriptions, subscription management"/>

@@ -33,6 +33,14 @@
     "subscriptionStatus": "Subscription status",
     "actions": "Actions"
   },
+  "cardHeaders": {
+    "editSubscription": "Renew Subscription",
+    "createSubscription": "Create Subscription",
+    "chooseSubscriptionType": "Select the desired subscription type",
+    "create": "Subscribe",
+    "update": "Renew",
+    "cancel": "Cancel"
+  },
   "form": {
     "userId": "User ID",
     "subscriptionType": "Subscription type",

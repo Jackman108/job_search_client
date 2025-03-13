@@ -23,4 +23,5 @@ export interface SubscriptionOptionProps {
     currency: string;
     isSelected: boolean;
     onClick: () => void;
+    style: { background: string };
 }

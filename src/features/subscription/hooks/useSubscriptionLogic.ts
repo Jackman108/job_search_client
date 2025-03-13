@@ -1,4 +1,4 @@
-import {useCallback, useEffect, useState} from 'react';
+import {useCallback} from 'react';
 import {ACTION_TYPES} from "@config";
 import {useTableLogic} from "@hooks";
 import useFetchSubscription from "@features/subscription/hooks/useFetchSubscription";
@@ -8,7 +8,6 @@ import {useProcessHandler} from "@features/payments/hooks/useProcessHandler";
 import {subscriptionConfig, SubscriptionTypes} from "@entities/subscription";
 
 export const useSubscriptionLogic = () => {
-    const [selectedSubscription, setSelectedSubscription] = useState<SubscriptionTypes | null>(null);
 
     const {
         data: subscribeData,
@@ -56,14 +55,14 @@ export const useSubscriptionLogic = () => {
         try {
             const createdSubscription = await subscribeSubmit(formData);
 
-            const subscriptionToUse = selectedSubscription || createdSubscription.data;
+            const subscriptionToUse = subscribeIsEditing.subscription ? formData : createdSubscription.data;
             if (subscriptionToUse) {
                 await createDefaultPayment(subscriptionToUse);
             }
         } catch (error) {
             console.error('Ошибка при создании подписки или оплаты:', error);
         }
-    }, [subscribeSubmit, createDefaultPayment, selectedSubscription]);
+    }, [subscribeSubmit, createDefaultPayment, subscribeIsEditing.subscription]);
 
 
     const paymentWithProcess = useCallback(async (formData: Partial<PaymentTypes>) => {
@@ -71,7 +70,11 @@ export const useSubscriptionLogic = () => {
             const latestPayment: PaymentTypes = paymentData?.find((payment: PaymentTypes) => payment.payment_status === PAYMENT_STATUS.PENDING);
 
             if (latestPayment) {
-                const updatedPayment = {...latestPayment, payment_method: formData.payment_method, amount: formData?.amount || latestPayment.amount};
+                const updatedPayment = {
+                    ...latestPayment,
+                    payment_method: formData.payment_method,
+                    amount: formData?.amount || latestPayment.amount
+                };
 
                 await handleProcess(updatedPayment);
             } else {
@@ -86,22 +89,14 @@ export const useSubscriptionLogic = () => {
 
     const subscribeEditClick = useCallback((type: string, item: any) => {
         subscribeEdit(type, item);
-        setSelectedSubscription(item);
         subscribeToggleForm();
     }, [subscribeEdit, subscribeToggleForm]);
 
     const paymentEditClick = useCallback((type: string, item: any) => {
-        paymentEdit(item, item);
+        paymentEdit(type, item);
         paymentToggleForm();
     }, [paymentToggleForm, paymentEdit]);
 
-
-    useEffect(() => {
-        if (subscribeData && subscribeData.length > 0 && !subscribeIsEditing.subscription) {
-            const latestSubscription = subscribeData[subscribeData.length - 1];
-            setSelectedSubscription(latestSubscription);
-        }
-    }, [subscribeData, subscribeIsEditing.subscription]);
 
     return {
         subscribeData,

@@ -11,6 +11,7 @@ import {
 } from "@entities/subscription";
 import styles from './SubscriptionSelectionForm.module.css';
 import SubscriptionOption from "@features/subscription/ui/user/SubscriptionOption/SubscriptionOption";
+import {getCardBackground} from "@features/subscription/utils/getCardBackground";
 
 const SubscriptionSelectionForm: React.FC<SubscriptionFormProps> = ({
                                                                         initialData,
@@ -28,7 +29,9 @@ const SubscriptionSelectionForm: React.FC<SubscriptionFormProps> = ({
             setFormData({
                 id: initialData.id,
                 subscription_type: initialData.subscription_type || SUBSCRIPTION_TYPES.WEEKLY,
-                price: initialData.price
+                price: initialData.price,
+                start_date: initialData.start_date,
+                end_date: initialData.end_date,
             });
             setSelectedType(initialData.subscription_type || SUBSCRIPTION_TYPES.WEEKLY);
         }
@@ -36,8 +39,15 @@ const SubscriptionSelectionForm: React.FC<SubscriptionFormProps> = ({
 
     const handleCardClick = useCallback((type: SubscriptionVariant, price: number) => {
         setSelectedType(type);
-        setFormData(prev => ({...prev, subscription_type: type, price}));
-    }, [setFormData]);
+        const updatedSubscription = {
+            ...formData,
+            subscription_type: type,
+            price,
+            start_date: formData.start_date || new Date().toISOString(),
+            end_date: formData.end_date || new Date().toISOString(),
+        };
+        setFormData(updatedSubscription);
+    }, [formData, setFormData]);
 
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();
@@ -63,6 +73,7 @@ const SubscriptionSelectionForm: React.FC<SubscriptionFormProps> = ({
                             isSelected={selectedType === option.value}
                             onClick={() => handleCardClick(option.value, option.price)}
                             aria-label={`${option.label} subscription for ${option.price} RUB`}
+                            style={getCardBackground(option.value)}
                         />
                     ))}
                 </div>

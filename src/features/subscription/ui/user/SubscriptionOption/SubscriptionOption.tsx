@@ -2,10 +2,18 @@ import React from 'react';
 import styles from './SubscriptionOption.module.css';
 import {SubscriptionOptionProps} from "@features/subscription/props/Subscription.props";
 
-const SubscriptionOption: React.FC<SubscriptionOptionProps> = ({label, price, currency, isSelected, onClick}) => {
+const SubscriptionOption: React.FC<SubscriptionOptionProps> = ({
+                                                                   label,
+                                                                   price,
+                                                                   currency,
+                                                                   isSelected,
+                                                                   onClick,
+                                                                   style,
+                                                               }) => {
     return (
         <article
             className={`${styles.card} ${isSelected ? styles.selected : ''}`}
+            style={style}
             onClick={onClick}
             role="button"
             tabIndex={0}

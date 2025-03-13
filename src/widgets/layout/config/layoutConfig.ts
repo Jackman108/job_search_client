@@ -3,6 +3,7 @@ import Profile from '@features/profile/ui/Profile';
 import Resume from '@features/resume/ui/ResumeButton/ResumeButton';
 import SearchForm from '@features/vacancies/ui/SearchForm/SearchForm';
 import FeedbackForm from "@features/feedback/ui/FeedbackForm";
+import SubscriptionUser from "@features/subscription/ui/user/SubscriptionUser/SubscriptionUser";
 
 export const layoutConfig: ButtonConfig<any>[] = [
     {
@@ -27,6 +28,12 @@ export const layoutConfig: ButtonConfig<any>[] = [
         icon: '/resume.png',
         tooltipText: 'Резюме',
         Component: Resume,
+        position: 'right',
+    },
+    {
+        icon: '/subscribe.png',
+        tooltipText: 'Подписки',
+        Component: SubscriptionUser,
         position: 'right',
     },
 ];
