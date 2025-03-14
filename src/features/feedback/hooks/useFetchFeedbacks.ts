@@ -38,7 +38,6 @@ const useFetchFeedback = () => {
         feedbacks: feedbacks || [],
         loading,
         error: error ? error.message : null,
-        fetchFeedbacks: () => queryClient.invalidateQueries({queryKey: ['feedbacks']}),
         deleteFeedback: deleteFeedbackMutation.mutateAsync,
         loadData,
     };

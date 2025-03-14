@@ -1,9 +1,9 @@
 import {useCallback} from 'react';
-import {useFeedbackContext} from '@app/providers/feedback/useFeedbackContext';
 import {Feedback} from "@features/feedback/types/Feedback.types";
+import useFetchFeedbacks from "@features/feedback/hooks/useFetchFeedbacks";
 
 const useFeedbackByVacancyId = () => {
-    const {feedbacks, error: feedbackError} = useFeedbackContext();
+    const {feedbacks, error: feedbackError} = useFetchFeedbacks();
 
     const getFeedbackByVacancyId = useCallback((vacancyId: number): Feedback | undefined => {
         if (feedbackError) {

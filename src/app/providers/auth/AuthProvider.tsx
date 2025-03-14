@@ -1,8 +1,8 @@
-import {FC, ReactNode} from 'react';
 import AuthContext from './useAuthContext';
 import {useLocalStorage} from "@hooks";
+import {AppProvidersProps} from "@app/types/AppProviders.props";
 
-const AuthProvider: FC<{ children: ReactNode }> = ({children}) => {
+const AuthProvider = ({children}: AppProvidersProps) => {
     const [token, setToken] = useLocalStorage<string | null>('token', null);
 
     return (

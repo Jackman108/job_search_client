@@ -16,10 +16,6 @@ export const handleWebSocketMessage = (data: string, loadData: () => void, setAl
             handleIdMessage(data, 'Vacancy', loadData);
             break;
 
-        case data.startsWith(WS_EVENTS.FEEDBACK_SAVED):
-            handleIdMessage(data, 'Feedback', loadData);
-            break;
-
         case data === WS_EVENTS.ERROR_DETECTED:
             setAlert(WS_ERRORS.INVALID_EMAIL_PASSWORD);
             break;

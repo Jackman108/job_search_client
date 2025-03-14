@@ -1,10 +1,11 @@
-import {FC, ReactNode, useMemo} from 'react';
+import {useMemo} from 'react';
 import {CaptchaAlert} from '@ui';
 import {useAlert, useWebSocketConnection} from '@hooks';
 import useFetchVacancies from '@features/vacancies/hooks/useFetchVacancies';
 import TableContext from './useVacancyContext';
+import {AppProvidersProps} from "@app/types/AppProviders.props";
 
-const VacancyProvider: FC<{ children: ReactNode }> = ({children}) => {
+const VacancyProvider = ({children}: AppProvidersProps) => {
     const {vacancies, loading, error, fetchVacancies, deleteVacancy, loadData} = useFetchVacancies();
     const {alertState, setAlert, handleCloseAlert} = useAlert();
 
