@@ -1,6 +1,6 @@
 import {useSubmitRequest} from "@hooks";
-import {HandleFeedbackParams} from "@features/feedback/types/Feedback.types";
 import useFetchFeedbacks from "@features/feedback/hooks/useFetchFeedbacks";
+import {HandleFeedbackParams} from "@features/feedback/types/Feedback.props";
 
 const useFeedbackSubmit = () => {
     const {handleSubmitRequest, handleStopRequest} = useSubmitRequest();

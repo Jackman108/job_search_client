@@ -1,5 +1,5 @@
 import VacanciesTable from "@features/vacancies/ui/VacanciesTable/VacanciesTable";
-import FeedbackTable from "@features/feedback/ui/FeedbackTable";
+import FeedbackTable from "@features/feedback/ui/FeedbackTable/FeedbackTable";
 import Resume from "@features/resume/ui/Resume";
 import PaymentTable from "@features/payments/ui/admin/PaymentTable/PaymentTable";
 import SubscriptionTable from "@features/subscription/ui/admin/SubscriptionTable/SubscriptionTable";

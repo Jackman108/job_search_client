@@ -10,7 +10,13 @@ import {
     SaveItemMutationParams
 } from "@type";
 
-const SPECIAL_TYPES = [ACTION_TYPES.SKILLS, ACTION_TYPES.EXPERIENCE, ACTION_TYPES.PAYMENT, ACTION_TYPES.SUBSCRIPTION] as const;
+const SPECIAL_TYPES = [
+    ACTION_TYPES.SKILLS,
+    ACTION_TYPES.EXPERIENCE,
+    ACTION_TYPES.PAYMENT,
+    ACTION_TYPES.SUBSCRIPTION,
+    ACTION_TYPES.FEEDBACK
+] as const;
 
 const getQueryKey = (config: FetchByTypeConfig['config']) => {
     return Object.keys(config).map(key => [(config as Record<string, ConfigItem>)[key].apiEndpoint]);

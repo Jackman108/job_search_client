@@ -1,6 +1,6 @@
 import {Vacancy} from "@features/vacancies/types/Vacancies.types";
-import {Feedback} from "@features/feedback/types/Feedback.types";
 import {MouseEvent} from "react";
+import {Feedback} from "@entities/feedback";
 
 export interface VacancyRowProps {
     vacancy: Vacancy;

@@ -3,7 +3,7 @@ import {PanelProps} from "@type";
 import styles from "@features/vacancies/ui/SearchForm/SearchForm.module.css";
 import {Button, FormContainer, ManagementSection, RenderInput} from "@ui";
 import {FORM_CONFIG} from "@features/vacancies/config/searchConfig";
-import useFeedbackLogic from "../hooks/useFeedbackLogic";
+import useFeedbackLogic from "../../hooks/useFeedbackLogic";
 import {FORM_BUTTONS} from "@config";
 
 const FeedbackForm: FC<PanelProps> = ({onClose}) => {

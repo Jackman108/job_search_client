@@ -1,14 +1,15 @@
 import {Dispatch, SetStateAction} from "react";
 import {Errors} from "@type";
+import {Feedback} from "@entities/feedback";
 
-export interface Feedback {
-    id: number;
-    vacancy_id: number;
-    feedback_text: string;
-    response_status: string;
-    feedback_date: string;
-    feedback_date_time?: string;
-    feedback_date_date?: string;
+export interface FeedbackHeaderProps {
+    handleSort: (key: keyof Feedback) => void;
+    getSortArrow: (key: keyof Feedback) => string;
+}
+
+export interface FeedbackRowProps {
+    feedback: Feedback;
+    deleteFeedback: (id: number) => void;
 }
 
 export interface HandleFeedbackParams {

@@ -1,44 +1,29 @@
-import {Feedback} from '../types/Feedback.types';
-import {formatAndSortData, formatDate} from '@utils';
-import {useMutation, useQuery, useQueryClient} from "@tanstack/react-query";
-import {useDataApi} from "@api";
-
-const formatFeedback = (feedback: Feedback): Feedback => ({
-    ...feedback,
-    feedback_date_time: formatDate(feedback.feedback_date).time,
-    feedback_date_date: formatDate(feedback.feedback_date).date,
-});
+import {formatAndSortData} from '@utils';
+import {useFetchByType} from "@api";
+import {useCallback} from "react";
+import {formatFeedbackDate} from "@features/feedback/utils/formatFeedbackDate";
+import {ACTION_TYPES} from "@config";
+import {Feedback, feedbackConfig} from "@entities/feedback";
 
 const useFetchFeedback = () => {
-    const {request} = useDataApi();
-    const queryClient = useQueryClient();
+    const {fetchedData, loading, error, deleteItem, saveItem, loadData} = useFetchByType(feedbackConfig);
 
-    const fetchFeedbacks = async () => {
-        const data = await request('get', '/feedback');
-        return formatAndSortData(data, formatFeedback, 'feedback_date')
-    };
-    const {data: feedbacks, isLoading: loading, error, refetch: loadData} = useQuery<Feedback[], Error>({
-        queryKey: ['feedbacks'],
-        queryFn: fetchFeedbacks,
-        staleTime: 1000 * 60 * 10,
-    });
-    const deleteFeedbackMutation = useMutation<void, Error, number>({
-        mutationFn: async (id: number) => {
-            await request('delete', `/feedback/${id}`);
-        },
-        onSuccess: async () => {
-            await queryClient.invalidateQueries({queryKey: ['feedbacks']});
-        },
-        onError: (err) => {
-            console.error("Ошибка удаления feedback:", err);
-        },
-    });
+    const feedbacks = fetchedData.feedback ? formatAndSortData(fetchedData.feedback, formatFeedbackDate, 'feedback_date') : [];
+
+    const deleteFeedback = useCallback(async (id: number) => {
+        await deleteItem({type: ACTION_TYPES.FEEDBACK, id});
+    }, [deleteItem]);
+
+    const saveFeedback = useCallback(async (formData: Partial<Feedback>, isEditing: boolean, id?: number) => {
+        await saveItem({type: ACTION_TYPES.FEEDBACK, id, formData, isEditing});
+    }, [saveItem]);
 
     return {
-        feedbacks: feedbacks || [],
+        feedbacks,
         loading,
-        error: error ? error.message : null,
-        deleteFeedback: deleteFeedbackMutation.mutateAsync,
+        error,
+        deleteFeedback,
+        saveFeedback,
         loadData,
     };
 };

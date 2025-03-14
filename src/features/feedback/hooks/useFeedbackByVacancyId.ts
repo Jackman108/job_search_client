@@ -1,6 +1,6 @@
 import {useCallback} from 'react';
-import {Feedback} from "@features/feedback/types/Feedback.types";
 import useFetchFeedbacks from "@features/feedback/hooks/useFetchFeedbacks";
+import {Feedback} from "@entities/feedback";
 
 const useFeedbackByVacancyId = () => {
     const {feedbacks, error: feedbackError} = useFetchFeedbacks();
