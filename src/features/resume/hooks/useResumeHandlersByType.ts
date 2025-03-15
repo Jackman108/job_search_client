@@ -38,6 +38,7 @@ export const useResumeHandlersByType = (initialFormData = {}) => {
     }, [setFormData]);
 
     const prepareDataForSubmit = useCallback((type: string, formData: Record<string, any>) => {
+
         return {
             ...formData,
             business_trip_readiness: type === ACTION_TYPES.RESUME
@@ -55,11 +56,11 @@ export const useResumeHandlersByType = (initialFormData = {}) => {
         handleEditClick: (type: string, item: any) => {
             handleEditClick(type, {
                 ...item,
-                employment_type: item.employment_type ? parseArrayFromString(item.employment_type) : [],
-                work_schedule: item.work_schedule ? parseArrayFromString(item.work_schedule) : [],
-                business_trip_readiness: type === ACTION_TYPES.RESUME
-                    ? item.business_trip_readiness ? businessTripReadiness[1] : businessTripReadiness[0]
-                    : item.business_trip_readiness,
+                ...(type === ACTION_TYPES.RESUME && {
+                    employment_type: item.employment_type ? parseArrayFromString(item.employment_type) : [],
+                    work_schedule: item.work_schedule ? parseArrayFromString(item.work_schedule) : [],
+                    business_trip_readiness: item.business_trip_readiness ? businessTripReadiness[1] : businessTripReadiness[0],
+                })
             });
         },
         handleCancelClick: (type: string) => handleCancelClick(type),

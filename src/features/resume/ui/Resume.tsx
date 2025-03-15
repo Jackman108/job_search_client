@@ -1,11 +1,11 @@
 import {Link} from 'react-router-dom';
 import {Button, UnauthorizedMessage} from '@ui';
 import {resumeConfig} from '../config/resumeConfig';
-import {useResume} from '../hooks/useResume';
+import {useResumeData} from '../hooks/useResumeData';
 import styles from './Resume.module.css';
 import ResumeChange from './ResumeItems/ResumeChange';
 import ResumeView from './ResumeItems/ResumeView';
-import {useAuth} from "@app/providers/auth/useAuthContext";
+import {LOCALES} from "@config";
 
 const Resume = () => {
     const config = resumeConfig
@@ -23,60 +23,55 @@ const Resume = () => {
         handleSubmit,
         handleInputChange,
         handleCancelClick,
-    } = useResume(config);
+    } = useResumeData(config);
 
-    const {token} = useAuth();
 
-    if (!token) {
-        return (
-            <section className={styles.sectionContainer}>
-                <UnauthorizedMessage/>
-            </section>
-        );
-    }
+    if (loading) return <div>{LOCALES.LOADING}</div>;
+    if (error) return <UnauthorizedMessage/>;
+    const hasResume = fetchedData.resume && !isEditing.resume && !isCreating.resume;
+
 
     return (
         <div>
             <Link to="/" className="home-button"> 🏠 </Link>
-            {Object.entries(config).map(([type, item]) => (
-                <section key={type} className={styles.dataDisplaySection}>
-                    <h1>{item.title}</h1>
-                    {loading && <div>Загрузка...</div>}
-                    {error && (
-                        <div>
-                            Нет данных
-                            <Button onClick={() => handleCreateClick(type)} variant="primary">Создать запись</Button>
-                        </div>
-                    )}
-                    {!isEditing[type] && !isCreating[type] && fetchedData[type] && (
-                        <ResumeView
-                            type={type}
-                            fields={item.fields}
-                            data={fetchedData[type]}
-                            config={config}
-                            onEditClick={handleEditClick}
-                            onDeleteClick={() => deleteItem({type})}
-                            onCreateClick={handleCreateClick}
-                        />
-                    )}
+            {Object.entries(config).map(([type, item]) => {
+                if (!hasResume && type !== 'resume') {
+                    return null;
+                }
+                return (
+                    <section key={type} className={styles.dataDisplaySection}>
+                        <h1>{item.title}</h1>
 
-                    {(isEditing[type] || isCreating[type]) && (
-                        <ResumeChange
-                            type={type}
-                            fields={item.fields}
-                            formData={formData}
-                            onCancel={() => handleCancelClick(type)}
-                            handleSubmit={handleSubmit}
-                            handleInputChange={handleInputChange}
-                        />
-                    )}
-                    {!loading && !error && !isEditing[type] && !fetchedData[type] && !isCreating[type] && (
-                        <Button onClick={() => handleCreateClick(type)} variant="primary">
-                            Создать запись
-                        </Button>
-                    )}
-                </section>
-            ))}
+                        {!isEditing[type] && !isCreating[type] && fetchedData[type] && (
+                            <ResumeView
+                                type={type}
+                                fields={item.fields}
+                                data={fetchedData[type]}
+                                config={config}
+                                onEditClick={handleEditClick}
+                                onDeleteClick={() => deleteItem({type})}
+                                onCreateClick={handleCreateClick}
+                            />
+                        )}
+
+                        {(isEditing[type] || isCreating[type]) && (
+                            <ResumeChange
+                                type={type}
+                                fields={item.fields}
+                                formData={formData}
+                                onCancel={() => handleCancelClick(type)}
+                                handleSubmit={handleSubmit}
+                                handleInputChange={handleInputChange}
+                            />
+                        )}
+                        {!loading && !error && !isEditing[type] && !fetchedData[type] && !isCreating[type] && (
+                            <Button onClick={() => handleCreateClick(type)} variant="primary">
+                                Создать запись
+                            </Button>
+                        )}
+                    </section>
+                );
+            })}
         </div>
     );
 };

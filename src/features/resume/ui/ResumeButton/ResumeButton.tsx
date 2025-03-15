@@ -4,6 +4,7 @@ import {useAuth} from '@app/providers/auth/useAuthContext';
 import styles from '@shared/styles/Container.module.css';
 import {Button, FormContainer} from "@ui";
 import {PanelProps} from "@type";
+import Resume from "@features/resume/ui/Resume";
 
 const ResumeButton: FC<PanelProps> = ({onClose}) => {
     const {token} = useAuth();
@@ -20,6 +21,7 @@ const ResumeButton: FC<PanelProps> = ({onClose}) => {
                     <Button onClick={handleGetClick} variant="primary">
                         резюме
                     </Button>
+                    <Resume/>
                 </div>
             </section>
         </FormContainer>

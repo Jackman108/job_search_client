@@ -11,7 +11,7 @@ import Auth from "@features/auth/ui/Auth";
 import {PanelProps} from "@type";
 
 
-const Profile: FC<PanelProps> = () => {
+const ProfileButton: FC<PanelProps> = () => {
     const {userProfile, handleUpdateProfile} = useProfileHandlers();
     const {handleSignOut} = useAuthHandlers();
 
@@ -54,4 +54,4 @@ const Profile: FC<PanelProps> = () => {
     );
 };
 
-export default Profile;
+export default ProfileButton;

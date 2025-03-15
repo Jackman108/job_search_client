@@ -57,9 +57,7 @@ const ResumeField: React.FC<ResumeFieldProps> = ({
     };
 
     return (
-        <div className={styles.formField}>
-            {renderField()}
-        </div>
+        <div className={styles.formField}>{renderField()}</div>
     );
 };
 
