@@ -1,31 +1,34 @@
 import React from 'react';
-import {UserInfoProps} from '../../types/InterfaceProfile.types';
+import {UserInfoProps} from '@features/profile/props/InterfaceProfile.props';
 import {Avatar, Button, RenderRow} from '@ui';
 import styles from './ProfileView.module.css';
-import {USER_TEXTS, BUTTON_TEXTS} from "@features/profile/config/profileConfigs";
+import {useTranslation} from "react-i18next";
 
-const ProfileView: React.FC<UserInfoProps> = ({userInfo, onEdit, onSignOut}) => (
-    <div className={styles.profileInfo}>
-        <Avatar src={userInfo.avatar} className={styles.avatar}/>
+const ProfileView: React.FC<UserInfoProps> = ({userInfo, onEdit, onSignOut}) => {
+    const {t} = useTranslation('profile');
 
-        <div className={styles.infoContainer}>
-            <RenderRow label={USER_TEXTS.firstNameLabel} value={userInfo.first_name}/>
-            <RenderRow label={USER_TEXTS.lastNameLabel} value={userInfo.last_name}/>
-            <RenderRow label={USER_TEXTS.balanceLabel} value={userInfo.balance}/>
-            <RenderRow label={USER_TEXTS.spinCountLabel} value={userInfo.spin_count}/>
-            <RenderRow label={USER_TEXTS.successfulResponsesLabel} value={userInfo.successful_responses_count}/>
-            <RenderRow label={USER_TEXTS.currentStatusLabel} value={userInfo.current_status}/>
+    return (
+        <div className={styles.profileInfo}>
+            <Avatar src={userInfo.avatar} className={styles.avatar}/>
+
+            <div className={styles.infoContainer}>
+                <RenderRow label={t('row.firstName')} value={userInfo.first_name}/>
+                <RenderRow label={t('row.lastName')} value={userInfo.last_name}/>
+                <RenderRow label={t('row.balance')} value={userInfo.balance}/>
+                <RenderRow label={t('row.spinCount')} value={userInfo.spin_count}/>
+                <RenderRow label={t('row.successfulResponses')} value={userInfo.successful_responses_count}/>
+                <RenderRow label={t('row.currentStatus')} value={userInfo.current_status}/>
+            </div>
+
+            <div className={styles.buttonGroup}>
+                <Button variant="primary" onClick={onEdit}>
+                    {t('button.editProfile')}
+                </Button>
+                <Button variant="danger" onClick={onSignOut}>
+                    {t('button.signOut')}
+                </Button>
+            </div>
         </div>
-
-        <div className={styles.buttonGroup}>
-            <Button variant="primary" onClick={onEdit}>
-                {BUTTON_TEXTS.editButton}
-            </Button>
-            <Button variant="danger" onClick={onSignOut}>
-                {BUTTON_TEXTS.signOutButton}
-            </Button>
-        </div>
-    </div>
-);
-
+    );
+}
 export default ProfileView;

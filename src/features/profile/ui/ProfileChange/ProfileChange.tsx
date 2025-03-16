@@ -1,22 +1,18 @@
 import React from 'react';
-import {UserChangeProps} from '../../types/InterfaceProfile.types';
+import {UserChangeProps} from '@features/profile/props/InterfaceProfile.props';
 import {Button, ImagePreview, ImageUploader, RenderInput} from '@ui';
 import styles from './ProfileChange.module.css';
-import {BUTTON_TEXTS, USER_TEXTS} from "@features/profile/config/profileConfigs";
+import {useTranslation} from "react-i18next";
 
-const ProfileChange: React.FC<UserChangeProps> = ({
-                                                      onSave,
-                                                      onCancel,
-                                                      editProfile,
-                                                      avatarPreview,
-                                                      handleInputChange,
-                                                      handleAvatarChange
-                                                  }) => {
+const ProfileChange: React.FC<UserChangeProps> = (
+    {onSave, onCancel, editProfile, avatarPreview, handleInputChange, handleAvatarChange}
+) => {
+    const {t} = useTranslation('profile');
 
     return (
         <div className={styles.editForm}>
             <RenderInput
-                label={USER_TEXTS.firstNameLabel}
+                label={t('row.firstName')}
                 name='first_name'
                 value={editProfile.first_name || ""}
                 onChange={handleInputChange}
@@ -25,7 +21,7 @@ const ProfileChange: React.FC<UserChangeProps> = ({
                 placeholder=''
             />
             <RenderInput
-                label={USER_TEXTS.lastNameLabel}
+                label={t('row.lastName')}
                 name='last_name'
                 value={editProfile.last_name || ""}
                 onChange={handleInputChange}
@@ -34,7 +30,7 @@ const ProfileChange: React.FC<UserChangeProps> = ({
                 placeholder=''
             />
             <RenderInput
-                label={USER_TEXTS.avatarLabel}
+                label={t('row.avatar')}
                 name='avatar'
                 value={editProfile.avatar || ""}
                 onChange={handleInputChange}
@@ -48,10 +44,10 @@ const ProfileChange: React.FC<UserChangeProps> = ({
             </div>
             <div className={styles.buttonGroup}>
                 <Button type="submit" variant="primary" onClick={onSave}>
-                    {BUTTON_TEXTS.saveButton}
+                    {t('button.saveProfile')}
                 </Button>
                 <Button variant="secondary" onClick={onCancel}>
-                    {BUTTON_TEXTS.cancelButton}
+                    {t('button.cancelProfile')}
                 </Button>
             </div>
         </div>

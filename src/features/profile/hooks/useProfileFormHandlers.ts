@@ -1,6 +1,6 @@
 import {ChangeEvent, useCallback, useEffect, useRef, useState} from 'react';
-import {UserProfile} from '../types/InterfaceProfile.types';
 import useFetchProfile from './useFetchProfile';
+import {UserProfile} from "@entities/profile";
 
 export const useProfileFormHandlers = (initialUserInfo: UserProfile) => {
     const [isEditing, setIsEditing] = useState(false);

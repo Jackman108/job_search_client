@@ -1,7 +1,6 @@
 import {FC} from 'react';
 import styles from './SearchForm.module.css';
 import {PanelProps} from "@type";
-import {FORM_BUTTONS} from "@config";
 import useSearchFormLogic from '../../hooks/useSearchFormLogic';
 import {Button, FormContainer, ManagementSection, RenderInput, RenderSelect, RenderTextarea} from '@ui';
 import {
@@ -12,9 +11,12 @@ import {
     FormLabelKeys,
     FormParamKeys,
 } from '../../config/searchConfig';
+import {useTranslation} from "react-i18next";
 
 
 const SearchForm: FC<PanelProps> = ({onClose}) => {
+    const {t} = useTranslation('auth');
+
     const {
         token,
         isLoading,
@@ -40,7 +42,6 @@ const SearchForm: FC<PanelProps> = ({onClose}) => {
 
     return (
         <FormContainer token={token} onClose={onClose}>
-
             <ManagementSection
                 title="Управление Аккаунтами"
                 selectedId={selectedAuthId}
@@ -109,7 +110,7 @@ const SearchForm: FC<PanelProps> = ({onClose}) => {
                         type="submit"
                         disabled={isLoading}
                     >
-                        {isLoading ? FORM_BUTTONS.isLoading : FORM_BUTTONS.submitButton}
+                        {isLoading ? t('form.isLoading') : t('button.start')}
                     </Button>
                     <Button
                         className={styles.button}
@@ -118,7 +119,7 @@ const SearchForm: FC<PanelProps> = ({onClose}) => {
                         disabled={!isLoading}
                         variant="danger"
                     >
-                        {FORM_BUTTONS.stopButton}
+                        {t('button.stop')}
                     </Button>
                 </div>
             </form>

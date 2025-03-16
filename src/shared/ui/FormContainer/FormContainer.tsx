@@ -1,16 +1,18 @@
 import React, {FC} from "react";
 import styles from "@shared/ui/FormContainer/FormContainer.module.css";
 import {Button, UnauthorizedMessage} from "@ui";
-import {FORM_BUTTONS} from "@config";
 import {FormContainerProps} from "@type";
+import {useTranslation} from "react-i18next";
 
 const FormContainer: FC<FormContainerProps> = ({token, onClose, children}) => {
+    const {t} = useTranslation('auth');
+
     if (!token) {
         return (
             <section className={styles.sectionContainer}>
                 <UnauthorizedMessage/>
                 <Button className={styles.closeButton} onClick={onClose} variant="secondary">
-                    {FORM_BUTTONS.closeButton}
+                    {t('button.close')}
                 </Button>
             </section>
         );
@@ -19,7 +21,7 @@ const FormContainer: FC<FormContainerProps> = ({token, onClose, children}) => {
     return (
         <section className={styles.sectionContainer}>
             <Button className={styles.closeButton} onClick={onClose} variant="secondary">
-                {FORM_BUTTONS.closeButton}
+                {t('button.close')}
             </Button>
             {children}
         </section>

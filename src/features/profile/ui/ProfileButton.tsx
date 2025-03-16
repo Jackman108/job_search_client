@@ -1,19 +1,20 @@
 import React, {FC} from 'react';
-import {UserProfile} from '@features/profile/types/InterfaceProfile.types';
 import {useAuthHandlers} from '@features/auth/hooks/useAuthHandlers';
 import {useProfileFormHandlers} from '@features/profile/hooks/useProfileFormHandlers';
 import {useProfileHandlers} from '@features/profile/hooks/useProfileHandlers';
 import styles from '@shared/styles/Container.module.css';
 import ProfileChange from '@features/profile/ui/ProfileChange/ProfileChange';
 import ProfileView from '@features/profile/ui/ProfileView/ProfileView';
-import {USER_TEXTS} from "@features/profile/config/profileConfigs";
 import Auth from "@features/auth/ui/Auth";
 import {PanelProps} from "@type";
+import {UserProfile} from "@entities/profile";
+import {useTranslation} from "react-i18next";
 
 
 const ProfileButton: FC<PanelProps> = () => {
     const {userProfile, handleUpdateProfile} = useProfileHandlers();
     const {handleSignOut} = useAuthHandlers();
+    const {t} = useTranslation('profile');
 
     const {
         isEditing,
@@ -29,7 +30,7 @@ const ProfileButton: FC<PanelProps> = () => {
         <section className={styles.sectionContainer}>
             {userProfile ? (
                 <div className={styles.userContainer}>
-                    <h2>{USER_TEXTS.profileTitle}</h2>
+                    <h2>{t('row.profileTitle')}</h2>
                     {isEditing ? (
                         <ProfileChange
                             onSave={() => handleSave(handleUpdateProfile)}

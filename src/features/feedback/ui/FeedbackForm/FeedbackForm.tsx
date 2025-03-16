@@ -4,9 +4,11 @@ import styles from "@features/vacancies/ui/SearchForm/SearchForm.module.css";
 import {Button, FormContainer, ManagementSection, RenderInput} from "@ui";
 import {FORM_CONFIG} from "@features/vacancies/config/searchConfig";
 import useFeedbackLogic from "../../hooks/useFeedbackLogic";
-import {FORM_BUTTONS} from "@config";
+import {useTranslation} from "react-i18next";
 
 const FeedbackForm: FC<PanelProps> = ({onClose}) => {
+    const {t} = useTranslation('auth');
+
     const {
         token,
         isLoading,
@@ -61,7 +63,7 @@ const FeedbackForm: FC<PanelProps> = ({onClose}) => {
                         type="submit"
                         disabled={isLoading}
                     >
-                        {isLoading ? FORM_BUTTONS.isLoading : FORM_BUTTONS.submitButton}
+                        {isLoading ? t('form.isLoading') : t('button.start')}
                     </Button>
                     <Button
                         className={styles.button}
@@ -70,7 +72,7 @@ const FeedbackForm: FC<PanelProps> = ({onClose}) => {
                         disabled={!isLoading}
                         variant="danger"
                     >
-                        {FORM_BUTTONS.stopButton}
+                        {t('button.stop')}
                     </Button>
                 </div>
             </form>

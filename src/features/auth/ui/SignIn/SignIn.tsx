@@ -1,10 +1,11 @@
 import React, {ChangeEvent, useState} from 'react';
 import {SignInProps} from '../../types/Auth.props';
 import {Button, RenderInput} from '@ui';
-import {FORM_TEXTS} from "@features/vacancies/config/searchConfig";
-import {BUTTON_TEXTS} from "@features/profile/config/profileConfigs";
+import {useTranslation} from "react-i18next";
 
 const SignIn: React.FC<SignInProps> = ({onSignIn, error, loading}) => {
+    const {t} = useTranslation('auth');
+
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
 
@@ -15,27 +16,27 @@ const SignIn: React.FC<SignInProps> = ({onSignIn, error, loading}) => {
     return (
         <form onSubmit={handleSubmit}>
             <RenderInput
-                label={FORM_TEXTS.emailLabel}
-                name={BUTTON_TEXTS.emailButton}
+                label={t('form.email')}
+                name="email"
                 value={email}
                 onChange={(e: ChangeEvent<HTMLInputElement>) => setEmail(e.target.value)}
                 isLoading={false}
-                type={BUTTON_TEXTS.emailButton}
-                placeholder={BUTTON_TEXTS.emailButton}
+                type="email"
+                placeholder=""
                 required
             />
             <RenderInput
-                label={FORM_TEXTS.passwordLabel}
-                name={BUTTON_TEXTS.passwordButton}
+                label={t('form.password')}
+                name="password"
                 value={password}
                 onChange={(e: ChangeEvent<HTMLInputElement>) => setPassword(e.target.value)}
                 isLoading={false}
-                type={BUTTON_TEXTS.passwordButton}
-                placeholder={BUTTON_TEXTS.passwordButton}
+                type="password"
+                placeholder=""
                 required
             />
             <Button type="submit" variant="secondary" disabled={loading}>
-                {loading ? BUTTON_TEXTS.loadingButton : BUTTON_TEXTS.insertButton}
+                {loading ? t('form.isLoading') : t('button.insert')}
             </Button>
             {error && <p>{typeof error === 'string' ? error : error.message}</p>}
         </form>

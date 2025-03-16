@@ -1,7 +1,7 @@
-import {UserProfile} from '@features/profile/types/InterfaceProfile.types';
 import {useDataApi} from "@api";
 import {useMutation, useQuery, useQueryClient} from '@tanstack/react-query';
 import {useCallback} from "react";
+import {UserProfile} from "@entities/profile";
 
 const useFetchProfile = () => {
     const queryClient = useQueryClient();

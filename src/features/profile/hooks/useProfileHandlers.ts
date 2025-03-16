@@ -1,9 +1,9 @@
 import {useCallback, useEffect} from 'react';
-import {UseProfileHandlers} from '../types/InterfaceProfile.types';
+import {UseProfileHandlersProps} from '@features/profile/props/InterfaceProfile.props';
 import {useAuth} from '@app/providers/auth/useAuthContext';
 import useFetchProfile from './useFetchProfile';
 
-export const useProfileHandlers = (): UseProfileHandlers => {
+export const useProfileHandlers = (): UseProfileHandlersProps => {
     const {token} = useAuth();
     const {queryClient, fetchUserProfile, userProfile, setUserProfile} = useFetchProfile();
 

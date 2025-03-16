@@ -6,6 +6,10 @@ import paymentRu from '@shared/locales/ru/payment.json';
 import paymentEn from '@shared/locales/en/payment.json';
 import headerRu from '@shared/locales/ru/header.json';
 import headerEn from '@shared/locales/en/header.json';
+import profileRu from '@shared/locales/ru/profile.json';
+import profileEn from '@shared/locales/en/profile.json';
+import authRu from '@shared/locales/ru/auth.json';
+import authEn from '@shared/locales/en/auth.json';
 
 export const defaultNS = 'subscriptions';
 
@@ -19,11 +23,15 @@ export const initializeI18n = async () => {
                 subscriptions: subscriptionRu,
                 payments: paymentRu,
                 header: headerRu,
+                profile: profileRu,
+                auth: authRu,
             },
             en: {
                 subscriptions: subscriptionEn,
                 payments: paymentEn,
                 header: headerEn,
+                profile: profileEn,
+                auth: authEn,
             },
         },
         defaultNS,
