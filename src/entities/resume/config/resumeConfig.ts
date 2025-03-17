@@ -22,7 +22,6 @@ export const resumeConfig: Record<string, ConfigItem> = {
             personal_site: 'Личный сайт'
         }
     },
-
     skills: {
         title: 'Навыки',
         apiEndpoint: '/skills',

@@ -1,6 +1,5 @@
 import {Dispatch, SetStateAction} from 'react';
-import {FormOption, Errors} from "@type";
-
+import {Errors, FormOption} from "@type";
 
 export interface FormValues {
     email: string;
@@ -26,35 +25,12 @@ export interface SearchSubmitParams {
     endpoint: string;
 }
 
-export interface SearchAuthData {
-    id?: number;
-    email: string;
-    password: string;
-    created_at?: Date;
-    updated_at?: Date;
-}
-
-export interface SearchFieldData {
-    id?: number;
-    position: string;
-    message: string;
-    vacancy_url: string;
-    schedule: string;
-    order_by: string;
-    search_field: string;
-    experience: string;
-    search_period: string;
-    createdAt?: Date;
-    updatedAt?: Date;
-}
-
 export interface FormFieldConfig {
     label: string;
     type: string;
     placeholder: string;
     required: boolean;
 }
-
 
 export interface FormConfig {
     fields: Record<string, FormFieldConfig>;

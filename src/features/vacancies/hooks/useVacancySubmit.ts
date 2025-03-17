@@ -1,4 +1,4 @@
-import {VacancySubmitParams} from '../types/Vacancies.types';
+import {VacancySubmitParams} from '@features/vacancies/props/Vacancies.props';
 import {useSubmitRequest} from "@hooks";
 
 const useVacancySubmit = () => {

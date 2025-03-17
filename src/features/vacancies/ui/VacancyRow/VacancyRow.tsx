@@ -1,9 +1,9 @@
 import {FC} from 'react';
 import {Button} from '@ui';
-import {TABLE_VACANCIES} from "@features/vacancies/config/vacansiesConfig";
+import {TABLE_VACANCIES} from "@entities/vacancy";
 import {BUTTON_SYMBOL} from "@config";
 import styles from './VacancyRow.module.css';
-import {VacancyRowProps} from "@features/vacancies/types/VacancyRow.props";
+import {VacancyRowProps} from "@features/vacancies/props/Vacancies.props";
 
 
 const VacancyRow: FC<VacancyRowProps> = ({vacancy, feedback, onMouseEnter, onMouseLeave, onDelete}) => {

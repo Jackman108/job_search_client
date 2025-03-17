@@ -1,8 +1,8 @@
 import React from 'react';
-import {UserInfoProps} from '@features/profile/props/InterfaceProfile.props';
 import {Avatar, Button, RenderRow} from '@ui';
 import styles from './ProfileView.module.css';
 import {useTranslation} from "react-i18next";
+import {UserInfoProps} from "@features/profile/props/Profile.props";
 
 const ProfileView: React.FC<UserInfoProps> = ({userInfo, onEdit, onSignOut}) => {
     const {t} = useTranslation('profile');

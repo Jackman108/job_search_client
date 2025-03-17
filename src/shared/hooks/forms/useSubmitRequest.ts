@@ -1,5 +1,5 @@
 import {validateEmail, validateSearchUrl} from '@utils';
-import {SearchSubmitParams} from "@features/vacancies/types/SearchForm.types";
+import {SearchSubmitParams} from "@features/vacancies/props/SearchForm.props";
 import {useDataApi} from "@api";
 import {useMutation} from "@tanstack/react-query";
 

@@ -1,5 +1,5 @@
 import {ChangeEvent, useCallback} from 'react';
-import {businessTripReadiness} from '@features/resume/config/resumeLinesConfig';
+import {businessTripReadiness} from '@entities/resume/constants';
 import {useFormState} from "@hooks";
 import {ACTION_TYPES} from "@config";
 import {parseArrayFromString} from "@utils";

@@ -2,9 +2,9 @@ import React, {FC} from "react";
 import {PanelProps} from "@type";
 import styles from "@features/vacancies/ui/SearchForm/SearchForm.module.css";
 import {Button, FormContainer, ManagementSection, RenderInput} from "@ui";
-import {FORM_CONFIG} from "@features/vacancies/config/searchConfig";
 import useFeedbackLogic from "../../hooks/useFeedbackLogic";
 import {useTranslation} from "react-i18next";
+import {FORM_CONFIG} from "@entities/search";
 
 const FeedbackForm: FC<PanelProps> = ({onClose}) => {
     const {t} = useTranslation('auth');

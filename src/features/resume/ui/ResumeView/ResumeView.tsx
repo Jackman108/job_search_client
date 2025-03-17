@@ -1,12 +1,14 @@
 import {FC} from 'react';
-import {ResumeViewProps} from '../../types/InterfaceResume.types';
 import {Button, RenderRow} from '@ui';
 import {formatValue} from '@utils';
-import styles from '../Resume.module.css';
+import styles from '../ResumeSection/ResumeSection.module.css';
 import ResumeArray from '../ResumeArray/ResumeArray';
 import {ACTION_TYPES} from "@config";
+import {ResumeViewProps} from "@features/resume/props/Resume.props";
 
-const ResumeView: FC<ResumeViewProps> = ({type, fields, data, config, onEditClick, onDeleteClick, onCreateClick}) => (
+const ResumeView: FC<ResumeViewProps> = (
+    {type, fields, data, config, onEditClick, onDeleteClick, onCreateClick}
+) => (
     <div className={styles.dataContainer}>
         {type === ACTION_TYPES.SKILLS || type === ACTION_TYPES.EXPERIENCE ? (
             <>

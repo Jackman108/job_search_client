@@ -1,7 +1,7 @@
 import {FC} from 'react';
 import {Button} from '@ui';
 import styles from './FeedbackRow.module.css';
-import {FeedbackRowProps} from "@features/feedback/types/Feedback.props";
+import {FeedbackRowProps} from "@features/feedback/props/Feedback.props";
 import {BUTTON_SYMBOL} from "@config";
 
 const FeedbackRow: FC<FeedbackRowProps> = ({feedback, deleteFeedback}) => (

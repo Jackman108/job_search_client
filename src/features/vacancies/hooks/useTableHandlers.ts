@@ -1,7 +1,7 @@
 import {MouseEvent, useCallback} from 'react';
 import {useSortedData, useTooltip} from '@hooks';
-import {Vacancy} from "@features/vacancies/types/Vacancies.types";
 import {LOCALES} from "@config";
+import {Vacancy} from "@entities/vacancy";
 
 const useTableHandlers = (initialData: Vacancy[]) => {
     const {sortedData, handleSort, getSortArrow, error: sortError} = useSortedData(initialData || []);

@@ -1,18 +1,13 @@
 import React from 'react';
-import {ResumeChangeProps} from '../../types/InterfaceResume.types';
 import {Button} from '@ui';
-import {businessTripReadiness, employmentTypes, travelTimes, workSchedules} from '../../config/resumeLinesConfig';
+import {businessTripReadiness, employmentTypes, travelTimes, workSchedules} from '@entities/resume';
 import styles from './ResumeChange.module.css';
-import ResumeField from './ResumeField';
+import ResumeField from '../ResumeField/ResumeField';
+import {ResumeChangeProps} from "@features/resume/props/Resume.props";
 
-const ResumeChange: React.FC<ResumeChangeProps> = ({
-                                                       type,
-                                                       fields,
-                                                       formData,
-                                                       onCancel,
-                                                       handleSubmit,
-                                                       handleInputChange
-                                                   }) => (
+const ResumeChange: React.FC<ResumeChangeProps> = (
+    {type, fields, formData, onCancel, handleSubmit, handleInputChange}
+) => (
 
     <form className={styles.createForm} onSubmit={(e) => handleSubmit(e, type)}>
         {Object.entries(fields).map(([key, label]) => (

@@ -1,7 +1,7 @@
 import React, {FC} from 'react';
 import {useAuthHandlers} from '@features/auth/hooks/useAuthHandlers';
-import {useProfileFormHandlers} from '@features/profile/hooks/useProfileFormHandlers';
-import {useProfileHandlers} from '@features/profile/hooks/useProfileHandlers';
+import {useProfileForm} from '@features/profile/hooks/useProfileForm';
+import {useProfile} from '@features/profile/hooks/useProfile';
 import styles from '@shared/styles/Container.module.css';
 import ProfileChange from '@features/profile/ui/ProfileChange/ProfileChange';
 import ProfileView from '@features/profile/ui/ProfileView/ProfileView';
@@ -9,22 +9,22 @@ import Auth from "@features/auth/ui/Auth";
 import {PanelProps} from "@type";
 import {UserProfile} from "@entities/profile";
 import {useTranslation} from "react-i18next";
+import {LoadingOrError} from "@ui";
 
-
-const ProfileButton: FC<PanelProps> = () => {
-    const {userProfile, handleUpdateProfile} = useProfileHandlers();
+const ProfileSection: FC<PanelProps> = () => {
     const {handleSignOut} = useAuthHandlers();
     const {t} = useTranslation('profile');
-
+    const {userProfile, handleUpdateProfile, profileLoading, profileError} = useProfile();
     const {
         isEditing,
         editProfile,
         avatarPreview,
         setIsEditing,
-        handleSave,
+        handleCancel,
         handleInputChange,
         handleAvatarChange,
-    } = useProfileFormHandlers(userProfile || ({} as UserProfile));
+        handleSave,
+    } = useProfileForm(userProfile || ({} as UserProfile));
 
     return (
         <section className={styles.sectionContainer}>
@@ -34,7 +34,7 @@ const ProfileButton: FC<PanelProps> = () => {
                     {isEditing ? (
                         <ProfileChange
                             onSave={() => handleSave(handleUpdateProfile)}
-                            onCancel={() => setIsEditing(false)}
+                            onCancel={handleCancel}
                             editProfile={editProfile}
                             avatarPreview={avatarPreview}
                             handleInputChange={handleInputChange}
@@ -43,10 +43,12 @@ const ProfileButton: FC<PanelProps> = () => {
                     ) : (
                         <ProfileView
                             userInfo={userProfile}
-                            onEdit={() => setIsEditing(true)}
+                            onEdit={setIsEditing}
                             onSignOut={handleSignOut}
                         />
                     )}
+                    <LoadingOrError loading={profileLoading} error={profileError} t={t}/>
+
                 </div>
             ) : (
                 <Auth/>
@@ -55,4 +57,4 @@ const ProfileButton: FC<PanelProps> = () => {
     );
 };
 
-export default ProfileButton;
+export default ProfileSection;

@@ -2,7 +2,7 @@ import {FC} from 'react';
 import {useVacancyContext} from '@app/providers/vacancy/useVacancyContext';
 import styles from './VacanciesTable.module.css';
 import {ErrorAlert, Tooltip, UnauthorizedMessage} from '@ui';
-import {TABLE_VACANCIES} from "@features/vacancies/config/vacansiesConfig";
+import {TABLE_VACANCIES} from "@entities/vacancy";
 import useFeedbackByVacancyId from "@features/feedback/hooks/useFeedbackByVacancyId";
 import useTableHandlers from "@features/vacancies/hooks/useTableHandlers";
 import VacancyRow from "@features/vacancies/ui/VacancyRow/VacancyRow";

@@ -1,8 +1,8 @@
 import React from 'react';
-import {UserChangeProps} from '@features/profile/props/InterfaceProfile.props';
 import {Button, ImagePreview, ImageUploader, RenderInput} from '@ui';
 import styles from './ProfileChange.module.css';
 import {useTranslation} from "react-i18next";
+import {UserChangeProps} from "@features/profile/props/Profile.props";
 
 const ProfileChange: React.FC<UserChangeProps> = (
     {onSave, onCancel, editProfile, avatarPreview, handleInputChange, handleAvatarChange}

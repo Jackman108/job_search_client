@@ -1,5 +1,5 @@
 import {useCallback, useMemo, useState} from 'react';
-import {SortConfig, SortDirection} from '@features/vacancies/types/Vacancies.types';
+import {SortConfig, SortDirection} from '@features/vacancies/props/Vacancies.props';
 import {LOCALES} from "@config";
 
 const useSortedData = <T extends Record<string, any>>(data: T[]) => {

@@ -1,10 +1,10 @@
 import {FC, FormEvent} from 'react';
-import {ResumeArrayProps} from '../../types/InterfaceResume.types';
 import {Button, RenderInput} from '@ui';
 import {useFetchByType} from "@api";
 import {useResumeHandlersById} from '../../hooks/useResumeHandlersById';
 import styles from './ResumeArray.module.css';
 import {formatDate} from "@utils";
+import {ResumeArrayProps} from "@features/resume/props/Resume.props";
 
 const ResumeArray: FC<ResumeArrayProps> = ({config, type}) => {
     const {
@@ -22,7 +22,6 @@ const ResumeArray: FC<ResumeArrayProps> = ({config, type}) => {
         deleteItem,
         saveItem,
     } = useFetchByType(config);
-
 
     const handleSubmit = async (e: FormEvent<HTMLFormElement>, id: number) => {
         e.preventDefault();

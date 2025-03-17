@@ -1,6 +1,6 @@
 import useSearchAuth from './useSearchAuth';
 import {useSearchFormContext} from '@app/providers/search/useSearchFormContext';
-import {SearchAuthData} from "@features/vacancies/types/SearchForm.types";
+import {SearchAuthData} from "@entities/search";
 
 const useAuthManagement = (formValues: SearchAuthData) => {
     const {createSearchAuth, updateSearchAuth, deleteSearchAuth} = useSearchAuth();

@@ -1,13 +1,13 @@
 import {Link} from 'react-router-dom';
 import {Button, UnauthorizedMessage} from '@ui';
-import {resumeConfig} from '../config/resumeConfig';
-import {useResumeData} from '../hooks/useResumeData';
-import styles from './Resume.module.css';
-import ResumeChange from './ResumeItems/ResumeChange';
-import ResumeView from './ResumeItems/ResumeView';
+import {useResumeData} from '../../hooks/useResumeData';
+import styles from './ResumeSection.module.css';
+import ResumeChange from '@features/resume/ui/ResumeChange/ResumeChange';
+import ResumeView from '../ResumeView/ResumeView';
 import {LOCALES} from "@config";
+import {resumeConfig} from "@entities/resume";
 
-const Resume = () => {
+const ResumeSection = () => {
     const config = resumeConfig
 
     const {
@@ -25,11 +25,9 @@ const Resume = () => {
         handleCancelClick,
     } = useResumeData(config);
 
-
     if (loading) return <div>{LOCALES.LOADING}</div>;
     if (error) return <UnauthorizedMessage/>;
     const hasResume = fetchedData.resume && !isEditing.resume && !isCreating.resume;
-
 
     return (
         <div>
@@ -76,4 +74,4 @@ const Resume = () => {
     );
 };
 
-export default Resume;
+export default ResumeSection;

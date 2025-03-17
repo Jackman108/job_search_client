@@ -1,8 +1,7 @@
 import {FC} from 'react';
 import {FEEDBACK_HEADER} from "@entities/feedback";
-import {FeedbackHeaderProps} from "@features/feedback/types/Feedback.props";
+import {FeedbackHeaderProps} from "@features/feedback/props/Feedback.props";
 import styles from "./FeedbackHeader.module.css";
-
 
 const FeedbackHeader: FC<FeedbackHeaderProps> = ({handleSort, getSortArrow}) => (
     <thead className={styles.FeedbackHeader}>

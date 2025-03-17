@@ -1,7 +1,7 @@
 import {FC, memo} from 'react';
-import {TABLE_VACANCIES} from "@features/vacancies/config/vacansiesConfig";
-import {VacancyHeaderProps} from "@features/vacancies/types/VacancyHeader.props";
+import {TABLE_VACANCIES} from "@entities/vacancy";
 import styles from './VacancyHeader.module.css';
+import {VacancyHeaderProps} from "@features/vacancies/props/Vacancies.props";
 
 const VacancyHeader: FC<VacancyHeaderProps> = memo(({handleSort, getSortArrow}) => {
     return (

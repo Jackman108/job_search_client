@@ -1,4 +1,4 @@
-import {Vacancy} from "@features/vacancies/types/Vacancies.types";
+import {Vacancy} from "@entities/vacancy";
 
 export interface VacancyContextType {
     vacancies: Vacancy[];

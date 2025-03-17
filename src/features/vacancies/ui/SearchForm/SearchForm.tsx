@@ -3,16 +3,8 @@ import styles from './SearchForm.module.css';
 import {PanelProps} from "@type";
 import useSearchFormLogic from '../../hooks/useSearchFormLogic';
 import {Button, FormContainer, ManagementSection, RenderInput, RenderSelect, RenderTextarea} from '@ui';
-import {
-    FORM_CONFIG,
-    FORM_LABELS,
-    FORM_PARAMS,
-    FORM_TEXTS,
-    FormLabelKeys,
-    FormParamKeys,
-} from '../../config/searchConfig';
 import {useTranslation} from "react-i18next";
-
+import {FORM_CONFIG, FORM_LABELS, FORM_PARAMS, FORM_TEXTS, FormLabelKeys, FormParamKeys} from "@entities/search";
 
 const SearchForm: FC<PanelProps> = ({onClose}) => {
     const {t} = useTranslation('auth');

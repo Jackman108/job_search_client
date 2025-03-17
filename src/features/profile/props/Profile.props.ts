@@ -4,6 +4,8 @@ import {UserProfile} from "@entities/profile";
 export interface UseProfileHandlersProps {
     userProfile: UserProfile | null;
     handleUpdateProfile: (updatedProfile: UserProfile) => Promise<void>;
+    profileLoading: boolean;
+    profileError: Error | null;
 }
 
 export interface UserInfoProps {
@@ -17,6 +19,6 @@ export interface UserChangeProps {
     onCancel: () => void;
     editProfile: UserProfile;
     avatarPreview: string;
-    handleInputChange: (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => void;
+    handleInputChange: (e: ChangeEvent<HTMLInputElement>) => void;
     handleAvatarChange: (e: ChangeEvent<HTMLInputElement>) => void;
 }

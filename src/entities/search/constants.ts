@@ -1,4 +1,4 @@
-import {FormConfig} from "../types/SearchForm.types";
+import {FormConfig} from "@features/vacancies/props/SearchForm.props";
 
 export const DEFAULT_SEARCH = {
     text: 'Middle frontend developer',
@@ -94,6 +94,3 @@ export const FORM_CONFIG: FormConfig = {
         ],
     },
 } as const;
-
-export type FormLabelKeys = keyof typeof FORM_LABELS;
-export type FormParamKeys = keyof typeof FORM_PARAMS;

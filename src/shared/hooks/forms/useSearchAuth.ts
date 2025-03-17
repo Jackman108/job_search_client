@@ -1,6 +1,6 @@
 import {useMutation, useQuery, useQueryClient} from '@tanstack/react-query';
 import {useDataApi} from "@api";
-import {SearchAuthData} from "@features/vacancies/types/SearchForm.types";
+import {SearchAuthData} from "@entities/search";
 
 const useSearchAuth = () => {
     const queryClient = useQueryClient();
