@@ -5,18 +5,11 @@
 	box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
-.formTitle {
-	font-size: 1.5rem;
-	color: #333;
-	text-align: center;
-	margin-bottom: 10px;
-}
-
 .formDescription {
 	font-size: 1rem;
 	color: #555;
 	text-align: center;
-	margin-bottom: 20px;
+	margin-bottom: 10px;
 }
 
 .form {

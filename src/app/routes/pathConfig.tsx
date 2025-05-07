@@ -4,6 +4,7 @@ import ResumeSection from "@features/resume/ui/ResumeSection/ResumeSection";
 import PaymentTable from "@features/payments/ui/admin/PaymentTable/PaymentTable";
 import SubscriptionTable from "@features/subscription/ui/admin/SubscriptionTable/SubscriptionTable";
 import {PaymentError, PaymentSuccess} from "@ui";
+import CryptoPaymentPage from "@features/payments/ui/user/CryptoPaymentPage/CryptoPaymentPage"; 
 
 export const routes = [
     {path: '/', element: <VacanciesTable/>},
@@ -13,4 +14,5 @@ export const routes = [
     {path: '/subscriptions', element: <SubscriptionTable/>},
     {path: '/payment/success', element: <PaymentSuccess/>},
     {path: '/payment/error', element: <PaymentError/>},
+    {path: '/payment/crypto', element: <CryptoPaymentPage/>},
 ];

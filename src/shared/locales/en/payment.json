@@ -31,8 +31,46 @@
     "create": "Create",
     "cancel": "Cancel"
   },
+  "crypto": {
+    "title": "Crypto Payment Details",
+    "network": "Network",
+    "address": "Crypto Address",
+    "amount": "Amount to Pay",
+    "expires": "Expires At",
+    "status": "Payment Status",
+    "copy": "Copy Address",
+    "copied": "Address Copied!",
+    "copyAmount": "Copy Amount",
+    "amountCopied": "Amount Copied!",
+    "error": "Error processing payment",
+    "success": "Payment successful",
+    "expired": "Payment expired",
+    "warning": "Please make sure to send the exact amount to the address above. Any other amount will not be accepted.",
+    "confirmations": "{{current}} of {{required}} confirmations",
+    "transactionHash": "Transaction Hash",
+    "showQR": "Show QR Code",
+    "hideQR": "Hide QR Code",
+    "openWallet": "Open in Wallet",
+    "processing": "Processing payment...",
+    "networkFee": "Network fee",
+    "exchangeRate": "Exchange rate",
+    "estimatedTime": "Estimated confirmation time",
+    "minAmount": "Minimum amount",
+    "maxAmount": "Maximum amount",
+    "supportedNetworks": "Supported networks",
+    "selectNetwork": "Select network",
+    "invalidAddress": "Invalid address",
+    "invalidAmount": "Invalid amount",
+    "insufficientFunds": "Insufficient funds",
+    "networkError": "Network error",
+    "retry": "Retry",
+    "cancel": "Cancel payment"
+  },
   "common": {
     "loading": "Loading...",
-    "error": "Error"
+    "error": "Error",
+    "success": "Success",
+    "retry": "Retry",
+    "cancel": "Cancel"
   }
 }

@@ -1,17 +1,17 @@
-import React, {useCallback, useEffect, useState} from 'react';
-import {SubscriptionFormProps} from '@features/subscription/props/Subscription.props';
-import {useFormState} from "@hooks";
-import {Button} from "@ui";
-import {useTranslation} from 'react-i18next';
 import {
     SUBSCRIPTION_TYPE_OPTIONS,
     SUBSCRIPTION_TYPES,
     SubscriptionTypes,
     SubscriptionVariant
 } from "@entities/subscription";
-import styles from './SubscriptionSelectionForm.module.css';
+import { SubscriptionFormProps } from '@features/subscription/props/Subscription.props';
 import SubscriptionOption from "@features/subscription/ui/user/SubscriptionOption/SubscriptionOption";
-import {getCardBackground} from "@features/subscription/utils/getCardBackground";
+import { getCardBackground } from "@features/subscription/utils/getCardBackground";
+import { useFormState } from "@hooks";
+import { Button } from "@ui";
+import React, { useCallback, useEffect, useState } from 'react';
+import { useTranslation } from 'react-i18next';
+import styles from './SubscriptionSelectionForm.module.css';
 
 const SubscriptionSelectionForm: React.FC<SubscriptionFormProps> = ({
                                                                         initialData,
@@ -57,7 +57,7 @@ const SubscriptionSelectionForm: React.FC<SubscriptionFormProps> = ({
     return (
         <section aria-labelledby="subscription-form-title" className={styles.formContainer}>
             <h2 id="subscription-form-title" className={styles.formTitle}>
-                {isEditing ? t('cardHeaders.editSubscription') : t('cardHeaders.createSubscription')}
+                {isEditing ? '' : t('cardHeaders.createSubscription')}
             </h2>
             <form onSubmit={handleSubmit} className={styles.form} aria-describedby="subscription-form-description">
                 <p id="subscription-form-description" className={styles.formDescription}>
