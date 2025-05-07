@@ -1,176 +1,118 @@
 .container {
     max-width: 600px;
-    margin: 20px auto;
-    padding: 20px;
-    border: 1px solid #ddd;
-    border-radius: 8px;
-    background-color: #fff;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    margin: 0 auto;
+    padding: 24px;
+    background: #ffffff;
+    border-radius: 12px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }
 
-.notification {
-    position: fixed;
-    top: 20px;
-    right: 20px;
-    padding: 12px 24px;
-    border-radius: 4px;
-    color: white;
-    font-weight: 500;
-    animation: slideIn 0.3s ease-out;
-    z-index: 1000;
-}
-
-.notification.success {
-    background-color: #40c057;
-}
-
-.notification.error {
-    background-color: #fa5252;
-}
-
-@keyframes slideIn {
-    from {
-        transform: translateX(100%);
-        opacity: 0;
-    }
-    to {
-        transform: translateX(0);
-        opacity: 1;
-    }
+.title {
+    font-size: 24px;
+    font-weight: 600;
+    color: #1a1a1a;
+    margin-bottom: 24px;
+    text-align: center;
 }
 
 .details {
-    margin: 20px 0;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
 }
 
 .row {
     display: flex;
-    justify-content: space-between;
-    margin-bottom: 10px;
-    padding: 12px;
-    background-color: #f8f9fa;
-    border-radius: 6px;
-    transition: background-color 0.2s;
-}
-
-.row:hover {
-    background-color: #f1f3f5;
+    flex-direction: column;
+    gap: 8px;
 }
 
 .label {
-    font-weight: 600;
-    color: #495057;
+    font-size: 14px;
+    color: #666;
+    font-weight: 500;
 }
 
 .value {
-    color: #212529;
+    font-size: 16px;
+    color: #1a1a1a;
     word-break: break-all;
-    text-align: right;
 }
 
-.addressContainer, .amountContainer {
+.addressContainer,
+.amountContainer {
     display: flex;
     align-items: center;
-    gap: 10px;
-    flex: 1;
-    justify-content: flex-end;
+    gap: 12px;
+    background: #f5f5f5;
+    padding: 12px;
+    border-radius: 8px;
 }
 
 .copyButton {
-    padding: 4px 8px;
-    background-color: #e9ecef;
-    border: 1px solid #dee2e6;
-    border-radius: 4px;
+    padding: 8px 16px;
+    background: #007bff;
+    color: white;
+    border: none;
+    border-radius: 6px;
     cursor: pointer;
-    font-size: 0.875rem;
-    color: #495057;
-    transition: all 0.2s;
+    font-size: 14px;
+    transition: background-color 0.2s;
 }
 
 .copyButton:hover {
-    background-color: #dee2e6;
+    background: #0056b3;
 }
 
 .copyButton.copied {
-    background-color: #40c057;
-    color: white;
-    border-color: #40c057;
+    background: #28a745;
 }
 
 .qrCode {
-    margin: 20px auto;
-    padding: 20px;
-    background-color: white;
-    border-radius: 8px;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 10px;
+    gap: 12px;
+    margin: 16px 0;
 }
 
 .toggleQR {
     padding: 8px 16px;
-    background-color: #e9ecef;
+    background: #f8f9fa;
     border: 1px solid #dee2e6;
-    border-radius: 4px;
+    border-radius: 6px;
     cursor: pointer;
-    font-size: 0.875rem;
-    color: #495057;
+    font-size: 14px;
     transition: all 0.2s;
 }
 
 .toggleQR:hover {
-    background-color: #dee2e6;
-}
-
-.warning {
-    margin-top: 20px;
-    padding: 12px;
-    background-color: #fff3cd;
-    border: 1px solid #ffeeba;
-    border-radius: 6px;
-    color: #856404;
-    font-size: 0.875rem;
-}
-
-h3 {
-    color: #212529;
-    margin-bottom: 20px;
-    text-align: center;
-    font-size: 1.5rem;
-}
-
-.statusCompleted {
-    color: #40c057;
-    font-weight: 600;
-}
-
-.statusFailed {
-    color: #fa5252;
-    font-weight: 600;
-}
-
-.statusExpired {
-    color: #868e96;
-    font-weight: 600;
+    background: #e9ecef;
 }
 
 .statusPending {
-    color: #fab005;
-    font-weight: 600;
+    color: #ffc107;
+}
+
+.statusCompleted {
+    color: #28a745;
+}
+
+.statusFailed {
+    color: #dc3545;
+}
+
+.statusExpired {
+    color: #6c757d;
 }
 
 .confirmationStatus {
-    margin: 15px 0;
-    padding: 12px;
-    background-color: #f8f9fa;
-    border-radius: 6px;
+    margin-top: 16px;
 }
 
 .confirmationProgress {
     height: 8px;
-    background-color: #e9ecef;
+    background: #e9ecef;
     border-radius: 4px;
     overflow: hidden;
     margin-bottom: 8px;
@@ -178,32 +120,34 @@ h3 {
 
 .confirmationBar {
     height: 100%;
-    background-color: #228be6;
+    background: #28a745;
     transition: width 0.3s ease;
 }
 
 .confirmationText {
-    font-size: 0.875rem;
-    color: #495057;
-    text-align: center;
-    display: block;
+    font-size: 14px;
+    color: #666;
 }
 
-.fiatAmount {
-    font-size: 0.875rem;
-    color: #868e96;
-    margin-left: 8px;
+.warning {
+    margin-top: 24px;
+    padding: 16px;
+    background: #fff3cd;
+    border: 1px solid #ffeeba;
+    border-radius: 8px;
+    color: #856404;
+    font-size: 14px;
 }
 
 .paymentUrl {
-    margin-top: 20px;
+    margin: 40px 0;
     text-align: center;
 }
 
 .paymentButton {
     display: inline-block;
     padding: 12px 24px;
-    background-color: #228be6;
+    background: #28a745;
     color: white;
     text-decoration: none;
     border-radius: 6px;
@@ -212,5 +156,57 @@ h3 {
 }
 
 .paymentButton:hover {
-    background-color: #1c7ed6;
+    background: #218838;
+}
+
+.notification {
+    padding: 12px 16px;
+    border-radius: 6px;
+    margin-bottom: 16px;
+    font-size: 14px;
+    animation: slideIn 0.3s ease;
+}
+
+.notification.success {
+    background: #d4edda;
+    color: #155724;
+    border: 1px solid #c3e6cb;
+}
+
+.notification.error {
+    background: #f8d7da;
+    color: #721c24;
+    border: 1px solid #f5c6cb;
+}
+
+@keyframes slideIn {
+    from {
+        transform: translateY(-10px);
+        opacity: 0;
+    }
+    to {
+        transform: translateY(0);
+        opacity: 1;
+    }
+}
+
+/* Адаптивность */
+@media (max-width: 768px) {
+    .container {
+        padding: 16px;
+        margin: 16px;
+    }
+
+    .title {
+        font-size: 20px;
+    }
+
+    .value {
+        font-size: 14px;
+    }
+
+    .copyButton {
+        padding: 6px 12px;
+        font-size: 12px;
+    }
 }

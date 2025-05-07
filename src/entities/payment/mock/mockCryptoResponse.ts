@@ -2,19 +2,19 @@ import { CryptoPaymentDetails } from '../types/CryptoPayment.types';
 import { SUPPORTED_CRYPTO_NETWORKS } from '../config/cryptoPaymentConfig';
 
 export const mockCryptoResponse: CryptoPaymentDetails = {
-    paymentId: 'mock-crypto-payment-123',
-    cryptoAddress: 'bc1qxy2kgdygjrsqtzq2n0yrf2493p83kkfjhx0wlh',
-    cryptoAmount: '0.00123456',
+    id: 'mock-crypto-payment-123',
+    subscription_id: 'mock-subscription-123',
+    amount: '0.00123456',
+    crypto_address: 'bc1qxy2kgdygjrsqtzq2n0yrf2493p83kkfjhx0wlh',
+    crypto_amount: '0.00123456',
     currency: 'BTC',
     status: 'pending',
-    createdAt: new Date(),
-    expiresAt: new Date(Date.now() + 30 * 60 * 1000), // 30 minutes
+    created_at: new Date(),
+    expires_at: new Date(Date.now() + 30 * 60 * 1000), // 30 minutes
     network: 'BTC',
-    qrCodeUrl: 'bitcoin:bc1qxy2kgdygjrsqtzq2n0yrf2493p83kkfjhx0wlh?amount=0.00123456',
-    exchangeRate: 45000,
-    fiatAmount: 55.56,
-    fiatCurrency: 'USD',
-    minConfirmations: 3
+    payment_url: 'bitcoin:bc1qxy2kgdygjrsqtzq2n0yrf2493p83kkfjhx0wlh?amount=0.00123456',
+    transaction_hash: null,
+    wallet_provider: 'mock'
 };
 
 export const mockCryptoPaymentMethods = SUPPORTED_CRYPTO_NETWORKS.map(network => ({

@@ -1,13 +1,16 @@
-import {useCallback} from 'react';
+import {useCallback, useState} from 'react';
 import {ACTION_TYPES} from "@config";
 import {useTableLogic} from "@hooks";
 import useFetchSubscription from "@features/subscription/hooks/useFetchSubscription";
-import {PAYMENT_STATUS, paymentConfig, PaymentTypes} from "@entities/payment";
+import {PAYMENT_METHOD, PAYMENT_STATUS, paymentConfig, PaymentTypes} from "@entities/payment";
 import useFetchPayment from "@features/payments/hooks/useFetchPayment";
 import {useProcessHandler} from "@features/payments/hooks/useProcessHandler";
 import {subscriptionConfig, SubscriptionTypes} from "@entities/subscription";
+import {CryptoPaymentDetails} from "@entities/payment/types/CryptoPayment.types";
 
 export const useSubscriptionLogic = () => {
+    const [cryptoPaymentDetails, setCryptoPaymentDetails] = useState<CryptoPaymentDetails | null>(null);
+    const [showCryptoPayment, setShowCryptoPayment] = useState(false);
 
     const {
         data: subscribeData,
@@ -50,7 +53,6 @@ export const useSubscriptionLogic = () => {
         }
     }, [paymentSubmit]);
 
-
     const subscriptionWithPayment = useCallback(async (formData: Partial<SubscriptionTypes>) => {
         try {
             const createdSubscription = await subscribeSubmit(formData);
@@ -64,7 +66,6 @@ export const useSubscriptionLogic = () => {
         }
     }, [subscribeSubmit, createDefaultPayment, subscribeIsEditing.subscription]);
 
-
     const paymentWithProcess = useCallback(async (formData: Partial<PaymentTypes>) => {
         try {
             const latestPayment: PaymentTypes = paymentData?.find((payment: PaymentTypes) => payment.payment_status === PAYMENT_STATUS.PENDING);
@@ -75,17 +76,46 @@ export const useSubscriptionLogic = () => {
                     payment_method: formData.payment_method,
                     amount: formData?.amount || latestPayment.amount
                 };
-
-                await handleProcess(updatedPayment);
+                if (updatedPayment.payment_method === PAYMENT_METHOD.CRYPTO) {
+                    try {
+                        const response = await handleProcess(updatedPayment);
+                        if (response && 'crypto_address' in response) {
+                            setCryptoPaymentDetails(response);
+                            setShowCryptoPayment(true);
+                            paymentToggleForm();
+                        }
+                    } catch (error: any) {
+                        // If error is about duplicate key, try to fetch existing payment
+                        if (error?.message?.includes('duplicate key')) {
+                            const existingPayment = await handleProcess({
+                                ...updatedPayment,
+                                payment_status: 'getExistingPayment'
+                            });
+                            if (existingPayment && 'crypto_address' in existingPayment) {
+                                setCryptoPaymentDetails(existingPayment);
+                                setShowCryptoPayment(true);
+                                paymentToggleForm();
+                            }
+                        } else {
+                            throw error;
+                        }
+                    }
+                } else {
+                    await handleProcess(updatedPayment);
+                    paymentToggleForm();
+                }
             } else {
                 console.error('Нет платежа со статусом PENDING для обработки');
             }
-            paymentToggleForm();
         } catch (error) {
             console.error('Ошибка при создании оплаты:', error);
         }
     }, [paymentData, handleProcess, paymentToggleForm]);
 
+    const handleCloseCryptoPayment = useCallback(() => {
+        setShowCryptoPayment(false);
+        setCryptoPaymentDetails(null);
+    }, []);
 
     const subscribeEditClick = useCallback((type: string, item: any) => {
         subscribeEdit(type, item);
@@ -96,7 +126,6 @@ export const useSubscriptionLogic = () => {
         paymentEdit(type, item);
         paymentToggleForm();
     }, [paymentToggleForm, paymentEdit]);
-
 
     return {
         subscribeData,
@@ -122,5 +151,8 @@ export const useSubscriptionLogic = () => {
         paymentSubmit: paymentWithProcess,
         loadingProcess,
         errorProcess,
+        cryptoPaymentDetails,
+        showCryptoPayment,
+        handleCloseCryptoPayment,
     };
 };

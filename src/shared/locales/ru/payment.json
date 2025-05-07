@@ -1,31 +1,31 @@
 {
   "payments": {
-    "title": "Оплаты",
-    "addPayment": "Добавить оплату",
+    "title": "Платежи",
+    "addPayment": "Добавить платеж",
     "hideForm": "Скрыть форму",
-    "noData": "Нет данных по оплатам",
+    "noData": "Нет данных по платежам",
     "actions": {
       "edit": "Редактировать",
       "delete": "Удалить",
-      "deleteConfirm": "Вы уверены, что хотите удалить эту оплату?"
+      "deleteConfirm": "Вы уверены, что хотите удалить этот платеж?"
     }
   },
   "tableHeaders": {
     "id": "ID",
-    "subscriptionId": "Подписка ID",
+    "subscriptionId": "ID подписки",
     "amount": "Сумма",
-    "paymentStatus": "Статус оплаты",
-    "paymentMethod": "Метод оплаты",
+    "paymentStatus": "Статус платежа",
+    "paymentMethod": "Способ оплаты",
     "createdAt": "Создано",
     "updatedAt": "Обновлено",
     "actions": "Действия"
   },
   "form": {
-    "userId": "Пользователь ID",
-    "subscriptionId": "Подписка ID",
+    "userId": "ID пользователя",
+    "subscriptionId": "ID подписки",
     "amount": "Сумма",
-    "paymentStatus": "Статус оплаты",
-    "paymentMethod": "Метод оплаты",
+    "paymentStatus": "Статус платежа",
+    "paymentMethod": "Способ оплаты",
     "pay": "Оплатить",
     "save": "Сохранить",
     "create": "Создать",
@@ -33,17 +33,50 @@
   },
   "crypto": {
     "title": "Детали криптоплатежа",
-    "address": "Криптоадрес",
-    "amount": "Сумма к оплате",
-    "expires": "Истекает",
-    "status": "Статус платежа",
-    "copy": "Скопировать адрес",
-    "copied": "Адрес скопирован!",
-    "error": "Ошибка при обработке платежа",
-    "success": "Платеж успешно выполнен"
+    "network": "Сеть",
+    "address": "Адрес",
+    "amount": "Сумма",
+    "expires": "Истекает через",
+    "status": "Статус",
+    "copy": "Копировать",
+    "copied": "Скопировано!",
+    "copyAmount": "Копировать сумму",
+    "amountCopied": "Сумма скопирована!",
+    "error": "Ошибка обработки платежа",
+    "success": "Платеж успешно выполнен",
+    "expired": "Платеж истек",
+    "warning": "Внимание: Отправляйте точную сумму на указанный адрес. Неправильная сумма может привести к потере средств.",
+    "confirmations": "Подтверждения: {{current}}/{{required}}",
+    "transactionHash": "Хеш транзакции",
+    "showQR": "Показать QR-код",
+    "hideQR": "Скрыть QR-код",
+    "openWallet": "Открыть в кошельке",
+    "processing": "Обработка платежа...",
+    "networkFee": "Комиссия сети",
+    "exchangeRate": "Курс обмена",
+    "estimatedTime": "Примерное время подтверждения",
+    "minAmount": "Минимальная сумма",
+    "maxAmount": "Максимальная сумма",
+    "supportedNetworks": "Поддерживаемые сети",
+    "selectNetwork": "Выберите сеть",
+    "invalidAddress": "Неверный адрес",
+    "invalidAmount": "Неверная сумма",
+    "insufficientFunds": "Недостаточно средств",
+    "networkError": "Ошибка сети",
+    "retry": "Повторить",
+    "cancel": "Отменить платеж",
+    "statusTypes": {
+      "completed": "Завершено",
+      "failed": "Ошибка",
+      "pending": "В обработке",
+      "expired": "Истекло"
+    }
   },
   "common": {
     "loading": "Загрузка...",
-    "error": "Ошибка"
+    "error": "Ошибка",
+    "success": "Успешно",
+    "retry": "Повторить",
+    "cancel": "Отменить"
   }
 }

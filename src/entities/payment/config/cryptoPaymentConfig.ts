@@ -1,5 +1,9 @@
 import { ConfigItem } from "@type";
 
+/**
+ * Конфигурация для работы с криптоплатежами
+ * Содержит настройки API эндпоинтов и полей для различных операций
+ */
 export const cryptoPaymentConfig: Record<string, ConfigItem> = {
     checkStatus: {
         title: 'Check Crypto Payment Status',
@@ -40,6 +44,10 @@ export const cryptoPaymentConfig: Record<string, ConfigItem> = {
     }
 };
 
+/**
+ * Список поддерживаемых криптовалютных сетей
+ * Каждая сеть представлена объектом с value (код валюты) и label (название)
+ */
 export const SUPPORTED_CRYPTO_NETWORKS = [
     { value: 'BTC', label: 'Bitcoin' },
     { value: 'ETH', label: 'Ethereum' },
@@ -48,8 +56,16 @@ export const SUPPORTED_CRYPTO_NETWORKS = [
     { value: 'LTC', label: 'Litecoin' }
 ] as const;
 
+/**
+ * Сеть по умолчанию для криптоплатежей
+ */
 export const DEFAULT_CRYPTO_NETWORK = 'BTC';
 
+/**
+ * Настройки для криптоплатежей
+ * Включает время истечения платежа, минимальное количество подтверждений для разных сетей,
+ * интервал обновления статуса и максимальное количество попыток
+ */
 export const CRYPTO_PAYMENT_SETTINGS = {
     defaultExpirationTime: 30 * 60 * 1000, // 30 minutes in milliseconds
     minConfirmations: {

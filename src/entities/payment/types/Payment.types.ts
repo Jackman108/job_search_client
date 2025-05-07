@@ -6,6 +6,8 @@ export interface PaymentTypes {
     amount: number;
     payment_status: string;
     payment_method?: string;
+    currency?: string;
+    network?: string;
     created_at?: Date;
     updated_at?: Date;
 }

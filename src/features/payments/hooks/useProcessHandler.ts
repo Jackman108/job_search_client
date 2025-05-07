@@ -1,29 +1,44 @@
-//import { useNavigate } from 'react-router-dom';
-import { PAYMENT_STATUS, paymentConfig, paymentProcessConfig, PaymentTypes } from "@entities/payment";
+import { PAYMENT_METHOD, PAYMENT_STATUS, paymentConfig, paymentProcessConfig, PaymentTypes } from "@entities/payment";
 import { useFetchByType, usePostByType } from "@api";
 import { ACTION_TYPES } from '@config';
 import { WebPayResponse } from "@entities/payment/types/WebPayResponse.types";
 import { CryptoPaymentDetails } from "@entities/payment/types/CryptoPayment.types";
 import { mockWebPayResponse } from "@entities/payment/mock/mockWebPayResponse";
 import { mockCryptoResponse } from "@entities/payment/mock/mockCryptoResponse";
-import { cryptoPaymentConfig } from "@entities/payment/config/cryptoPaymentConfig";
+import { usePaymentStatusHandler } from "./usePaymentStatusHandler";
+import { useCryptoPaymentHandler } from "./useCryptoPaymentHandler";
 
+/**
+ * Хук для обработки платежных процессов
+ * Объединяет функциональность обработки различных типов платежей (WebPay и Crypto)
+ * и управляет их статусами
+ */
 export const useProcessHandler = () => {
-    //const navigate = useNavigate();
     const {
         saveItem: processRequest,
         loading: loadingProcess,
         error: errorProcess,
     } = usePostByType(paymentProcessConfig);
 
-    const {
-        saveItem: cryptoProcessRequest,
-        loading: loadingCryptoProcess,
-        error: errorCryptoProcess,
-    } = usePostByType(cryptoPaymentConfig);
+    const { handleProcessSuccess, handleProcessFailure } = usePaymentStatusHandler();
+    const { 
+        handleCryptoPayment, 
+        checkCryptoPaymentStatus,
+        loadingCryptoProcess,
+        errorCryptoProcess 
+    } = useCryptoPaymentHandler();
 
     const { saveItem: updatePaymentStatus } = useFetchByType(paymentConfig);
 
+    /**
+     * Обрабатывает платежный процесс
+     * В зависимости от метода оплаты (WebPay или Crypto) выполняет соответствующие действия
+     * В dev режиме использует моковые данные, в prod - реальные запросы
+     * 
+     * @param paymentData - Данные платежа для обработки
+     * @returns Promise с ответом от платежной системы
+     * @throws Error если произошла ошибка при обработке платежа
+     */
     const handleProcess = async (paymentData: PaymentTypes) => {
         if (!paymentData || !paymentData.id) {
             console.error('Payment data or payment ID is missing');
@@ -32,53 +47,27 @@ export const useProcessHandler = () => {
 
         const paymentSystem = paymentData.payment_method as keyof typeof paymentProcessConfig;
 
-        const handleProcessSuccess = async (response: WebPayResponse | CryptoPaymentDetails) => {
-            try {
-                await updatePaymentStatus({
-                    type: ACTION_TYPES.PAYMENT,
-                    id: paymentData.id,
-                    formData: {
-                        payment_status: PAYMENT_STATUS.COMPLETED,
-                        payment_method: paymentData.payment_method,
-                        amount: paymentData.amount,
-                        updated_at: new Date()
-                    },
-                    isEditing: true,
-                });
-                //navigate('/payment/success');
-            } catch (error) {
-                console.error('Failed to update payment status to "completed":', error);
-                //navigate('/payment/error');
-            }
-        };
-
-        const handleProcessFailure = async () => {
-            try {
-                await updatePaymentStatus({
-                    type: ACTION_TYPES.PAYMENT,
-                    id: paymentData.id,
-                    formData: {
-                        payment_status: PAYMENT_STATUS.FAILED,
-                        payment_method: paymentData.payment_method,
-                        amount: paymentData.amount,
-                    },
-                    isEditing: true,
-                });
-                //navigate('/payment/error');
-            } catch (error) {
-                console.error('Failed to update payment status to "failed":', error);
-                //navigate('/payment/error');
-            }
-        };
-
         try {
             let response: WebPayResponse | CryptoPaymentDetails;
             
             if (process.env.NODE_ENV === 'development') {
-                response = paymentSystem === 'crypto' ? mockCryptoResponse : mockWebPayResponse;
-                
-                if (paymentSystem === 'crypto' && 'cryptoAddress' in response) {
-                    // В dev режиме обновляем статус в таблице payments
+                if (paymentSystem === PAYMENT_METHOD.CRYPTO) {
+                    // В dev режиме используем моковые данные
+                    response = {
+                        ...mockCryptoResponse,
+                        id: paymentData.id,
+                        subscription_id: paymentData.subscription_id,
+                        amount: paymentData.amount.toString(),
+                        currency: paymentData.currency || 'BTC',
+                        network: paymentData.network || 'BTC',
+                        status: PAYMENT_STATUS.PENDING,
+                        created_at: new Date(),
+                        expires_at: new Date(Date.now() + 30 * 60 * 1000),
+                        transaction_hash: null,
+                        wallet_provider: 'mock'
+                    };
+
+                    // Обновляем статус в таблице payments
                     await updatePaymentStatus({
                         type: ACTION_TYPES.PAYMENT,
                         id: paymentData.id,
@@ -91,87 +80,62 @@ export const useProcessHandler = () => {
                         isEditing: true,
                     });
 
-                    // В dev режиме создаем запись в crypto_payments используя моковые данные
-                    await cryptoProcessRequest({
-                        type: 'createPayment',
-                        formData: {
-                            id: paymentData.id,
-                            subscription_id: paymentData.subscription_id,
-                            amount: paymentData.amount,
-                            currency: response.currency,
-                            network: response.network,
-                            crypto_address: response.cryptoAddress,
-                            crypto_amount: response.cryptoAmount,
-                            status: response.status,
-                            created_at: response.createdAt,
-                            expires_at: response.expiresAt,
-                            transaction_hash: response.transactionHash,
-                            wallet_provider: 'default'
-                        },
-                        isEditing: false,
-                    });
-
-                    // Имитируем успешную оплату
-                    await handleProcessSuccess(response);
+                    // Создаем или получаем существующую запись в crypto_payments
+                    try {
+                        await handleCryptoPayment(paymentData);
+                    } catch (error: any) {
+                        // Если ошибка о дублировании ключа, значит платеж уже существует
+                        if (error?.message?.includes('duplicate key')) {
+                            // Получаем существующий платеж
+                            const existingPayment = await handleCryptoPayment(paymentData);
+                            if (existingPayment) {
+                                response = existingPayment;
+                            }
+                        } else {
+                            throw error;
+                        }
+                    }
+                    
                     return response;
+                } else {
+                    response = mockWebPayResponse;
                 }
             } else {
-                // В продакшене сначала создаем запись в payments
-                await updatePaymentStatus({
-                    type: ACTION_TYPES.PAYMENT,
-                    id: paymentData.id,
-                    formData: {
-                        payment_status: PAYMENT_STATUS.PENDING,
-                        payment_method: paymentData.payment_method,
-                        amount: paymentData.amount,
-                        updated_at: new Date()
-                    },
-                    isEditing: true,
-                });
-
-                // Затем делаем запрос к API для создания криптоплатежа
+                // В продакшене делаем реальный запрос
                 response = await processRequest({
                     type: paymentSystem,
                     formData: {
                         id: paymentData.id,
                         subscription_id: paymentData.subscription_id,
                         amount: paymentData.amount,
-                        currency: 'BTC', // или другая валюта по умолчанию
-                        network: 'BTC', // или другая сеть по умолчанию
-                        payment_status: PAYMENT_STATUS.PENDING
+                        currency: paymentData.currency || 'BTC',
+                        network: paymentData.network,
+                        payment_status: PAYMENT_STATUS.PENDING,
                     },
                     isEditing: false,
                 }) as WebPayResponse | CryptoPaymentDetails;
             }
 
-            if (paymentSystem === 'crypto') {
-                // Проверяем, что это действительно криптоплатеж
-                if ('cryptoAddress' in response) {
-                    // Проверяем статус платежа
-                    const statusResponse = await cryptoProcessRequest({
-                        type: 'checkStatus',
-                        formData: {
-                            paymentId: response.paymentId,
-                            status: response.status,
-                            confirmations: response.confirmations,
-                            transactionHash: response.transactionHash
-                        },
-                        isEditing: false,
-                    });
+            if (paymentSystem === PAYMENT_METHOD.CRYPTO && 'crypto_address' in response) {
+                const statusResponse = await checkCryptoPaymentStatus(
+                    response.id,
+                    response.status,
+                    response.confirmations,
+                    response.transaction_hash
+                );
 
-                    if (statusResponse?.status === PAYMENT_STATUS.COMPLETED) {
-                        await handleProcessSuccess(response);
-                    }
+                if (statusResponse?.status === PAYMENT_STATUS.COMPLETED) {
+                    await handleProcessSuccess(paymentData);
                 }
-
-                return response;
             } else if ('page' in response && response.page === "success") {
-                await handleProcessSuccess(response);
+                await handleProcessSuccess(paymentData);
             } else {
-                await handleProcessFailure();
+                await handleProcessFailure(paymentData);
             }
+
+            return response;
         } catch (error) {
-            await handleProcessFailure();
+            await handleProcessFailure(paymentData);
             throw error;
         }
     };

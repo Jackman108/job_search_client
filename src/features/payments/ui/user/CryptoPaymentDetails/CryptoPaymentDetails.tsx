@@ -3,12 +3,19 @@ import { useTranslation } from 'react-i18next';
 import { CryptoPaymentDetails as CryptoDetails } from '@entities/payment/types/CryptoPayment.types';
 import { QRCodeSVG } from 'qrcode.react';
 import styles from './CryptoPaymentDetails.module.css';
-import { CRYPTO_PAYMENT_SETTINGS } from '@entities/payment';    
+import { CRYPTO_PAYMENT_SETTINGS } from '@entities/payment';
 
+/**
+ * Пропсы для компонента деталей криптоплатежа
+ */
 interface CryptoPaymentDetailsProps {
     details: CryptoDetails;
 }
 
+/**
+ * Компонент для отображения деталей криптоплатежа
+ * Включает в себя адрес, сумму, QR-код, статус и другие детали платежа
+ */
 const CryptoPaymentDetails: React.FC<CryptoPaymentDetailsProps> = ({ details }) => {
     const { t } = useTranslation('payments');
     const [timeLeft, setTimeLeft] = useState<string>('');
@@ -16,10 +23,13 @@ const CryptoPaymentDetails: React.FC<CryptoPaymentDetailsProps> = ({ details }) 
     const [notification, setNotification] = useState<{ message: string; type: 'success' | 'error' } | null>(null);
     const [showQR, setShowQR] = useState(true);
 
+    /**
+     * Обновляет оставшееся время до истечения платежа
+     */
     useEffect(() => {
         const updateTimeLeft = () => {
             const now = new Date().getTime();
-            const expires = new Date(details.expiresAt).getTime();
+            const expires = new Date(details.expires_at).getTime();
             const difference = expires - now;
 
             if (difference <= 0) {
@@ -38,11 +48,14 @@ const CryptoPaymentDetails: React.FC<CryptoPaymentDetailsProps> = ({ details }) 
         const interval = setInterval(updateTimeLeft, 1000);
 
         return () => clearInterval(interval);
-    }, [details.expiresAt, t]);
+    }, [details.expires_at, t]);
 
+    /**
+     * Копирует криптоадрес в буфер обмена
+     */
     const handleCopyAddress = async () => {
         try {
-            await navigator.clipboard.writeText(details.cryptoAddress);
+            await navigator.clipboard.writeText(details.crypto_address);
             setIsCopied(true);
             setNotification({ message: t('crypto.copied'), type: 'success' });
             setTimeout(() => {
@@ -55,9 +68,12 @@ const CryptoPaymentDetails: React.FC<CryptoPaymentDetailsProps> = ({ details }) 
         }
     };
 
+    /**
+     * Копирует сумму платежа в буфер обмена
+     */
     const handleCopyAmount = async () => {
         try {
-            await navigator.clipboard.writeText(details.cryptoAmount);
+            await navigator.clipboard.writeText(details.crypto_amount);
             setNotification({ message: t('crypto.amountCopied'), type: 'success' });
             setTimeout(() => setNotification(null), 2000);
         } catch (error) {
@@ -66,6 +82,9 @@ const CryptoPaymentDetails: React.FC<CryptoPaymentDetailsProps> = ({ details }) 
         }
     };
 
+    /**
+     * Возвращает CSS класс для цвета статуса платежа
+     */
     const getStatusColor = (status: string) => {
         if (!status) return styles.statusPending;
         
@@ -81,6 +100,9 @@ const CryptoPaymentDetails: React.FC<CryptoPaymentDetailsProps> = ({ details }) 
         }
     };
 
+    /**
+     * Возвращает компонент с прогрессом подтверждений транзакции
+     */
     const getConfirmationStatus = () => {
         if (!details.confirmations) return null;
         
@@ -113,7 +135,7 @@ const CryptoPaymentDetails: React.FC<CryptoPaymentDetailsProps> = ({ details }) 
                 </div>
             )}
 
-            <h3>{t('crypto.title')}</h3>
+            <h3 className={styles.title}>{t('crypto.title')}</h3>
             
             <div className={styles.details}>
                 <div className={styles.row}>
@@ -124,7 +146,7 @@ const CryptoPaymentDetails: React.FC<CryptoPaymentDetailsProps> = ({ details }) 
                 <div className={styles.row}>
                     <span className={styles.label}>{t('crypto.address')}:</span>
                     <div className={styles.addressContainer}>
-                        <span className={styles.value}>{details.cryptoAddress}</span>
+                        <span className={styles.value}>{details.crypto_address}</span>
                         <button
                             className={`${styles.copyButton} ${isCopied ? styles.copied : ''}`}
                             onClick={handleCopyAddress}
@@ -139,12 +161,7 @@ const CryptoPaymentDetails: React.FC<CryptoPaymentDetailsProps> = ({ details }) 
                     <span className={styles.label}>{t('crypto.amount')}:</span>
                     <div className={styles.amountContainer}>
                         <span className={styles.value}>
-                            {details.cryptoAmount} {details.currency}
-                            {details.fiatAmount && (
-                                <span className={styles.fiatAmount}>
-                                    ({details.fiatAmount} {details.fiatCurrency})
-                                </span>
-                            )}
+                            {details.crypto_amount} {details.currency}
                         </span>
                         <button
                             className={styles.copyButton}
@@ -156,7 +173,7 @@ const CryptoPaymentDetails: React.FC<CryptoPaymentDetailsProps> = ({ details }) 
                     </div>
                 </div>
 
-                {details.qrCodeUrl && (
+                {details.payment_url && (
                     <div className={styles.qrCode}>
                         <button 
                             className={styles.toggleQR}
@@ -166,7 +183,7 @@ const CryptoPaymentDetails: React.FC<CryptoPaymentDetailsProps> = ({ details }) 
                         </button>
                         {showQR && (
                             <QRCodeSVG
-                                value={details.qrCodeUrl}
+                                value={details.payment_url}
                                 size={200}
                                 level="H"
                                 includeMargin={true}
@@ -183,16 +200,16 @@ const CryptoPaymentDetails: React.FC<CryptoPaymentDetailsProps> = ({ details }) 
                 <div className={styles.row}>
                     <span className={styles.label}>{t('crypto.status')}:</span>
                     <span className={`${styles.value} ${getStatusColor(details.status)}`}>
-                        {details.status}
+                        {t(`crypto.statusTypes.${details.status.toLowerCase()}`)}
                     </span>
                 </div>
 
                 {getConfirmationStatus()}
 
-                {details.transactionHash && (
+                {details.transaction_hash && (
                     <div className={styles.row}>
                         <span className={styles.label}>{t('crypto.transactionHash')}:</span>
-                        <span className={styles.value}>{details.transactionHash}</span>
+                        <span className={styles.value}>{details.transaction_hash}</span>
                     </div>
                 )}
             </div>
@@ -201,10 +218,10 @@ const CryptoPaymentDetails: React.FC<CryptoPaymentDetailsProps> = ({ details }) 
                 {t('crypto.warning')}
             </div>
 
-            {details.paymentUrl && (
+            {details.payment_url && (
                 <div className={styles.paymentUrl}>
                     <a 
-                        href={details.paymentUrl}
+                        href={details.payment_url}
                         target="_blank"
                         rel="noopener noreferrer"
                         className={styles.paymentButton}

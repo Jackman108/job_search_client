@@ -9,10 +9,9 @@ import {useSubscriptionLogic} from "@features/subscription/hooks/useSubscription
 import SubscriptionActive from "@features/subscription/ui/user/SubscriptionActive/SubscriptionActive";
 import {useAuth} from "@app/providers/auth/useAuthContext";
 import {PanelProps} from "@type";
-
+import CryptoPaymentDetails from "@features/payments/ui/user/CryptoPaymentDetails/CryptoPaymentDetails";
 
 const SubscriptionUser: FC<PanelProps> = ({onClose}) => {
-
     const {t} = useTranslation('subscriptions');
     const {
         subscribeData,
@@ -36,10 +35,14 @@ const SubscriptionUser: FC<PanelProps> = ({onClose}) => {
         paymentSubmit,
         loadingProcess,
         errorProcess,
+        cryptoPaymentDetails,
+        showCryptoPayment,
+        handleCloseCryptoPayment,
     } = useSubscriptionLogic();
 
-    const isFormVisible = subscribeShowForm || paymentShowForm;
+    const isFormVisible = subscribeShowForm || paymentShowForm || showCryptoPayment;
     const {token} = useAuth();
+
     return (
         <>
             <meta name="description"
@@ -86,6 +89,20 @@ const SubscriptionUser: FC<PanelProps> = ({onClose}) => {
                         />
                     )}
 
+                    {showCryptoPayment && cryptoPaymentDetails && (
+                        <div className={styles.cryptoPaymentContainer}>
+                            <Button 
+                                type="button" 
+                                variant="secondary" 
+                                onClick={handleCloseCryptoPayment}
+                                className={styles.closeButton}
+                            >
+                                {t('common.back')}
+                            </Button>
+                            <CryptoPaymentDetails details={cryptoPaymentDetails} />
+                        </div>
+                    )}
+
                     <LoadingOrError loading={subscribeLoading} error={subscribeError} t={t}/>
                     <LoadingOrError loading={loadingProcess} error={errorProcess} t={t}/>
                     <LoadingOrError loading={paymentLoading} error={paymentError} t={t}/>
@@ -94,4 +111,5 @@ const SubscriptionUser: FC<PanelProps> = ({onClose}) => {
         </>
     );
 };
+
 export default SubscriptionUser;

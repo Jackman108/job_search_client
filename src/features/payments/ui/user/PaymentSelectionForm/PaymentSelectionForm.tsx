@@ -43,11 +43,21 @@ const PaymentSelectionForm: React.FC<PaymentFormProps> = ({initialData, onSubmit
                 isLoading={isLoading}
             />
             <div className={styles.buttonGroup}>
-                <Button type="submit" variant="primary" disabled={isLoading}>
+                <Button 
+                    type="submit" 
+                    variant="primary" 
+                    disabled={isLoading}
+                    aria-label={t('form.pay')}
+                >
                     {t('form.pay')}
                 </Button>
-                <Button type="button" variant="secondary" onClick={() => handleCancelClick(formData.id)}
-                        disabled={isLoading}>
+                <Button 
+                    type="button" 
+                    variant="secondary" 
+                    onClick={() => handleCancelClick(formData.id)}
+                    disabled={isLoading}
+                    aria-label={t('form.cancel')}
+                >
                     {t('form.cancel')}
                 </Button>
             </div>
