@@ -1,9 +1,9 @@
 import {SubscriptionTypes} from "@entities/subscription";
-import {PaymentTypes} from "@entities/payment";
+import {BasePayment} from "@entities/payment";
 
 export const getSubscriptionStatus = (
     subscription: SubscriptionTypes,
-    payments: PaymentTypes[]
+    payments: BasePayment[]
 ): string => {
     const currentDate = new Date();
     const subscriptionEndDate = new Date(subscription.end_date);

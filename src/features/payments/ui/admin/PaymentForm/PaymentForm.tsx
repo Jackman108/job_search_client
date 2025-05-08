@@ -1,12 +1,11 @@
 import React, {useEffect} from 'react';
-import {PAYMENT_STATUS_OPTIONS, PaymentStatusOption, PaymentTypes} from "@entities/payment";
-import {PaymentFormProps} from '@features/payments/props/Payment.props';
+import {PAYMENT_STATUS_OPTIONS, PaymentStatusOption, BasePayment, PaymentFormProps} from "@entities/payment";
 import {Button, RenderInput, RenderSelect} from "@ui";
 import {useFormState} from "@hooks";
 import {useTranslation} from "react-i18next";
 
 const PaymentForm: React.FC<PaymentFormProps> = ({initialData, onSubmit, handleCancelClick, isLoading}) => {
-    const {formData, setFormData} = useFormState<Partial<PaymentTypes>>();
+    const {formData, setFormData} = useFormState<Partial<BasePayment>>();
     const {t} = useTranslation('payments');
     const statusOptions: PaymentStatusOption[] = PAYMENT_STATUS_OPTIONS;
 

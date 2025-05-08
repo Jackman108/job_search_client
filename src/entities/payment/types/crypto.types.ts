@@ -1,16 +1,10 @@
+import { BasePayment } from './base.types';
+
 /**
  * Интерфейс для деталей криптоплатежа
  */
-export interface CryptoPaymentDetails {
-    /** Уникальный идентификатор платежа */
-    id: string;
-    /** ID подписки, для которой создан платеж */
-    subscription_id: string;
-    /** Сумма платежа в фиатной валюте */
-    amount: string;
-    /** Валюта платежа (например, USD, EUR) */
-    currency: string;
-    /** Криптовалютная сеть (например, BTC, ETH) */
+export interface CryptoPaymentDetails extends BasePayment {
+    /** Криптовалютная сеть */
     network: string;
     /** Адрес для получения криптовалюты */
     crypto_address: string;
@@ -18,8 +12,6 @@ export interface CryptoPaymentDetails {
     crypto_amount: string;
     /** Статус платежа */
     status: string;
-    /** Дата создания платежа */
-    created_at: Date;
     /** Дата истечения платежа */
     expires_at: Date;
     /** Хеш транзакции в блокчейне */
@@ -29,7 +21,7 @@ export interface CryptoPaymentDetails {
     /** Количество подтверждений транзакции */
     confirmations?: number;
     /** URL для оплаты через кошелек */
-    payment_url?: string;
+    payment_url?: string;   
 }
 
 /**

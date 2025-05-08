@@ -1,12 +1,12 @@
 import {SubscriptionTypes} from "@entities/subscription";
-import {PaymentTypes} from "@entities/payment";
+import {BasePayment} from "@entities/payment";     
 
 export interface SubscriptionTableBodyProps {
     subscriptionData: SubscriptionTypes [];
-    paymentData?: PaymentTypes[];
+    paymentData?: BasePayment[];
     subscribeEditClick: (id: string, item: SubscriptionTypes) => void;
     subscribeDelete: (id: string) => void;
-    paymentEditClick?: (id: string, item: PaymentTypes) => void;
+    paymentEditClick?: (id: string, item: BasePayment) => void;
 }
 
 export interface SubscriptionFormProps {

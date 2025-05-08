@@ -1,19 +1,13 @@
-import { PAYMENT_METHOD, PAYMENT_STATUS, paymentConfig, paymentProcessConfig, PaymentTypes } from "@entities/payment";
 import { useFetchByType, usePostByType } from "@api";
 import { ACTION_TYPES } from '@config';
-import { WebPayResponse } from "@entities/payment/types/WebPayResponse.types";
-import { CryptoPaymentDetails } from "@entities/payment/types/CryptoPayment.types";
-import { mockWebPayResponse } from "@entities/payment/mock/mockWebPayResponse";
-import { mockCryptoResponse } from "@entities/payment/mock/mockCryptoResponse";
-import { usePaymentStatusHandler } from "./usePaymentStatusHandler";
+import { BasePayment, CryptoPaymentDetails, mockCryptoResponse, mockWebPayResponse, PAYMENT_METHOD, PAYMENT_STATUS, paymentConfig, paymentProcessConfig, UseProcessHandlerReturn, WebPayResponse } from "@entities/payment";
 import { useCryptoPaymentHandler } from "./useCryptoPaymentHandler";
+import { usePaymentStatusHandler } from "./usePaymentStatusHandler";
 
 /**
- * Хук для обработки платежных процессов
- * Объединяет функциональность обработки различных типов платежей (WebPay и Crypto)
- * и управляет их статусами
+ * Хук для обработки платежного процесса
  */
-export const useProcessHandler = () => {
+export const useProcessHandler = (): UseProcessHandlerReturn => {
     const {
         saveItem: processRequest,
         loading: loadingProcess,
@@ -39,7 +33,7 @@ export const useProcessHandler = () => {
      * @returns Promise с ответом от платежной системы
      * @throws Error если произошла ошибка при обработке платежа
      */
-    const handleProcess = async (paymentData: PaymentTypes) => {
+    const handleProcess = async (paymentData: BasePayment) => {
         if (!paymentData || !paymentData.id) {
             console.error('Payment data or payment ID is missing');
             return;

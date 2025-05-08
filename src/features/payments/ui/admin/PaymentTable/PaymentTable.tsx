@@ -6,7 +6,7 @@ import PaymentTableBody from "@features/payments/ui/admin/PaymentTableBody/Payme
 import {ACTION_TYPES} from "@config";
 import {LanguageSwitcher} from "@ui";
 import {useTableLogic} from "@hooks";
-import {paymentConfig, PaymentTypes} from "@entities/payment";
+import {paymentConfig, BasePayment} from "@entities/payment";
 import useFetchPayment from "@features/payments/hooks/useFetchPayment";
 import {useTranslation} from "react-i18next";
 
@@ -25,7 +25,7 @@ const PaymentTable = () => {
         handleFormSubmit,
         handleToggleForm,
         handleCancelAction,
-    } = useTableLogic<PaymentTypes>(paymentConfig, useFetchPayment, ACTION_TYPES.PAYMENT);
+    } = useTableLogic<BasePayment>(paymentConfig, useFetchPayment, ACTION_TYPES.PAYMENT);
 
     return (
         <div className={styles.container}>

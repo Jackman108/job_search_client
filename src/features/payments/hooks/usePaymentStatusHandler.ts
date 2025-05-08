@@ -1,13 +1,12 @@
-import { PAYMENT_STATUS, PaymentTypes } from "@entities/payment";
 import { useFetchByType } from "@api";
 import { ACTION_TYPES } from '@config';
-import { paymentConfig } from "@entities/payment";
+import { BasePayment, PAYMENT_STATUS, UsePaymentStatusHandlerReturn, paymentConfig } from "@entities/payment";
 
 /**
  * Хук для обработки статусов платежей
  * Предоставляет функции для обновления статуса платежа при успешном или неуспешном завершении
  */
-export const usePaymentStatusHandler = () => {
+export const usePaymentStatusHandler = (): UsePaymentStatusHandlerReturn => {
     const { saveItem: updatePaymentStatus } = useFetchByType(paymentConfig);
 
     /**
@@ -15,7 +14,7 @@ export const usePaymentStatusHandler = () => {
      * Обновляет статус платежа на "completed" и сохраняет информацию о методе оплаты и сумме
      * @param paymentData - Данные платежа для обновления
      */
-    const handleProcessSuccess = async (paymentData: PaymentTypes) => {
+    const handleProcessSuccess = async (paymentData: BasePayment) => {
         try {
             await updatePaymentStatus({
                 type: ACTION_TYPES.PAYMENT,
@@ -38,7 +37,7 @@ export const usePaymentStatusHandler = () => {
      * Обновляет статус платежа на "failed" и сохраняет информацию о методе оплаты и сумме
      * @param paymentData - Данные платежа для обновления
      */
-    const handleProcessFailure = async (paymentData: PaymentTypes) => {
+    const handleProcessFailure = async (paymentData: BasePayment) => {
         try {
             await updatePaymentStatus({
                 type: ACTION_TYPES.PAYMENT,

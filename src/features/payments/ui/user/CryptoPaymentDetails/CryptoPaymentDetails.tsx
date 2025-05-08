@@ -1,9 +1,9 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { CryptoPaymentDetails as CryptoDetails } from '@entities/payment/types/CryptoPayment.types';
+import { CryptoPaymentDetails as CryptoDetails } from '@entities/payment';
 import { QRCodeSVG } from 'qrcode.react';
 import styles from './CryptoPaymentDetails.module.css';
-import { CRYPTO_PAYMENT_SETTINGS } from '@entities/payment';
+import { usePaymentTimer, useClipboard, useTransactionConfirmations } from '@features/payments/hooks';
 
 /**
  * Пропсы для компонента деталей криптоплатежа
@@ -18,69 +18,16 @@ interface CryptoPaymentDetailsProps {
  */
 const CryptoPaymentDetails: React.FC<CryptoPaymentDetailsProps> = ({ details }) => {
     const { t } = useTranslation('payments');
-    const [timeLeft, setTimeLeft] = useState<string>('');
-    const [isCopied, setIsCopied] = useState(false);
-    const [notification, setNotification] = useState<{ message: string; type: 'success' | 'error' } | null>(null);
     const [showQR, setShowQR] = useState(true);
+    const [isAddressCopied, setIsAddressCopied] = useState(false);
+    const [isAmountCopied, setIsAmountCopied] = useState(false);
 
-    /**
-     * Обновляет оставшееся время до истечения платежа
-     */
-    useEffect(() => {
-        const updateTimeLeft = () => {
-            const now = new Date().getTime();
-            const expires = new Date(details.expires_at).getTime();
-            const difference = expires - now;
-
-            if (difference <= 0) {
-                setTimeLeft(t('crypto.expired'));
-                return;
-            }
-
-            const hours = Math.floor(difference / (1000 * 60 * 60));
-            const minutes = Math.floor((difference % (1000 * 60 * 60)) / (1000 * 60));
-            const seconds = Math.floor((difference % (1000 * 60)) / 1000);
-
-            setTimeLeft(`${hours}:${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`);
-        };
-
-        updateTimeLeft();
-        const interval = setInterval(updateTimeLeft, 1000);
-
-        return () => clearInterval(interval);
-    }, [details.expires_at, t]);
-
-    /**
-     * Копирует криптоадрес в буфер обмена
-     */
-    const handleCopyAddress = async () => {
-        try {
-            await navigator.clipboard.writeText(details.crypto_address);
-            setIsCopied(true);
-            setNotification({ message: t('crypto.copied'), type: 'success' });
-            setTimeout(() => {
-                setIsCopied(false);
-                setNotification(null);
-            }, 2000);
-        } catch (error) {
-            setNotification({ message: t('common.error'), type: 'error' });
-            setTimeout(() => setNotification(null), 3000);
-        }
-    };
-
-    /**
-     * Копирует сумму платежа в буфер обмена
-     */
-    const handleCopyAmount = async () => {
-        try {
-            await navigator.clipboard.writeText(details.crypto_amount);
-            setNotification({ message: t('crypto.amountCopied'), type: 'success' });
-            setTimeout(() => setNotification(null), 2000);
-        } catch (error) {
-            setNotification({ message: t('common.error'), type: 'error' });
-            setTimeout(() => setNotification(null), 3000);
-        }
-    };
+    const timeLeft = usePaymentTimer(details.expires_at);
+    const { copyToClipboard } = useClipboard();
+    const { getConfirmationProgress, getConfirmationText } = useTransactionConfirmations(
+        details.network,
+        details.confirmations
+    );
 
     /**
      * Возвращает CSS класс для цвета статуса платежа
@@ -100,41 +47,14 @@ const CryptoPaymentDetails: React.FC<CryptoPaymentDetailsProps> = ({ details }) 
         }
     };
 
-    /**
-     * Возвращает компонент с прогрессом подтверждений транзакции
-     */
-    const getConfirmationStatus = () => {
-        if (!details.confirmations) return null;
-        
-        const minConfirmations = CRYPTO_PAYMENT_SETTINGS.minConfirmations[details.network as keyof typeof CRYPTO_PAYMENT_SETTINGS.minConfirmations] || 3;
-        const progress = Math.min((details.confirmations / minConfirmations) * 100, 100);
-        
-        return (
-            <div className={styles.confirmationStatus}>
-                <div className={styles.confirmationProgress}>
-                    <div 
-                        className={styles.confirmationBar} 
-                        style={{ width: `${progress}%` }}
-                    />
-                </div>
-                <span className={styles.confirmationText}>
-                    {t('crypto.confirmations', { 
-                        current: details.confirmations, 
-                        required: minConfirmations 
-                    })}
-                </span>
-            </div>
-        );
+    const handleCopy = async (text: string | number, setCopied: (value: boolean) => void) => {
+        await copyToClipboard(String(text));
+        setCopied(true);
+        setTimeout(() => setCopied(false), 2000);
     };
 
     return (
         <div className={styles.container}>
-            {notification && (
-                <div className={`${styles.notification} ${styles[notification.type]}`}>
-                    {notification.message}
-                </div>
-            )}
-
             <h3 className={styles.title}>{t('crypto.title')}</h3>
             
             <div className={styles.details}>
@@ -148,11 +68,11 @@ const CryptoPaymentDetails: React.FC<CryptoPaymentDetailsProps> = ({ details }) 
                     <div className={styles.addressContainer}>
                         <span className={styles.value}>{details.crypto_address}</span>
                         <button
-                            className={`${styles.copyButton} ${isCopied ? styles.copied : ''}`}
-                            onClick={handleCopyAddress}
+                            className={`${styles.copyButton} ${isAddressCopied ? styles.copied : ''}`}
+                            onClick={() => handleCopy(details.crypto_address, setIsAddressCopied)}
                             title={t('crypto.copy')}
                         >
-                            {isCopied ? t('crypto.copied') : t('crypto.copy')}
+                            {isAddressCopied ? t('crypto.copied') : t('crypto.copy')}
                         </button>
                     </div>
                 </div>
@@ -164,11 +84,11 @@ const CryptoPaymentDetails: React.FC<CryptoPaymentDetailsProps> = ({ details }) 
                             {details.crypto_amount} {details.currency}
                         </span>
                         <button
-                            className={styles.copyButton}
-                            onClick={handleCopyAmount}
+                            className={`${styles.copyButton} ${isAmountCopied ? styles.copied : ''}`}
+                            onClick={() => handleCopy(`${details.crypto_amount} ${details.currency}`, setIsAmountCopied)}
                             title={t('crypto.copyAmount')}
                         >
-                            {t('crypto.copy')}
+                            {isAmountCopied ? t('crypto.copied') : t('crypto.copy')}
                         </button>
                     </div>
                 </div>
@@ -204,7 +124,19 @@ const CryptoPaymentDetails: React.FC<CryptoPaymentDetailsProps> = ({ details }) 
                     </span>
                 </div>
 
-                {getConfirmationStatus()}
+                {details.confirmations && (
+                    <div className={styles.confirmationStatus}>
+                        <div className={styles.confirmationProgress}>
+                            <div 
+                                className={styles.confirmationBar} 
+                                style={{ width: `${getConfirmationProgress()}%` }}
+                            />
+                        </div>
+                        <span className={styles.confirmationText}>
+                            {getConfirmationText()}
+                        </span>
+                    </div>
+                )}
 
                 {details.transaction_hash && (
                     <div className={styles.row}>

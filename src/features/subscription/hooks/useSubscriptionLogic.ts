@@ -2,11 +2,10 @@ import {useCallback, useState} from 'react';
 import {ACTION_TYPES} from "@config";
 import {useTableLogic} from "@hooks";
 import useFetchSubscription from "@features/subscription/hooks/useFetchSubscription";
-import {PAYMENT_METHOD, PAYMENT_STATUS, paymentConfig, PaymentTypes} from "@entities/payment";
+import {PAYMENT_METHOD, PAYMENT_STATUS, paymentConfig, BasePayment, CryptoPaymentDetails} from "@entities/payment";
 import useFetchPayment from "@features/payments/hooks/useFetchPayment";
 import {useProcessHandler} from "@features/payments/hooks/useProcessHandler";
 import {subscriptionConfig, SubscriptionTypes} from "@entities/subscription";
-import {CryptoPaymentDetails} from "@entities/payment/types/CryptoPayment.types";
 
 export const useSubscriptionLogic = () => {
     const [cryptoPaymentDetails, setCryptoPaymentDetails] = useState<CryptoPaymentDetails | null>(null);
@@ -37,7 +36,7 @@ export const useSubscriptionLogic = () => {
         handleToggleForm: paymentToggleForm,
         handleFormSubmit: paymentSubmit,
         handleCancelAction: paymentCancel
-    } = useTableLogic<PaymentTypes>(paymentConfig, useFetchPayment, ACTION_TYPES.PAYMENT);
+    } = useTableLogic<BasePayment>(paymentConfig, useFetchPayment, ACTION_TYPES.PAYMENT);
 
     const {handleProcess, loadingProcess, errorProcess} = useProcessHandler();
 
@@ -66,9 +65,9 @@ export const useSubscriptionLogic = () => {
         }
     }, [subscribeSubmit, createDefaultPayment, subscribeIsEditing.subscription]);
 
-    const paymentWithProcess = useCallback(async (formData: Partial<PaymentTypes>) => {
+    const paymentWithProcess = useCallback(async (formData: Partial<BasePayment>) => {
         try {
-            const latestPayment: PaymentTypes = paymentData?.find((payment: PaymentTypes) => payment.payment_status === PAYMENT_STATUS.PENDING);
+            const latestPayment: BasePayment = paymentData?.find((payment: BasePayment) => payment.payment_status === PAYMENT_STATUS.PENDING);
 
             if (latestPayment) {
                 const updatedPayment = {
@@ -89,7 +88,7 @@ export const useSubscriptionLogic = () => {
                         if (error?.message?.includes('duplicate key')) {
                             const existingPayment = await handleProcess({
                                 ...updatedPayment,
-                                payment_status: 'getExistingPayment'
+                                payment_status: PAYMENT_STATUS.PENDING
                             });
                             if (existingPayment && 'crypto_address' in existingPayment) {
                                 setCryptoPaymentDetails(existingPayment);

@@ -1,8 +1,8 @@
 import {useCallback} from 'react';
-import {PaymentTypes} from "@entities/payment";
+import {BasePayment} from "@entities/payment";
 
 export const useSubscriptionStatus = () => {
-    const getPaymentStatuses = useCallback((subscriptionId: string, paymentData: PaymentTypes[]) => {
+    const getPaymentStatuses = useCallback((subscriptionId: string, paymentData: BasePayment[]) => {
         return paymentData
             .filter(payment => payment.subscription_id === subscriptionId)
             .map(payment => payment.payment_status)

@@ -1,14 +1,11 @@
-import { PAYMENT_STATUS, PaymentTypes } from "@entities/payment";
 import { usePostByType } from "@api";
-import { CryptoPaymentDetails } from "@entities/payment/types/CryptoPayment.types";
-import { mockCryptoResponse } from "@entities/payment/mock/mockCryptoResponse";
-import { cryptoPaymentConfig } from "@entities/payment/config/cryptoPaymentConfig";
+import { BasePayment, CryptoPaymentDetails, PAYMENT_STATUS, UseCryptoPaymentHandlerReturn, cryptoPaymentConfig, mockCryptoResponse } from "@entities/payment";
 
 /**
  * Хук для обработки криптоплатежей
  * Предоставляет функции для создания и проверки статуса криптоплатежей
  */
-export const useCryptoPaymentHandler = () => {
+export const useCryptoPaymentHandler = (): UseCryptoPaymentHandlerReturn => {
     const {
         saveItem: cryptoProcessRequest,
         loading: loadingCryptoProcess,
@@ -21,7 +18,7 @@ export const useCryptoPaymentHandler = () => {
      * @returns Детали созданного криптоплатежа
      * @throws Error если отсутствуют обязательные данные
      */
-    const handleCryptoPayment = async (paymentData: PaymentTypes): Promise<CryptoPaymentDetails> => {
+    const handleCryptoPayment = async (paymentData: BasePayment): Promise<CryptoPaymentDetails> => {
         if (!paymentData.id || !paymentData.subscription_id) {
             throw new Error('Missing required payment data');
         }

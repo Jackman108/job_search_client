@@ -1,10 +1,11 @@
 import React from 'react';
 import {Button} from "@ui";
 import {useTranslation} from "react-i18next";
-import {formatDate, getSubscriptionStatus} from "@utils";
+import {formatDate} from "@utils";
+import {getSubscriptionStatus} from "@features/subscription/utils/getSubscriptionStatus";
 import styles from './SubscriptionActive.module.css';
 import {SUBSCRIPTION_TYPE_OPTIONS, SubscriptionTypes} from "@entities/subscription";
-import {PAYMENT_STATUS, PaymentTypes} from "@entities/payment";
+import {PAYMENT_STATUS, BasePayment} from "@entities/payment";
 import {useSubscriptionStatus} from "@features/subscription/hooks/useSubscriptionStatus";
 import {useCurrency} from "@hooks";
 import {ACTION_TYPES} from "@config";
@@ -12,10 +13,10 @@ import {getCardBackground} from "@features/subscription/utils/getCardBackground"
 
 interface SubscriptionActiveCardProps {
     subscribeData: SubscriptionTypes[];
-    paymentData: PaymentTypes[];
+    paymentData: BasePayment[];
     subscribeEditClick: (action: string, subscribe: SubscriptionTypes) => void;
     subscribeDelete: (id: string) => void;
-    paymentEditClick?: (id: string, payment: PaymentTypes) => void;
+    paymentEditClick?: (id: string, payment: BasePayment) => void;
 }
 
 const SubscriptionActive: React.FC<SubscriptionActiveCardProps> = ({
@@ -27,7 +28,7 @@ const SubscriptionActive: React.FC<SubscriptionActiveCardProps> = ({
     const {t} = useTranslation('subscriptions');
     const {currency, convertCurrency} = useCurrency();
     const {getSubscriptionLabel} = useSubscriptionStatus();
-    const latestPayment = paymentData?.find((payment: PaymentTypes) => payment.payment_status === PAYMENT_STATUS.PENDING);
+    const latestPayment = paymentData?.find((payment: BasePayment) => payment.payment_status === PAYMENT_STATUS.PENDING);
 
     const renderActions = (subscribe: SubscriptionTypes) => {
         return (

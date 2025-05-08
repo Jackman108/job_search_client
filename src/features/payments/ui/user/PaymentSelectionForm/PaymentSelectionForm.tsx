@@ -1,36 +1,24 @@
-import React, {useCallback, useEffect} from 'react';
-import {Button, RenderSelect} from "@ui";
-import {useFormState} from "@hooks";
-import {useTranslation} from "react-i18next";
-import {PAYMENT_METHOD, PAYMENT_METHOD_OPTIONS, PAYMENT_STATUS, PaymentTypes,} from "@entities/payment";
-import {PaymentFormProps} from "@features/payments/props/Payment.props";
+import React from 'react';
+import { Button, RenderSelect } from "@ui";
+import { useTranslation } from "react-i18next";
+import { PAYMENT_METHOD_OPTIONS, PAYMENT_METHOD } from "@entities/payment";
+import { PaymentFormProps } from "@entities/payment";
+import { usePaymentForm } from '@features/payments/hooks';     
 import styles from './PaymentSelectionForm.module.css';
 
-const PaymentSelectionForm: React.FC<PaymentFormProps> = ({initialData, onSubmit, handleCancelClick, isLoading}) => {
-    const {formData, setFormData} = useFormState<Partial<PaymentTypes>>();
-    const {t} = useTranslation('payments');
-
-    useEffect(() => {
-        if (initialData) {
-            setFormData({
-                id: initialData.id,
-                subscription_id: initialData.subscription_id,
-                amount: initialData.amount || 0,
-                payment_status: initialData.payment_status || PAYMENT_STATUS.PENDING,
-                payment_method: initialData.payment_method || PAYMENT_METHOD.WEBPAY
-            });
-        }
-    }, [initialData, setFormData]);
-
-    const handleChange = useCallback((e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
-        const {name, value} = e.target;
-        setFormData(prev => ({...prev, [name]: value}));
-    }, [setFormData]);
-
-    const handleSubmit = (e: React.FormEvent) => {
-        e.preventDefault();
-        onSubmit(formData);
-    };
+/**
+ * Компонент формы выбора способа оплаты
+ * Отображает форму с выбором метода оплаты и кнопками действий
+ */
+const PaymentSelectionForm: React.FC<PaymentFormProps> = (props) => {
+    const { t } = useTranslation('payments');
+    const {
+        formData,
+        handleChange,
+        handleSubmit,
+        handleCancel,
+        isLoading
+    } = usePaymentForm(props);
 
     return (
         <form onSubmit={handleSubmit} className={styles.form}>
@@ -38,7 +26,7 @@ const PaymentSelectionForm: React.FC<PaymentFormProps> = ({initialData, onSubmit
                 label={t('form.paymentMethod')}
                 options={PAYMENT_METHOD_OPTIONS}
                 name="payment_method"
-                value={formData.payment_method}
+                value={formData.payment_method || PAYMENT_METHOD.WEBPAY}
                 onChange={handleChange}
                 isLoading={isLoading}
             />
@@ -54,7 +42,7 @@ const PaymentSelectionForm: React.FC<PaymentFormProps> = ({initialData, onSubmit
                 <Button 
                     type="button" 
                     variant="secondary" 
-                    onClick={() => handleCancelClick(formData.id)}
+                    onClick={handleCancel}
                     disabled={isLoading}
                     aria-label={t('form.cancel')}
                 >
