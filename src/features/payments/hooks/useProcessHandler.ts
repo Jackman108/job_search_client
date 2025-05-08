@@ -51,7 +51,7 @@ export const useProcessHandler = (): UseProcessHandlerReturn => {
                         ...mockCryptoResponse,
                         id: paymentData.id,
                         subscription_id: paymentData.subscription_id,
-                        amount: paymentData.amount.toString(),
+                        amount: paymentData.amount,
                         currency: paymentData.currency || 'BTC',
                         network: paymentData.network || 'BTC',
                         status: PAYMENT_STATUS.PENDING,

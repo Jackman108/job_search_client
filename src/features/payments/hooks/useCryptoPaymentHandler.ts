@@ -27,7 +27,7 @@ export const useCryptoPaymentHandler = (): UseCryptoPaymentHandlerReturn => {
             ...mockCryptoResponse,
             id: paymentData.id,
             subscription_id: paymentData.subscription_id,
-            amount: String(paymentData.amount),
+            amount: paymentData.amount,
             currency: paymentData.currency || 'BTC',
             network: paymentData.network || 'BTC',
             crypto_address: mockCryptoResponse.crypto_address,
@@ -36,7 +36,12 @@ export const useCryptoPaymentHandler = (): UseCryptoPaymentHandlerReturn => {
             created_at: new Date(),
             expires_at: new Date(Date.now() + 30 * 60 * 1000),
             transaction_hash: null,
-            wallet_provider: 'mock'
+            wallet_provider: 'mock',
+            payment_url: generatePaymentUrl(
+                paymentData.network || 'BTC',
+                mockCryptoResponse.crypto_address,
+                String(paymentData.amount)
+            )
         };
 
         try {
@@ -96,6 +101,26 @@ export const useCryptoPaymentHandler = (): UseCryptoPaymentHandlerReturn => {
             },
             isEditing: false,
         });
+    };
+
+    /**
+     * Генерирует URL для оплаты в зависимости от сети
+     */
+    const generatePaymentUrl = (network: string, address: string, amount: string): string => {
+        switch (network.toUpperCase()) {
+            case 'BTC':
+                return `bitcoin:${address}?amount=${amount}`;
+            case 'ETH':
+                return `ethereum:${address}?value=${amount}`;
+            case 'USDT':
+                return `ethereum:${address}?value=${amount}&token=USDT`;
+            case 'BCH':
+                return `bitcoincash:${address}?amount=${amount}`;
+            case 'LTC':
+                return `litecoin:${address}?amount=${amount}`;
+            default:
+                return `bitcoin:${address}?amount=${amount}`;
+        }
     };
 
     return {
