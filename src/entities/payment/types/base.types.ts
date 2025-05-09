@@ -18,6 +18,8 @@ export interface BasePayment {
     currency?: string;
     /** Сеть платежа (например, BTC, ETH) */
     network?: string;
+    /** Адрес кошелька для криптоплатежа */
+    crypto_address?: string;
     /** Дата создания */
     created_at?: Date;
     /** Дата обновления */

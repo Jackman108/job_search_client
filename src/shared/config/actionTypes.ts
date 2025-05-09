@@ -6,5 +6,6 @@ export const ACTION_TYPES = {
     EXPERIENCE: 'workExperience',
     SUBSCRIPTION: 'subscription',
     FEEDBACK: 'feedback',
-    CRYPTO: 'checkCrypto'
+    CRYPTO: 'checkCrypto',
+    CRYPTO_PAYMENT: 'updateCryptoPayment'
 } as const;

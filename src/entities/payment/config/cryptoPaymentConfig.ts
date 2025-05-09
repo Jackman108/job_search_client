@@ -41,6 +41,15 @@ export const cryptoPaymentConfig: Record<string, ConfigItem> = {
             address: 'Address',
             network: 'Network'
         }
+    },
+    updateCryptoPayment: {
+        title: 'Update Crypto Payment',
+        apiEndpoint: '/payment/crypto',
+        fields: {
+            network: 'Network',
+            crypto_address: 'Crypto Address',
+            crypto_amount: 'Crypto Amount'
+        }
     }
 };
 
@@ -50,7 +59,6 @@ export const cryptoPaymentConfig: Record<string, ConfigItem> = {
  */
 export const SUPPORTED_CRYPTO_NETWORKS = [
     { value: 'BTC', label: 'Bitcoin' },
-    { value: 'ETH', label: 'Ethereum' },
     { value: 'USDT', label: 'Tether (USDT)' },
     { value: 'BCH', label: 'Bitcoin Cash' },
     { value: 'LTC', label: 'Litecoin' }
@@ -77,4 +85,27 @@ export const CRYPTO_PAYMENT_SETTINGS = {
     },
     refreshInterval: 10000, // 10 seconds
     maxRetries: 3
-} as const; 
+} as const;
+
+/**
+ * Генерирует URL для открытия кошелька
+ * @param network - код крипто-сети
+ * @param address - адрес для оплаты
+ * @param amount - опциональная сумма для оплаты
+ * @returns строка URL для открытия кошелька
+ */
+export function getWalletUrl(network: string, address: string, amount?: string): string {
+    switch (network.toUpperCase()) {
+        case 'BTC':
+            return `bitcoin:${address}${amount ? `?amount=${amount}` : ''}`;
+
+        case 'USDT':
+            return `ethereum:${address}${amount ? `?value=${amount}&token=USDT` : ''}`;
+        case 'BCH':
+            return `bitcoincash:${address}${amount ? `?amount=${amount}` : ''}`;
+        case 'LTC':
+            return `litecoin:${address}${amount ? `?amount=${amount}` : ''}`;
+        default:
+            return `bitcoin:${address}${amount ? `?amount=${amount}` : ''}`;
+    }
+} 

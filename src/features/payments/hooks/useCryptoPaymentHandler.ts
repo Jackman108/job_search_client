@@ -1,16 +1,19 @@
-import { usePostByType } from "@api";
+import { useFetchByType } from "@api";
 import { BasePayment, CryptoPaymentDetails, PAYMENT_STATUS, UseCryptoPaymentHandlerReturn, cryptoPaymentConfig, mockCryptoResponse } from "@entities/payment";
+import { getWalletUrl } from "@entities/payment/config/cryptoPaymentConfig";
+import { ACTION_TYPES } from "@config";
 
 /**
  * Хук для обработки криптоплатежей
  * Предоставляет функции для создания и проверки статуса криптоплатежей
  */
 export const useCryptoPaymentHandler = (): UseCryptoPaymentHandlerReturn => {
+    // один хук для createPayment, updateCrypto и checkStatus
     const {
-        saveItem: cryptoProcessRequest,
+        saveItem: mutateCrypto,
         loading: loadingCryptoProcess,
         error: errorCryptoProcess,
-    } = usePostByType(cryptoPaymentConfig);
+    } = useFetchByType(cryptoPaymentConfig);
 
     /**
      * Создает новый криптоплатеж
@@ -23,29 +26,32 @@ export const useCryptoPaymentHandler = (): UseCryptoPaymentHandlerReturn => {
             throw new Error('Missing required payment data');
         }
 
+        // Определяем адрес: переданный или моковый
+        const address = paymentData.crypto_address || mockCryptoResponse.crypto_address;
+        const network = paymentData.network || 'BTC';
         const response: CryptoPaymentDetails = {
             ...mockCryptoResponse,
             id: paymentData.id,
             subscription_id: paymentData.subscription_id,
             amount: paymentData.amount,
             currency: paymentData.currency || 'BTC',
-            network: paymentData.network || 'BTC',
-            crypto_address: mockCryptoResponse.crypto_address,
+            network,
+            crypto_address: address,
             crypto_amount: String(paymentData.amount),
             status: PAYMENT_STATUS.PENDING,
             created_at: new Date(),
             expires_at: new Date(Date.now() + 30 * 60 * 1000),
             transaction_hash: null,
             wallet_provider: 'mock',
-            payment_url: generatePaymentUrl(
-                paymentData.network || 'BTC',
-                mockCryptoResponse.crypto_address,
+            payment_url: getWalletUrl(
+                network,
+                address,
                 String(paymentData.amount)
             )
         };
 
         try {
-            await cryptoProcessRequest({
+            await mutateCrypto({
                 type: 'createPayment',
                 formData: {
                     id: paymentData.id,
@@ -65,7 +71,7 @@ export const useCryptoPaymentHandler = (): UseCryptoPaymentHandlerReturn => {
             });
         } catch (error: any) {
             if (error?.message?.includes('duplicate key')) {
-                const existingPayment = await cryptoProcessRequest({
+                const existingPayment = await mutateCrypto({
                     type: 'getExistingPayment',
                     formData: {
                         paymentId: paymentData.id
@@ -83,6 +89,19 @@ export const useCryptoPaymentHandler = (): UseCryptoPaymentHandlerReturn => {
     };
 
     /**
+     * Обновляет опции криптоплатежа и возвращает новые детали
+     */
+    const updateCryptoOptions = async (opts: { paymentId: string; network?: string; crypto_address?: string; crypto_amount?: string }) => {
+        const { paymentId, network, crypto_address, crypto_amount } = opts;
+        return await mutateCrypto({
+            type: ACTION_TYPES.CRYPTO_PAYMENT,
+            id: paymentId,
+            formData: { network, crypto_address, crypto_amount },
+            isEditing: true,
+        });
+    };
+
+    /**
      * Проверяет статус криптоплатежа
      * @param paymentId - ID платежа
      * @param status - Текущий статус
@@ -90,42 +109,17 @@ export const useCryptoPaymentHandler = (): UseCryptoPaymentHandlerReturn => {
      * @param transactionHash - Хеш транзакции
      * @returns Обновленный статус платежа
      */
-    const checkCryptoPaymentStatus = async (paymentId: string, status: string, confirmations?: number, transactionHash?: string | null) => {
-        return await cryptoProcessRequest({
+    const checkCryptoPaymentStatus = (paymentId: string, status: string, confirmations?: number, transactionHash?: string | null) =>
+        mutateCrypto({
             type: 'checkStatus',
-            formData: {
-                paymentId,
-                status,
-                confirmations,
-                transactionHash: transactionHash || undefined
-            },
+            formData: { paymentId, status, confirmations, transactionHash: transactionHash || undefined },
             isEditing: false,
         });
-    };
-
-    /**
-     * Генерирует URL для оплаты в зависимости от сети
-     */
-    const generatePaymentUrl = (network: string, address: string, amount: string): string => {
-        switch (network.toUpperCase()) {
-            case 'BTC':
-                return `bitcoin:${address}?amount=${amount}`;
-            case 'ETH':
-                return `ethereum:${address}?value=${amount}`;
-            case 'USDT':
-                return `ethereum:${address}?value=${amount}&token=USDT`;
-            case 'BCH':
-                return `bitcoincash:${address}?amount=${amount}`;
-            case 'LTC':
-                return `litecoin:${address}?amount=${amount}`;
-            default:
-                return `bitcoin:${address}?amount=${amount}`;
-        }
-    };
 
     return {
         handleCryptoPayment,
         checkCryptoPaymentStatus,
+        updateCryptoOptions,
         loadingCryptoProcess,
         errorCryptoProcess
     };

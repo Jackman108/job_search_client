@@ -91,15 +91,18 @@ const SubscriptionUser: FC<PanelProps> = ({onClose}) => {
 
                     {showCryptoPayment && cryptoPaymentDetails && (
                         <div className={styles.cryptoPaymentContainer}>
-                            <Button 
-                                type="button" 
-                                variant="secondary" 
+                            <Button
+                                type="button"
+                                variant="secondary"
                                 onClick={handleCloseCryptoPayment}
                                 className={styles.closeButton}
                             >
                                 {t('common.back')}
                             </Button>
-                            <CryptoPaymentDetails details={cryptoPaymentDetails} />
+                            <CryptoPaymentDetails
+                                details={cryptoPaymentDetails}
+                                onUpdate={() => {}}
+                            />
                         </div>
                     )}
 

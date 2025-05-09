@@ -1,11 +1,12 @@
-import {useCallback, useState} from 'react';
-import {ACTION_TYPES} from "@config";
-import {useTableLogic} from "@hooks";
+import { useCallback, useState } from 'react';
+import { ACTION_TYPES } from "@config";
+import { useTableLogic } from "@hooks";
 import useFetchSubscription from "@features/subscription/hooks/useFetchSubscription";
-import {PAYMENT_METHOD, PAYMENT_STATUS, paymentConfig, BasePayment, CryptoPaymentDetails} from "@entities/payment";
+import { PAYMENT_METHOD, PAYMENT_STATUS, paymentConfig, BasePayment } from "@entities/payment";
+import { CryptoPaymentDetails } from '@entities/payment/types/crypto.types';
 import useFetchPayment from "@features/payments/hooks/useFetchPayment";
-import {useProcessHandler} from "@features/payments/hooks/useProcessHandler";
-import {subscriptionConfig, SubscriptionTypes} from "@entities/subscription";
+import { useProcessHandler } from "@features/payments/hooks/useProcessHandler";
+import { subscriptionConfig, SubscriptionTypes } from "@entities/subscription";
 
 export const useSubscriptionLogic = () => {
     const [cryptoPaymentDetails, setCryptoPaymentDetails] = useState<CryptoPaymentDetails | null>(null);
@@ -38,7 +39,7 @@ export const useSubscriptionLogic = () => {
         handleCancelAction: paymentCancel
     } = useTableLogic<BasePayment>(paymentConfig, useFetchPayment, ACTION_TYPES.PAYMENT);
 
-    const {handleProcess, loadingProcess, errorProcess} = useProcessHandler();
+    const { handleProcess, loadingProcess, errorProcess } = useProcessHandler();
 
     const createDefaultPayment = useCallback(async (subscription: SubscriptionTypes) => {
         try {
@@ -84,14 +85,13 @@ export const useSubscriptionLogic = () => {
                             paymentToggleForm();
                         }
                     } catch (error: any) {
-                        // If error is about duplicate key, try to fetch existing payment
                         if (error?.message?.includes('duplicate key')) {
-                            const existingPayment = await handleProcess({
+                            const existing = await handleProcess({
                                 ...updatedPayment,
                                 payment_status: PAYMENT_STATUS.PENDING
                             });
-                            if (existingPayment && 'crypto_address' in existingPayment) {
-                                setCryptoPaymentDetails(existingPayment);
+                            if (existing && 'crypto_address' in existing) {
+                                setCryptoPaymentDetails(existing);
                                 setShowCryptoPayment(true);
                                 paymentToggleForm();
                             }
