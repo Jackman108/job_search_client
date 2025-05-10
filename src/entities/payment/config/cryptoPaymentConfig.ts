@@ -5,7 +5,7 @@ import { ConfigItem } from "@type";
  * Содержит настройки API эндпоинтов и полей для различных операций
  */
 export const cryptoPaymentConfig: Record<string, ConfigItem> = {
-    checkStatus: {
+    checkCryptoStatus: {
         title: 'Check Crypto Payment Status',
         apiEndpoint: '/payment/crypto/status',
         fields: {
@@ -78,7 +78,6 @@ export const CRYPTO_PAYMENT_SETTINGS = {
     defaultExpirationTime: 30 * 60 * 1000, // 30 minutes in milliseconds
     minConfirmations: {
         BTC: 3,
-        ETH: 12,
         USDT: 12,
         BCH: 3,
         LTC: 3
@@ -86,6 +85,22 @@ export const CRYPTO_PAYMENT_SETTINGS = {
     refreshInterval: 10000, // 10 seconds
     maxRetries: 3
 } as const;
+
+// Конфигурация обменных курсов к USD
+export const CRYPTO_EXCHANGE_RATES: Record<string, number> = {
+    BTC: 0.0001,
+    USDT: 1,
+    BCH: 0.0002,
+    LTC: 0.01
+};
+
+// Конфигурация адресов кошельков для различных крипто-сетей
+export const CRYPTO_WALLET_ADDRESSES: Record<string, string> = {
+    BTC: process.env.REACT_APP_WALLET_BTC || '',
+    USDT: process.env.REACT_APP_WALLET_USDT || '',
+    BCH: process.env.REACT_APP_WALLET_BCH || '',
+    LTC: process.env.REACT_APP_WALLET_LTC || '',
+};
 
 /**
  * Генерирует URL для открытия кошелька
@@ -98,7 +113,6 @@ export function getWalletUrl(network: string, address: string, amount?: string):
     switch (network.toUpperCase()) {
         case 'BTC':
             return `bitcoin:${address}${amount ? `?amount=${amount}` : ''}`;
-
         case 'USDT':
             return `ethereum:${address}${amount ? `?value=${amount}&token=USDT` : ''}`;
         case 'BCH':

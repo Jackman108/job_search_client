@@ -6,8 +6,7 @@ import styles from './CryptoPaymentDetails.module.css';
 import { usePaymentTimer, useClipboard, useTransactionConfirmations } from '@features/payments/hooks';
 import { useCryptoPaymentHandler } from '@features/payments/hooks/useCryptoPaymentHandler';
 import { SUPPORTED_CRYPTO_NETWORKS, getWalletUrl } from '@entities/payment/config/cryptoPaymentConfig';
-import { CRYPTO_WALLET_ADDRESSES } from '@entities/payment/config/cryptoWalletConfig';
-import { CRYPTO_EXCHANGE_RATES } from '@entities/payment/config/cryptoExchangeConfig';
+import { CRYPTO_WALLET_ADDRESSES, CRYPTO_EXCHANGE_RATES } from '@entities/payment';
 import { RenderSelect } from '@shared/ui';
 
 /**

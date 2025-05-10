@@ -15,11 +15,10 @@ export const useProcessHandler = (): UseProcessHandlerReturn => {
     } = usePostByType(paymentProcessConfig);
 
     const { handleProcessSuccess, handleProcessFailure } = usePaymentStatusHandler();
-    const { 
-        handleCryptoPayment, 
-        checkCryptoPaymentStatus,
+    const {
+        handleCryptoPayment,
         loadingCryptoProcess,
-        errorCryptoProcess 
+        errorCryptoProcess
     } = useCryptoPaymentHandler();
 
     const { saveItem: updatePaymentStatus } = useFetchByType(paymentConfig);
@@ -43,7 +42,7 @@ export const useProcessHandler = (): UseProcessHandlerReturn => {
 
         try {
             let response: WebPayResponse | CryptoPaymentDetails;
-            
+
             if (process.env.NODE_ENV === 'development') {
                 if (paymentSystem === PAYMENT_METHOD.CRYPTO) {
                     // В dev режиме используем моковые данные
@@ -89,7 +88,7 @@ export const useProcessHandler = (): UseProcessHandlerReturn => {
                             throw error;
                         }
                     }
-                    
+
                     return response;
                 } else {
                     response = mockWebPayResponse;
@@ -111,14 +110,20 @@ export const useProcessHandler = (): UseProcessHandlerReturn => {
             }
 
             if (paymentSystem === PAYMENT_METHOD.CRYPTO && 'crypto_address' in response) {
-                const statusResponse = await checkCryptoPaymentStatus(
-                    response.id,
-                    response.status,
-                    response.confirmations,
-                    response.transaction_hash
-                );
 
-                if (statusResponse?.status === PAYMENT_STATUS.COMPLETED) {
+                // Обновляем статус в таблице payments
+                await updatePaymentStatus({
+                    type: ACTION_TYPES.PAYMENT,
+                    id: response.id,
+                    formData: {
+                        payment_status: response.status,
+                        payment_method: paymentData.payment_method,
+                        amount: response.amount,
+                        updated_at: new Date()
+                    },
+                    isEditing: true,
+                });
+                if (response?.status === PAYMENT_STATUS.COMPLETED) {
                     await handleProcessSuccess(paymentData);
                 }
             } else if ('page' in response && response.page === "success") {

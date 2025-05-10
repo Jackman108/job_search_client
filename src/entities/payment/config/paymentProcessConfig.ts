@@ -17,9 +17,9 @@ export const paymentProcessConfig: Record<string, ConfigItem> = {
             amount: 'Amount',
         }
     },
-    crypto: {
-        title: 'Crypto',
-        apiEndpoint: '/payment/crypto',
+    nowpayments: {
+        title: 'NowPayments',
+        apiEndpoint: '/payment/nowpayments',
         fields: {
             id: 'ID',
             subscription_id: 'Subscription ID',
