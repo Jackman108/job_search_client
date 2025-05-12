@@ -1,8 +1,9 @@
-import { useFetchByType, usePostByType } from "@api";
+import { usePostByType } from "@api";
 import { ACTION_TYPES } from '@config';
 import { BasePayment, CryptoPaymentDetails, mockCryptoResponse, mockWebPayResponse, PAYMENT_METHOD, PAYMENT_STATUS, paymentConfig, paymentProcessConfig, UseProcessHandlerReturn, WebPayResponse } from "@entities/payment";
 import { useCryptoPaymentHandler } from "./useCryptoPaymentHandler";
 import { usePaymentStatusHandler } from "./usePaymentStatusHandler";
+import { useEntityFetch } from '@hooks';
 
 /**
  * Хук для обработки платежного процесса
@@ -21,7 +22,7 @@ export const useProcessHandler = (): UseProcessHandlerReturn => {
         errorCryptoProcess
     } = useCryptoPaymentHandler();
 
-    const { saveItem: updatePaymentStatus } = useFetchByType(paymentConfig);
+    const { saveItem: updatePaymentStatus } = useEntityFetch<BasePayment>(paymentConfig);
 
     /**
      * Обрабатывает платежный процесс

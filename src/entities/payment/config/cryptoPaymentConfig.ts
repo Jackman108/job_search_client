@@ -26,22 +26,6 @@ export const cryptoPaymentConfig: Record<string, ConfigItem> = {
             network: 'Network'
         }
     },
-    getExchangeRate: {
-        title: 'Get Crypto Exchange Rate',
-        apiEndpoint: '/payment/crypto/exchange-rate',
-        fields: {
-            from: 'From Currency',
-            to: 'To Currency'
-        }
-    },
-    validateAddress: {
-        title: 'Validate Crypto Address',
-        apiEndpoint: '/payment/crypto/validate-address',
-        fields: {
-            address: 'Address',
-            network: 'Network'
-        }
-    },
     updateCryptoPayment: {
         title: 'Update Crypto Payment',
         apiEndpoint: '/payment/crypto',
@@ -122,4 +106,7 @@ export function getWalletUrl(network: string, address: string, amount?: string):
         default:
             return `bitcoin:${address}${amount ? `?amount=${amount}` : ''}`;
     }
-} 
+}
+
+/** Ключи операций для работы с криптоплатежами */
+export type CryptoPaymentAction = keyof typeof cryptoPaymentConfig; 

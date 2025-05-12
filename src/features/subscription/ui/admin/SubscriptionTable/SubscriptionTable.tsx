@@ -6,8 +6,7 @@ import SubscriptionForm from "@features/subscription/ui/admin/SubscriptionForm/S
 import {LanguageSwitcher} from "@ui";
 import SubscriptionTableBody from "@features/subscription/ui/admin/SubscriptionTableBody/SubscriptionTableBody";
 import {useTranslation} from "react-i18next";
-import {useTableLogic} from "@hooks";
-import useFetchSubscription from "@features/subscription/hooks/useFetchSubscription";
+import {useEntityFetch, useTableLogic} from "@hooks";
 import {subscriptionConfig, SubscriptionTypes} from "@entities/subscription";
 
 const SubscriptionTable = () => {
@@ -24,7 +23,7 @@ const SubscriptionTable = () => {
         handleFormSubmit,
         handleToggleForm,
         handleCancelAction,
-    } = useTableLogic<SubscriptionTypes>(subscriptionConfig, useFetchSubscription, ACTION_TYPES.SUBSCRIPTION);
+    } = useTableLogic<SubscriptionTypes>(subscriptionConfig, useEntityFetch, ACTION_TYPES.SUBSCRIPTION);
 
     return (
         <div className={styles.container}>

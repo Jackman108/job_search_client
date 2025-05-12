@@ -8,4 +8,5 @@ export { useCryptoPaymentHandler } from './useCryptoPaymentHandler';
 export { usePaymentTimer } from './usePaymentTimer';
 export { useClipboard } from './useClipboard';
 export { useTransactionConfirmations } from './useTransactionConfirmations';
-export { usePaymentForm } from './usePaymentForm'; 
+export { usePaymentForm } from './usePaymentForm';
+export { useCryptoPaymentViewModel } from './useCryptoPaymentViewModel'; 

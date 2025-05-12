@@ -1,8 +1,7 @@
-import { useFetchByType } from "@api";
-import { BasePayment, CryptoPaymentDetails, UseCryptoPaymentHandlerReturn, cryptoPaymentConfig } from "@entities/payment";
+import { BasePayment, CryptoPaymentDetails, UseCryptoPaymentHandlerReturn } from "@entities/payment";
 import { buildCryptoDetails } from "../utils/buildCryptoDetails";
-import { ACTION_TYPES } from "@config";
-
+import { useEntityPost } from '@api';
+import { cryptoPaymentConfig, CryptoPaymentAction } from '@entities/payment/config/cryptoPaymentConfig';
 /**
  * Хук для обработки криптоплатежей.
  * Предоставляет функции для создания, проверки и обновления статуса платежа.
@@ -12,13 +11,12 @@ import { ACTION_TYPES } from "@config";
  * - Ошибки логируются в консоль для последующего сбора.
  */
 export const useCryptoPaymentHandler = (): UseCryptoPaymentHandlerReturn => {
-    // один хук для createPayment, updateCrypto и checkStatus
-    const {
-        saveItem: mutateCrypto,
-        loading: loadingCryptoProcess,
-        error: errorCryptoProcess,
-    } = useFetchByType(cryptoPaymentConfig);
-    // useFetchByType строит методы CRUD по cryptoPaymentConfig и кеширует данные
+    const { post, loading: loadingCryptoProcess, error: errorCryptoProcess } = useEntityPost(cryptoPaymentConfig);
+
+    // константы операций из конфигурации
+    const CREATE_PAYMENT: CryptoPaymentAction = 'createPayment';
+    const CHECK_STATUS: CryptoPaymentAction = 'checkCryptoStatus';
+    const UPDATE_PAYMENT: CryptoPaymentAction = 'updateCryptoPayment';
 
     /**
      * Создает новый криптоплатеж
@@ -35,51 +33,18 @@ export const useCryptoPaymentHandler = (): UseCryptoPaymentHandlerReturn => {
         // Собираем детали платежа (может бросить ошибку при отсутствии crypto_address)
         const details = buildCryptoDetails(paymentData);
 
-        try {
-            // Отправляем данные на сервер для создания записи
-            await mutateCrypto({
-                type: 'createPayment',
-                formData: {
-                    id: details.id,
-                    subscription_id: details.subscription_id,
-                    amount: details.amount,
-                    currency: details.currency,
-                    network: details.network,
-                    crypto_address: details.crypto_address,
-                    crypto_amount: details.crypto_amount,
-                    status: details.status,
-                    created_at: details.created_at,
-                    expires_at: details.expires_at,
-                    transaction_hash: details.transaction_hash,
-                    wallet_provider: details.wallet_provider
-                },
-                isEditing: false,
-            });
-        } catch (error: any) {
-            // Логируем основную ошибку создания, включая возможные network/validation ошибки
-            console.error('Error creating crypto payment:', error);
-            if (error?.message?.includes('duplicate key')) {
-                // Обработка ситуации, когда платеж с таким ID уже существует в базе
-                try {
-                    const existingPayment = await mutateCrypto({
-                        type: 'getExistingPayment',
-                        formData: { paymentId: paymentData.id },
-                        isEditing: false,
-                    });
-                    if (existingPayment) {
-                        return existingPayment;
-                    }
-                } catch (innerError) {
-                    // Ошибка при получении существующего платежа, возможно проблемы с конфигом type
-                    console.error('Error fetching existing payment:', innerError);
-                    throw innerError;
-                }
-            }
-            throw error;
-        }
-
-        // Возвращаем детали (успешно собранные или полученные из существующей записи)
-        return details;
+        // Идемпотентный вызов: post вернёт новую или существующую запись
+        const response = await post(CREATE_PAYMENT, {
+            formData: {
+                id: details.id,
+                subscription_id: details.subscription_id,
+                amount: details.amount,
+                currency: details.currency,
+                network: details.network
+            }, isEditing: false
+        });
+        // Возвращаем данные от сервера
+        return response.data ?? response;
     };
 
     /**
@@ -88,12 +53,7 @@ export const useCryptoPaymentHandler = (): UseCryptoPaymentHandlerReturn => {
     const updateCryptoOptions = async (opts: { paymentId: string; network?: string; crypto_address?: string; crypto_amount?: string }) => {
         // Подготовка параметров для API, внимательнее с именами полей
         const { paymentId, network, crypto_address, crypto_amount } = opts;
-        return await mutateCrypto({
-            type: ACTION_TYPES.CRYPTO_PAYMENT,
-            id: paymentId,
-            formData: { network, crypto_address, crypto_amount },
-            isEditing: true,
-        });
+        return await post(UPDATE_PAYMENT, { id: paymentId, formData: { network, crypto_address, crypto_amount }, isEditing: true });
     };
 
     /**
@@ -104,12 +64,9 @@ export const useCryptoPaymentHandler = (): UseCryptoPaymentHandlerReturn => {
      * @param transactionHash - Хеш транзакции
      * @returns Обновленный статус платежа
      */
-    const checkCryptoPaymentStatus = (paymentId: string, status: string, confirmations?: number, transactionHash?: string | null) =>
-        mutateCrypto({
-            type: ACTION_TYPES.CRYPTO_STATUS,
-            formData: { paymentId, status, confirmations, transactionHash: transactionHash || undefined },
-            isEditing: false,
-        });
+    const checkCryptoPaymentStatus = async (paymentId: string, status: string, confirmations?: number, transactionHash?: string | null) => {
+        return await post(CHECK_STATUS, { id: paymentId, formData: { status, confirmations, transactionHash: transactionHash || undefined }, isEditing: false });
+    };
 
     return {
         handleCryptoPayment,

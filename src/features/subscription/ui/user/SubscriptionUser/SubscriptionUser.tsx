@@ -38,6 +38,7 @@ const SubscriptionUser: FC<PanelProps> = ({onClose}) => {
         cryptoPaymentDetails,
         showCryptoPayment,
         handleCloseCryptoPayment,
+        updateCryptoPaymentDetails,
     } = useSubscriptionLogic();
 
     const isFormVisible = subscribeShowForm || paymentShowForm || showCryptoPayment;
@@ -101,7 +102,7 @@ const SubscriptionUser: FC<PanelProps> = ({onClose}) => {
                             </Button>
                             <CryptoPaymentDetails
                                 details={cryptoPaymentDetails}
-                                onUpdate={() => {}}
+                                onUpdate={updateCryptoPaymentDetails}
                             />
                         </div>
                     )}

@@ -1,10 +1,10 @@
 import { useCallback, useState } from 'react';
 import { ACTION_TYPES } from "@config";
 import { useTableLogic } from "@hooks";
-import useFetchSubscription from "@features/subscription/hooks/useFetchSubscription";
-import { PAYMENT_METHOD, PAYMENT_STATUS, paymentConfig, BasePayment } from "@entities/payment";
+import { useEntityFetch } from '@hooks';
+import { PAYMENT_METHOD, PAYMENT_STATUS } from "@entities/payment";
+import { BasePayment, paymentConfig } from "@entities/payment";
 import { CryptoPaymentDetails } from '@entities/payment/types/crypto.types';
-import useFetchPayment from "@features/payments/hooks/useFetchPayment";
 import { useProcessHandler } from "@features/payments/hooks/useProcessHandler";
 import { subscriptionConfig, SubscriptionTypes } from "@entities/subscription";
 
@@ -24,7 +24,7 @@ export const useSubscriptionLogic = () => {
         handleFormSubmit: subscribeSubmit,
         handleToggleForm: subscribeToggleForm,
         handleCancelAction: subscribeCancel,
-    } = useTableLogic<SubscriptionTypes>(subscriptionConfig, useFetchSubscription, ACTION_TYPES.SUBSCRIPTION);
+    } = useTableLogic<SubscriptionTypes>(subscriptionConfig, useEntityFetch, ACTION_TYPES.SUBSCRIPTION);
 
     const {
         data: paymentData,
@@ -36,8 +36,9 @@ export const useSubscriptionLogic = () => {
         handleEditClick: paymentEdit,
         handleToggleForm: paymentToggleForm,
         handleFormSubmit: paymentSubmit,
-        handleCancelAction: paymentCancel
-    } = useTableLogic<BasePayment>(paymentConfig, useFetchPayment, ACTION_TYPES.PAYMENT);
+        handleCancelAction: paymentCancel,
+        loadData: loadPayments
+    } = useTableLogic<BasePayment>(paymentConfig, useEntityFetch, ACTION_TYPES.PAYMENT);
 
     const { handleProcess, loadingProcess, errorProcess } = useProcessHandler();
 
@@ -75,7 +76,7 @@ export const useSubscriptionLogic = () => {
                     ...latestPayment,
                     payment_method: formData.payment_method,
                     amount: formData?.amount || latestPayment.amount
-                };
+                } as BasePayment;
                 if (updatedPayment.payment_method === PAYMENT_METHOD.CRYPTO) {
                     try {
                         const response = await handleProcess(updatedPayment);
@@ -116,6 +117,11 @@ export const useSubscriptionLogic = () => {
         setCryptoPaymentDetails(null);
     }, []);
 
+    const updateCryptoPaymentDetails = useCallback((details: CryptoPaymentDetails) => {
+        setCryptoPaymentDetails(details);
+        loadPayments();
+    }, [loadPayments]);
+
     const subscribeEditClick = useCallback((type: string, item: any) => {
         subscribeEdit(type, item);
         subscribeToggleForm();
@@ -152,6 +158,7 @@ export const useSubscriptionLogic = () => {
         errorProcess,
         cryptoPaymentDetails,
         showCryptoPayment,
+        updateCryptoPaymentDetails,
         handleCloseCryptoPayment,
     };
 };

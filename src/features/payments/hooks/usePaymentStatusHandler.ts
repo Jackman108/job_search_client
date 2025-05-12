@@ -1,4 +1,4 @@
-import { useFetchByType } from "@api";
+import { useEntityFetch } from '@hooks';
 import { ACTION_TYPES } from '@config';
 import { BasePayment, PAYMENT_STATUS, UsePaymentStatusHandlerReturn, paymentConfig } from "@entities/payment";
 
@@ -7,7 +7,7 @@ import { BasePayment, PAYMENT_STATUS, UsePaymentStatusHandlerReturn, paymentConf
  * Предоставляет функции для обновления статуса платежа при успешном или неуспешном завершении
  */
 export const usePaymentStatusHandler = (): UsePaymentStatusHandlerReturn => {
-    const { saveItem: updatePaymentStatus } = useFetchByType(paymentConfig);
+    const { saveItem: updatePaymentStatus } = useEntityFetch<BasePayment>(paymentConfig);
 
     /**
      * Обрабатывает успешное завершение платежа

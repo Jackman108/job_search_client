@@ -1,12 +1,10 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { useTranslation } from 'react-i18next';
 import { CryptoPaymentDetails as CryptoDetails } from '@entities/payment';
 import { QRCodeSVG } from 'qrcode.react';
 import styles from './CryptoPaymentDetails.module.css';
-import { usePaymentTimer, useClipboard, useTransactionConfirmations } from '@features/payments/hooks';
-import { useCryptoPaymentHandler } from '@features/payments/hooks/useCryptoPaymentHandler';
-import { SUPPORTED_CRYPTO_NETWORKS, getWalletUrl } from '@entities/payment/config/cryptoPaymentConfig';
-import { CRYPTO_WALLET_ADDRESSES, CRYPTO_EXCHANGE_RATES } from '@entities/payment';
+import { useCryptoPaymentViewModel } from '@features/payments/hooks/useCryptoPaymentViewModel';
+import { SUPPORTED_CRYPTO_NETWORKS } from '@entities/payment/config/cryptoPaymentConfig';
 import { RenderSelect } from '@shared/ui';
 
 /**
@@ -24,24 +22,23 @@ interface CryptoPaymentDetailsProps {
  */
 const CryptoPaymentDetails: React.FC<CryptoPaymentDetailsProps> = ({ details, onUpdate }) => {
     const { t } = useTranslation('payments');
-    const [showQR, setShowQR] = useState(true);
-    const [isAddressCopied, setIsAddressCopied] = useState(false);
-    const [isAmountCopied, setIsAmountCopied] = useState(false);
-    // Состояние для выбранной сети и адреса
-    const [network, setNetwork] = useState<string>(details.network);
-    const initialAddress = details.crypto_address || CRYPTO_WALLET_ADDRESSES[details.network] || '';
-    const [address, setAddress] = useState<string>(initialAddress);
-    // Конвертированная сумма в крипте
-    const initialCryptoAmount = (details.amount * (CRYPTO_EXCHANGE_RATES[details.network] || 0)).toFixed(8);
-    const [cryptoAmount, setCryptoAmount] = useState<string>(initialCryptoAmount);
-
-    const timeLeft = usePaymentTimer(details.expires_at);
-    const { copyToClipboard } = useClipboard();
-    const { getConfirmationProgress, getConfirmationText } = useTransactionConfirmations(
+    const {
+        showQR,
+        toggleQR,
         network,
-        details.confirmations
-    );
-    const { updateCryptoOptions, loadingCryptoProcess, errorCryptoProcess } = useCryptoPaymentHandler();
+        address,
+        cryptoAmount,
+        isAddressCopied,
+        isAmountCopied,
+        handleCopyAddress,
+        handleCopyAmount,
+        timeLeft,
+        getConfirmationProgress,
+        getConfirmationText,
+        handleNetworkChange,
+        handleOpenWallet,
+        loadingCryptoProcess,
+    } = useCryptoPaymentViewModel(details, onUpdate);
 
     /**
      * Возвращает CSS класс для цвета статуса платежа
@@ -61,28 +58,6 @@ const CryptoPaymentDetails: React.FC<CryptoPaymentDetailsProps> = ({ details, on
         }
     };
 
-    const handleCopy = async (text: string | number, setCopied: (value: boolean) => void) => {
-        await copyToClipboard(String(text));
-        setCopied(true);
-        setTimeout(() => setCopied(false), 2000);
-    };
-
-    // Открыть кошелёк: обновляем сеть/адрес на бэке и открываем ссылку
-    const handleOpenWallet = async () => {
-        try {
-            const updated = await updateCryptoOptions({
-                paymentId: details.id,
-                network,
-                crypto_address: address,
-                crypto_amount: cryptoAmount
-            });
-            onUpdate?.(updated);
-        } catch (err) {
-            console.error('Ошибка обновления крипто-опций:', errorCryptoProcess || err);
-        }
-        window.open(getWalletUrl(network, address, cryptoAmount), '_blank');
-    };
-
     return (
         <>
             <div className={styles.container}>
@@ -96,26 +71,7 @@ const CryptoPaymentDetails: React.FC<CryptoPaymentDetailsProps> = ({ details, on
                             name="network"
                             options={SUPPORTED_CRYPTO_NETWORKS}
                             value={network}
-                            onChange={async e => {
-                                const net = e.target.value;
-                                const addr = CRYPTO_WALLET_ADDRESSES[net] || '';
-                                const rate = CRYPTO_EXCHANGE_RATES[net] || 0;
-                                const newAmt = (details.amount * rate).toFixed(8);
-                                setNetwork(net);
-                                setAddress(addr);
-                                setCryptoAmount(newAmt);
-                                try {
-                                    const updated = await updateCryptoOptions({
-                                        paymentId: details.id,
-                                        network: net,
-                                        crypto_address: addr,
-                                        crypto_amount: newAmt
-                                    });
-                                    onUpdate?.(updated);
-                                } catch (err) {
-                                    console.error('Error updating crypto options:', err);
-                                }
-                            }}
+                            onChange={handleNetworkChange}
                             isLoading={loadingCryptoProcess}
                             required
                         />
@@ -127,7 +83,7 @@ const CryptoPaymentDetails: React.FC<CryptoPaymentDetailsProps> = ({ details, on
                             <span className={styles.value}>{address}</span>
                             <button
                                 className={`${styles.copyButton} ${isAddressCopied ? styles.copied : ''}`}
-                                onClick={() => handleCopy(address, setIsAddressCopied)}
+                                onClick={handleCopyAddress}
                                 title={t('crypto.copy')}
                             >
                                 {isAddressCopied ? t('crypto.copied') : t('crypto.copy')}
@@ -143,7 +99,7 @@ const CryptoPaymentDetails: React.FC<CryptoPaymentDetailsProps> = ({ details, on
                             </span>
                             <button
                                 className={`${styles.copyButton} ${isAmountCopied ? styles.copied : ''}`}
-                                onClick={() => handleCopy(`${cryptoAmount} ${details.currency}`, setIsAmountCopied)}
+                                onClick={handleCopyAmount}
                                 title={t('crypto.copyAmount')}
                             >
                                 {isAmountCopied ? t('crypto.copied') : t('crypto.copy')}
@@ -155,7 +111,7 @@ const CryptoPaymentDetails: React.FC<CryptoPaymentDetailsProps> = ({ details, on
                         <div className={styles.qrCode}>
                             <button
                                 className={styles.toggleQR}
-                                onClick={() => setShowQR(!showQR)}
+                                onClick={toggleQR}
                             >
                                 {showQR ? t('crypto.hideQR') : t('crypto.showQR')}
                             </button>
