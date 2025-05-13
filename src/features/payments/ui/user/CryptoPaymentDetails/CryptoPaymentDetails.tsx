@@ -65,7 +65,6 @@ const CryptoPaymentDetails: React.FC<CryptoPaymentDetailsProps> = ({ details, on
                 
                 <div className={styles.details}>
                     <div className={styles.row}>
-                        <span className={styles.label}>{t('crypto.network')}:</span>
                         <RenderSelect
                             label={t('crypto.network')}
                             name="network"
@@ -133,8 +132,8 @@ const CryptoPaymentDetails: React.FC<CryptoPaymentDetailsProps> = ({ details, on
 
                     <div className={styles.row}>
                         <span className={styles.label}>{t('crypto.status')}:</span>
-                        <span className={`${styles.value} ${getStatusColor(details.status)}`}>
-                            {t(`crypto.statusTypes.${details.status.toLowerCase()}`)}
+                        <span className={`${styles.value} ${getStatusColor(details.status ?? '')}`}>
+                            {t(`crypto.statusTypes.${(details.status ?? '').toLowerCase()}`)}
                         </span>
                     </div>
 

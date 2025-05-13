@@ -5,13 +5,8 @@ import { Button, RenderInput, RenderSelect } from '@ui';
 import { useFormState } from '@hooks';
 import { useTranslation } from 'react-i18next';
 import styles from './CryptoPaymentForm.module.css';
+import { CryptoPaymentFormProps } from '@entities/payment/types/components.types';
 
-export interface CryptoPaymentFormProps {
-    initialData?: Partial<CryptoPaymentDetails>;
-    onSubmit: (data: Partial<CryptoPaymentDetails>) => void;
-    handleCancelClick: (id?: string) => void;
-    isLoading: boolean;
-}
 
 const CryptoPaymentForm: React.FC<CryptoPaymentFormProps> = ({ initialData, onSubmit, handleCancelClick, isLoading }) => {
     const { t } = useTranslation('cryptoPayments');

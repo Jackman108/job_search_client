@@ -1,9 +1,9 @@
 import { usePostByType } from "@api";
 import { ACTION_TYPES } from '@config';
 import { BasePayment, CryptoPaymentDetails, mockCryptoResponse, mockWebPayResponse, PAYMENT_METHOD, PAYMENT_STATUS, paymentConfig, paymentProcessConfig, UseProcessHandlerReturn, WebPayResponse } from "@entities/payment";
-import { useCryptoPaymentHandler } from "./useCryptoPaymentHandler";
 import { usePaymentStatusHandler } from "./usePaymentStatusHandler";
-import { useEntityFetch } from '@hooks';
+import { useEntityFetch, useTableLogic } from '@hooks';
+import { cryptoPaymentConfig } from "@entities/payment/config/cryptoPaymentConfig";
 
 /**
  * Хук для обработки платежного процесса
@@ -17,10 +17,16 @@ export const useProcessHandler = (): UseProcessHandlerReturn => {
 
     const { handleProcessSuccess, handleProcessFailure } = usePaymentStatusHandler();
     const {
-        handleCryptoPayment,
-        loadingCryptoProcess,
-        errorCryptoProcess
-    } = useCryptoPaymentHandler();
+        data: cryptoPayments,
+        loadData: reloadCryptoPayments,
+        handleFormSubmit: handleCryptoPayment,
+        loading: loadingCryptoProcess,
+        error: errorCryptoProcess
+    } = useTableLogic<CryptoPaymentDetails>(
+        cryptoPaymentConfig,
+        useEntityFetch,
+        ACTION_TYPES.CRYPTO
+    );
 
     const { saveItem: updatePaymentStatus } = useEntityFetch<BasePayment>(paymentConfig);
 
@@ -51,6 +57,7 @@ export const useProcessHandler = (): UseProcessHandlerReturn => {
                         ...mockCryptoResponse,
                         id: paymentData.id,
                         subscription_id: paymentData.subscription_id,
+                        crypto_address: paymentData.crypto_address ?? mockCryptoResponse.crypto_address,
                         amount: paymentData.amount,
                         currency: paymentData.currency || 'BTC',
                         network: paymentData.network || 'BTC',
@@ -74,21 +81,29 @@ export const useProcessHandler = (): UseProcessHandlerReturn => {
                         isEditing: true,
                     });
 
-                    // Создаем или получаем существующую запись в crypto_payments
-                    try {
-                        await handleCryptoPayment(paymentData);
-                    } catch (error: any) {
-                        // Если ошибка о дублировании ключа, значит платеж уже существует
-                        if (error?.message?.includes('duplicate key')) {
-                            // Получаем существующий платеж
-                            const existingPayment = await handleCryptoPayment(paymentData);
-                            if (existingPayment) {
-                                response = existingPayment;
+                    // Проверяем наличие незавершенного крипто-платежа
+                    const existing = cryptoPayments?.find(
+                        (p: CryptoPaymentDetails) => p.id === paymentData.id && p.status.toLowerCase() === PAYMENT_STATUS.PENDING
+                    );
+                    if (existing) {
+                        response = existing;
+                    } else {
+                        // Создаем новый крипто-платеж
+                        try {
+                            const created = await handleCryptoPayment(paymentData);
+                            response = created || response;
+                        } catch (error: any) {
+                            // Если дубликат, получаем существующий
+                            if (error?.message?.includes('duplicate key')) {
+                                const existing2 = await handleCryptoPayment(paymentData);
+                                if (existing2) response = existing2;
+                            } else {
+                                throw error;
                             }
-                        } else {
-                            throw error;
                         }
                     }
+                    // Перезагружаем список крипто-платежей
+                    await reloadCryptoPayments();
 
                     return response;
                 } else {

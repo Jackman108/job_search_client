@@ -5,34 +5,22 @@ import { ConfigItem } from "@type";
  * Содержит настройки API эндпоинтов и полей для различных операций
  */
 export const cryptoPaymentConfig: Record<string, ConfigItem> = {
-    checkCryptoStatus: {
-        title: 'Check Crypto Payment Status',
-        apiEndpoint: '/payment/crypto/status',
-        fields: {
-            paymentId: 'Payment ID',
-            status: 'Status',
-            confirmations: 'Confirmations',
-            transactionHash: 'Transaction Hash'
-        }
-    },
-    createPayment: {
-        title: 'Create Crypto Payment',
+    crypto_payments: {
+        title: 'Crypto Payments',
         apiEndpoint: '/payment/crypto',
         fields: {
             id: 'ID',
             subscription_id: 'Subscription ID',
             amount: 'Amount',
             currency: 'Currency',
-            network: 'Network'
-        }
-    },
-    updateCryptoPayment: {
-        title: 'Update Crypto Payment',
-        apiEndpoint: '/payment/crypto',
-        fields: {
             network: 'Network',
             crypto_address: 'Crypto Address',
-            crypto_amount: 'Crypto Amount'
+            crypto_amount: 'Crypto Amount',
+            status: 'Status',
+            created_at: 'Created At',
+            expires_at: 'Expires At',
+            transaction_hash: 'Transaction Hash',
+            wallet_provider: 'Wallet Provider'
         }
     }
 };

@@ -1,6 +1,6 @@
 import { ACTION_TYPES } from '@config';
 import { CryptoPaymentDetails } from '@entities/payment';
-import { cryptoPaymentsTableConfig } from '@entities/payment/config/cryptoPaymentsTableConfig';
+import { cryptoPaymentConfig } from '@entities/payment/config/cryptoPaymentConfig';
 import { useEntityFetch, useTableLogic } from '@hooks';
 import React from 'react';
 import { useTranslation } from 'react-i18next';
@@ -26,7 +26,7 @@ const CryptoPaymentTable: React.FC = () => {
         handleToggleForm,
         handleCancelAction
     } = useTableLogic<CryptoPaymentDetails>(
-        cryptoPaymentsTableConfig,
+        cryptoPaymentConfig,
         useEntityFetch,
         ACTION_TYPES.CRYPTO
     );
@@ -47,21 +47,23 @@ const CryptoPaymentTable: React.FC = () => {
                 <CryptoPaymentForm
                     initialData={formData}
                     onSubmit={handleFormSubmit}
-                    handleCancelClick={(id?: string) => { handleCancelAction(id!); }}
+                    handleCancelClick={handleCancelAction}
                     isLoading={loading}
                 />
             )}
-            {payments.length > 0 && (
+            {payments.length > 0 ? (
                 <div className={styles.tableWrapper}>
                     <CryptoPaymentTableBody
-                        paymentData={payments}
+                        cryptoPaymentData={payments}
                         handleEditClick={(type, item) => {
                              handleEditClick(type, item);
                               handleToggleForm(); 
                             }}
-                        handleDelete={handleDelete}
+                            handleDelete={handleDelete}
                     />
                 </div>
+            ) : (
+                !loading && !error && <p>{t('payments.noData')}</p>
             )}
         </div>
     );

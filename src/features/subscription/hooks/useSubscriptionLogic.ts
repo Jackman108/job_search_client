@@ -68,6 +68,11 @@ export const useSubscriptionLogic = () => {
     }, [subscribeSubmit, createDefaultPayment, subscribeIsEditing.subscription]);
 
     const paymentWithProcess = useCallback(async (formData: Partial<BasePayment>) => {
+        if (cryptoPaymentDetails?.status?.toLowerCase() === PAYMENT_STATUS.PENDING) {
+            setShowCryptoPayment(true);
+            paymentToggleForm();
+            return;
+        }
         try {
             const latestPayment: BasePayment = paymentData?.find((payment: BasePayment) => payment.payment_status === PAYMENT_STATUS.PENDING);
 
@@ -110,7 +115,7 @@ export const useSubscriptionLogic = () => {
         } catch (error) {
             console.error('Ошибка при создании оплаты:', error);
         }
-    }, [paymentData, handleProcess, paymentToggleForm]);
+    }, [paymentData, handleProcess, paymentToggleForm, cryptoPaymentDetails]);
 
     const handleCloseCryptoPayment = useCallback(() => {
         setShowCryptoPayment(false);

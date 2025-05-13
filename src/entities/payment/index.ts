@@ -4,7 +4,7 @@
 export type { BasePayment, PaymentStatusOption, PaymentMethodOption, PaymentStatus, PaymentMethod } from './types/base.types';
 export type { WebPayResponse } from './types/webpay.types';
 export type { CryptoPaymentDetails, CryptoPaymentRequest, CryptoPaymentResponse, CryptoPaymentStatus } from './types/crypto.types';
-export type { PaymentTableBodyProps, PaymentFormProps } from './types/components.types';
+export type { PaymentTableBodyProps, PaymentFormProps, CryptoPaymentTableBodyProps } from './types/components.types';
 export type { UsePaymentStatusHandlerReturn, UseProcessHandlerReturn, UseCryptoPaymentHandlerReturn, UsePaymentFormReturn } from './types/hooks.types';
 export type { UseClipboardReturn } from './types/hooks.types';
 /**

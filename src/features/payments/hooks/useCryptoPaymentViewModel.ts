@@ -1,18 +1,17 @@
-import { useState, useEffect } from 'react';
-import { CryptoPaymentDetails as CryptoDetails } from '@entities/payment';
-import { useCryptoPaymentHandler } from './useCryptoPaymentHandler';
-import { usePaymentTimer } from './usePaymentTimer';
-import { useClipboard } from './useClipboard';
-import { useTransactionConfirmations } from './useTransactionConfirmations';
-import { CRYPTO_WALLET_ADDRESSES, CRYPTO_EXCHANGE_RATES } from '@entities/payment';
+import { CRYPTO_EXCHANGE_RATES, CRYPTO_WALLET_ADDRESSES, CryptoPaymentDetails } from '@entities/payment';
 import { getWalletUrl } from '@entities/payment/config/cryptoPaymentConfig';
-
+import { cryptoPaymentConfig } from '@entities/payment/config/cryptoPaymentConfig';
+import { useEntityFetch, useTableLogic, useClipboard } from '@hooks';
+import { ACTION_TYPES } from '@shared/config';
+import { useState } from 'react';
+import { usePaymentTimer } from './usePaymentTimer';
+import { useTransactionConfirmations } from './useTransactionConfirmations';
 /**
  * Hook for managing state and business logic for crypto payment details view.
  */
 export const useCryptoPaymentViewModel = (
-    details: CryptoDetails,
-    onUpdate?: (updated: CryptoDetails) => void
+    details: CryptoPaymentDetails,
+    onUpdate?: (updated: CryptoPaymentDetails) => void
 ) => {
     const [showQR, setShowQR] = useState(true);
     const [isAddressCopied, setIsAddressCopied] = useState(false);
@@ -30,53 +29,13 @@ export const useCryptoPaymentViewModel = (
         details.confirmations
     );
     const {
-        checkCryptoPaymentStatus,
-        updateCryptoOptions,
-        loadingCryptoProcess,
-        errorCryptoProcess
-    } = useCryptoPaymentHandler();
+        saveItem: handleFormSubmit,
+        loading: loadingCryptoProcess,
+        error: errorCryptoProcess
+    } = useEntityFetch<CryptoPaymentDetails>(
+        cryptoPaymentConfig
+    );
 
-    // Poll for status every 30 seconds for pending payments
-    useEffect(() => {
-        if (details.status.toLowerCase() !== 'pending') return;
-        const intervalId = setInterval(async () => {
-            try {
-                const response = await checkCryptoPaymentStatus(
-                    details.id,
-                    details.status,
-                    details.confirmations,
-                    details.transaction_hash
-                );
-                const newStatus = response?.data?.status;
-                if (newStatus?.toLowerCase() === 'completed') {
-                    const resp = await updateCryptoOptions({
-                        paymentId: details.id,
-                        network,
-                        crypto_address: address,
-                        crypto_amount: cryptoAmount
-                    });
-                    const updatedDetail = resp.data ?? resp;
-                    onUpdate?.(updatedDetail);
-                    clearInterval(intervalId);
-                }
-            } catch (err) {
-                console.error('Error polling crypto status:', err);
-            }
-        }, 30000);
-
-        return () => clearInterval(intervalId);
-    }, [
-        details.id,
-        details.status,
-        network,
-        address,
-        cryptoAmount,
-        details.confirmations,
-        details.transaction_hash,
-        checkCryptoPaymentStatus,
-        updateCryptoOptions,
-        onUpdate
-    ]);
 
     const toggleQR = () => setShowQR(prev => !prev);
 
@@ -95,22 +54,21 @@ export const useCryptoPaymentViewModel = (
     const handleNetworkChange = async (e: React.ChangeEvent<HTMLSelectElement>) => {
         const net = e.target.value;
         const addr = CRYPTO_WALLET_ADDRESSES[net] || '';
-        const rate = CRYPTO_EXCHANGE_RATES[net] || 0;
-        const newAmt = (details.amount * rate).toFixed(8);
+        const newAmt = (details.amount * (CRYPTO_EXCHANGE_RATES[net] || 0)).toFixed(8);
 
         setNetwork(net);
         setAddress(addr);
         setCryptoAmount(newAmt);
 
         try {
-            const resp = await updateCryptoOptions({
-                paymentId: details.id,
-                network: net,
-                crypto_address: addr,
-                crypto_amount: newAmt
+            const resp = await handleFormSubmit({
+                type: ACTION_TYPES.CRYPTO,
+                id: details.id,
+                formData: { subscription_id: details.subscription_id, network: net, crypto_address: addr, crypto_amount: newAmt },
+                isEditing: true
             });
-            const updatedDetail = resp.data ?? resp;
-            onUpdate?.(updatedDetail);
+            const updatedDetail = (resp as any).data ?? resp;
+            onUpdate?.(updatedDetail as CryptoPaymentDetails);
         } catch (err) {
             console.error('Error updating crypto options:', err);
         }
@@ -118,16 +76,16 @@ export const useCryptoPaymentViewModel = (
 
     const handleOpenWallet = async () => {
         try {
-            const resp = await updateCryptoOptions({
-                paymentId: details.id,
-                network,
-                crypto_address: address,
-                crypto_amount: cryptoAmount
+            const resp = await handleFormSubmit({
+                type: ACTION_TYPES.CRYPTO,
+                id: details.id,
+                formData: { subscription_id: details.subscription_id, network, crypto_address: address, crypto_amount: cryptoAmount },
+                isEditing: true
             });
-            const updatedDetail = resp.data ?? resp;
-            onUpdate?.(updatedDetail);
+            const updatedDetail = (resp as any).data ?? resp;
+            onUpdate?.(updatedDetail as CryptoPaymentDetails);
         } catch (err) {
-            console.error('Error updating crypto options:', err);
+            console.error('Error updating crypto before opening wallet:', err);
         }
         window.open(getWalletUrl(network, address, cryptoAmount), '_blank');
     };

@@ -1,5 +1,7 @@
 export { default as useTooltip } from './useTooltip';
 export { default as useAlert } from './useAlert';
+export { default as useClipboard } from './useClipboard';
+
 export { default as useComponentToggle } from './useComponentToggle';
 export { default as useCurrency } from './useCurrency';
 export { default as useLocalStorage } from './useLocalStorage';
@@ -17,3 +19,5 @@ export { default as useSearchAuth } from './forms/useSearchAuth';
 export { default as useWebSocketReducer } from './socket/useWebSocketReducer';
 export { default as useWebSocket } from './socket/useWebSocket';
 export { default as useWebSocketConnection } from './socket/useWebSocketConnection';
+
+
