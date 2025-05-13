@@ -9,7 +9,7 @@ import {useSubscriptionLogic} from "@features/subscription/hooks/useSubscription
 import SubscriptionActive from "@features/subscription/ui/user/SubscriptionActive/SubscriptionActive";
 import {useAuth} from "@app/providers/auth/useAuthContext";
 import {PanelProps} from "@type";
-import CryptoPaymentDetails from "@features/payments/ui/user/CryptoPaymentDetails/CryptoPaymentDetails";
+import CryptoSelectionForm from "@features/payments/ui/user/CryptoSelectionForm/CryptoSelectionForm";
 
 const SubscriptionUser: FC<PanelProps> = ({onClose}) => {
     const {t} = useTranslation('subscriptions');
@@ -100,7 +100,7 @@ const SubscriptionUser: FC<PanelProps> = ({onClose}) => {
                             >
                                 {t('common.back')}
                             </Button>
-                            <CryptoPaymentDetails
+                            <CryptoSelectionForm
                                 details={cryptoPaymentDetails}
                                 onUpdate={updateCryptoPaymentDetails}
                             />

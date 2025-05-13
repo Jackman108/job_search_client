@@ -15,12 +15,12 @@ const CryptoPaymentTableBody: React.FC<CryptoPaymentTableBodyProps> = ({ cryptoP
                 <tr>
                     <th>{t('tableHeaders.id')}</th>
                     <th>{t('tableHeaders.subscriptionId')}</th>
+                    <th>{t('tableHeaders.status')}</th>
                     <th>{t('tableHeaders.amount')}</th>
                     <th>{t('tableHeaders.currency')}</th>
                     <th>{t('tableHeaders.network')}</th>
                     <th>{t('tableHeaders.cryptoAddress')}</th>
                     <th>{t('tableHeaders.cryptoAmount')}</th>
-                    <th>{t('tableHeaders.status')}</th>
                     <th>{t('tableHeaders.createdAt')}</th>
                     <th>{t('tableHeaders.expiresAt')}</th>
                     <th>{t('tableHeaders.transactionHash')}</th>
@@ -33,12 +33,12 @@ const CryptoPaymentTableBody: React.FC<CryptoPaymentTableBodyProps> = ({ cryptoP
                     <tr key={crypto.id}>
                         <td>{crypto.id}</td>
                         <td>{crypto.subscription_id}</td>
+                        <td>{crypto.status}</td>
                         <td>{crypto.amount}</td>
                         <td>{crypto.currency}</td>
                         <td>{crypto.network}</td>
                         <td>{crypto.crypto_address}</td>
                         <td>{crypto.crypto_amount}</td>
-                        <td>{crypto.status}</td>
                         <td>{crypto.created_at ? formatDate(crypto.created_at.toString()).date : ''}</td>
                         <td>{crypto.expires_at ? formatDate(crypto.expires_at.toString()).date : ''}</td>
                         <td>{crypto.transaction_hash}</td>

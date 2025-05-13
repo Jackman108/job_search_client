@@ -1,15 +1,15 @@
-import { CryptoPaymentDetails } from '@entities/payment';
+import { CryptoPaymentDetails, PAYMENT_STATUS } from '@entities/payment';
 import { SUPPORTED_CRYPTO_NETWORKS } from '@entities/payment/config/cryptoPaymentConfig';
 
 export const mockCryptoResponse: CryptoPaymentDetails = {
     id: 'mock-crypto-payment-123',
     subscription_id: 'mock-subscription-123',
     amount: 0.00123456,
-    payment_status: 'pending',
+    payment_status: PAYMENT_STATUS.PENDING,
     crypto_address: 'bc1qxy2kgdygjrsqtzq2n0yrf2493p83kkfjhx0wlh',
     crypto_amount: '0.00123456',
     currency: 'BTC',
-    status: 'pending',
+    status: PAYMENT_STATUS.PENDING,
     created_at: new Date(),
     expires_at: new Date(Date.now() + 30 * 60 * 1000), // 30 minutes
     network: 'BTC',

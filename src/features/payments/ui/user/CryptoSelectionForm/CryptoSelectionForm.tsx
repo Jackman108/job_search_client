@@ -1,10 +1,10 @@
 import React from 'react';
 import { useTranslation } from 'react-i18next';
-import { CryptoPaymentDetails as CryptoDetails } from '@entities/payment';
+import { CryptoPaymentDetails as CryptoDetails, PAYMENT_STATUS } from '@entities/payment';
 import { QRCodeSVG } from 'qrcode.react';
-import styles from './CryptoPaymentDetails.module.css';
-import { useCryptoPaymentViewModel } from '@features/payments/hooks/useCryptoPaymentViewModel';
-import { SUPPORTED_CRYPTO_NETWORKS } from '@entities/payment/config/cryptoPaymentConfig';
+import styles from './CryptoSelectionForm.module.css';
+import { useCryptoForm } from '@features/payments/hooks/useCryptoForm';
+import { SUPPORTED_CRYPTO_NETWORKS, getWalletUrl } from '@entities/payment/config/cryptoPaymentConfig';
 import { RenderSelect } from '@shared/ui';
 
 /**
@@ -20,8 +20,8 @@ interface CryptoPaymentDetailsProps {
  * Компонент для отображения деталей криптоплатежа
  * Включает в себя адрес, сумму, QR-код, статус и другие детали платежа
  */
-const CryptoPaymentDetails: React.FC<CryptoPaymentDetailsProps> = ({ details, onUpdate }) => {
-    const { t } = useTranslation('payments');
+const CryptoSelectionForm: React.FC<CryptoPaymentDetailsProps> = ({ details, onUpdate }) => {
+    const { t } = useTranslation('cryptoPayments');
     const {
         showQR,
         toggleQR,
@@ -38,7 +38,7 @@ const CryptoPaymentDetails: React.FC<CryptoPaymentDetailsProps> = ({ details, on
         handleNetworkChange,
         handleOpenWallet,
         loadingCryptoProcess,
-    } = useCryptoPaymentViewModel(details, onUpdate);
+    } = useCryptoForm(details, onUpdate);
 
     /**
      * Возвращает CSS класс для цвета статуса платежа
@@ -47,11 +47,11 @@ const CryptoPaymentDetails: React.FC<CryptoPaymentDetailsProps> = ({ details, on
         if (!status) return styles.statusPending;
         
         switch (status.toLowerCase()) {
-            case 'completed':
+            case PAYMENT_STATUS.COMPLETED:
                 return styles.statusCompleted;
-            case 'failed':
+            case PAYMENT_STATUS.FAILED:
                 return styles.statusFailed;
-            case 'expired':
+            case PAYMENT_STATUS.EXPIRED:
                 return styles.statusExpired;
             default:
                 return styles.statusPending;
@@ -61,12 +61,12 @@ const CryptoPaymentDetails: React.FC<CryptoPaymentDetailsProps> = ({ details, on
     return (
         <>
             <div className={styles.container}>
-                <h3 className={styles.title}>{t('crypto.title')}</h3>
+                <h3 className={styles.title}>{t('form.title')}</h3>
                 
                 <div className={styles.details}>
                     <div className={styles.row}>
                         <RenderSelect
-                            label={t('crypto.network')}
+                            label={t('form.network')}
                             name="network"
                             options={SUPPORTED_CRYPTO_NETWORKS}
                             value={network}
@@ -77,21 +77,21 @@ const CryptoPaymentDetails: React.FC<CryptoPaymentDetailsProps> = ({ details, on
                     </div>
 
                     <div className={styles.row}>
-                        <span className={styles.label}>{t('crypto.address')}:</span>
+                        <span className={styles.label}>{t('form.address')}:</span>
                         <div className={styles.addressContainer}>
                             <span className={styles.value}>{address}</span>
                             <button
                                 className={`${styles.copyButton} ${isAddressCopied ? styles.copied : ''}`}
                                 onClick={handleCopyAddress}
-                                title={t('crypto.copy')}
+                                title={t('form.copy')}
                             >
-                                {isAddressCopied ? t('crypto.copied') : t('crypto.copy')}
+                                {isAddressCopied ? t('form.copied') : t('form.copy')}
                             </button>
                         </div>
                     </div>
 
                     <div className={styles.row}>
-                        <span className={styles.label}>{t('crypto.amount')}:</span>
+                        <span className={styles.label}>{t('form.amount')}:</span>
                         <div className={styles.amountContainer}>
                             <span className={styles.value}>
                                 {cryptoAmount} {details.currency}
@@ -99,24 +99,30 @@ const CryptoPaymentDetails: React.FC<CryptoPaymentDetailsProps> = ({ details, on
                             <button
                                 className={`${styles.copyButton} ${isAmountCopied ? styles.copied : ''}`}
                                 onClick={handleCopyAmount}
-                                title={t('crypto.copyAmount')}
+                                title={t('form.copyAmount')}
                             >
-                                {isAmountCopied ? t('crypto.copied') : t('crypto.copy')}
+                                {isAmountCopied ? t('form.copied') : t('form.copy')}
                             </button>
                         </div>
                     </div>
 
-                    {details.payment_url && (
+                    {address && (
                         <div className={styles.qrCode}>
                             <button
                                 className={styles.toggleQR}
                                 onClick={toggleQR}
                             >
-                                {showQR ? t('crypto.hideQR') : t('crypto.showQR')}
+                                {showQR ? t('form.hideQR') : t('form.showQR')}
                             </button>
                             {showQR && (
                                 <QRCodeSVG
-                                    value={details.payment_url}
+                                    value={
+                                        details.payment_url ?? getWalletUrl(
+                                            network,
+                                            address,
+                                            cryptoAmount
+                                        )
+                                    }
                                     size={200}
                                     level="H"
                                     includeMargin={true}
@@ -126,14 +132,14 @@ const CryptoPaymentDetails: React.FC<CryptoPaymentDetailsProps> = ({ details, on
                     )}
 
                     <div className={styles.row}>
-                        <span className={styles.label}>{t('crypto.expires')}:</span>
+                        <span className={styles.label}>{t('form.expires')}:</span>
                         <span className={styles.value}>{timeLeft}</span>
                     </div>
 
                     <div className={styles.row}>
-                        <span className={styles.label}>{t('crypto.status')}:</span>
+                        <span className={styles.label}>{t('form.status')}:</span>
                         <span className={`${styles.value} ${getStatusColor(details.status ?? '')}`}>
-                            {t(`crypto.statusTypes.${(details.status ?? '').toLowerCase()}`)}
+                            {t(`form.statusTypes.${(details.status ?? '').toLowerCase()}`)}
                         </span>
                     </div>
 
@@ -153,22 +159,22 @@ const CryptoPaymentDetails: React.FC<CryptoPaymentDetailsProps> = ({ details, on
 
                     {details.transaction_hash && (
                         <div className={styles.row}>
-                            <span className={styles.label}>{t('crypto.transactionHash')}:</span>
+                            <span className={styles.label}>{t('form.transactionHash')}:</span>
                             <span className={styles.value}>{details.transaction_hash}</span>
                         </div>
                     )}
                 </div>
 
                 <div className={styles.warning}>
-                    {t('crypto.warning')}
+                    {t('form.warning')}
                 </div>
 
-                {details.payment_url && (
+                {address && (
                     <div className={styles.paymentUrl}>
                         <button
                             onClick={handleOpenWallet}
                             className={styles.paymentButton}
-                        >{t('crypto.openWallet')}</button>
+                        >{t('form.openWallet')}</button>
                     </div>
                 )}
             </div>
@@ -176,4 +182,4 @@ const CryptoPaymentDetails: React.FC<CryptoPaymentDetailsProps> = ({ details, on
     );
 };
 
-export default CryptoPaymentDetails; 
+export default CryptoSelectionForm; 

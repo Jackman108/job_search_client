@@ -1,0 +1,74 @@
+{
+  "cryptoPayments": {
+    "title": "Crypto Payments",
+    "addPayment": "Add crypto payment",
+    "hideForm": "Hide form"
+  },
+  "tableHeaders": {
+    "id": "ID",
+    "subscriptionId": "Subscription ID",
+    "status": "Status",
+    "amount": "Amount",
+    "currency": "Currency",
+    "network": "Network",
+    "cryptoAddress": "Crypto Address",
+    "cryptoAmount": "Crypto Amount",
+    "createdAt": "Created at",
+    "expiresAt": "Expires at",
+    "transactionHash": "Transaction Hash",
+    "walletProvider": "Wallet Provider",
+    "actions": "Actions"
+  },
+  "tableActions": {
+    "edit": "Edit",
+    "delete": "Delete"
+  },
+  "form": {
+    "title": "Crypto Payment Details",
+    "network": "Network",
+    "address": "Address",
+    "amount": "Amount",
+    "expires": "Expires in",
+    "status": "Status",
+    "copy": "Copy",
+    "copied": "Copied!",
+    "copyAmount": "Copy amount",
+    "amountCopied": "Amount copied!",
+    "error": "Error processing payment",
+    "success": "Payment successful",
+    "expired": "Payment expired",
+    "warning": "Warning: Send the exact amount to the specified address. Incorrect amount may result in loss of funds.",
+    "confirmations": "Confirmations: {{current}}/{{required}}",
+    "transactionHash": "Transaction Hash",
+    "showQR": "Show QR Code",
+    "hideQR": "Hide QR Code",
+    "openWallet": "Open in Wallet",
+    "processing": "Processing payment...",
+    "networkFee": "Network fee",
+    "exchangeRate": "Exchange rate",
+    "estimatedTime": "Estimated confirmation time",
+    "minAmount": "Minimum amount",
+    "maxAmount": "Maximum amount",
+    "supportedNetworks": "Supported networks",
+    "selectNetwork": "Select network",
+    "invalidAddress": "Invalid address",
+    "invalidAmount": "Invalid amount",
+    "insufficientFunds": "Insufficient funds",
+    "networkError": "Network error",
+    "retry": "Retry",
+    "cancel": "Cancel payment",
+    "statusTypes": {
+      "completed": "Completed",
+      "failed": "Failed",
+      "pending": "Pending",
+      "expired": "Expired"
+    }
+  },
+  "common": {
+    "loading": "Loading...",
+    "error": "Error",
+    "success": "Success",
+    "retry": "Retry",
+    "cancel": "Cancel"
+  }
+}

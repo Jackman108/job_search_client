@@ -9,6 +9,7 @@ export const PAYMENT_STATUS_OPTIONS = [
     { value: PAYMENT_STATUS.PENDING, label: 'Pending' },
     { value: PAYMENT_STATUS.COMPLETED, label: 'Completed' },
     { value: PAYMENT_STATUS.FAILED, label: 'Failed' },
+    { value: PAYMENT_STATUS.EXPIRED, label: 'Expired' },
 ];
 
 export const PAYMENT_METHOD = {

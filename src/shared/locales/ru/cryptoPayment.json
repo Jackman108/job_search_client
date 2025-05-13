@@ -1,0 +1,74 @@
+{
+  "cryptoPayments": {
+    "title": "Криптоплатежи",
+    "addPayment": "Добавить криптоплатёж",
+    "hideForm": "Скрыть форму"
+  },
+  "tableHeaders": {
+    "id": "ID",
+    "subscriptionId": "ID подписки",
+    "status": "Статус",
+    "amount": "Сумма",
+    "currency": "Валюта",
+    "network": "Сеть",
+    "cryptoAddress": "Адрес крипто",
+    "cryptoAmount": "Сумма в крипто",
+    "createdAt": "Создано",
+    "expiresAt": "Истекает",
+    "transactionHash": "Хеш транзакции",
+    "walletProvider": "Провайдер кошелька",
+    "actions": "Действия"
+  },
+  "tableActions": {
+    "edit": "Редактировать",
+    "delete": "Удалить"
+  },
+  "form": {
+    "title": "Детали криптоплатежа",
+    "network": "Сеть",
+    "address": "Адрес",
+    "amount": "Сумма",
+    "expires": "Истекает через",
+    "status": "Статус",
+    "copy": "Копировать",
+    "copied": "Скопировано!",
+    "copyAmount": "Копировать сумму",
+    "amountCopied": "Сумма скопирована!",
+    "error": "Ошибка обработки платежа",
+    "success": "Платеж успешно выполнен",
+    "expired": "Платеж истек",
+    "warning": "Внимание: Отправляйте точную сумму на указанный адрес. Неправильная сумма может привести к потере средств.",
+    "confirmations": "Подтверждения: {{current}}/{{required}}",
+    "transactionHash": "Хеш транзакции",
+    "showQR": "Показать QR-код",
+    "hideQR": "Скрыть QR-код",
+    "openWallet": "Открыть в кошельке",
+    "processing": "Обработка платежа...",
+    "networkFee": "Комиссия сети",
+    "exchangeRate": "Курс обмена",
+    "estimatedTime": "Примерное время подтверждения",
+    "minAmount": "Минимальная сумма",
+    "maxAmount": "Максимальная сумма",
+    "supportedNetworks": "Поддерживаемые сети",
+    "selectNetwork": "Выберите сеть",
+    "invalidAddress": "Неверный адрес",
+    "invalidAmount": "Неверная сумма",
+    "insufficientFunds": "Недостаточно средств",
+    "networkError": "Ошибка сети",
+    "retry": "Повторить",
+    "cancel": "Отменить платеж",
+    "statusTypes": {
+      "completed": "Завершено",
+      "failed": "Ошибка",
+      "pending": "В обработке",
+      "expired": "Истекло"
+    }
+  },
+  "common": {
+    "loading": "Загрузка...",
+    "error": "Ошибка",
+    "success": "Успешно",
+    "retry": "Повторить",
+    "cancel": "Отменить"
+  }
+}

@@ -1,5 +1,5 @@
 import React, {useEffect} from 'react';
-import {PAYMENT_STATUS_OPTIONS, PaymentStatusOption, BasePayment, PaymentFormProps} from "@entities/payment";
+import {PAYMENT_STATUS_OPTIONS, PaymentStatusOption, BasePayment, PaymentFormProps, PAYMENT_STATUS} from "@entities/payment";
 import {Button, RenderInput, RenderSelect} from "@ui";
 import {useFormState} from "@hooks";
 import {useTranslation} from "react-i18next";
@@ -16,7 +16,7 @@ const PaymentForm: React.FC<PaymentFormProps> = ({initialData, onSubmit, handleC
                 user_id: initialData.subscription_id || '',
                 amount: initialData.amount || 0,
                 payment_method: initialData.payment_method || '',
-                payment_status: initialData.payment_status || 'pending',
+                payment_status: initialData.payment_status || PAYMENT_STATUS.PENDING
             });
         }
     }, [initialData, setFormData]);
@@ -44,7 +44,7 @@ const PaymentForm: React.FC<PaymentFormProps> = ({initialData, onSubmit, handleC
             <RenderSelect
                 label={t('form.paymentStatus')}
                 options={statusOptions}
-                value={formData.payment_status || 'pending'}
+                value={formData.payment_status}
                 name="payment_status"
                 onChange={handleChange}
                 isLoading={isLoading}

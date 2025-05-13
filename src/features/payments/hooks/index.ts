@@ -6,4 +6,4 @@ export { usePaymentStatusHandler } from './usePaymentStatusHandler';
 export { usePaymentTimer } from './usePaymentTimer';
 export { useTransactionConfirmations } from './useTransactionConfirmations';
 export { usePaymentForm } from './usePaymentForm';
-export { useCryptoPaymentViewModel } from './useCryptoPaymentViewModel'; 
+export { useCryptoForm as useCryptoPaymentViewModel } from './useCryptoForm';

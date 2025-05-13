@@ -1,26 +1,65 @@
 import { CRYPTO_EXCHANGE_RATES, CRYPTO_WALLET_ADDRESSES, CryptoPaymentDetails } from '@entities/payment';
 import { getWalletUrl } from '@entities/payment/config/cryptoPaymentConfig';
 import { cryptoPaymentConfig } from '@entities/payment/config/cryptoPaymentConfig';
-import { useEntityFetch, useTableLogic, useClipboard } from '@hooks';
+import { useEntityFetch, useClipboard, useTableLogic } from '@hooks';
 import { ACTION_TYPES } from '@shared/config';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { usePaymentTimer } from './usePaymentTimer';
 import { useTransactionConfirmations } from './useTransactionConfirmations';
 /**
  * Hook for managing state and business logic for crypto payment details view.
  */
-export const useCryptoPaymentViewModel = (
+export const useCryptoForm = (
     details: CryptoPaymentDetails,
     onUpdate?: (updated: CryptoPaymentDetails) => void
 ) => {
     const [showQR, setShowQR] = useState(true);
     const [isAddressCopied, setIsAddressCopied] = useState(false);
     const [isAmountCopied, setIsAmountCopied] = useState(false);
-    const [network, setNetwork] = useState<string>(details.network);
-    const initialAddress = details.crypto_address || CRYPTO_WALLET_ADDRESSES[details.network] || '';
-    const [address, setAddress] = useState<string>(initialAddress);
-    const initialCryptoAmount = (details.amount * (CRYPTO_EXCHANGE_RATES[details.network] || 0)).toFixed(8);
-    const [cryptoAmount, setCryptoAmount] = useState<string>(initialCryptoAmount);
+    const [expiredSent, setExpiredSent] = useState(false);
+    const {
+        formData: cryptoFormData,
+        handleEditClick: cryptoHandleEdit,
+        handleFormSubmit: cryptoSubmit,
+        loading: loadingCryptoProcess,
+        error: errorCryptoProcess
+    } = useTableLogic<CryptoPaymentDetails>(
+        cryptoPaymentConfig,
+        useEntityFetch,
+        ACTION_TYPES.CRYPTO
+    );
+    useEffect(() => {
+        cryptoHandleEdit(ACTION_TYPES.CRYPTO, details);
+    }, [details, cryptoHandleEdit]);
+    useEffect(() => {
+        if (expiredSent) return;
+        const expiresMs = new Date(details.expires_at).getTime();
+        const now = Date.now();
+        const delay = expiresMs - now;
+        const expire = async () => {
+            try {
+                const resp = await cryptoSubmit({
+                    id: details.id,
+                    subscription_id: details.subscription_id,
+                    status: 'expired'
+                });
+                const updated = (resp as any).data as CryptoPaymentDetails;
+                onUpdate?.(updated);
+                setExpiredSent(true);
+            } catch (err) {
+                console.error('Error expiring crypto payment:', err);
+            }
+        };
+        if (delay <= 0) {
+            expire();
+        } else {
+            const timerId = setTimeout(expire, delay);
+            return () => clearTimeout(timerId);
+        }
+    }, [details.expires_at, expiredSent, cryptoSubmit, details.id, details.subscription_id, onUpdate]);
+    const network = cryptoFormData.network;
+    const address = cryptoFormData.crypto_address;
+    const cryptoAmount = cryptoFormData.crypto_amount;
 
     const timeLeft = usePaymentTimer(details.expires_at);
     const { copyToClipboard } = useClipboard();
@@ -28,14 +67,6 @@ export const useCryptoPaymentViewModel = (
         network,
         details.confirmations
     );
-    const {
-        saveItem: handleFormSubmit,
-        loading: loadingCryptoProcess,
-        error: errorCryptoProcess
-    } = useEntityFetch<CryptoPaymentDetails>(
-        cryptoPaymentConfig
-    );
-
 
     const toggleQR = () => setShowQR(prev => !prev);
 
@@ -56,19 +87,16 @@ export const useCryptoPaymentViewModel = (
         const addr = CRYPTO_WALLET_ADDRESSES[net] || '';
         const newAmt = (details.amount * (CRYPTO_EXCHANGE_RATES[net] || 0)).toFixed(8);
 
-        setNetwork(net);
-        setAddress(addr);
-        setCryptoAmount(newAmt);
-
         try {
-            const resp = await handleFormSubmit({
-                type: ACTION_TYPES.CRYPTO,
+            const resp = await cryptoSubmit({
                 id: details.id,
-                formData: { subscription_id: details.subscription_id, network: net, crypto_address: addr, crypto_amount: newAmt },
-                isEditing: true
+                subscription_id: details.subscription_id,
+                network: net,
+                crypto_address: addr,
+                crypto_amount: newAmt
             });
-            const updatedDetail = (resp as any).data ?? resp;
-            onUpdate?.(updatedDetail as CryptoPaymentDetails);
+            const updated: CryptoPaymentDetails = (resp as any).data;
+            onUpdate?.(updated);
         } catch (err) {
             console.error('Error updating crypto options:', err);
         }
@@ -76,14 +104,15 @@ export const useCryptoPaymentViewModel = (
 
     const handleOpenWallet = async () => {
         try {
-            const resp = await handleFormSubmit({
-                type: ACTION_TYPES.CRYPTO,
+            const resp = await cryptoSubmit({
                 id: details.id,
-                formData: { subscription_id: details.subscription_id, network, crypto_address: address, crypto_amount: cryptoAmount },
-                isEditing: true
+                subscription_id: details.subscription_id,
+                network,
+                crypto_address: address,
+                crypto_amount: cryptoAmount
             });
-            const updatedDetail = (resp as any).data ?? resp;
-            onUpdate?.(updatedDetail as CryptoPaymentDetails);
+            const updated: CryptoPaymentDetails = (resp as any).data;
+            onUpdate?.(updated);
         } catch (err) {
             console.error('Error updating crypto before opening wallet:', err);
         }
@@ -106,6 +135,6 @@ export const useCryptoPaymentViewModel = (
         handleNetworkChange,
         handleOpenWallet,
         loadingCryptoProcess,
-        errorCryptoProcess
+        errorCryptoProcess,
     };
 }; 
