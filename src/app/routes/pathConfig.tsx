@@ -1,11 +1,14 @@
-import FeedbackTable from "@features/feedback/ui/FeedbackTable/FeedbackTable";
-import CryptoPaymentTable from "@features/payments/ui/admin/crypto_payment/CryptoPaymentTable/CryptoPaymentTable";
-import PaymentTable from "@features/payments/ui/admin/payment/PaymentTable/PaymentTable";
+import React, { lazy } from 'react';
 
-import ResumeSection from "@features/resume/ui/ResumeSection/ResumeSection";
-import SubscriptionTable from "@features/subscription/ui/admin/SubscriptionTable/SubscriptionTable";
-import VacanciesTable from "@features/vacancies/ui/VacanciesTable/VacanciesTable";
-import { PaymentError, PaymentSuccess } from "@ui";
+const VacanciesTable = lazy(() => import('@features/vacancies/ui/VacanciesTable/VacanciesTable'));
+const FeedbackTable = lazy(() => import('@features/feedback/ui/FeedbackTable/FeedbackTable'));
+const ResumeSection = lazy(() => import('@features/resume/ui/ResumeSection/ResumeSection'));
+const PaymentTable = lazy(() => import('@features/payments/ui/admin/payment/PaymentTable/PaymentTable'));
+const CryptoPaymentTable = lazy(() => import('@features/payments/ui/admin/crypto_payment/CryptoPaymentTable/CryptoPaymentTable'));
+const SubscriptionTable = lazy(() => import('@features/subscription/ui/admin/SubscriptionTable/SubscriptionTable'));
+const PaymentSuccess = lazy(() => import('@ui').then(module => ({ default: module.PaymentSuccess })));
+const PaymentError = lazy(() => import('@ui').then(module => ({ default: module.PaymentError })));
+
 export const routes = [
     {path: '/', element: <VacanciesTable/>},
     {path: '/feedback', element: <FeedbackTable/>},

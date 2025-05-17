@@ -5,8 +5,14 @@ import {layoutConfig} from '../config/layoutConfig';
 
 const Layout: FC<{ children: ReactNode }> = ({children}) => {
 
-    const renderButtons = (position: 'left' | 'right') => (
-        layoutConfig
+    /**
+     * Рендерит кнопки панели по позиции. Бросает ошибку, если конфигурация не задана.
+     */
+    const renderButtons = (position: 'left' | 'right') => {
+        if (!layoutConfig) {
+            throw new Error(' Layout configuration is not specified ');
+        }
+        return layoutConfig
             .filter(config => config.position === position)
             .map((config, index) => (
                 <InteractiveButton
@@ -17,8 +23,8 @@ const Layout: FC<{ children: ReactNode }> = ({children}) => {
                     position={config.position}
                     aria-label={config.tooltipText}
                 />
-            ))
-    );
+            ));
+    };
 
     return (
         <div className={styles.layout}>

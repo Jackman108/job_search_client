@@ -1,12 +1,12 @@
-import {useMutation, useQuery, useQueryClient} from '@tanstack/react-query';
-import {useDataApi} from "@api";
-import {SearchAuthData} from "@entities/search";
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
+import { useDataApi } from "@api";
+import { SearchAuthData } from "@entities/search";
 
 const useSearchAuth = () => {
     const queryClient = useQueryClient();
-    const {request} = useDataApi();
+    const { request } = useDataApi();
 
-    const {data: auths, isLoading, error} = useQuery<SearchAuthData[], Error>({
+    const { data: auths, isLoading, error } = useQuery<SearchAuthData[], Error>({
         queryKey: ['searchAuth'],
         queryFn: async () => request('get', '/vacancy-auth'),
         staleTime: 1000 * 60 * 10,
@@ -18,9 +18,9 @@ const useSearchAuth = () => {
         },
         onSuccess: async () => {
             try {
-                await queryClient.invalidateQueries({queryKey: ['searchAuth']});
+                await queryClient.invalidateQueries({ queryKey: ['searchAuth'] });
             } catch (error) {
-                console.error('Ошибка при обновлении данных:', error);
+                console.error('Error updating data:', error);
             }
         },
     });
@@ -31,10 +31,10 @@ const useSearchAuth = () => {
         },
         onSuccess: async (updatedSearch) => {
             try {
-                await queryClient.invalidateQueries({queryKey: ['searchAuth']});
-                await queryClient.invalidateQueries({queryKey: ['searchAuthId', updatedSearch.id]});
+                await queryClient.invalidateQueries({ queryKey: ['searchAuth'] });
+                await queryClient.invalidateQueries({ queryKey: ['searchAuthId', updatedSearch.id] });
             } catch (error) {
-                console.error('Ошибка при обновлении данных:', error);
+                console.error('Error updating data:', error);
             }
         },
     });
@@ -45,9 +45,9 @@ const useSearchAuth = () => {
         },
         onSuccess: async () => {
             try {
-                await queryClient.invalidateQueries({queryKey: ['searchAuth']});
+                await queryClient.invalidateQueries({ queryKey: ['searchAuth'] });
             } catch (error) {
-                console.error('Ошибка при обновлении данных:', error);
+                console.error('Error updating data:', error);
             }
         },
     });

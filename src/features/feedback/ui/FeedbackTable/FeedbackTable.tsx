@@ -23,7 +23,11 @@ const FeedbackTable: FC = () => {
                 <FeedbackHeader handleSort={handleSort} getSortArrow={getSortArrow}/>
                 <tbody>
                 {sortedFeedbacks.map(feedback => (
-                    <FeedbackRow key={feedback.id} feedback={feedback} deleteFeedback={deleteFeedback}/>
+                    <FeedbackRow 
+                    key={feedback.id} 
+                    feedback={feedback} 
+                    deleteFeedback={deleteFeedback}
+                    />
                 ))}
                 </tbody>
             </table>

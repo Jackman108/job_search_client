@@ -17,3 +17,4 @@ export { default as RenderInput } from './RenderInput/RenderInput';
 export { default as RenderRow } from './RenderRow/RenderRow';
 export { default as RenderSelect } from './RenderSelect/RenderSelect';
 export { default as RenderTextarea } from './RenderTextarea/RenderTextarea';
+export { default as ErrorBoundary } from './ErrorBoundary/ErrorBoundary';

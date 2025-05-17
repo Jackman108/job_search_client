@@ -3,6 +3,7 @@ export const ACTION_TYPES = {
     CRYPTO: 'crypto_payments',
     RESUME: 'resume',
     CONTACTS: 'contacts',
+    VACANCY: 'vacancy',
     SKILLS: 'skills',
     EXPERIENCE: 'workExperience',
     SUBSCRIPTION: 'subscription',

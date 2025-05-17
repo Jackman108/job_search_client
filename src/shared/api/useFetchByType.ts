@@ -16,7 +16,8 @@ const SPECIAL_TYPES = [
     ACTION_TYPES.PAYMENT,
     ACTION_TYPES.SUBSCRIPTION,
     ACTION_TYPES.FEEDBACK,
-    ACTION_TYPES.CRYPTO
+    ACTION_TYPES.CRYPTO,
+    ACTION_TYPES.VACANCY
 ] as const;
 
 const getQueryKey = (config: FetchByTypeConfig['config']) => {

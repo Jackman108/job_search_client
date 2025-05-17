@@ -1,5 +1,5 @@
 // hooks/useLocalStorage.ts
-import {useEffect, useState} from 'react';
+import { useEffect, useState } from 'react';
 
 type SetStateAction<T> = T | ((prevState: T) => T);
 type Dispatch<T> = (value: SetStateAction<T>) => void;
@@ -10,7 +10,7 @@ const useLocalStorage = <T>(key: string, initialValue: T): [T, Dispatch<T>] => {
             const item = localStorage.getItem(key);
             return item ? JSON.parse(item) : initialValue;
         } catch (error) {
-            console.error(`Ошибка при чтении из localStorage (${key}):`, error);
+            console.error(`Error reading from localStorage (${key}):`, error);
             return initialValue;
         }
     });
@@ -21,7 +21,7 @@ const useLocalStorage = <T>(key: string, initialValue: T): [T, Dispatch<T>] => {
             setStoredValue(valueToStore);
             localStorage.setItem(key, JSON.stringify(valueToStore));
         } catch (error) {
-            console.error(`Ошибка при записи в localStorage (${key}):`, error);
+            console.error(`Error writing to localStorage (${key}):`, error);
         }
     };
 

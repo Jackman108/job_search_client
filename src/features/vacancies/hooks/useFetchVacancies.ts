@@ -1,7 +1,9 @@
-import {useMutation, useQuery, useQueryClient} from '@tanstack/react-query';
-import {formatAndSortData, formatDate} from '@utils';
-import {useDataApi} from "@api";
-import {Vacancy} from "@entities/vacancy";
+import { useFetchByType } from '@api';
+import { ACTION_TYPES } from '@config';
+import { Vacancy } from '@entities/vacancy';
+import { vacancyConfig } from '@entities/vacancy/config/vacancyConfig';
+import { formatAndSortData, formatDate } from '@utils';
+import { useCallback } from 'react';
 
 const formatVacancy = (vacancy: Vacancy): Vacancy => ({
     ...vacancy,
@@ -9,41 +11,29 @@ const formatVacancy = (vacancy: Vacancy): Vacancy => ({
     response_date_date: formatDate(vacancy.response_date).date,
 });
 
+
 const useFetchVacancies = () => {
-    const {request} = useDataApi();
-    const queryClient = useQueryClient();
+    const { fetchedData, loading, error, deleteItem, saveItem, loadData } = useFetchByType(vacancyConfig);
 
-    const fetchVacancies = async () => {
-        const data = await request('get', '/vacancy');
-        return formatAndSortData(data, formatVacancy, 'response_date');
-    };
+    const vacancies: Vacancy[] = fetchedData.vacancy
+        ? formatAndSortData(fetchedData.vacancy, formatVacancy, 'response_date')
+        : [];
 
-    const {data: vacancies, isLoading: loading, error, refetch: loadData} = useQuery<Vacancy[], Error>({
-        queryKey: ['vacancies'],
-        queryFn: fetchVacancies,
-        staleTime: 1000 * 60 * 10,
-    });
-
-    const deleteVacancyMutation = useMutation<void, Error, number>({
-        mutationFn: async (id: number) => {
-            await request('delete', `/vacancy/${id}`);
+    const deleteVacancy = useCallback(
+        async (id: number) => {
+            await deleteItem({ type: ACTION_TYPES.VACANCY, id });
         },
-        onSuccess: async () => {
-            await queryClient.invalidateQueries({queryKey: ['vacancies']});
-        },
-        onError: (err) => {
-            console.error("Ошибка удаления вакансии:", err);
-        },
-    });
+        [deleteItem]
+    );
 
-    return {
-        vacancies: vacancies || [],
-        loading,
-        error: error ? error.message : null,
-        fetchVacancies: () => queryClient.invalidateQueries({queryKey: ['vacancies']}),
-        deleteVacancy: deleteVacancyMutation.mutateAsync,
-        loadData,
-    };
+    const saveVacancy = useCallback(
+        async (formData: Partial<Vacancy>, isEditing: boolean, id?: number) => {
+            await saveItem({ type: ACTION_TYPES.VACANCY, id, formData, isEditing });
+        },
+        [saveItem]
+    );
+
+    return { vacancies, loading, error, deleteVacancy, saveVacancy, loadData };
 };
 
 export default useFetchVacancies;
