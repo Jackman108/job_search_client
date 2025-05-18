@@ -1,9 +1,9 @@
 import { usePostByType } from "@api";
 import { ACTION_TYPES } from '@config';
 import { BasePayment, CryptoPaymentDetails, mockWebPayResponse, PAYMENT_METHOD, PAYMENT_STATUS, paymentConfig, paymentProcessConfig, UseProcessHandlerReturn, WebPayResponse } from "@entities/payment";
-import { usePaymentStatusHandler } from "./usePaymentStatusHandler";
-import { useEntityFetch, useTableLogic } from '@hooks';
-import { cryptoPaymentConfig } from "@entities/payment/config/cryptoPaymentConfig";
+import { usePaymentStatusHandler } from "@features/payments/hooks/base/usePaymentStatusHandler";
+import { useEntityFetch } from '@hooks';
+import { useCryptoPaymentLogic } from '@features/payments/hooks';
 import { buildCryptoDetails } from '@features/payments/utils/buildCryptoDetails';
 
 /**
@@ -18,16 +18,12 @@ export const useProcessHandler = (): UseProcessHandlerReturn => {
 
     const { handleProcessSuccess, handleProcessFailure } = usePaymentStatusHandler();
     const {
-        data: cryptoPayments,
-        loadData: reloadCryptoPayments,
-        handleFormSubmit: handleCryptoPayment,
-        loading: loadingCryptoProcess,
-        error: errorCryptoProcess
-    } = useTableLogic<CryptoPaymentDetails>(
-        cryptoPaymentConfig,
-        useEntityFetch,
-        ACTION_TYPES.CRYPTO
-    );
+        cryptoData: cryptoPayments,
+        reloadCryptoPayments,
+        cryptoFormSubmit: handleCryptoPayment,
+        cryptoLoading: loadingCryptoProcess,
+        cryptoError: errorCryptoProcess,
+    } = useCryptoPaymentLogic();
 
     const { saveItem: updatePaymentStatus } = useEntityFetch<BasePayment>(paymentConfig);
 
@@ -53,7 +49,16 @@ export const useProcessHandler = (): UseProcessHandlerReturn => {
 
             if (process.env.NODE_ENV === 'development') {
                 if (paymentSystem === PAYMENT_METHOD.CRYPTO) {
-                    // В dev режиме собираем детали криптоплатежа через утилиту
+                    // В dev режиме сначала проверяем существующие незавершенные криптоплатежи
+                    await reloadCryptoPayments();
+                    const existingDev = cryptoPayments?.find(
+                        (p: CryptoPaymentDetails) => p.id === paymentData.id && p.status.toLowerCase() === PAYMENT_STATUS.PENDING
+                    );
+                    if (existingDev) {
+                        // Если есть незавершенный, возвращаем без создания нового
+                        return existingDev;
+                    }
+                    // Иначе собираем детали криптоплатежа через утилиту
                     response = buildCryptoDetails(paymentData);
 
                     // Обновляем статус в таблице payments
@@ -68,30 +73,35 @@ export const useProcessHandler = (): UseProcessHandlerReturn => {
                         },
                         isEditing: true,
                     });
-                    console.log('cryptoPayments', response);
-                    // Проверяем наличие незавершенного крипто-платежа
+
+                    // Перезагружаем список крипто-платежей и ищем существующий
+                    await reloadCryptoPayments();
                     const existing = cryptoPayments?.find(
                         (p: CryptoPaymentDetails) => p.id === paymentData.id && p.status.toLowerCase() === PAYMENT_STATUS.PENDING
                     );
-                    if (!existing) {
-                        // Создаем новый крипто-платеж через утилиту для правильного payload
-                        try {
-                            const payload = buildCryptoDetails(paymentData);
-                            const created = await handleCryptoPayment(payload);
-                            response = created || response;
-                        } catch (error: any) {
-                            // Если дубликат, пробуем получить существующий
-                            if (error?.message?.includes('duplicate key')) {
-                                const payload = buildCryptoDetails(paymentData);
-                                const existing2 = await handleCryptoPayment(payload);
-                                if (existing2) response = existing2;
-                            } else {
-                                throw error;
+                    if (existing) {
+                        // Если уже есть, возвращаем без нового POST
+                        return existing;
+                    }
+
+                    // Создаём новый крипто-платёж через утилиту
+                    try {
+                        const payload = buildCryptoDetails(paymentData);
+                        const created = await handleCryptoPayment(payload);
+                        if (created) response = created;
+                    } catch (error: any) {
+                        if (error?.message?.includes('duplicate key')) {
+                            // при дубликате перезагружаем и возвращаем существующий
+                            await reloadCryptoPayments();
+                            const existingAfter = cryptoPayments?.find(
+                                (p: CryptoPaymentDetails) => p.id === paymentData.id && p.status.toLowerCase() === PAYMENT_STATUS.PENDING
+                            );
+                            if (existingAfter) {
+                                return existingAfter;
                             }
                         }
+                        throw error;
                     }
-                    // Перезагружаем список крипто-платежей
-                    await reloadCryptoPayments();
 
                     return response;
                 } else {

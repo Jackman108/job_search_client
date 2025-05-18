@@ -6,6 +6,7 @@ import SubscriptionSelectionForm
     from "@features/subscription/ui/user/SubscriptionSelectionForm/SubscriptionSelectionForm";
 import PaymentSelectionForm from "@features/payments/ui/user/PaymentSelectionForm/PaymentSelectionForm";
 import {useSubscriptionLogic} from "@features/subscription/hooks/useSubscriptionLogic";
+import {usePaymentLogic} from "@features/payments/hooks";
 import SubscriptionActive from "@features/subscription/ui/user/SubscriptionActive/SubscriptionActive";
 import {useAuth} from "@app/providers/auth/useAuthContext";
 import {PanelProps} from "@type";
@@ -13,6 +14,7 @@ import CryptoSelectionForm from "@features/payments/ui/user/CryptoSelectionForm/
 
 const SubscriptionUser: FC<PanelProps> = ({onClose}) => {
     const {t} = useTranslation('subscriptions');
+    // Подписочная логика
     const {
         subscribeData,
         subscribeLoading,
@@ -24,8 +26,10 @@ const SubscriptionUser: FC<PanelProps> = ({onClose}) => {
         subscribeToggleForm,
         subscribeEditClick,
         subscribeCancel,
-        paymentCancel,
         subscribeSubmit,
+    } = useSubscriptionLogic();
+    // Платёжная логика
+    const {
         paymentData,
         paymentLoading,
         paymentError,
@@ -33,13 +37,14 @@ const SubscriptionUser: FC<PanelProps> = ({onClose}) => {
         paymentShowForm,
         paymentEditClick,
         paymentSubmit,
+        paymentCancel,
         loadingProcess,
         errorProcess,
         cryptoPaymentDetails,
         showCryptoPayment,
         handleCloseCryptoPayment,
         updateCryptoPaymentDetails,
-    } = useSubscriptionLogic();
+    } = usePaymentLogic();
 
     const isFormVisible = subscribeShowForm || paymentShowForm || showCryptoPayment;
     const {token} = useAuth();

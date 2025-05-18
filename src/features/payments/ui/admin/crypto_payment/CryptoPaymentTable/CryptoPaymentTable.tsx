@@ -1,7 +1,5 @@
 import { ACTION_TYPES } from '@config';
-import { CryptoPaymentDetails } from '@entities/payment';
-import { cryptoPaymentConfig } from '@entities/payment/config/cryptoPaymentConfig';
-import { useEntityFetch, useTableLogic } from '@hooks';
+import { useCryptoPaymentLogic } from '@features/payments/hooks';
 import React from 'react';
 import { useTranslation } from 'react-i18next';
 import { Link } from 'react-router-dom';
@@ -13,57 +11,54 @@ import styles from './CryptoPaymentTable.module.css';
  * Компонент таблицы криптоплатежей для админки
  */
 const CryptoPaymentTable: React.FC = () => {
+    
     const {
-        data: payments,
-        loading,
-        error,
-        formData,
-        isEditing,
-        showForm,
-        handleEditClick,
-        handleDelete,
-        handleFormSubmit,
-        handleToggleForm,
-        handleCancelAction
-    } = useTableLogic<CryptoPaymentDetails>(
-        cryptoPaymentConfig,
-        useEntityFetch,
-        ACTION_TYPES.CRYPTO
-    );
+        cryptoData,
+        cryptoLoading,
+        cryptoError,
+        cryptoFormData,
+        cryptoIsEditing,
+        cryptoShowForm,
+        cryptoEditClick,
+        cryptoFormSubmit,
+        cryptoDelete,
+        cryptoToggleForm,
+        cryptoCancel,
+    } = useCryptoPaymentLogic(); 
 
     const { t } = useTranslation('cryptoPayments');
 
-    if (loading) return <p>{t('common.loading')}</p>;
-    if (error) return <p>{t('common.error')}: {error.message}</p>;
+    if (cryptoLoading) return <p>{t('common.loading')}</p>;
+    if (cryptoError) return <p>{t('common.error')}: {cryptoError.message}</p>;
 
     return (
         <div className={styles.container}>
             <Link to="/" className="home-button">🏠</Link>
             <h1 className={styles.title}>{t('cryptoPayments.title')}</h1>
-            <button className={styles.addButton} onClick={handleToggleForm}>
-                {showForm ? t('cryptoPayments.hideForm') : t('cryptoPayments.addPayment')}
+            <button className={styles.addButton} onClick={cryptoToggleForm}>
+                {cryptoShowForm ? t('cryptoPayments.hideForm') : t('cryptoPayments.addPayment')}
             </button>
-            {(showForm || isEditing[ACTION_TYPES.CRYPTO]) && (
+            {(cryptoShowForm || cryptoIsEditing[ACTION_TYPES.CRYPTO]) && (
                 <CryptoPaymentForm
-                    initialData={formData}
-                    onSubmit={handleFormSubmit}
-                    handleCancelClick={handleCancelAction}
-                    isLoading={loading}
+                    initialData={cryptoFormData}
+                    onSubmit={cryptoFormSubmit}
+                    handleCancelClick={cryptoCancel}
+                    isLoading={cryptoLoading}
                 />
             )}
-            {payments.length > 0 ? (
+            {cryptoData.length > 0 ? (
                 <div className={styles.tableWrapper}>
                     <CryptoPaymentTableBody
-                        cryptoPaymentData={payments}
+                        cryptoPaymentData={cryptoData}
                         handleEditClick={(type, item) => {
-                             handleEditClick(type, item);
-                              handleToggleForm(); 
+                            cryptoEditClick(type, item);
+                            cryptoToggleForm(); 
                             }}
-                            handleDelete={handleDelete}
+                            handleDelete={cryptoDelete}
                     />
                 </div>
             ) : (
-                !loading && !error && <p>{t('payments.noData')}</p>
+                !cryptoLoading && !cryptoError && <p>{t('payments.noData')}</p>
             )}
         </div>
     );

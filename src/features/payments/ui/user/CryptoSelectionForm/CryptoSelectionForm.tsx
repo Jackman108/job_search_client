@@ -3,7 +3,7 @@ import { useTranslation } from 'react-i18next';
 import { CryptoPaymentDetails as CryptoDetails, PAYMENT_STATUS } from '@entities/payment';
 import { QRCodeSVG } from 'qrcode.react';
 import styles from './CryptoSelectionForm.module.css';
-import { useCryptoForm } from '@features/payments/hooks/useCryptoForm';
+import { useCryptoForm } from '@features/payments/hooks/crypto/useCryptoForm';
 import { SUPPORTED_CRYPTO_NETWORKS, getWalletUrl } from '@entities/payment/config/cryptoPaymentConfig';
 import { RenderSelect } from '@shared/ui';
 

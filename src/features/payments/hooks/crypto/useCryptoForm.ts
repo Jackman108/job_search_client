@@ -1,11 +1,11 @@
+import { ACTION_TYPES } from '@config';
 import { CRYPTO_EXCHANGE_RATES, CRYPTO_WALLET_ADDRESSES, CryptoPaymentDetails } from '@entities/payment';
 import { getWalletUrl } from '@entities/payment/config/cryptoPaymentConfig';
-import { cryptoPaymentConfig } from '@entities/payment/config/cryptoPaymentConfig';
-import { useEntityFetch, useClipboard, useTableLogic } from '@hooks';
-import { ACTION_TYPES } from '@shared/config';
-import { useState, useEffect } from 'react';
-import { usePaymentTimer } from './usePaymentTimer';
-import { useTransactionConfirmations } from './useTransactionConfirmations';
+import { usePaymentTimer } from '@features/payments/hooks/base/usePaymentTimer';
+import { useCryptoPaymentLogic } from '@features/payments/hooks';
+import { useTransactionConfirmations } from '@features/payments/hooks/crypto/useTransactionConfirmations';
+import { useClipboard } from '@hooks';
+import { useEffect, useState } from 'react';
 /**
  * Hook for managing state and business logic for crypto payment details view.
  */
@@ -17,20 +17,19 @@ export const useCryptoForm = (
     const [isAddressCopied, setIsAddressCopied] = useState(false);
     const [isAmountCopied, setIsAmountCopied] = useState(false);
     const [expiredSent, setExpiredSent] = useState(false);
+
     const {
-        formData: cryptoFormData,
-        handleEditClick: cryptoHandleEdit,
-        handleFormSubmit: cryptoSubmit,
-        loading: loadingCryptoProcess,
-        error: errorCryptoProcess
-    } = useTableLogic<CryptoPaymentDetails>(
-        cryptoPaymentConfig,
-        useEntityFetch,
-        ACTION_TYPES.CRYPTO
-    );
+        cryptoFormData,
+        cryptoEditClick: cryptoHandleEdit,
+        cryptoFormSubmit: cryptoSubmit,
+        cryptoLoading: loadingCryptoProcess,
+        cryptoError: errorCryptoProcess,
+    } = useCryptoPaymentLogic();
+
     useEffect(() => {
         cryptoHandleEdit(ACTION_TYPES.CRYPTO, details);
     }, [details, cryptoHandleEdit]);
+
     useEffect(() => {
         if (expiredSent) return;
         const expiresMs = new Date(details.expires_at).getTime();
@@ -57,6 +56,7 @@ export const useCryptoForm = (
             return () => clearTimeout(timerId);
         }
     }, [details.expires_at, expiredSent, cryptoSubmit, details.id, details.subscription_id, onUpdate]);
+
     const network = cryptoFormData.network;
     const address = cryptoFormData.crypto_address;
     const cryptoAmount = cryptoFormData.crypto_amount;
