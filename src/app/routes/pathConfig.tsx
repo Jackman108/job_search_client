@@ -8,6 +8,7 @@ const CryptoPaymentTable = lazy(() => import('@features/payments/ui/admin/crypto
 const SubscriptionTable = lazy(() => import('@features/subscription/ui/admin/SubscriptionTable/SubscriptionTable'));
 const PaymentSuccess = lazy(() => import('@ui').then(module => ({ default: module.PaymentSuccess })));
 const PaymentError = lazy(() => import('@ui').then(module => ({ default: module.PaymentError })));
+const ServerError = lazy(() => import('@ui').then(module => ({ default: module.ServerError })));
 
 export const routes = [
     {path: '/', element: <VacanciesTable/>},
@@ -18,4 +19,5 @@ export const routes = [
     {path: '/payment/success', element: <PaymentSuccess/>},
     {path: '/payment/error', element: <PaymentError/>},
     {path: '/crypto-payments', element: <CryptoPaymentTable/>},
+    {path: '/server-error', element: <ServerError/>},
 ];

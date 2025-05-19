@@ -24,7 +24,7 @@ const VacanciesTable: FC = () => {
     } = useTableHandlers(vacancies);
 
     if (loading) return <div>{LOCALES.LOADING}</div>;
-    if (vacancies.length === 0) return <div>{LOCALES.WELCOME_MESSAGE}</div>;
+    if (vacancies.length === 0 && !vacancyError) return <div>{LOCALES.WELCOME_MESSAGE}</div>;
     if (vacancyError) return <UnauthorizedMessage/>;
 
     return (

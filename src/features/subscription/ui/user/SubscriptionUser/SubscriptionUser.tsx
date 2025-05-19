@@ -1,6 +1,6 @@
 import React, {FC} from 'react';
 import styles from './SubscriptionUser.module.css';
-import {Button, FormContainer, LoadingOrError} from "@ui";
+import {Button, FormContainer, LoadingOrError, UnauthorizedMessage} from "@ui";
 import {useTranslation} from "react-i18next";
 import SubscriptionSelectionForm
     from "@features/subscription/ui/user/SubscriptionSelectionForm/SubscriptionSelectionForm";
@@ -28,6 +28,7 @@ const SubscriptionUser: FC<PanelProps> = ({onClose}) => {
         subscribeCancel,
         subscribeSubmit,
     } = useSubscriptionLogic();
+    
     // Платёжная логика
     const {
         paymentData,
@@ -48,6 +49,7 @@ const SubscriptionUser: FC<PanelProps> = ({onClose}) => {
 
     const isFormVisible = subscribeShowForm || paymentShowForm || showCryptoPayment;
     const {token} = useAuth();
+    if (subscribeError) return <UnauthorizedMessage/>;
 
     return (
         <>
@@ -70,7 +72,7 @@ const SubscriptionUser: FC<PanelProps> = ({onClose}) => {
                         />
                     )}
 
-                    {!isFormVisible && (!subscribeData || subscribeData.length === 0) && (
+                    {!isFormVisible && (!subscribeData || subscribeData.length === 0) &&  !subscribeLoading &&(
                         <Button type="button" variant="primary" onClick={subscribeToggleForm}>
                             {t('subscriptions.addSubscription')}
                         </Button>

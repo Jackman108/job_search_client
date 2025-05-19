@@ -9,12 +9,12 @@ import FeedbackRow from "@features/feedback/ui/FeedbackRow/FeedbackRow";
 import FeedbackHeader from "@features/feedback/ui/FeedbackHeader/FeedbackHeader";
 
 const FeedbackTable: FC = () => {
-    const {feedbacks, loading, error, deleteFeedback} = useFetchFeedbacks();
+    const {feedbacks, loading, error: feedbackError, deleteFeedback} = useFetchFeedbacks();
     const {sortedData: sortedFeedbacks, handleSort, getSortArrow} = useSortedData(feedbacks || []);
 
     if (loading) return <div>{LOCALES.LOADING}</div>;
-    if (feedbacks.length === 0) return <div>{LOCALES.WELCOME_MESSAGE}</div>;
-    if (error) return <UnauthorizedMessage/>;
+    if (feedbacks.length === 0 && !feedbackError) return <div>{LOCALES.WELCOME_MESSAGE}</div>;
+    if (feedbackError) return <UnauthorizedMessage/>;
 
     return (
         <div className={styles.FeedbackTable}>

@@ -12,6 +12,8 @@ import authRu from '@shared/locales/ru/auth.json';
 import authEn from '@shared/locales/en/auth.json';
 import cryptoPaymentRu from '@shared/locales/ru/cryptoPayment.json';
 import cryptoPaymentEn from '@shared/locales/en/cryptoPayment.json';
+import errorsRu from '@shared/locales/ru/errors.json';
+import errorsEn from '@shared/locales/en/errors.json';
 
 export const defaultNS = 'subscriptions';
 
@@ -28,6 +30,7 @@ export const initializeI18n = async () => {
                 profile: profileRu,
                 auth: authRu,
                 cryptoPayments: cryptoPaymentRu,
+                errors: errorsRu,
             },
             en: {
                 subscriptions: subscriptionEn,
@@ -36,6 +39,7 @@ export const initializeI18n = async () => {
                 profile: profileEn,
                 auth: authEn,
                 cryptoPayments: cryptoPaymentEn,
+                errors: errorsEn,
             },
         },
         defaultNS,

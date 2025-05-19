@@ -1,0 +1,9 @@
+{
+  "serverError": {
+    "title": "Server temporarily unavailable",
+    "message": "Please try again later.",
+    "button": "Reload page",
+    "home": "Home"
+  },
+  "unauthorized": "User is not authorized"
+}

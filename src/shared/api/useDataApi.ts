@@ -2,11 +2,15 @@ import axios from 'axios';
 import { useCallback } from 'react';
 import { API_URL } from '@config';
 import { useAuth } from '@app/providers/auth/useAuthContext';
+import { setupNetworkErrorInterceptor } from '@shared/utils/axiosInterceptors';
 
 const axiosInstance = axios.create({
     baseURL: API_URL,
     withCredentials: true,
 });
+
+// Устанавливаем глобальный перехватчик сетевых ошибок
+setupNetworkErrorInterceptor(axiosInstance);
 
 export const useDataApi = () => {
     const { token } = useAuth();
