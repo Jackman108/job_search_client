@@ -1,6 +1,5 @@
-import { BasePayment, CryptoPaymentDetails, PAYMENT_STATUS } from '@entities/payment';
-import { DEFAULT_CRYPTO_NETWORK, CRYPTO_PAYMENT_SETTINGS, getWalletUrl } from '@entities/payment/config/cryptoPaymentConfig';
-import { mockCryptoResponse } from '@entities/payment';
+import { CryptoPaymentDetails, mockCryptoResponse } from '@entities/payment';
+import { CRYPTO_PAYMENT_SETTINGS, DEFAULT_CRYPTO_NETWORK, getWalletUrl } from '@entities/payment/config/cryptoPaymentConfig';
 
 /**
  * Утилита для сборки объекта деталей криптоплатежа.
@@ -12,7 +11,7 @@ import { mockCryptoResponse } from '@entities/payment';
  * - Необходимо удостовериться, что paymentData содержит обязательные поля.
  * - При изменении формата mockCryptoResponse нужно синхронизировать интерфейс.
  */
-export function buildCryptoDetails(paymentData: BasePayment): CryptoPaymentDetails {
+export function buildCryptoDetails(paymentData: CryptoPaymentDetails): CryptoPaymentDetails {
     const now = Date.now();
     // Если сеть не указана, используем сеть по умолчанию из констант
     const network = paymentData.network ?? DEFAULT_CRYPTO_NETWORK;
@@ -35,12 +34,11 @@ export function buildCryptoDetails(paymentData: BasePayment): CryptoPaymentDetai
         id: paymentData.id,
         subscription_id: paymentData.subscription_id,
         amount,
-        payment_status: PAYMENT_STATUS.PENDING,
+        payment_status: paymentData.payment_status,
         currency: paymentData.currency ?? network,
         network,
         crypto_address: cryptoAddress,
         crypto_amount: amount.toString(),
-        status: PAYMENT_STATUS.PENDING,
         created_at: createdAt,
         expires_at: expiresAt,
         transaction_hash: null,

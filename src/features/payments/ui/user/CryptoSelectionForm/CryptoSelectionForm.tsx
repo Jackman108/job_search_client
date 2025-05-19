@@ -138,8 +138,8 @@ const CryptoSelectionForm: React.FC<CryptoPaymentDetailsProps> = ({ details, onU
 
                     <div className={styles.row}>
                         <span className={styles.label}>{t('form.status')}:</span>
-                        <span className={`${styles.value} ${getStatusColor(details.status ?? '')}`}>
-                            {t(`form.statusTypes.${(details.status ?? '').toLowerCase()}`)}
+                        <span className={`${styles.value} ${getStatusColor(details.payment_status ?? '')}`}>
+                            {t(`form.statusTypes.${(details.payment_status ?? '').toLowerCase()}`)}
                         </span>
                     </div>
 

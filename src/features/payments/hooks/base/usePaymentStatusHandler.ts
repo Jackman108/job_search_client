@@ -54,8 +54,32 @@ export const usePaymentStatusHandler = (): UsePaymentStatusHandlerReturn => {
         }
     };
 
+    /**
+     * Обрабатывает истечение платежа
+     * Обновляет статус платежа на "expired"
+     * @param paymentData - Данные платежа для обновления
+     */
+    const handleProcessExpired = async (paymentData: BasePayment) => {
+        try {
+            await updatePaymentStatus({
+                type: ACTION_TYPES.PAYMENT,
+                id: paymentData.id,
+                formData: {
+                    payment_status: PAYMENT_STATUS.EXPIRED,
+                    payment_method: paymentData.payment_method,
+                    amount: paymentData.amount,
+                    updated_at: new Date(),
+                },
+                isEditing: true,
+            });
+        } catch (error) {
+            console.error('Failed to update payment status to "expired":', error);
+        }
+    };
+
     return {
         handleProcessSuccess,
-        handleProcessFailure
+        handleProcessFailure,
+        handleProcessExpired,
     };
 }; 

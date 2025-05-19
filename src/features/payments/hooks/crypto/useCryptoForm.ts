@@ -1,8 +1,8 @@
 import { ACTION_TYPES } from '@config';
-import { CRYPTO_EXCHANGE_RATES, CRYPTO_WALLET_ADDRESSES, CryptoPaymentDetails } from '@entities/payment';
+import { CRYPTO_EXCHANGE_RATES, CRYPTO_WALLET_ADDRESSES, CryptoPaymentDetails, PAYMENT_STATUS } from '@entities/payment';
 import { getWalletUrl } from '@entities/payment/config/cryptoPaymentConfig';
 import { usePaymentTimer } from '@features/payments/hooks/base/usePaymentTimer';
-import { useCryptoPaymentLogic } from '@features/payments/hooks';
+import { useCryptoPaymentLogic, usePaymentStatusHandler } from '@features/payments/hooks';
 import { useTransactionConfirmations } from '@features/payments/hooks/crypto/useTransactionConfirmations';
 import { useClipboard } from '@hooks';
 import { useEffect, useState } from 'react';
@@ -25,6 +25,7 @@ export const useCryptoForm = (
         cryptoLoading: loadingCryptoProcess,
         cryptoError: errorCryptoProcess,
     } = useCryptoPaymentLogic();
+    const { handleProcessExpired } = usePaymentStatusHandler();
 
     useEffect(() => {
         cryptoHandleEdit(ACTION_TYPES.CRYPTO, details);
@@ -40,8 +41,9 @@ export const useCryptoForm = (
                 const resp = await cryptoSubmit({
                     id: details.id,
                     subscription_id: details.subscription_id,
-                    status: 'expired'
+                    payment_status: PAYMENT_STATUS.EXPIRED
                 });
+                await handleProcessExpired(details);
                 const updated = (resp as any).data as CryptoPaymentDetails;
                 onUpdate?.(updated);
                 setExpiredSent(true);
@@ -55,7 +57,7 @@ export const useCryptoForm = (
             const timerId = setTimeout(expire, delay);
             return () => clearTimeout(timerId);
         }
-    }, [details.expires_at, expiredSent, cryptoSubmit, details.id, details.subscription_id, onUpdate]);
+    }, [details.expires_at, expiredSent, cryptoSubmit, details, onUpdate, handleProcessExpired]);
 
     const network = cryptoFormData.network;
     const address = cryptoFormData.crypto_address;

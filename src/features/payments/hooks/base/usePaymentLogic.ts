@@ -32,7 +32,7 @@ export const usePaymentLogic = () => {
     /** Обрабатывает платеж с учётом метода (WebPay/ERIP или Crypto) */
     const paymentWithProcess = useCallback(async (formData: Partial<BasePayment>) => {
         // если есть активный незавершенный криптоплатёж
-        if (cryptoPaymentDetails?.status?.toLowerCase() === PAYMENT_STATUS.PENDING) {
+        if (cryptoPaymentDetails?.payment_status?.toLowerCase() === PAYMENT_STATUS.PENDING) {
             setShowCryptoPayment(true);
             paymentToggleForm();
             return;
@@ -59,7 +59,7 @@ export const usePaymentLogic = () => {
                     }
                 } catch (e: any) {
                     if (e.message.includes('duplicate key')) {
-                        const existing = await handleProcess({ ...updated, payment_status: PAYMENT_STATUS.PENDING });
+                        const existing = await handleProcess({ ...updated });
                         if (existing && 'crypto_address' in existing) {
                             setCryptoPaymentDetails(existing);
                             setShowCryptoPayment(true);

@@ -33,7 +33,7 @@ const CryptoPaymentTableBody: React.FC<CryptoPaymentTableBodyProps> = ({ cryptoP
                     <tr key={crypto.id}>
                         <td>{crypto.id}</td>
                         <td>{crypto.subscription_id}</td>
-                        <td>{crypto.status}</td>
+                        <td>{crypto.payment_status}</td>
                         <td>{crypto.amount}</td>
                         <td>{crypto.currency}</td>
                         <td>{crypto.network}</td>

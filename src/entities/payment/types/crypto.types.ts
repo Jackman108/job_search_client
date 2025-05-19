@@ -1,4 +1,4 @@
-import { BasePayment } from './base.types';
+import { BasePayment, PaymentStatus } from './base.types';
 
 /**
  * Интерфейс для деталей криптоплатежа
@@ -10,8 +10,6 @@ export interface CryptoPaymentDetails extends BasePayment {
     crypto_address: string;
     /** Сумма в криптовалюте */
     crypto_amount: string;
-    /** Статус платежа */
-    status: string;
     /** Дата истечения платежа */
     expires_at: Date;
     /** Хеш транзакции в блокчейне */
@@ -21,7 +19,7 @@ export interface CryptoPaymentDetails extends BasePayment {
     /** Количество подтверждений транзакции */
     confirmations?: number;
     /** URL для оплаты через кошелек */
-    payment_url?: string;   
+    payment_url?: string;
 }
 
 /**
@@ -55,7 +53,7 @@ export interface CryptoPaymentResponse {
  */
 export interface CryptoPaymentStatus {
     /** Статус платежа */
-    status: string;
+    payment_status: PaymentStatus;
     /** Количество подтверждений транзакции */
     confirmations?: number;
     /** Хеш транзакции */

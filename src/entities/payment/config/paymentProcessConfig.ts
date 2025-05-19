@@ -7,6 +7,7 @@ export const paymentProcessConfig: Record<string, ConfigItem> = {
         fields: {
             subscription_id: 'Subscription ID',
             amount: 'Amount',
+            payment_status: 'Payment Status',
         }
     },
     erip: {
@@ -15,6 +16,7 @@ export const paymentProcessConfig: Record<string, ConfigItem> = {
         fields: {
             subscription_id: 'Subscription ID',
             amount: 'Amount',
+            payment_status: 'Payment Status',
         }
     },
     nowpayments: {
@@ -28,7 +30,7 @@ export const paymentProcessConfig: Record<string, ConfigItem> = {
             network: 'Network',
             crypto_address: 'Crypto Address',
             crypto_amount: 'Crypto Amount',
-            status: 'Status',
+            payment_status: 'Payment Status',
             created_at: 'Created At',
             expires_at: 'Expires At',
             transaction_hash: 'Transaction Hash',

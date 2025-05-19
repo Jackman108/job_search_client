@@ -11,15 +11,11 @@ export interface BasePayment {
     /** Сумма платежа */
     amount: number;
     /** Статус платежа */
-    payment_status: typeof PAYMENT_STATUS[keyof typeof PAYMENT_STATUS];
+    payment_status: PaymentStatus;
     /** Метод оплаты */
-    payment_method?: typeof PAYMENT_METHOD[keyof typeof PAYMENT_METHOD];
+    payment_method?: PaymentMethod;
     /** Валюта платежа */
     currency?: string;
-    /** Сеть платежа (например, BTC, ETH) */
-    network?: string;
-    /** Адрес кошелька для криптоплатежа */
-    crypto_address?: string;
     /** Дата создания */
     created_at?: Date;
     /** Дата обновления */

@@ -16,7 +16,7 @@ export const cryptoPaymentConfig: Record<string, ConfigItem> = {
             network: 'Network',
             crypto_address: 'Crypto Address',
             crypto_amount: 'Crypto Amount',
-            status: 'Status',
+            payment_status: 'Status',
             created_at: 'Created At',
             expires_at: 'Expires At',
             transaction_hash: 'Transaction Hash',

@@ -39,9 +39,11 @@ export interface UseCryptoPaymentHandlerReturn {
  */
 export interface UsePaymentStatusHandlerReturn {
     /** Обработчик успешного платежа */
-    handleProcessSuccess: (response: any) => void;
-    /** Обработчик ошибки платежа */
-    handleProcessFailure: (error: any) => void;
+    handleProcessSuccess: (response: any) => Promise<void>;
+    /** Обработчик неуспешного платежа */
+    handleProcessFailure: (error: any) => Promise<void>;
+    /** Обработчик истекшего платежа */
+    handleProcessExpired: (response: any) => Promise<void>;
 }
 
 /**

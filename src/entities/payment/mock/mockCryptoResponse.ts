@@ -9,7 +9,6 @@ export const mockCryptoResponse: CryptoPaymentDetails = {
     crypto_address: 'bc1qxy2kgdygjrsqtzq2n0yrf2493p83kkfjhx0wlh',
     crypto_amount: '0.00123456',
     currency: 'BTC',
-    status: PAYMENT_STATUS.PENDING,
     created_at: new Date(),
     expires_at: new Date(Date.now() + 30 * 60 * 1000), // 30 minutes
     network: 'BTC',

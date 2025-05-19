@@ -1,9 +1,7 @@
 import { usePostByType } from "@api";
-import { ACTION_TYPES } from '@config';
-import { BasePayment, CryptoPaymentDetails, mockWebPayResponse, PAYMENT_METHOD, PAYMENT_STATUS, paymentConfig, paymentProcessConfig, UseProcessHandlerReturn, WebPayResponse } from "@entities/payment";
-import { usePaymentStatusHandler } from "@features/payments/hooks/base/usePaymentStatusHandler";
-import { useEntityFetch } from '@hooks';
+import { BasePayment, CryptoPaymentDetails, mockWebPayResponse, PAYMENT_METHOD, PAYMENT_STATUS, paymentProcessConfig, UseProcessHandlerReturn, WebPayResponse } from "@entities/payment";
 import { useCryptoPaymentLogic } from '@features/payments/hooks';
+import { usePaymentStatusHandler } from "@features/payments/hooks/base/usePaymentStatusHandler";
 import { buildCryptoDetails } from '@features/payments/utils/buildCryptoDetails';
 
 /**
@@ -16,7 +14,7 @@ export const useProcessHandler = (): UseProcessHandlerReturn => {
         error: errorProcess,
     } = usePostByType(paymentProcessConfig);
 
-    const { handleProcessSuccess, handleProcessFailure } = usePaymentStatusHandler();
+    const { handleProcessSuccess, handleProcessFailure, handleProcessExpired } = usePaymentStatusHandler();
     const {
         cryptoData: cryptoPayments,
         reloadCryptoPayments,
@@ -24,8 +22,6 @@ export const useProcessHandler = (): UseProcessHandlerReturn => {
         cryptoLoading: loadingCryptoProcess,
         cryptoError: errorCryptoProcess,
     } = useCryptoPaymentLogic();
-
-    const { saveItem: updatePaymentStatus } = useEntityFetch<BasePayment>(paymentConfig);
 
     /**
      * Обрабатывает платежный процесс
@@ -52,32 +48,19 @@ export const useProcessHandler = (): UseProcessHandlerReturn => {
                     // В dev режиме сначала проверяем существующие незавершенные криптоплатежи
                     await reloadCryptoPayments();
                     const existingDev = cryptoPayments?.find(
-                        (p: CryptoPaymentDetails) => p.id === paymentData.id && p.status.toLowerCase() === PAYMENT_STATUS.PENDING
+                        (p: CryptoPaymentDetails) => p.id === paymentData.id && p.payment_status.toLowerCase() === PAYMENT_STATUS.PENDING
                     );
                     if (existingDev) {
                         // Если есть незавершенный, возвращаем без создания нового
                         return existingDev;
                     }
                     // Иначе собираем детали криптоплатежа через утилиту
-                    response = buildCryptoDetails(paymentData);
-
-                    // Обновляем статус в таблице payments
-                    await updatePaymentStatus({
-                        type: ACTION_TYPES.PAYMENT,
-                        id: response.id,
-                        formData: {
-                            payment_status: response.payment_status,
-                            payment_method: response.payment_method,
-                            amount: response.amount,
-                            updated_at: response.created_at
-                        },
-                        isEditing: true,
-                    });
+                    response = buildCryptoDetails(paymentData as CryptoPaymentDetails);
 
                     // Перезагружаем список крипто-платежей и ищем существующий
                     await reloadCryptoPayments();
                     const existing = cryptoPayments?.find(
-                        (p: CryptoPaymentDetails) => p.id === paymentData.id && p.status.toLowerCase() === PAYMENT_STATUS.PENDING
+                        (p: CryptoPaymentDetails) => p.id === paymentData.id && p.payment_status.toLowerCase() === (PAYMENT_STATUS.PENDING || PAYMENT_STATUS.EXPIRED)
                     );
                     if (existing) {
                         // Если уже есть, возвращаем без нового POST
@@ -86,7 +69,7 @@ export const useProcessHandler = (): UseProcessHandlerReturn => {
 
                     // Создаём новый крипто-платёж через утилиту
                     try {
-                        const payload = buildCryptoDetails(paymentData);
+                        const payload = buildCryptoDetails(paymentData as CryptoPaymentDetails);
                         const created = await handleCryptoPayment(payload);
                         if (created) response = created;
                     } catch (error: any) {
@@ -94,7 +77,7 @@ export const useProcessHandler = (): UseProcessHandlerReturn => {
                             // при дубликате перезагружаем и возвращаем существующий
                             await reloadCryptoPayments();
                             const existingAfter = cryptoPayments?.find(
-                                (p: CryptoPaymentDetails) => p.id === paymentData.id && p.status.toLowerCase() === PAYMENT_STATUS.PENDING
+                                (p: CryptoPaymentDetails) => p.id === paymentData.id && p.payment_status.toLowerCase() === PAYMENT_STATUS.PENDING
                             );
                             if (existingAfter) {
                                 return existingAfter;
@@ -116,8 +99,7 @@ export const useProcessHandler = (): UseProcessHandlerReturn => {
                         id: paymentData.id,
                         subscription_id: paymentData.subscription_id,
                         amount: paymentData.amount,
-                        currency: paymentData.currency || 'BTC',
-                        network: paymentData.network,
+                        currency: paymentData.currency,
                         payment_status: PAYMENT_STATUS.PENDING,
                     },
                     isEditing: false,
@@ -134,25 +116,18 @@ export const useProcessHandler = (): UseProcessHandlerReturn => {
             }
 
             if (paymentSystem === PAYMENT_METHOD.CRYPTO && 'crypto_address' in response) {
-                // Обновляем статус в таблице payments
-                await updatePaymentStatus({
-                    type: ACTION_TYPES.PAYMENT,
-                    id: response.id,
-                    formData: {
-                        payment_status: response.status,
-                        payment_method: paymentData.payment_method,
-                        amount: response.amount,
-                        updated_at: new Date()
-                    },
-                    isEditing: true,
-                });
-                if (response?.status === PAYMENT_STATUS.COMPLETED) {
-                    await handleProcessSuccess(paymentData);
+                // Статус базового платежа обновляется через usePaymentStatusHandler
+                if (response.payment_status === PAYMENT_STATUS.COMPLETED) {
+                    await handleProcessSuccess(response);
+                } else if (response.payment_status === PAYMENT_STATUS.EXPIRED) {
+                    await handleProcessExpired(response);
+                } else {
+                    await handleProcessFailure(response);
                 }
             } else if ('page' in response && response.page === "success") {
-                await handleProcessSuccess(paymentData);
+                await handleProcessSuccess(response);
             } else {
-                await handleProcessFailure(paymentData);
+                await handleProcessFailure(response);
             }
 
             return response;
