@@ -1,16 +1,21 @@
-import { useCallback, useState } from 'react';
-import { useTableLogic, useEntityFetch } from '@hooks';
 import { ACTION_TYPES } from '@config';
-import { BasePayment, paymentConfig, PAYMENT_METHOD, PAYMENT_STATUS } from '@entities/payment';
-import { CryptoPaymentDetails } from '@entities/payment/types/crypto.types';
+import { BasePayment, PAYMENT_METHOD, PAYMENT_STATUS, paymentConfig } from '@entities/payment';
 import { useProcessHandler } from '@features/payments/hooks';
-
+import { useCryptoPaymentLogic } from '@features/payments/hooks/crypto/useCryptoPaymentLogic';
+import { useEntityFetch, useTableLogic } from '@hooks';
+import { useCallback } from 'react';
 /**
  * Полный хук логики платежей: CRUD + обработка платежей + криптоплатежи
  */
 export const usePaymentLogic = () => {
-    const [cryptoPaymentDetails, setCryptoPaymentDetails] = useState<CryptoPaymentDetails | null>(null);
-    const [showCryptoPayment, setShowCryptoPayment] = useState(false);
+    const {
+        cryptoToggleForm,
+        cryptoPaymentDetails,
+        setCryptoPaymentDetails,
+        cryptoCancel,
+        updateCryptoPaymentDetails,
+        cryptoShowForm,
+    } = useCryptoPaymentLogic();
 
     const {
         data: paymentData,
@@ -27,13 +32,17 @@ export const usePaymentLogic = () => {
         loadData: loadPayments,
     } = useTableLogic<BasePayment>(paymentConfig, useEntityFetch, ACTION_TYPES.PAYMENT);
 
-    const { handleProcess, loadingProcess, errorProcess } = useProcessHandler();
+    const {
+        handleProcess,
+        loadingProcess,
+        errorProcess,
+    } = useProcessHandler();
 
     /** Обрабатывает платеж с учётом метода (WebPay/ERIP или Crypto) */
     const paymentWithProcess = useCallback(async (formData: Partial<BasePayment>) => {
         // если есть активный незавершенный криптоплатёж
         if (cryptoPaymentDetails?.payment_status?.toLowerCase() === PAYMENT_STATUS.PENDING) {
-            setShowCryptoPayment(true);
+            cryptoToggleForm();
             paymentToggleForm();
             return;
         }
@@ -48,13 +57,14 @@ export const usePaymentLogic = () => {
                 payment_method: formData.payment_method,
                 amount: formData.amount ?? latest.amount,
             };
-            // криптоплатёж
+            // криптоплатёж: обрабатываем, затем открываем форму с деталями
             if (updated.payment_method === PAYMENT_METHOD.CRYPTO) {
                 try {
                     const response = await handleProcess(updated);
                     if (response && 'crypto_address' in response) {
+
                         setCryptoPaymentDetails(response);
-                        setShowCryptoPayment(true);
+                        cryptoToggleForm();
                         paymentToggleForm();
                     }
                 } catch (e: any) {
@@ -62,39 +72,27 @@ export const usePaymentLogic = () => {
                         const existing = await handleProcess({ ...updated });
                         if (existing && 'crypto_address' in existing) {
                             setCryptoPaymentDetails(existing);
-                            setShowCryptoPayment(true);
+                            cryptoToggleForm();
                             paymentToggleForm();
                         }
                     } else {
                         throw e;
                     }
                 }
-            } else {
-                // фиатный платёж
-                await handleProcess(updated);
-                paymentToggleForm();
+                return;
             }
+            // фиатный платёж
+            await handleProcess(updated);
+            paymentToggleForm();
         } catch (e) {
             console.error('Error processing payment:', e);
         }
-    }, [cryptoPaymentDetails, handleProcess, paymentData, paymentToggleForm]);
+    }, [cryptoPaymentDetails, handleProcess, paymentData, paymentToggleForm, cryptoToggleForm, setCryptoPaymentDetails]);
 
     const paymentEditClick = useCallback((type: string, item: any) => {
         paymentEdit(type, item);
         paymentToggleForm();
     }, [paymentToggleForm, paymentEdit]);
-
-    /** Закрывает окно криптоплатежа */
-    const handleCloseCryptoPayment = useCallback(() => {
-        setShowCryptoPayment(false);
-        setCryptoPaymentDetails(null);
-    }, []);
-
-    /** Обновляет детали криптоплатежа и перезагружает список */
-    const updateCryptoPaymentDetails = useCallback((details: CryptoPaymentDetails) => {
-        setCryptoPaymentDetails(details);
-        loadPayments();
-    }, [loadPayments]);
 
     return {
         // CRUD
@@ -110,14 +108,14 @@ export const usePaymentLogic = () => {
         paymentToggleForm,
         paymentCancel,
         loadPayments,
-        // процессинг
         paymentSubmit: paymentWithProcess,
+        // Crypto payment UI controls
+        cryptoShowForm,
+        cryptoPaymentDetails,
+        cryptoCancel,
+        updateCryptoPaymentDetails,
+        // Process loading/error state
         loadingProcess,
         errorProcess,
-        // криптоплатежи
-        cryptoPaymentDetails,
-        showCryptoPayment,
-        handleCloseCryptoPayment,
-        updateCryptoPaymentDetails,
     };
 }; 

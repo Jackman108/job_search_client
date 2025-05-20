@@ -17,7 +17,7 @@ export function buildCryptoDetails(paymentData: CryptoPaymentDetails): CryptoPay
     const network = paymentData.network ?? DEFAULT_CRYPTO_NETWORK;
     // В Prod: без crypto_address будет undefined и далее выбросится ошибка
     // В Dev: подставляем mock-адрес, чтобы не ломались запросы
-    const cryptoAddress = paymentData.crypto_address ?? (process.env.NODE_ENV === 'development' ? mockCryptoResponse.crypto_address : undefined);
+    const cryptoAddress = paymentData.crypto_address ?? mockCryptoResponse.crypto_address;
     if (!cryptoAddress) {
         // Без адреса криптокошелька дальнейшая обработка невозможна
         throw new Error('Crypto address is required for payment.');

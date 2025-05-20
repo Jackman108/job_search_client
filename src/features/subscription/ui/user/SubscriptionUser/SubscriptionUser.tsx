@@ -29,7 +29,7 @@ const SubscriptionUser: FC<PanelProps> = ({onClose}) => {
         subscribeSubmit,
     } = useSubscriptionLogic();
     
-    // Платёжная логика
+    // Полная логика платежа и криптоплатежей
     const {
         paymentData,
         paymentLoading,
@@ -39,15 +39,15 @@ const SubscriptionUser: FC<PanelProps> = ({onClose}) => {
         paymentEditClick,
         paymentSubmit,
         paymentCancel,
+        cryptoShowForm,
+        cryptoPaymentDetails,
+        cryptoCancel,
+        updateCryptoPaymentDetails,
         loadingProcess,
         errorProcess,
-        cryptoPaymentDetails,
-        showCryptoPayment,
-        handleCloseCryptoPayment,
-        updateCryptoPaymentDetails,
     } = usePaymentLogic();
 
-    const isFormVisible = subscribeShowForm || paymentShowForm || showCryptoPayment;
+    const isFormVisible = subscribeShowForm || paymentShowForm || cryptoShowForm;
     const {token} = useAuth();
     if (subscribeError) return <UnauthorizedMessage/>;
 
@@ -97,12 +97,12 @@ const SubscriptionUser: FC<PanelProps> = ({onClose}) => {
                         />
                     )}
 
-                    {showCryptoPayment && cryptoPaymentDetails && (
+                    {cryptoShowForm && cryptoPaymentDetails && (
                         <div className={styles.cryptoPaymentContainer}>
                             <Button
                                 type="button"
                                 variant="secondary"
-                                onClick={handleCloseCryptoPayment}
+                                onClick={cryptoCancel}
                                 className={styles.closeButton}
                             >
                                 {t('common.back')}

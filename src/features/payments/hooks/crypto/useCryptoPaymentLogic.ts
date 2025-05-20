@@ -2,11 +2,14 @@ import { useEntityFetch, useTableLogic } from '@hooks';
 import { ACTION_TYPES } from '@config';
 import { cryptoPaymentConfig } from '@entities/payment/config/cryptoPaymentConfig';
 import { CryptoPaymentDetails } from '@entities/payment/types/crypto.types';
+import { useCallback, useState } from 'react';
 
 /**
  * Хук для CRUD-операций с криптоплатежами
  */
 export const useCryptoPaymentLogic = () => {
+    const [cryptoPaymentDetails, setCryptoPaymentDetails] = useState<CryptoPaymentDetails | null>(null);
+
     const {
         data: cryptoData,
         loading: cryptoLoading,
@@ -18,13 +21,26 @@ export const useCryptoPaymentLogic = () => {
         handleFormSubmit: cryptoFormSubmit,
         handleDelete: cryptoDelete,
         handleToggleForm: cryptoToggleForm,
-        handleCancelAction: cryptoCancel,
+        handleCancelAction,
         loadData: reloadCryptoPayments,
     } = useTableLogic<CryptoPaymentDetails>(
         cryptoPaymentConfig,
         useEntityFetch,
         ACTION_TYPES.CRYPTO
     );
+
+
+    /** Обновляет детали криптоплатежа и перезагружает список */
+    const updateCryptoPaymentDetails = useCallback((details: CryptoPaymentDetails) => {
+        setCryptoPaymentDetails(details);
+        reloadCryptoPayments();
+    }, [reloadCryptoPayments]);
+
+    const cryptoCancel = useCallback(() => {
+        if (cryptoFormData.id) {
+            handleCancelAction(cryptoFormData.id);
+        }
+    }, [cryptoFormData.id, handleCancelAction]);
 
     return {
         cryptoData,
@@ -39,5 +55,8 @@ export const useCryptoPaymentLogic = () => {
         cryptoToggleForm,
         cryptoCancel,
         reloadCryptoPayments,
+        cryptoPaymentDetails,
+        setCryptoPaymentDetails,
+        updateCryptoPaymentDetails,
     };
 }; 

@@ -7,7 +7,7 @@ export { default as useCurrency } from './useCurrency';
 export { default as useLocalStorage } from './useLocalStorage';
 export { default as useSortedData } from './useSortedData';
 export { default as useTableLogic } from './useTableLogic';
-export { default as useEntityFetch } from './useEntityFetch';
+export { default as useEntityFetch } from '../api/useEntityFetch';
 
 export { default as useSearchFormState } from './forms/useSearchFormState';
 export { default as useSubmitRequest } from './forms/useSubmitRequest';
