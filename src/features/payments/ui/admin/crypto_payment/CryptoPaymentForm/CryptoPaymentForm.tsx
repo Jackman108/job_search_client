@@ -45,7 +45,7 @@ const CryptoPaymentForm: React.FC<CryptoPaymentFormProps> = ({ initialData, onSu
                 isLoading={isLoading}
             />
             <RenderInput
-                label={t('form.cryptoAddress')}
+                label={t('form.address')}
                 name="crypto_address"
                 value={formData.crypto_address || ''}
                 onChange={handleChange}
@@ -53,7 +53,7 @@ const CryptoPaymentForm: React.FC<CryptoPaymentFormProps> = ({ initialData, onSu
                 isLoading={isLoading}
             />
             <RenderInput
-                label={t('form.cryptoAmount')}
+                label={t('form.amount')}
                 name="crypto_amount"
                 value={formData.crypto_amount || ''}
                 onChange={handleChange}

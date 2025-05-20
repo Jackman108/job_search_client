@@ -59,9 +59,10 @@ export const useCryptoForm = (
         }
     }, [details.expires_at, expiredSent, cryptoSubmit, details, onUpdate, handleProcessExpired]);
 
-    const network = cryptoFormData.network;
-    const address = cryptoFormData.crypto_address;
-    const cryptoAmount = cryptoFormData.crypto_amount;
+    // Fallback to initial details when form data isn't populated yet
+    const network = cryptoFormData.network ?? details.network;
+    const address = cryptoFormData.crypto_address ?? details.crypto_address;
+    const cryptoAmount = cryptoFormData.crypto_amount ?? details.crypto_amount;
 
     const timeLeft = usePaymentTimer(details.expires_at);
     const { copyToClipboard } = useClipboard();

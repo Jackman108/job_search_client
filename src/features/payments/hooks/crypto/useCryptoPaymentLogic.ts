@@ -39,8 +39,10 @@ export const useCryptoPaymentLogic = () => {
     const cryptoCancel = useCallback(() => {
         if (cryptoFormData.id) {
             handleCancelAction(cryptoFormData.id);
+            reloadCryptoPayments();
+
         }
-    }, [cryptoFormData.id, handleCancelAction]);
+    }, [cryptoFormData.id, handleCancelAction, reloadCryptoPayments]);
 
     return {
         cryptoData,

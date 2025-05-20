@@ -109,12 +109,10 @@ export const usePaymentLogic = () => {
         paymentCancel,
         loadPayments,
         paymentSubmit: paymentWithProcess,
-        // Crypto payment UI controls
         cryptoShowForm,
         cryptoPaymentDetails,
         cryptoCancel,
         updateCryptoPaymentDetails,
-        // Process loading/error state
         loadingProcess,
         errorProcess,
     };

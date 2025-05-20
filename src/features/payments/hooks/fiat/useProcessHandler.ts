@@ -125,9 +125,9 @@ export const useProcessHandler = (): UseProcessHandlerReturn => {
                     await handleProcessFailure(response);
                 }
             } else if ('page' in response && response.page === "success") {
-                await handleProcessSuccess(response);
+                await handleProcessSuccess(paymentData);
             } else {
-                await handleProcessFailure(response);
+                await handleProcessFailure(paymentData);
             }
 
             return response;

@@ -58,7 +58,7 @@ const CryptoPaymentTable: React.FC = () => {
                     />
                 </div>
             ) : (
-                !cryptoLoading && !cryptoError && <p>{t('payments.noData')}</p>
+                !cryptoLoading && !cryptoError && <p>{t('form.noData')}</p>
             )}
         </div>
     );
