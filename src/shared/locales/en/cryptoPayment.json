@@ -6,7 +6,7 @@
   },
   "tableHeaders": {
     "id": "ID",
-    "subscriptionId": "Subscription ID",
+    "paymentId": "Payment ID",
     "status": "Status",
     "amount": "Amount",
     "currency": "Currency",

@@ -10,7 +10,7 @@ export const cryptoPaymentConfig: Record<string, ConfigItem> = {
         apiEndpoint: '/payment/crypto',
         fields: {
             id: 'ID',
-            subscription_id: 'Subscription ID',
+            payment_id: 'Subscription ID',
             amount: 'Amount',
             currency: 'Currency',
             network: 'Network',

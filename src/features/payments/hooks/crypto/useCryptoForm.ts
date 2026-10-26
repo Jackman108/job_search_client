@@ -40,7 +40,7 @@ export const useCryptoForm = (
             try {
                 const resp = await cryptoSubmit({
                     id: details.id,
-                    subscription_id: details.subscription_id,
+                    payment_id: details.payment_id,
                     payment_status: PAYMENT_STATUS.EXPIRED
                 });
                 await handleProcessExpired(details);
@@ -93,7 +93,7 @@ export const useCryptoForm = (
         try {
             const resp = await cryptoSubmit({
                 id: details.id,
-                subscription_id: details.subscription_id,
+                payment_id: details.payment_id,
                 network: net,
                 crypto_address: addr,
                 crypto_amount: newAmt
@@ -109,7 +109,7 @@ export const useCryptoForm = (
         try {
             const resp = await cryptoSubmit({
                 id: details.id,
-                subscription_id: details.subscription_id,
+                payment_id: details.payment_id,
                 network,
                 crypto_address: address,
                 crypto_amount: cryptoAmount

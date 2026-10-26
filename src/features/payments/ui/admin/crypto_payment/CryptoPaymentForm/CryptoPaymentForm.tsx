@@ -16,7 +16,7 @@ const CryptoPaymentForm: React.FC<CryptoPaymentFormProps> = ({ initialData, onSu
         if (initialData) {
             setFormData({
                 id: initialData.id,
-                subscription_id: initialData.subscription_id,
+                payment_id: initialData.payment_id,
                 network: initialData.network,
                 crypto_address: initialData.crypto_address,
                 crypto_amount: initialData.crypto_amount,

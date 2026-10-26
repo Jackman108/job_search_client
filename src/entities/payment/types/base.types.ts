@@ -7,7 +7,7 @@ export interface BasePayment {
     /** Уникальный идентификатор платежа */
     id: string;
     /** ID подписки */
-    subscription_id: string;
+    subscription_id?: string;
     /** Сумма платежа */
     amount: number;
     /** Статус платежа */

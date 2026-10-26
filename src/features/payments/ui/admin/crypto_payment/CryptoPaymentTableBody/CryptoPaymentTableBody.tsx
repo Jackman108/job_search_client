@@ -14,7 +14,7 @@ const CryptoPaymentTableBody: React.FC<CryptoPaymentTableBodyProps> = ({ cryptoP
             <thead>
                 <tr>
                     <th>{t('tableHeaders.id')}</th>
-                    <th>{t('tableHeaders.subscriptionId')}</th>
+                    <th>{t('tableHeaders.paymentId')}</th>
                     <th>{t('tableHeaders.status')}</th>
                     <th>{t('tableHeaders.amount')}</th>
                     <th>{t('tableHeaders.currency')}</th>
@@ -32,7 +32,7 @@ const CryptoPaymentTableBody: React.FC<CryptoPaymentTableBodyProps> = ({ cryptoP
                 {cryptoPaymentData.map(crypto => (
                     <tr key={crypto.id}>
                         <td>{crypto.id}</td>
-                        <td>{crypto.subscription_id}</td>
+                        <td>{crypto.payment_id}</td>
                         <td>{crypto.payment_status}</td>
                         <td>{crypto.amount}</td>
                         <td>{crypto.currency}</td>

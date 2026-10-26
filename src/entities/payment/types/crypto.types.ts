@@ -4,6 +4,7 @@ import { BasePayment, PaymentStatus } from './base.types';
  * Интерфейс для деталей криптоплатежа
  */
 export interface CryptoPaymentDetails extends BasePayment {
+    payment_id: string;
     /** Криптовалютная сеть */
     network: string;
     /** Адрес для получения криптовалюты */
@@ -27,7 +28,7 @@ export interface CryptoPaymentDetails extends BasePayment {
  */
 export interface CryptoPaymentRequest {
     /** ID подписки */
-    subscription_id: string;
+    payment_id: string;
     /** Сумма платежа */
     amount: number;
     /** Валюта платежа */

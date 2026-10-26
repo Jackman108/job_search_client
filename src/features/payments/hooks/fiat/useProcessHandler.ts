@@ -48,7 +48,7 @@ export const useProcessHandler = (): UseProcessHandlerReturn => {
                     // В dev режиме сначала проверяем существующие незавершенные криптоплатежи
                     await reloadCryptoPayments();
                     const existingDev = cryptoPayments?.find(
-                        (p: CryptoPaymentDetails) => p.id === paymentData.id && p.payment_status.toLowerCase() === PAYMENT_STATUS.PENDING
+                        (p: CryptoPaymentDetails) => p.payment_id === paymentData.id && p.payment_status.toLowerCase() === PAYMENT_STATUS.PENDING
                     );
                     if (existingDev) {
                         // Если есть незавершенный, возвращаем без создания нового
@@ -56,16 +56,6 @@ export const useProcessHandler = (): UseProcessHandlerReturn => {
                     }
                     // Иначе собираем детали криптоплатежа через утилиту
                     response = buildCryptoDetails(paymentData as CryptoPaymentDetails);
-
-                    // Перезагружаем список крипто-платежей и ищем существующий
-                    await reloadCryptoPayments();
-                    const existing = cryptoPayments?.find(
-                        (p: CryptoPaymentDetails) => p.id === paymentData.id && p.payment_status.toLowerCase() === (PAYMENT_STATUS.PENDING || PAYMENT_STATUS.EXPIRED)
-                    );
-                    if (existing) {
-                        // Если уже есть, возвращаем без нового POST
-                        return existing;
-                    }
 
                     // Создаём новый крипто-платёж через утилиту
                     try {

@@ -3,7 +3,7 @@ import { SUPPORTED_CRYPTO_NETWORKS } from '@entities/payment/config/cryptoPaymen
 
 export const mockCryptoResponse: CryptoPaymentDetails = {
     id: 'mock-crypto-payment-123',
-    subscription_id: 'mock-subscription-123',
+    payment_id: 'mock-payment-123',
     amount: 0.00123456,
     payment_status: PAYMENT_STATUS.PENDING,
     crypto_address: 'bc1qxy2kgdygjrsqtzq2n0yrf2493p83kkfjhx0wlh',

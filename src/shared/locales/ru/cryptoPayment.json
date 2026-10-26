@@ -6,7 +6,7 @@
   },
   "tableHeaders": {
     "id": "ID",
-    "subscriptionId": "ID подписки",
+    "paymentId": "ID платежа",
     "status": "Статус",
     "amount": "Сумма",
     "currency": "Валюта",

@@ -5,7 +5,7 @@ export const paymentProcessConfig: Record<string, ConfigItem> = {
         title: 'WebPay',
         apiEndpoint: '/payment/webpay',
         fields: {
-            subscription_id: 'Subscription ID',
+            payment_id: 'Payment ID',
             amount: 'Amount',
             payment_status: 'Payment Status',
         }
@@ -14,7 +14,7 @@ export const paymentProcessConfig: Record<string, ConfigItem> = {
         title: 'ERIP',
         apiEndpoint: '/payment/erip',
         fields: {
-            subscription_id: 'Subscription ID',
+            payment_id: 'Payment ID',
             amount: 'Amount',
             payment_status: 'Payment Status',
         }
@@ -24,7 +24,7 @@ export const paymentProcessConfig: Record<string, ConfigItem> = {
         apiEndpoint: '/payment/nowpayments',
         fields: {
             id: 'ID',
-            subscription_id: 'Subscription ID',
+            payment_id: 'Payment ID',
             amount: 'Amount',
             currency: 'Currency',
             network: 'Network',

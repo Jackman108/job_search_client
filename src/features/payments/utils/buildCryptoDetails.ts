@@ -31,8 +31,8 @@ export function buildCryptoDetails(paymentData: CryptoPaymentDetails): CryptoPay
 
     return {
         // Формируем объект ответа согласно интерфейсу CryptoPaymentDetails
-        id: paymentData.id,
-        subscription_id: paymentData.subscription_id,
+        id: '',
+        payment_id: paymentData.id,
         amount,
         payment_status: paymentData.payment_status,
         currency: paymentData.currency ?? network,
