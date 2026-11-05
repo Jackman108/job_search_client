@@ -1,23 +1,24 @@
-import {useMutation, useQueryClient} from '@tanstack/react-query';
-import {AuthResponse, RegisterResponse} from '@features/auth/types/Auth.props';
-import {useAuth} from '@app/providers/auth/useAuthContext';
-import {decodeToken, handleAuthError, isTokenExpired} from '@utils';
-import {useAuthApi} from "@api";
-import {AxiosResponse} from "axios";
+import { useMutation, useQueryClient } from '@tanstack/react-query';
+import { AuthResponse, RegisterResponse } from '@features/auth/types/Auth.props';
+import { useAuth } from '@app/providers/auth/useAuthContext';
+import { decodeToken, handleAuthError, isTokenExpired } from '@utils';
+import { useAuthApi } from "@api";
+import { AxiosResponse } from "axios";
 
 const useFetchAuth = () => {
     const queryClient = useQueryClient();
-    const {setToken} = useAuth();
-    const {request} = useAuthApi();
+    const { setToken } = useAuth();
+    const { request } = useAuthApi();
 
     const refreshAuthToken = useMutation<string, Error>(
         {
             mutationFn: async () => {
-                const response = await request('get', '/auth/refresh-tokens', undefined, {withCredentials: true});
+                const response = await request('get', '/auth/refresh-tokens', undefined, { withCredentials: true });
                 return response.data.accessToken;
             },
             onSuccess: (token: string) => {
                 setToken(token);
+                queryClient.invalidateQueries();
             },
             onError: (err: Error) => {
                 const errorMessage = handleAuthError(err);
@@ -28,17 +29,16 @@ const useFetchAuth = () => {
 
     const login = useMutation<AxiosResponse<AuthResponse>, Error, { email: string; password: string }>(
         {
-            mutationFn: async ({email, password}: { email: string; password: string }) => {
-                return await request<AuthResponse>('post', '/auth/login', {email, password}, {withCredentials: false});
+            mutationFn: async ({ email, password }: { email: string; password: string }) => {
+                return await request<AuthResponse>('post', '/auth/login', { email, password }, { withCredentials: false });
             },
             onSuccess: (response: AxiosResponse<AuthResponse>) => {
-
                 if (isTokenExpired(decodeToken(response.data.accessToken).exp)) {
                     refreshAuthToken.mutate();
                     return;
                 }
-
                 setToken(response.data.accessToken);
+                queryClient.invalidateQueries();
             },
             onError: (err: Error) => {
                 const errorMessage = handleAuthError(err);
@@ -53,7 +53,7 @@ const useFetchAuth = () => {
         passwordRepeat: string
     }>(
         {
-            mutationFn: async ({email, password, passwordRepeat}: {
+            mutationFn: async ({ email, password, passwordRepeat }: {
                 email: string;
                 password: string;
                 passwordRepeat: string
@@ -66,11 +66,12 @@ const useFetchAuth = () => {
                     email,
                     password,
                     passwordRepeat
-                }, {withCredentials: false});
-                return await request<AuthResponse>('post', '/auth/login', {email, password}, {withCredentials: false});
+                }, { withCredentials: false });
+                return await request<AuthResponse>('post', '/auth/login', { email, password }, { withCredentials: false });
             },
             onSuccess: (response: AxiosResponse<AuthResponse>) => {
                 setToken(response.data.accessToken);
+                queryClient.invalidateQueries();
             },
             onError: (err: Error) => {
                 const errorMessage = handleAuthError(err);
@@ -82,7 +83,7 @@ const useFetchAuth = () => {
     const logout = useMutation<void, Error>(
         {
             mutationFn: async () => {
-                await request('get', '/auth/logout', undefined, {withCredentials: true});
+                await request('get', '/auth/logout', undefined, { withCredentials: true });
             },
             onSuccess: () => {
                 setToken(null);

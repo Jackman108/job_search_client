@@ -1,5 +1,5 @@
-import {SubscriptionTypes} from "@entities/subscription";
-import {BasePayment} from "@entities/payment";
+import { SubscriptionTypes } from "@entities/subscription";
+import { BasePayment, PAYMENT_STATUS } from "@entities/payment";
 
 export const getSubscriptionStatus = (
     subscription: SubscriptionTypes,
@@ -11,10 +11,10 @@ export const getSubscriptionStatus = (
     const isActive = subscriptionEndDate > currentDate;
 
     const hasPendingPayment = payments.some(
-        payment => payment.subscription_id === subscription.id && payment.payment_status === 'pending'
+        payment => payment.subscription_id === subscription.id && payment.payment_status === PAYMENT_STATUS.PENDING
     );
     const hasSuccessfulPayment = payments.some(
-        payment => payment.subscription_id === subscription.id && payment.payment_status === 'completed'
+        payment => payment.subscription_id === subscription.id && payment.payment_status === PAYMENT_STATUS.COMPLETED
     );
     if (isActive && hasPendingPayment) {
         return 'extended_unpaid';

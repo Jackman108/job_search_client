@@ -1,9 +1,9 @@
-import {Vacancy} from "@entities/vacancy";
+import { Vacancy } from "@entities/vacancy";
 
 export interface VacancyContextType {
     vacancies: Vacancy[];
     loading: boolean;
-    error: string | null;
-    fetchVacancies: () => Promise<void>;
+    error: Error | null;
     deleteVacancy: (id: number) => Promise<void>;
+    loadData: () => Promise<any>;
 }

@@ -1,11 +1,18 @@
 /**
  * Экспорт всех хуков, связанных с платежами
  */
+// Base payment hooks
+export { usePaymentStatusHandler } from './base/usePaymentStatusHandler';
+export { usePaymentForm } from './base/usePaymentForm';
+export { usePaymentTimer } from './base/usePaymentTimer';
+export { usePaymentLogic } from './base/usePaymentLogic';
 
-export { useProcessHandler } from './useProcessHandler';
-export { usePaymentStatusHandler } from './usePaymentStatusHandler';
-export { useCryptoPaymentHandler } from './useCryptoPaymentHandler';
-export { usePaymentTimer } from './usePaymentTimer';
-export { useClipboard } from './useClipboard';
-export { useTransactionConfirmations } from './useTransactionConfirmations';
-export { usePaymentForm } from './usePaymentForm'; 
+// Fiat payment hooks (WebPay, ERIP)
+export { useProcessHandler } from './fiat/useProcessHandler';
+
+
+// Crypto payment hooks
+export { useCryptoPaymentLogic } from './crypto/useCryptoPaymentLogic';
+export { useCryptoForm as useCryptoPaymentViewModel } from './crypto/useCryptoForm';
+export { useTransactionConfirmations } from './crypto/useTransactionConfirmations';
+

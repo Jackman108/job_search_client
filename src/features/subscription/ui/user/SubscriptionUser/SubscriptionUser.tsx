@@ -1,18 +1,20 @@
 import React, {FC} from 'react';
 import styles from './SubscriptionUser.module.css';
-import {Button, FormContainer, LoadingOrError} from "@ui";
+import {Button, FormContainer, LoadingOrError, UnauthorizedMessage} from "@ui";
 import {useTranslation} from "react-i18next";
 import SubscriptionSelectionForm
     from "@features/subscription/ui/user/SubscriptionSelectionForm/SubscriptionSelectionForm";
 import PaymentSelectionForm from "@features/payments/ui/user/PaymentSelectionForm/PaymentSelectionForm";
 import {useSubscriptionLogic} from "@features/subscription/hooks/useSubscriptionLogic";
+import {usePaymentLogic} from "@features/payments/hooks";
 import SubscriptionActive from "@features/subscription/ui/user/SubscriptionActive/SubscriptionActive";
 import {useAuth} from "@app/providers/auth/useAuthContext";
 import {PanelProps} from "@type";
-import CryptoPaymentDetails from "@features/payments/ui/user/CryptoPaymentDetails/CryptoPaymentDetails";
+import CryptoSelectionForm from "@features/payments/ui/user/CryptoSelectionForm/CryptoSelectionForm";
 
 const SubscriptionUser: FC<PanelProps> = ({onClose}) => {
     const {t} = useTranslation('subscriptions');
+    // Подписочная логика
     const {
         subscribeData,
         subscribeLoading,
@@ -24,8 +26,11 @@ const SubscriptionUser: FC<PanelProps> = ({onClose}) => {
         subscribeToggleForm,
         subscribeEditClick,
         subscribeCancel,
-        paymentCancel,
         subscribeSubmit,
+    } = useSubscriptionLogic();
+    
+    // Полная логика платежа и криптоплатежей
+    const {
         paymentData,
         paymentLoading,
         paymentError,
@@ -33,15 +38,18 @@ const SubscriptionUser: FC<PanelProps> = ({onClose}) => {
         paymentShowForm,
         paymentEditClick,
         paymentSubmit,
+        paymentCancel,
+        cryptoShowForm,
+        cryptoPaymentDetails,
+        cryptoCancel,
+        updateCryptoPaymentDetails,
         loadingProcess,
         errorProcess,
-        cryptoPaymentDetails,
-        showCryptoPayment,
-        handleCloseCryptoPayment,
-    } = useSubscriptionLogic();
+    } = usePaymentLogic();
 
-    const isFormVisible = subscribeShowForm || paymentShowForm || showCryptoPayment;
+    const isFormVisible = subscribeShowForm || paymentShowForm || cryptoShowForm;
     const {token} = useAuth();
+    if (subscribeError) return <UnauthorizedMessage/>;
 
     return (
         <>
@@ -64,7 +72,7 @@ const SubscriptionUser: FC<PanelProps> = ({onClose}) => {
                         />
                     )}
 
-                    {!isFormVisible && (!subscribeData || subscribeData.length === 0) && (
+                    {!isFormVisible && (!subscribeData || subscribeData.length === 0) &&  !subscribeLoading &&(
                         <Button type="button" variant="primary" onClick={subscribeToggleForm}>
                             {t('subscriptions.addSubscription')}
                         </Button>
@@ -89,17 +97,20 @@ const SubscriptionUser: FC<PanelProps> = ({onClose}) => {
                         />
                     )}
 
-                    {showCryptoPayment && cryptoPaymentDetails && (
+                    {cryptoShowForm && cryptoPaymentDetails && (
                         <div className={styles.cryptoPaymentContainer}>
-                            <Button 
-                                type="button" 
-                                variant="secondary" 
-                                onClick={handleCloseCryptoPayment}
+                            <Button
+                                type="button"
+                                variant="secondary"
+                                onClick={cryptoCancel}
                                 className={styles.closeButton}
                             >
                                 {t('common.back')}
                             </Button>
-                            <CryptoPaymentDetails details={cryptoPaymentDetails} />
+                            <CryptoSelectionForm
+                                details={cryptoPaymentDetails}
+                                onUpdate={updateCryptoPaymentDetails}
+                            />
                         </div>
                     )}
 

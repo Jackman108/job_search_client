@@ -1,26 +1,28 @@
-import {useCallback, useEffect, useRef} from 'react';
-import {UseWebSocketParams, WebSocketHook} from "@type";
-import {useAuth} from "@app/providers/auth/useAuthContext";
-import {useWebSocketReducer} from "@hooks";
-import {handleWebSocketMessage} from "@utils";
+import { useCallback, useEffect, useRef } from 'react';
+import { UseWebSocketParams, WebSocketHook } from "@type";
+import { useAuth } from "@app/providers/auth/useAuthContext";
+import { useWebSocketReducer } from "@hooks";
+import { handleWebSocketMessage } from "@utils";
 
 const RECONNECT_INTERVAL = 5000;
 
-const useWebSocket = ({WS_URL, loadData, setAlert}: UseWebSocketParams): WebSocketHook => {
+const useWebSocket = ({ WS_URL, loadData, setAlert }: UseWebSocketParams): WebSocketHook => {
     const [state, dispatch] = useWebSocketReducer();
     const wsRef = useRef<WebSocket | null>(null);
-    const {token} = useAuth();
+    const { token } = useAuth();
 
     const handleMessage = useCallback((data: string) => {
         handleWebSocketMessage(data, loadData, setAlert);
     }, [loadData, setAlert]);
 
     const connect = useCallback(() => {
+        // Проверяем наличие токена для подключения
         if (!token) {
             console.warn('No token available for WebSocket connection');
             return;
         }
 
+        // Если уже подключены или подключение в процессе, выходим
         if (wsRef.current?.readyState === WebSocket.OPEN || wsRef.current?.readyState === WebSocket.CONNECTING) return;
 
         try {
@@ -28,22 +30,22 @@ const useWebSocket = ({WS_URL, loadData, setAlert}: UseWebSocketParams): WebSock
 
             wsRef.current.onopen = () => {
                 console.log('WebSocket connection established');
-                dispatch({type: 'SET_OPEN', payload: true});
+                dispatch({ type: 'SET_OPEN', payload: true });
             };
 
             wsRef.current.onmessage = (event) => {
-                dispatch({type: 'SET_MESSAGE', payload: event.data});
+                dispatch({ type: 'SET_MESSAGE', payload: event.data });
                 handleMessage(event.data);
             };
 
             wsRef.current.onerror = (err) => {
                 console.error('WebSocket Error:', err);
-                dispatch({type: 'SET_ERROR', payload: 'WebSocket Error'});
+                dispatch({ type: 'SET_ERROR', payload: 'WebSocket Error' });
             };
 
             wsRef.current.onclose = (event) => {
                 console.log('WebSocket connection closed:', event.code, event.reason);
-                dispatch({type: 'SET_OPEN', payload: false});
+                dispatch({ type: 'SET_OPEN', payload: false });
                 wsRef.current = null;
 
                 if (event.code !== 1000) {
@@ -53,12 +55,13 @@ const useWebSocket = ({WS_URL, loadData, setAlert}: UseWebSocketParams): WebSock
             };
         } catch (error) {
             console.error('WebSocket connection failed:', error);
-            dispatch({type: 'SET_ERROR', payload: 'WebSocket connection failed'});
+            dispatch({ type: 'SET_ERROR', payload: 'WebSocket connection failed' });
             setTimeout(connect, RECONNECT_INTERVAL);
         }
     }, [dispatch, token, WS_URL, handleMessage]);
 
     useEffect(() => {
+        // Проверяем наличие токена авторизации
         if (!token) {
             console.warn('No authorization token');
             return;

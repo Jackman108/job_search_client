@@ -8,7 +8,8 @@ const LanguageSwitcher = () => {
         try {
             await i18n.changeLanguage(lng);
         } catch (error) {
-            console.error('Ошибка смены языка:', error);
+            // Логируем ошибку при смене языка
+            console.error('Error changing language:', error);
         }
     };
 

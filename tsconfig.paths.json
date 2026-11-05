@@ -1,20 +1,19 @@
 {
   "compilerOptions": {
-    "baseUrl": "src/",
     "paths": {
-      "@app/*": ["app/*"],
-      "@processes/*": ["processes/*"],
-      "@features/*": ["features/*"],
-      "@shared/*": ["shared/*"],
-      "@entities/*": ["entities/*"],
-      "@widgets": ["widgets/index.ts"],
-      "@api": ["shared/api/index.ts"],
-      "@ui": ["shared/ui/index.ts"],
-      "@type": ["shared/types/index.ts"],
-      "@hooks": ["shared/hooks/index.ts"],
-      "@utils": ["shared/utils/index.ts"],
-      "@config": ["shared/config/index.ts"],
-      "@styles": ["shared/styles/index.ts"]
+      "@app/*": ["./src/app/*"],
+      "@processes/*": ["./src/processes/*"],
+      "@features/*": ["./src/features/*"],
+      "@shared/*": ["./src/shared/*"],
+      "@entities/*": ["./src/entities/*"],
+      "@widgets": ["./src/widgets/index.ts"],
+      "@api": ["./src/shared/api/index.ts"],
+      "@ui": ["./src/shared/ui/index.ts"],
+      "@type": ["./src/shared/types/index.ts"],
+      "@hooks": ["./src/shared/hooks/index.ts"],
+      "@utils": ["./src/shared/utils/index.ts"],
+      "@config": ["./src/shared/config/index.ts"],
+      "@styles": ["./src/shared/styles/index.ts"]
     }
   }
 }

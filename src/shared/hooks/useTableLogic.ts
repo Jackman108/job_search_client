@@ -1,22 +1,22 @@
-import {useCallback} from 'react';
-import {useFormState, useToggleFormState} from '@hooks';
-import {useTranslation} from 'react-i18next';
+import { useCallback } from 'react';
+import { useFormState, useToggleFormState } from '@hooks';
+import { useTranslation } from 'react-i18next';
 
 const useTableLogic = <T extends { id?: string }>(
     config: Record<string, any>,
     fetchHook: (config: Record<string, any>) => any,
     actionType: string
 ) => {
-    const {data, loading, error, saveItem, deleteItem, loadData} = fetchHook(config);
-    const {formData, isEditing, handleEditClick, handleCancelClick} = useFormState<T>();
-    const {showForm, handleToggleForm} = useToggleFormState();
+    const { data, loading, error, saveItem, deleteItem, loadData } = fetchHook(config);
+    const { formData, isEditing, handleEditClick, handleCancelClick } = useFormState<T>();
+    const { showForm, handleToggleForm } = useToggleFormState();
     const configKey = Object.keys(config)[0];
-    const {t} = useTranslation(configKey);
+    const { t } = useTranslation(configKey);
 
     const handleDelete = useCallback(async (id: string) => {
         if (window.confirm(t(`${configKey}.actions.deleteConfirm`))) {
             try {
-                await deleteItem({type: actionType, id});
+                await deleteItem({ type: actionType, id });
             } catch (error) {
                 console.error(`Error deleting ${actionType}:`, error);
             }

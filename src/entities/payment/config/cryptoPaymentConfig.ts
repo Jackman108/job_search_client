@@ -5,41 +5,22 @@ import { ConfigItem } from "@type";
  * Содержит настройки API эндпоинтов и полей для различных операций
  */
 export const cryptoPaymentConfig: Record<string, ConfigItem> = {
-    checkStatus: {
-        title: 'Check Crypto Payment Status',
-        apiEndpoint: '/payment/crypto/status',
-        fields: {
-            paymentId: 'Payment ID',
-            status: 'Status',
-            confirmations: 'Confirmations',
-            transactionHash: 'Transaction Hash'
-        }
-    },
-    createPayment: {
-        title: 'Create Crypto Payment',
+    crypto_payments: {
+        title: 'Crypto Payments',
         apiEndpoint: '/payment/crypto',
         fields: {
             id: 'ID',
-            subscription_id: 'Subscription ID',
+            payment_id: 'Subscription ID',
             amount: 'Amount',
             currency: 'Currency',
-            network: 'Network'
-        }
-    },
-    getExchangeRate: {
-        title: 'Get Crypto Exchange Rate',
-        apiEndpoint: '/payment/crypto/exchange-rate',
-        fields: {
-            from: 'From Currency',
-            to: 'To Currency'
-        }
-    },
-    validateAddress: {
-        title: 'Validate Crypto Address',
-        apiEndpoint: '/payment/crypto/validate-address',
-        fields: {
-            address: 'Address',
-            network: 'Network'
+            network: 'Network',
+            crypto_address: 'Crypto Address',
+            crypto_amount: 'Crypto Amount',
+            payment_status: 'Status',
+            created_at: 'Created At',
+            expires_at: 'Expires At',
+            transaction_hash: 'Transaction Hash',
+            wallet_provider: 'Wallet Provider'
         }
     }
 };
@@ -50,7 +31,6 @@ export const cryptoPaymentConfig: Record<string, ConfigItem> = {
  */
 export const SUPPORTED_CRYPTO_NETWORKS = [
     { value: 'BTC', label: 'Bitcoin' },
-    { value: 'ETH', label: 'Ethereum' },
     { value: 'USDT', label: 'Tether (USDT)' },
     { value: 'BCH', label: 'Bitcoin Cash' },
     { value: 'LTC', label: 'Litecoin' }
@@ -70,11 +50,51 @@ export const CRYPTO_PAYMENT_SETTINGS = {
     defaultExpirationTime: 30 * 60 * 1000, // 30 minutes in milliseconds
     minConfirmations: {
         BTC: 3,
-        ETH: 12,
         USDT: 12,
         BCH: 3,
         LTC: 3
     },
     refreshInterval: 10000, // 10 seconds
     maxRetries: 3
-} as const; 
+} as const;
+
+// Конфигурация обменных курсов к USD
+export const CRYPTO_EXCHANGE_RATES: Record<string, number> = {
+    BTC: 0.0001,
+    USDT: 1,
+    BCH: 0.0002,
+    LTC: 0.01
+};
+
+// Конфигурация адресов кошельков для различных крипто-сетей
+export const CRYPTO_WALLET_ADDRESSES: Record<string, string> = {
+    BTC: process.env.REACT_APP_WALLET_BTC || '',
+    USDT: process.env.REACT_APP_WALLET_USDT || '',
+    BCH: process.env.REACT_APP_WALLET_BCH || '',
+    LTC: process.env.REACT_APP_WALLET_LTC || '',
+};
+
+/**
+ * Генерирует URL для открытия кошелька
+ * @param network - код крипто-сети
+ * @param address - адрес для оплаты
+ * @param amount - опциональная сумма для оплаты
+ * @returns строка URL для открытия кошелька
+ */
+export function getWalletUrl(network: string, address: string, amount?: string): string {
+    switch (network.toUpperCase()) {
+        case 'BTC':
+            return `bitcoin:${address}${amount ? `?amount=${amount}` : ''}`;
+        case 'USDT':
+            return `ethereum:${address}${amount ? `?value=${amount}&token=USDT` : ''}`;
+        case 'BCH':
+            return `bitcoincash:${address}${amount ? `?amount=${amount}` : ''}`;
+        case 'LTC':
+            return `litecoin:${address}${amount ? `?amount=${amount}` : ''}`;
+        default:
+            return `bitcoin:${address}${amount ? `?amount=${amount}` : ''}`;
+    }
+}
+
+/** Ключи операций для работы с криптоплатежами */
+export type CryptoPaymentAction = keyof typeof cryptoPaymentConfig; 

@@ -1,4 +1,4 @@
-import { useFetchByType } from "@api";
+import { useEntityFetch } from '@hooks';
 import { ACTION_TYPES } from '@config';
 import { BasePayment, PAYMENT_STATUS, UsePaymentStatusHandlerReturn, paymentConfig } from "@entities/payment";
 
@@ -7,7 +7,7 @@ import { BasePayment, PAYMENT_STATUS, UsePaymentStatusHandlerReturn, paymentConf
  * Предоставляет функции для обновления статуса платежа при успешном или неуспешном завершении
  */
 export const usePaymentStatusHandler = (): UsePaymentStatusHandlerReturn => {
-    const { saveItem: updatePaymentStatus } = useFetchByType(paymentConfig);
+    const { saveItem: updatePaymentStatus } = useEntityFetch<BasePayment>(paymentConfig);
 
     /**
      * Обрабатывает успешное завершение платежа
@@ -54,8 +54,32 @@ export const usePaymentStatusHandler = (): UsePaymentStatusHandlerReturn => {
         }
     };
 
+    /**
+     * Обрабатывает истечение платежа
+     * Обновляет статус платежа на "expired"
+     * @param paymentData - Данные платежа для обновления
+     */
+    const handleProcessExpired = async (paymentData: BasePayment) => {
+        try {
+            await updatePaymentStatus({
+                type: ACTION_TYPES.PAYMENT,
+                id: paymentData.id,
+                formData: {
+                    payment_status: PAYMENT_STATUS.EXPIRED,
+                    payment_method: paymentData.payment_method,
+                    amount: paymentData.amount,
+                    updated_at: new Date(),
+                },
+                isEditing: true,
+            });
+        } catch (error) {
+            console.error('Failed to update payment status to "expired":', error);
+        }
+    };
+
     return {
         handleProcessSuccess,
-        handleProcessFailure
+        handleProcessFailure,
+        handleProcessExpired,
     };
 }; 

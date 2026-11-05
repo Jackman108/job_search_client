@@ -5,7 +5,7 @@ import { UseClipboardReturn } from '@entities/payment';
  * Хук для работы с буфером обмена
  * @returns Объект с функциями для копирования и состоянием копирования
  */
-export const useClipboard = (): UseClipboardReturn => {
+const useClipboard = (): UseClipboardReturn => {
     const [isCopied, setIsCopied] = useState(false);
 
     const copyToClipboard = useCallback(async (text: string) => {
@@ -26,4 +26,6 @@ export const useClipboard = (): UseClipboardReturn => {
         isCopied,
         resetCopyState
     };
-}; 
+};
+
+export default useClipboard;

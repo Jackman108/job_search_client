@@ -1,5 +1,5 @@
 import i18next from 'i18next';
-import {initReactI18next} from 'react-i18next';
+import { initReactI18next } from 'react-i18next';
 import subscriptionRu from '@shared/locales/ru/subscription.json';
 import subscriptionEn from '@shared/locales/en/subscription.json';
 import paymentRu from '@shared/locales/ru/payment.json';
@@ -10,6 +10,10 @@ import profileRu from '@shared/locales/ru/profile.json';
 import profileEn from '@shared/locales/en/profile.json';
 import authRu from '@shared/locales/ru/auth.json';
 import authEn from '@shared/locales/en/auth.json';
+import cryptoPaymentRu from '@shared/locales/ru/cryptoPayment.json';
+import cryptoPaymentEn from '@shared/locales/en/cryptoPayment.json';
+import errorsRu from '@shared/locales/ru/errors.json';
+import errorsEn from '@shared/locales/en/errors.json';
 
 export const defaultNS = 'subscriptions';
 
@@ -25,6 +29,8 @@ export const initializeI18n = async () => {
                 header: headerRu,
                 profile: profileRu,
                 auth: authRu,
+                cryptoPayments: cryptoPaymentRu,
+                errors: errorsRu,
             },
             en: {
                 subscriptions: subscriptionEn,
@@ -32,6 +38,8 @@ export const initializeI18n = async () => {
                 header: headerEn,
                 profile: profileEn,
                 auth: authEn,
+                cryptoPayments: cryptoPaymentEn,
+                errors: errorsEn,
             },
         },
         defaultNS,
