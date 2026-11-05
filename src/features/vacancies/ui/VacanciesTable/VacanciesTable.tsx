@@ -1,7 +1,7 @@
 import {FC} from 'react';
 import {useVacancyContext} from '@app/providers/vacancy/useVacancyContext';
 import styles from './VacanciesTable.module.css';
-import {ErrorAlert, Tooltip, UnauthorizedMessage} from '@ui';
+import {ErrorAlert, Graph, Tooltip, UnauthorizedMessage} from '@ui';
 import {TABLE_VACANCIES} from "@entities/vacancy";
 import useFeedbackByVacancyId from "@features/feedback/hooks/useFeedbackByVacancyId";
 import useTableHandlers from "@features/vacancies/hooks/useTableHandlers";
@@ -49,6 +49,7 @@ const VacanciesTable: FC = () => {
                 ))}
                 </tbody>
             </table>
+            <Graph vacancies={sortedData}/>
         </div>
     );
 };

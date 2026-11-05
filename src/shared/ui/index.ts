@@ -5,6 +5,7 @@ export { default as Button } from './Button/Button';
 export { default as CaptchaAlert } from './CaptchaAlert/CaptchaAlert';
 export { default as ErrorAlert } from './ErrorAlert/ErrorAlert';
 export { default as FormContainer } from './FormContainer/FormContainer';
+export { default as Graph } from './Graph/Graph';
 export { default as ImagePreview } from './ImagePreview/ImagePreview';
 export { default as ImageUploader } from './ImageUploader/ImageUploader';
 export { default as InteractiveButton } from './InteractiveButton/InteractiveButton';
