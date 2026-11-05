@@ -29,7 +29,7 @@ const ResumeView: FC<ResumeViewProps> = (
                 ))}
                 <div className={styles.buttonGroup}>
                     <Button onClick={() => onEditClick(type, data)} className={styles.editButton} variant="secondary">
-                        <img src="/pen.png" alt="Edit" className={styles.editIcon}/>
+                        <img src="/icons/pen.svg" alt="Edit" className={styles.editIcon}/>
                     </Button>
                     <Button onClick={() => onDeleteClick(type)} className={styles.editButton} variant="secondary">
                         Удалить

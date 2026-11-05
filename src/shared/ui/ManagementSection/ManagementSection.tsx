@@ -28,7 +28,7 @@ const ManagementSection: FC<ManagementSectionProps> = ({
                 ))}
             </select>
             <Button onClick={onUpdate} disabled={!selectedId || disabled} variant="primary">
-                <img src="/pen.png" alt="Edit" className={styles.editIcon}/>
+                <img src="/icons/pen.svg" alt="Edit" className={styles.editIcon}/>
             </Button>
             <Button onClick={onCreate} disabled={!!selectedId || disabled} variant="primary">
                 Создать
