@@ -1,4 +1,6 @@
-# Job Search
+# Job Search (Market Hunter client)
+
+> Не путать с `Documents/job-hunt` — там канон найма/CV; этот репозиторий — UI продукта автооткликов.
 
 ## Description
 
@@ -43,11 +45,13 @@ npm install
 ### 3. Environment Setup:
 
 ```bash
-REACT_APP_API_URL=http://localhost:8000
-REACT_APP_WS_URL=ws://localhost:8080
-
-NODE_ENV === 'development'
+cp .env.example .env
+# REACT_APP_API_URL=http://localhost:8000
+# REACT_APP_WS_URL=ws://localhost:8080
+# REACT_APP_AUTH_URL=http://localhost:8001/api
 ```
+
+Dev ports overview: `../docs/DEV_SETUP.md`.
 
 ### 4. Running the Application:
 
