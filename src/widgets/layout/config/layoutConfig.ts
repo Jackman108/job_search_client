@@ -7,31 +7,31 @@ import SubscriptionUser from "@features/subscription/ui/user/SubscriptionUser/Su
 
 export const layoutConfig: ButtonConfig<any>[] = [
     {
-        icon: '/run.png',
+        icon: '/icons/run.svg',
         tooltipText: 'Отправка заявок',
         Component: SearchForm,
         position: 'left',
     },
     {
-        icon: '/update.png',
+        icon: '/icons/update.svg',
         tooltipText: 'Обновить результат',
         Component: FeedbackForm,
         position: 'left',
     },
     {
-        icon: '/profile.png',
+        icon: '/icons/profile.svg',
         tooltipText: 'Профиль',
         Component: ProfileSection,
         position: 'right',
     },
     {
-        icon: '/resume.png',
+        icon: '/icons/resume.svg',
         tooltipText: 'Резюме',
         Component: ResumeButton,
         position: 'right',
     },
     {
-        icon: '/subscribe.png',
+        icon: '/icons/subscribe.svg',
         tooltipText: 'Подписки',
         Component: SubscriptionUser,
         position: 'right',

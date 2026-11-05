@@ -77,7 +77,7 @@ const ResumeArray: FC<ResumeArrayProps> = ({config, type}) => {
             })}
             <div className={styles.buttonGroup}>
                 <Button onClick={() => handleEditClick(item)} variant="secondary">
-                    <img src="/pen.png" alt="Edit" className={styles.editIcon}/>
+                    <img src="/icons/pen.svg" alt="Edit" className={styles.editIcon}/>
                 </Button>
                 <Button onClick={() => deleteItem({type, id: item.id})} variant="secondary">Удалить</Button>
             </div>
