@@ -8,6 +8,11 @@
     "dev": "react-app-rewired start",
     "start": "serve -s build -l 3000",
     "test": "react-app-rewired test",
+    "lint": "eslint \"src/**/*.{ts,tsx}\" --max-warnings 0",
+    "lint:fix": "eslint \"src/**/*.{ts,tsx}\" --fix",
+    "format": "prettier --write \"src/**/*.{ts,tsx,css,json}\"",
+    "format:check": "prettier --check \"src/**/*.{ts,tsx,css,json}\"",
+    "typecheck": "tsc --noEmit",
     "eject": "react-app-rewired eject"
   },
   "dependencies": {
@@ -62,6 +67,8 @@
     "@types/jwt-decode": "^3.1.0",
     "@types/react-i18next": "^8.1.0",
     "customize-cra": "^1.0.0",
+    "eslint-config-prettier": "^10.1.8",
+    "prettier": "^3.9.10",
     "react-app-rewire-alias": "^1.1.7",
     "react-app-rewired": "^2.2.1",
     "serve": "^14.2.3"
