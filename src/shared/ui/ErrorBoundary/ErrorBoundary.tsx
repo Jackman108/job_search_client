@@ -1,33 +1,43 @@
-import React, { ReactNode } from 'react';
-import { ErrorBoundary as REBoundary, FallbackProps } from 'react-error-boundary';
+import React, { Component, ReactNode } from 'react';
 
-/**
- * Обёртка для перехвата ошибок в React-дереве.
- * Использует библиотеку react-error-boundary.
- */
 type ErrorBoundaryProps = {
     children: ReactNode;
     fallback?: ReactNode;
 };
 
-/**
- * Компонент отображения уведомления об ошибке.
- */
-const ErrorFallback: React.FC<FallbackProps> = ({ error, resetErrorBoundary }) => (
-    <div>
-        <h2>Что-то пошло не так.</h2>
-        <pre>{error.message}</pre>
-        <button onClick={resetErrorBoundary}>Попробовать снова</button>
-    </div>
-);
+type ErrorBoundaryState = {
+    error: Error | null;
+};
 
 /**
- * Функциональный компонент для перехвата ошибок.
+ * Обёртка для перехвата ошибок в React-дереве (без внешней зависимости).
  */
-const ErrorBoundary: React.FC<ErrorBoundaryProps> = ({ children, fallback }) => (
-    <REBoundary FallbackComponent={fallback ? () => <>{fallback}</> : ErrorFallback}>
-        {children}
-    </REBoundary>
-);
+class ErrorBoundary extends Component<ErrorBoundaryProps, ErrorBoundaryState> {
+    state: ErrorBoundaryState = { error: null };
 
-export default ErrorBoundary; 
+    static getDerivedStateFromError(error: Error): ErrorBoundaryState {
+        return { error };
+    }
+
+    private reset = () => {
+        this.setState({ error: null });
+    };
+
+    render() {
+        const { error } = this.state;
+        const { children, fallback } = this.props;
+        if (!error) return children;
+        if (fallback) return <>{fallback}</>;
+        return (
+            <div>
+                <h2>Что-то пошло не так.</h2>
+                <pre>{error.message}</pre>
+                <button type="button" onClick={this.reset}>
+                    Попробовать снова
+                </button>
+            </div>
+        );
+    }
+}
+
+export default ErrorBoundary;
