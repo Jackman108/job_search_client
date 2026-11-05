@@ -1,15 +1,15 @@
-// src/components/SignIn/SignIn.tsx
-
-import React, {ChangeEvent, useState} from 'react';
+import React, {ChangeEvent} from 'react';
 import {SignInProps} from '../../types/Auth.props';
-import Button from '@ui/Button/Button';
-import RenderInput from '@ui/RenderInput/RenderInput';
-import {FORM_TEXTS} from "@features/vacancies/config/searchConfig";
-import {BUTTON_TEXTS} from "@features/profile/config/profileConfigs";
+import {Button, RenderInput} from '@ui';
+import {useTranslation} from "react-i18next";
+import { useLocalStorage } from '@hooks';
 
 const SignIn: React.FC<SignInProps> = ({onSignIn, error, loading}) => {
-    const [email, setEmail] = useState('');
-    const [password, setPassword] = useState('');
+    const {t} = useTranslation('auth');
+
+    // Сохраняем и подставляем последние введённые данные для входа
+    const [email, setEmail] = useLocalStorage<string>('lastEmail', '');
+    const [password, setPassword] = useLocalStorage<string>('lastPassword', '');
 
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();
@@ -18,27 +18,27 @@ const SignIn: React.FC<SignInProps> = ({onSignIn, error, loading}) => {
     return (
         <form onSubmit={handleSubmit}>
             <RenderInput
-                label={FORM_TEXTS.emailLabel}
-                name={BUTTON_TEXTS.emailButton}
+                label={t('form.email')}
+                name="email"
                 value={email}
                 onChange={(e: ChangeEvent<HTMLInputElement>) => setEmail(e.target.value)}
                 isLoading={false}
-                type={BUTTON_TEXTS.emailButton}
-                placeholder={BUTTON_TEXTS.emailButton}
+                type="email"
+                placeholder=""
                 required
             />
             <RenderInput
-                label={FORM_TEXTS.passwordLabel}
-                name={BUTTON_TEXTS.passwordButton}
+                label={t('form.password')}
+                name="password"
                 value={password}
                 onChange={(e: ChangeEvent<HTMLInputElement>) => setPassword(e.target.value)}
                 isLoading={false}
-                type={BUTTON_TEXTS.passwordButton}
-                placeholder={BUTTON_TEXTS.passwordButton}
+                type="password"
+                placeholder=""
                 required
             />
             <Button type="submit" variant="secondary" disabled={loading}>
-                {loading ? BUTTON_TEXTS.loadingButton : BUTTON_TEXTS.insertButton}
+                {loading ? t('form.isLoading') : t('button.insert')}
             </Button>
             {error && <p>{typeof error === 'string' ? error : error.message}</p>}
         </form>

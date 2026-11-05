@@ -1,14 +1,12 @@
 import {FC} from 'react';
 import {useVacancyContext} from '@app/providers/vacancy/useVacancyContext';
 import styles from './VacanciesTable.module.css';
-import UnauthorizedMessage from '@ui/UnauthorizedMessage/UnauthorizedMessage';
-import {TABLE_VACANCIES} from "@features/vacancies/config/vacansiesConfig";
+import {ErrorAlert, Tooltip, UnauthorizedMessage} from '@ui';
+import {TABLE_VACANCIES} from "@entities/vacancy";
 import useFeedbackByVacancyId from "@features/feedback/hooks/useFeedbackByVacancyId";
 import useTableHandlers from "@features/vacancies/hooks/useTableHandlers";
-import Tooltip from "@ui/Tooltip/Tooltip";
 import VacancyRow from "@features/vacancies/ui/VacancyRow/VacancyRow";
-import {LOCALES} from "@config/localesConfig";
-import ErrorAlert from "@ui/ErrorAlert/ErrorAlert";
+import {LOCALES} from "@config";
 import VacancyHeader from "@features/vacancies/ui/VacancyHeader/VacancyHeader";
 
 const VacanciesTable: FC = () => {
@@ -26,7 +24,7 @@ const VacanciesTable: FC = () => {
     } = useTableHandlers(vacancies);
 
     if (loading) return <div>{LOCALES.LOADING}</div>;
-    if (vacancies.length === 0) return <div>{LOCALES.WELCOME_MESSAGE}</div>;
+    if (vacancies.length === 0 && !vacancyError) return <div>{LOCALES.WELCOME_MESSAGE}</div>;
     if (vacancyError) return <UnauthorizedMessage/>;
 
     return (

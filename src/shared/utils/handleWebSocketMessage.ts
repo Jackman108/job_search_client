@@ -1,6 +1,4 @@
-// utils/websocketMessageHandler.ts
-
-import {WS_ERRORS, WS_EVENTS} from "@config/websocketConfig";
+import {WS_ERRORS, WS_EVENTS} from "@config";
 
 export const handleWebSocketMessage = (data: string, loadData: () => void, setAlert: (message: string) => void) => {
     const handleIdMessage = (data: string, prefix: string, loadData: () => void) => {
@@ -16,10 +14,6 @@ export const handleWebSocketMessage = (data: string, loadData: () => void, setAl
     switch (true) {
         case data.startsWith(WS_EVENTS.VACANCY_SAVED):
             handleIdMessage(data, 'Vacancy', loadData);
-            break;
-
-        case data.startsWith(WS_EVENTS.FEEDBACK_SAVED):
-            handleIdMessage(data, 'Feedback', loadData);
             break;
 
         case data === WS_EVENTS.ERROR_DETECTED:

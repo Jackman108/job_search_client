@@ -1,14 +1,14 @@
 import {FC} from 'react';
-import Button from '@ui/Button/Button';
-import {TABLE_VACANCIES} from "@features/vacancies/config/vacansiesConfig";
-import {BUTTON_SYMBOL} from "@config/defaultConfig";
+import {Button} from '@ui';
+import {TABLE_VACANCIES} from "@entities/vacancy";
+import {BUTTON_SYMBOL} from "@config";
 import styles from './VacancyRow.module.css';
-import {VacancyRowProps} from "@features/vacancies/types/VacancyRow.props";
+import {VacancyRowProps} from "@features/vacancies/props/Vacancies.props";
 
 
 const VacancyRow: FC<VacancyRowProps> = ({vacancy, feedback, onMouseEnter, onMouseLeave, onDelete}) => {
     return (
-        <tr key={vacancy.id} className={styles.VacancyRow}>
+        <tr className={styles.VacancyRow}>
             <td>{vacancy.id}</td>
             <td>
                 <a href={vacancy.url_vacancy} target="_blank" rel="noopener noreferrer">

@@ -1,27 +1,22 @@
 import './App.css';
-import Layout from '@widgets/layout/ui/Layout';
-import {AuthProvider} from '../providers/auth/AuthProvider';
+import {AppProviders} from '@app/providers';
 import {AppRoutes} from "../routes/AppRoutes";
-import {BrowserRouter} from "react-router-dom";
-import {SearchFormProvider} from "../providers/search/SearchFormProvider";
+import {Header, Layout} from "@widgets";
+import {ErrorBoundary} from '@ui';
 
 function App() {
     return (
         <div className="App">
-            <header className="App-header">
-                ТРУДОУСТРОЙСТВО
-            </header>
-            <main>
-                <AuthProvider>
-                    <SearchFormProvider>
-                        <BrowserRouter>
-                            <Layout>
-                                <AppRoutes/>
-                            </Layout>
-                        </BrowserRouter>
-                    </SearchFormProvider>
-                </AuthProvider>
-            </main>
+            <AppProviders>
+                <ErrorBoundary>
+                    <Header/>
+                    <main>
+                        <Layout>
+                            <AppRoutes/>
+                        </Layout>
+                    </main>
+                </ErrorBoundary>
+            </AppProviders>
         </div>
     );
 }

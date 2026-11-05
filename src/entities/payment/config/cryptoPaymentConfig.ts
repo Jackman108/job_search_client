@@ -1,0 +1,100 @@
+import { ConfigItem } from "@type";
+
+/**
+ * Конфигурация для работы с криптоплатежами
+ * Содержит настройки API эндпоинтов и полей для различных операций
+ */
+export const cryptoPaymentConfig: Record<string, ConfigItem> = {
+    crypto_payments: {
+        title: 'Crypto Payments',
+        apiEndpoint: '/payment/crypto',
+        fields: {
+            id: 'ID',
+            payment_id: 'Subscription ID',
+            amount: 'Amount',
+            currency: 'Currency',
+            network: 'Network',
+            crypto_address: 'Crypto Address',
+            crypto_amount: 'Crypto Amount',
+            payment_status: 'Status',
+            created_at: 'Created At',
+            expires_at: 'Expires At',
+            transaction_hash: 'Transaction Hash',
+            wallet_provider: 'Wallet Provider'
+        }
+    }
+};
+
+/**
+ * Список поддерживаемых криптовалютных сетей
+ * Каждая сеть представлена объектом с value (код валюты) и label (название)
+ */
+export const SUPPORTED_CRYPTO_NETWORKS = [
+    { value: 'BTC', label: 'Bitcoin' },
+    { value: 'USDT', label: 'Tether (USDT)' },
+    { value: 'BCH', label: 'Bitcoin Cash' },
+    { value: 'LTC', label: 'Litecoin' }
+] as const;
+
+/**
+ * Сеть по умолчанию для криптоплатежей
+ */
+export const DEFAULT_CRYPTO_NETWORK = 'BTC';
+
+/**
+ * Настройки для криптоплатежей
+ * Включает время истечения платежа, минимальное количество подтверждений для разных сетей,
+ * интервал обновления статуса и максимальное количество попыток
+ */
+export const CRYPTO_PAYMENT_SETTINGS = {
+    defaultExpirationTime: 30 * 60 * 1000, // 30 minutes in milliseconds
+    minConfirmations: {
+        BTC: 3,
+        USDT: 12,
+        BCH: 3,
+        LTC: 3
+    },
+    refreshInterval: 10000, // 10 seconds
+    maxRetries: 3
+} as const;
+
+// Конфигурация обменных курсов к USD
+export const CRYPTO_EXCHANGE_RATES: Record<string, number> = {
+    BTC: 0.0001,
+    USDT: 1,
+    BCH: 0.0002,
+    LTC: 0.01
+};
+
+// Конфигурация адресов кошельков для различных крипто-сетей
+export const CRYPTO_WALLET_ADDRESSES: Record<string, string> = {
+    BTC: process.env.REACT_APP_WALLET_BTC || '',
+    USDT: process.env.REACT_APP_WALLET_USDT || '',
+    BCH: process.env.REACT_APP_WALLET_BCH || '',
+    LTC: process.env.REACT_APP_WALLET_LTC || '',
+};
+
+/**
+ * Генерирует URL для открытия кошелька
+ * @param network - код крипто-сети
+ * @param address - адрес для оплаты
+ * @param amount - опциональная сумма для оплаты
+ * @returns строка URL для открытия кошелька
+ */
+export function getWalletUrl(network: string, address: string, amount?: string): string {
+    switch (network.toUpperCase()) {
+        case 'BTC':
+            return `bitcoin:${address}${amount ? `?amount=${amount}` : ''}`;
+        case 'USDT':
+            return `ethereum:${address}${amount ? `?value=${amount}&token=USDT` : ''}`;
+        case 'BCH':
+            return `bitcoincash:${address}${amount ? `?amount=${amount}` : ''}`;
+        case 'LTC':
+            return `litecoin:${address}${amount ? `?amount=${amount}` : ''}`;
+        default:
+            return `bitcoin:${address}${amount ? `?amount=${amount}` : ''}`;
+    }
+}
+
+/** Ключи операций для работы с криптоплатежами */
+export type CryptoPaymentAction = keyof typeof cryptoPaymentConfig; 

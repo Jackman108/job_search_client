@@ -1,5 +1,5 @@
 import { useState, useCallback } from 'react';
-import { StateAlertProps } from '@shared/types/Component.types';
+import { StateAlertProps } from "@type";
 
 const useAlert = () => {
   const [alertState, setAlertState] = useState<StateAlertProps>({ message: null, captchaSrc: undefined });

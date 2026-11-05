@@ -1,7 +1,7 @@
 import {ReactElement} from 'react';
 import styles from './InteractiveButton.module.css';
-import {InteractiveButtonProps} from '@shared/types/Component.types';
-import {useComponentToggle} from "@hooks/useComponentToggle";
+import {InteractiveButtonProps} from "@type";
+import {useComponentToggle} from "@hooks";
 
 const InteractiveButton = ({
                                icon,

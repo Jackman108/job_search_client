@@ -1,10 +1,10 @@
 import React, {FC} from 'react';
 import {useNavigate} from 'react-router-dom';
 import {useAuth} from '@app/providers/auth/useAuthContext';
-import styles from './ResumeButton.module.css';
-import FormContainer from "@ui/FormContainer/FormContainer";
-import Button from '@ui/Button/Button';
-import {PanelProps} from "@shared/types/Component.types";
+import styles from '@shared/styles/Container.module.css';
+import {Button, FormContainer} from "@ui";
+import {PanelProps} from "@type";
+import ResumeSection from "@features/resume/ui/ResumeSection/ResumeSection";
 
 const ResumeButton: FC<PanelProps> = ({onClose}) => {
     const {token} = useAuth();
@@ -21,6 +21,7 @@ const ResumeButton: FC<PanelProps> = ({onClose}) => {
                     <Button onClick={handleGetClick} variant="primary">
                         резюме
                     </Button>
+                    <ResumeSection/>
                 </div>
             </section>
         </FormContainer>

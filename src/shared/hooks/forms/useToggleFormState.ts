@@ -1,6 +1,6 @@
 import {useCallback, useState} from 'react';
 
-export const useToggleFormState = () => {
+const useToggleFormState = () => {
     const [showForm, setShowForm] = useState(false);
 
     const handleToggleForm = useCallback(() => {
@@ -12,3 +12,5 @@ export const useToggleFormState = () => {
         handleToggleForm,
     };
 };
+
+export default useToggleFormState;

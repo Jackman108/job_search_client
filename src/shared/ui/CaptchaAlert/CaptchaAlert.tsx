@@ -1,6 +1,6 @@
 import { FC } from 'react';
 import './CaptchaAlert.css';
-import { CaptchaAlertProps } from '@shared/types/Component.types';
+import { CaptchaAlertProps } from "@type";
 
 const CaptchaAlert: FC<CaptchaAlertProps> = ({ message, captchaSrc, onClose }) => {
     return (

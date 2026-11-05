@@ -1,0 +1,43 @@
+.container {
+    padding: 16px;
+    overflow-x: auto;
+}
+
+.tableWrapper {
+    width: 100%;
+    overflow-x: auto;
+}
+
+.table {
+    border-collapse: collapse;
+    width: max-content;
+}
+
+.title {
+    font-size: 24px;
+    margin-bottom: 16px;
+}
+
+.addButton {
+    margin-bottom: 16px;
+    padding: 8px 12px;
+}
+
+
+.table th,
+.table td {
+    border: 1px solid #ddd;
+    padding: 8px;
+}
+
+.table th {
+    background-color: #f4f4f4;
+}
+
+.home-button {
+    margin-bottom: 16px;
+}
+
+.actions button {
+    margin-right: 8px;
+}

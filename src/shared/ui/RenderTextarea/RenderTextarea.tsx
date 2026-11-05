@@ -1,6 +1,6 @@
 import { FC } from 'react';
 import styles from './RenderTextarea.module.css';
-import {RenderTextareaProps} from "@shared/types/Form.types";
+import {RenderTextareaProps} from "@type";
 
 const RenderTextarea: FC<RenderTextareaProps> = ({ label, name, value, onChange, isLoading }) => (
   <div className={styles.formGroup}>

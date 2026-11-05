@@ -1,0 +1,29 @@
+.FeedbackTable {
+	font-family: Arial, sans-serif;
+	margin: 0 10vw;
+}
+
+.FeedbackTable h1 {
+	text-align: center;
+	margin: 20px 0;
+}
+
+.FeedbackTable table {
+	width: 100%;
+	border-collapse: collapse;
+	margin: 0 auto;
+}
+
+.FeedbackTable th, .FeedbackTable td {
+	border: 1px solid #ddd;
+	padding: 8px;
+	text-align: left;
+}
+
+.FeedbackTable tr:nth-child(even) {
+	background-color: #f9f9f9;
+}
+
+.FeedbackTable tr:hover {
+	background-color: #f1f1f1;
+}

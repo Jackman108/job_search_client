@@ -2,9 +2,7 @@ import {useAuth} from '@app/providers/auth/useAuthContext';
 import {useSearchFormContext} from '@app/providers/search/useSearchFormContext';
 import useFeedbackSubmit from './useFeedbackSubmit';
 import {FormEvent} from "react";
-import useAuthManagement from "@hooks/forms/useAuthManagement";
-import useSearchAuth from "@hooks/forms/useSearchAuth";
-import useSearchFormState from "@hooks/forms/useSearchFormState";
+import {useAuthManagement, useSearchAuth, useSearchFormState} from "@hooks";
 
 const useFeedbackLogic = () => {
     const {token} = useAuth();

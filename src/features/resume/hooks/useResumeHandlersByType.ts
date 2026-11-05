@@ -1,7 +1,8 @@
 import {ChangeEvent, useCallback} from 'react';
-import {businessTripReadiness} from '@features/resume/config/resumeLinesConfig';
-import {useFormState} from "./useFormState";
-import {ACTION_TYPES} from "@config/actionTypes";
+import {businessTripReadiness} from '@entities/resume/constants';
+import {useFormState} from "@hooks";
+import {ACTION_TYPES} from "@config";
+import {parseArrayFromString} from "@utils";
 
 export const useResumeHandlersByType = (initialFormData = {}) => {
     const {
@@ -20,16 +21,15 @@ export const useResumeHandlersByType = (initialFormData = {}) => {
         setFormData(prev => {
             if (type === 'checkbox') {
                 const currentValues = Array.isArray(prev[key]) ? prev[key] : [];
-                return {
-                    ...prev,
-                    [key]: checked
-                        ? [...currentValues, value]
-                        : currentValues.filter((item: string) => item !== value),
-                };
-            } else if (type === 'radio') {
-                if (key === 'business_trip_readiness') {
-                    return {...prev, [key]: value};
+                if (checked) {
+                    if (!currentValues.includes(value)) {
+                        return {...prev, [key]: [...currentValues, value]};
+                    }
+                } else {
+                    return {...prev, [key]: currentValues.filter((item: string) => item !== value)};
                 }
+                return prev;
+            } else if (type === 'radio') {
                 return {...prev, [key]: value};
             } else {
                 return {...prev, [key]: value};
@@ -38,6 +38,7 @@ export const useResumeHandlersByType = (initialFormData = {}) => {
     }, [setFormData]);
 
     const prepareDataForSubmit = useCallback((type: string, formData: Record<string, any>) => {
+
         return {
             ...formData,
             business_trip_readiness: type === ACTION_TYPES.RESUME
@@ -55,9 +56,11 @@ export const useResumeHandlersByType = (initialFormData = {}) => {
         handleEditClick: (type: string, item: any) => {
             handleEditClick(type, {
                 ...item,
-                business_trip_readiness: type === ACTION_TYPES.RESUME
-                    ? item.business_trip_readiness ? businessTripReadiness[0] : businessTripReadiness[1]
-                    : item.business_trip_readiness,
+                ...(type === ACTION_TYPES.RESUME && {
+                    employment_type: item.employment_type ? parseArrayFromString(item.employment_type) : [],
+                    work_schedule: item.work_schedule ? parseArrayFromString(item.work_schedule) : [],
+                    business_trip_readiness: item.business_trip_readiness ? businessTripReadiness[1] : businessTripReadiness[0],
+                })
             });
         },
         handleCancelClick: (type: string) => handleCancelClick(type),

@@ -1,8 +1,9 @@
-import {ButtonConfig} from '@shared/types/Component.types';
-import Profile from '@features/profile/ui/Profile';
-import Resume from '@features/resume/ui/ResumeButton/ResumeButton';
+import {ButtonConfig} from "@type";
+import ProfileSection from '@features/profile/ui/ProfileSection/ProfileSection';
+import ResumeButton from '@features/resume/ui/ResumeButton/ResumeButton';
 import SearchForm from '@features/vacancies/ui/SearchForm/SearchForm';
-import FeedbackForm from "@features/feedback/ui/FeedbackForm";
+import FeedbackForm from "@features/feedback/ui/FeedbackForm/FeedbackForm";
+import SubscriptionUser from "@features/subscription/ui/user/SubscriptionUser/SubscriptionUser";
 
 export const layoutConfig: ButtonConfig<any>[] = [
     {
@@ -20,13 +21,19 @@ export const layoutConfig: ButtonConfig<any>[] = [
     {
         icon: '/profile.png',
         tooltipText: 'Профиль',
-        Component: Profile,
+        Component: ProfileSection,
         position: 'right',
     },
     {
         icon: '/resume.png',
         tooltipText: 'Резюме',
-        Component: Resume,
+        Component: ResumeButton,
+        position: 'right',
+    },
+    {
+        icon: '/subscribe.png',
+        tooltipText: 'Подписки',
+        Component: SubscriptionUser,
         position: 'right',
     },
 ];

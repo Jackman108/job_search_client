@@ -1,24 +1,14 @@
 import {FC} from 'react';
 import styles from './SearchForm.module.css';
-import Button from '@ui/Button/Button';
-import RenderInput from '@ui/RenderInput/RenderInput';
-import RenderSelect from '@ui/RenderSelect/RenderSelect';
-import RenderTextarea from '@ui/RenderTextarea/RenderTextarea';
-import {
-    FORM_CONFIG,
-    FORM_LABELS,
-    FORM_PARAMS,
-    FORM_TEXTS,
-    FormLabelKeys,
-    FormParamKeys,
-} from '../../config/searchConfig';
+import {PanelProps} from "@type";
 import useSearchFormLogic from '../../hooks/useSearchFormLogic';
-import ManagementSection from "@ui/ManagementSection/ManagementSection";
-import FormContainer from "@ui/FormContainer/FormContainer";
-import {PanelProps} from "@shared/types/Component.types";
-import {FORM_BUTTONS} from "@config/defaultConfig";
+import {Button, FormContainer, ManagementSection, RenderInput, RenderSelect, RenderTextarea} from '@ui';
+import {useTranslation} from "react-i18next";
+import {FORM_CONFIG, FORM_LABELS, FORM_PARAMS, FORM_TEXTS, FormLabelKeys, FormParamKeys} from "@entities/search";
 
 const SearchForm: FC<PanelProps> = ({onClose}) => {
+    const {t} = useTranslation('auth');
+
     const {
         token,
         isLoading,
@@ -44,7 +34,6 @@ const SearchForm: FC<PanelProps> = ({onClose}) => {
 
     return (
         <FormContainer token={token} onClose={onClose}>
-
             <ManagementSection
                 title="Управление Аккаунтами"
                 selectedId={selectedAuthId}
@@ -113,7 +102,7 @@ const SearchForm: FC<PanelProps> = ({onClose}) => {
                         type="submit"
                         disabled={isLoading}
                     >
-                        {isLoading ? FORM_BUTTONS.isLoading : FORM_BUTTONS.submitButton}
+                        {isLoading ? t('form.isLoading') : t('button.start')}
                     </Button>
                     <Button
                         className={styles.button}
@@ -122,7 +111,7 @@ const SearchForm: FC<PanelProps> = ({onClose}) => {
                         disabled={!isLoading}
                         variant="danger"
                     >
-                        {FORM_BUTTONS.stopButton}
+                        {t('button.stop')}
                     </Button>
                 </div>
             </form>

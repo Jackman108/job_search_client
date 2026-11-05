@@ -1,0 +1,20 @@
+{
+  "row": {
+    "profileTitle": "Профиль",
+    "firstName": "Имя",
+    "lastName": "Фамилия",
+    "avatar": "Аватар",
+    "balance": "Баланс",
+    "spinCount": "Количество вращений",
+    "successfulResponses": "Успешные отклики",
+    "currentStatus": "Текущий статус",
+    "noAvatar": "Нет"
+  },
+  "button": {
+    "saveProfile": "Сохранить",
+    "cancelProfile": "Отмена",
+    "editProfile": "Редактировать",
+    "selectImage": "Выберите изображение",
+    "signOut": "Выйти"
+  }
+}

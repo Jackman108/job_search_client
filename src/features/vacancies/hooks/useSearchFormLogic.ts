@@ -3,10 +3,9 @@ import {useAuth} from '@app/providers/auth/useAuthContext';
 import useVacancySubmit from './useVacancySubmit';
 import {useSearchFormContext} from "@app/providers/search/useSearchFormContext";
 import useFieldManagement from "./useFieldManagement";
-import useAuthManagement from "@hooks/forms/useAuthManagement";
-import useSearchAuth from "@hooks/forms/useSearchAuth";
+import {useAuthManagement, useSearchAuth, useSearchFormState} from "@hooks";
 import useSearchFields from "@features/vacancies/hooks/useSearchFields";
-import useSearchFormState from "@hooks/forms/useSearchFormState";
+
 
 const useSearchFormLogic = () => {
     const {token} = useAuth();

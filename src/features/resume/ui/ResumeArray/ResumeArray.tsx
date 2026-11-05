@@ -1,10 +1,10 @@
 import {FC, FormEvent} from 'react';
-import {ResumeArrayProps} from '../../types/InterfaceResume.types';
-import Button from '@ui/Button/Button';
-import {useFetchByType} from '@hooks/useFetchByType';
+import {Button, RenderInput} from '@ui';
+import {useFetchByType} from "@api";
 import {useResumeHandlersById} from '../../hooks/useResumeHandlersById';
 import styles from './ResumeArray.module.css';
-import {formatDate} from "@utils/formatUtils";
+import {formatDate} from "@utils";
+import {ResumeArrayProps} from "@features/resume/props/Resume.props";
 
 const ResumeArray: FC<ResumeArrayProps> = ({config, type}) => {
     const {
@@ -23,7 +23,6 @@ const ResumeArray: FC<ResumeArrayProps> = ({config, type}) => {
         saveItem,
     } = useFetchByType(config);
 
-
     const handleSubmit = async (e: FormEvent<HTMLFormElement>, id: number) => {
         e.preventDefault();
         try {
@@ -41,16 +40,16 @@ const ResumeArray: FC<ResumeArrayProps> = ({config, type}) => {
                 const value = isDateField && formData[key] ? formatDate(formData[key]).date : formData[key] || '';
 
                 return (
-                    <div key={key} className={styles.formField}>
-                        <label>
-                            {label as string}
-                            <input
-                                type={key === 'start_date' || key === 'end_date' ? 'date' : 'text'}
-                                value={value}
-                                onChange={(e) => handleInputChange(e, key)}
-                            />
-                        </label>
-                    </div>
+                    <RenderInput
+                        key={key}
+                        label={label as string}
+                        name={key}
+                        value={value}
+                        onChange={(e) => handleInputChange(e, key)}
+                        type={isDateField ? 'date' : 'text'}
+                        isLoading={loading}
+                        required
+                    />
                 );
             })}
             <Button type="submit" variant="primary">Сохранить</Button>

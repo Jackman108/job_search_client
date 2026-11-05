@@ -1,0 +1,32 @@
+.radioGroup {
+	margin-bottom: 1.5rem;
+}
+
+.radioItem {
+	display: flex;
+	align-items: center;
+	margin-bottom: 0.5rem;
+}
+
+.radioItem input {
+	margin-right: 0.5rem;
+	width: 1rem;
+	height: 1rem;
+	cursor: pointer;
+}
+
+.radioItem label {
+	font-size: 1rem;
+	color: #333;
+	cursor: pointer;
+}
+
+.error {
+	border-color: #ff6b6b;
+}
+
+.errorText {
+	color: #ff6b6b;
+	font-size: 0.875rem;
+	margin-top: 0.5rem;
+}

@@ -1,0 +1,20 @@
+{
+  "row": {
+    "profileTitle": "Profile",
+    "firstName": "Name",
+    "lastName": "Surname",
+    "avatar": "Avatar",
+    "balance": "Balance",
+    "spinCount": "Number of rotations",
+    "successfulResponses": "Successful responses",
+    "currentStatus": "Current status",
+    "noAvatar": "No"
+  },
+  "button": {
+    "saveProfile": "Save",
+    "cancelProfile": "Cancel",
+    "editProfile": "Edit",
+    "selectImage": "Select an image",
+    "signOut": "Get out"
+  }
+}

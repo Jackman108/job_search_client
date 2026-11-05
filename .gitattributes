@@ -10,27 +10,49 @@
 *.sh text eol=lf
 *.py text eol=lf
 *.js text eol=lf
+*.ts text eol=lf
+*.tsx text eol=lf
 *.css text eol=lf
 *.html text eol=lf
 *.md text eol=lf
+*.json text eol=lf
+*.txt text eol=lf
+*.csv text
 
-# Treat all files in the 'docs' directory as text
-docs/* text
+# Treat docs and src as text
+docs/** text
+src/** text
 
-# Binary files that should not be modified
+# public/: only known text types — NEVER mark the whole tree as text
+# (previous `public/** text` conflicted with `*.png binary` and CRLF-stripped PNG signatures)
+public/**/*.html text eol=lf
+public/**/*.json text eol=lf
+public/**/*.txt text eol=lf
+public/**/*.md text eol=lf
+
+# Binary files — must not be line-ending converted
 *.jpg binary
+*.jpeg binary
 *.png binary
 *.gif binary
 *.ico binary
+*.webp binary
+*.svg binary
 *.pdf binary
 *.zip binary
 *.tar binary
 *.gz binary
 *.7z binary
+*.woff binary
+*.woff2 binary
+*.ttf binary
+*.eot binary
 
-# Use the 'text' attribute for all files in specific directories
-src/** text
-public/** text
-
-# Ensure that files ending in .csv are treated as text
-*.csv text
+# Reinforce under public/ (later rules win over path text attrs)
+public/**/*.png binary
+public/**/*.jpg binary
+public/**/*.jpeg binary
+public/**/*.gif binary
+public/**/*.ico binary
+public/**/*.webp binary
+public/**/*.svg binary

@@ -1,0 +1,12 @@
+.containerSubscription {
+	max-width: 400px;
+}
+
+.title {
+	text-align: center;
+	margin-bottom: 20px;
+}
+
+.custom-loading-error {
+	margin-top: 20px;
+}

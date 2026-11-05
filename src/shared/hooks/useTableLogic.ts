@@ -1,49 +1,61 @@
-import {useCallback} from 'react';
-import {useFormState} from '@features/resume/hooks/useFormState';
-import {useToggleFormState} from '@hooks/forms/useToggleFormState';
-import {useTranslation} from 'react-i18next';
+import { useCallback } from 'react';
+import { useFormState, useToggleFormState } from '@hooks';
+import { useTranslation } from 'react-i18next';
 
-export const useTableLogic = <T extends { id?: string }>(
+const useTableLogic = <T extends { id?: string }>(
     config: Record<string, any>,
     fetchHook: (config: Record<string, any>) => any,
     actionType: string
 ) => {
-    const {data, loading, error, saveItem, deleteItem} = fetchHook(config);
-    const {formData, isEditing, handleEditClick, resetFormData, handleCancelClick} = useFormState<T>();
-    const {showForm, handleToggleForm} = useToggleFormState();
+    const { data, loading, error, saveItem, deleteItem, loadData } = fetchHook(config);
+    const { formData, isEditing, handleEditClick, handleCancelClick } = useFormState<T>();
+    const { showForm, handleToggleForm } = useToggleFormState();
     const configKey = Object.keys(config)[0];
-    const {t} = useTranslation(configKey);
+    const { t } = useTranslation(configKey);
 
     const handleDelete = useCallback(async (id: string) => {
         if (window.confirm(t(`${configKey}.actions.deleteConfirm`))) {
             try {
-                await deleteItem({type: actionType, id});
+                await deleteItem({ type: actionType, id });
             } catch (error) {
                 console.error(`Error deleting ${actionType}:`, error);
             }
         }
     }, [actionType, deleteItem, t, configKey]);
 
+
+    const handleCancelAction = useCallback(async (id: string) => {
+        try {
+            handleCancelClick(id);
+            handleToggleForm();
+        } catch (error) {
+            console.error(`Error Cancel ${actionType}:`, error);
+        }
+
+    }, [actionType, handleCancelClick, handleToggleForm]);
+
+
     const handleFormSubmit = useCallback(async (formData: Partial<T>) => {
         try {
-            await saveItem({
+            const response = await saveItem({
                 type: actionType,
                 id: formData.id,
                 formData,
                 isEditing: isEditing[actionType],
             });
-            resetFormData();
-            handleCancelClick(actionType);
-            handleToggleForm();
+
+            await handleCancelAction(response.id);
+            return response;
         } catch (error) {
             console.error(`Error saving ${actionType}:`, error);
         }
-    }, [actionType, saveItem, isEditing, resetFormData, handleCancelClick, handleToggleForm]);
+    }, [actionType, saveItem, isEditing, handleCancelAction]);
 
     return {
         data,
         loading,
         error,
+        loadData,
         formData,
         isEditing,
         showForm,
@@ -51,6 +63,8 @@ export const useTableLogic = <T extends { id?: string }>(
         handleDelete,
         handleFormSubmit,
         handleToggleForm,
-        handleCancelClick,
+        handleCancelAction,
     };
 };
+
+export default useTableLogic;

@@ -1,5 +1,5 @@
-import {VacancySubmitParams} from '../types/Vacancies.types';
-import useSubmitRequest from "@hooks/forms/useSubmitRequest";
+import {VacancySubmitParams} from '@features/vacancies/props/Vacancies.props';
+import {useSubmitRequest} from "@hooks";
 
 const useVacancySubmit = () => {
     const {handleSubmitRequest, handleStopRequest} = useSubmitRequest();

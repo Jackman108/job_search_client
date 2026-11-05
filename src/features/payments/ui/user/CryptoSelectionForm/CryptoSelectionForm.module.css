@@ -1,0 +1,213 @@
+.container {
+    max-width: 600px;
+    margin: 0 auto;
+    padding: 24px;
+    background: #ffffff;
+    border-radius: 12px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.title {
+    font-size: 24px;
+    font-weight: 600;
+    color: #1a1a1a;
+    margin-bottom: 24px;
+    text-align: center;
+}
+
+.details {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.row {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.label {
+    font-size: 14px;
+    color: #666;
+    font-weight: 500;
+}
+
+.value {
+    font-size: 16px;
+    color: #1a1a1a;
+    word-break: break-all;
+}
+
+.addressContainer,
+.amountContainer {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    background: #f5f5f5;
+    padding: 12px;
+    border-radius: 8px;
+}
+
+.copyButton {
+    padding: 8px 16px;
+    background: #007bff;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 14px;
+    transition: background-color 0.2s;
+}
+
+.copyButton:hover {
+    background: #0056b3;
+}
+
+.copyButton.copied {
+    background: #28a745;
+}
+
+.qrCode {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 12px;
+    margin: 16px 0;
+}
+
+.toggleQR {
+    padding: 8px 16px;
+    background: #f8f9fa;
+    border: 1px solid #dee2e6;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 14px;
+    transition: all 0.2s;
+}
+
+.toggleQR:hover {
+    background: #e9ecef;
+}
+
+.statusPending {
+    color: #ffc107;
+}
+
+.statusCompleted {
+    color: #28a745;
+}
+
+.statusFailed {
+    color: #dc3545;
+}
+
+.statusExpired {
+    color: #6c757d;
+}
+
+.confirmationStatus {
+    margin-top: 16px;
+}
+
+.confirmationProgress {
+    height: 8px;
+    background: #e9ecef;
+    border-radius: 4px;
+    overflow: hidden;
+    margin-bottom: 8px;
+}
+
+.confirmationBar {
+    height: 100%;
+    background: #28a745;
+    transition: width 0.3s ease;
+}
+
+.confirmationText {
+    font-size: 14px;
+    color: #666;
+}
+
+.warning {
+    margin-top: 24px;
+    padding: 16px;
+    background: #fff3cd;
+    border: 1px solid #ffeeba;
+    border-radius: 8px;
+    color: #856404;
+    font-size: 14px;
+}
+
+.paymentUrl {
+    margin: 40px 0;
+    text-align: center;
+}
+
+.paymentButton {
+    display: inline-block;
+    padding: 12px 24px;
+    background: #28a745;
+    color: white;
+    text-decoration: none;
+    border-radius: 6px;
+    font-weight: 500;
+    transition: background-color 0.2s;
+}
+
+.paymentButton:hover {
+    background: #218838;
+}
+
+.notification {
+    padding: 12px 16px;
+    border-radius: 6px;
+    margin-bottom: 16px;
+    font-size: 14px;
+    animation: slideIn 0.3s ease;
+}
+
+.notification.success {
+    background: #d4edda;
+    color: #155724;
+    border: 1px solid #c3e6cb;
+}
+
+.notification.error {
+    background: #f8d7da;
+    color: #721c24;
+    border: 1px solid #f5c6cb;
+}
+
+@keyframes slideIn {
+    from {
+        transform: translateY(-10px);
+        opacity: 0;
+    }
+
+    to {
+        transform: translateY(0);
+        opacity: 1;
+    }
+}
+
+/* Адаптивность */
+@media (max-width: 768px) {
+    .container {
+        padding: 16px;
+        margin: 16px;
+    }
+
+    .title {
+        font-size: 20px;
+    }
+
+    .value {
+        font-size: 14px;
+    }
+
+    .copyButton {
+        padding: 6px 12px;
+        font-size: 12px;
+    }
+}

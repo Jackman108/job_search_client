@@ -4,13 +4,3 @@ export const BUTTON_SYMBOL = {
     deleteButton: '\u2716',
     pencilButton: '\u270F',
 };
-
-export const FORM_BUTTONS = {
-    isLoading: 'Загрузка...',
-    submitButton: 'Начать',
-    stopButton: 'Остановить',
-    closeButton: 'Закрыть',
-    SignInButton: 'Вход',
-    SignOutButton: 'Выход',
-    SignUpButton: 'Регистрация',
-};
