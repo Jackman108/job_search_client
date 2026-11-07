@@ -3,7 +3,7 @@ import ProfileSection from '@features/profile/ui/ProfileSection/ProfileSection';
 import ResumeButton from '@features/resume/ui/ResumeButton/ResumeButton';
 import SearchForm from '@features/vacancies/ui/SearchForm/SearchForm';
 import FeedbackForm from '@features/feedback/ui/FeedbackForm/FeedbackForm';
-import SubscriptionUser from '@features/subscription/ui/user/SubscriptionUser/SubscriptionUser';
+import SubscriptionPanel from '../../subscription/ui/SubscriptionPanel';
 
 export const layoutConfig: ButtonConfig<any>[] = [
     {
@@ -36,7 +36,7 @@ export const layoutConfig: ButtonConfig<any>[] = [
     {
         icon: '/icons/subscribe.svg',
         tooltipText: 'Подписки',
-        Component: SubscriptionUser,
+        Component: SubscriptionPanel,
         position: 'right',
         requiresAuth: true,
     },

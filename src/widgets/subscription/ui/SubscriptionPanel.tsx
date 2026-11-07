@@ -1,5 +1,5 @@
 import React, { FC } from 'react';
-import styles from './SubscriptionUser.module.css';
+import styles from './SubscriptionPanel.module.css';
 import { Button, FormContainer, LoadingOrError, UnauthorizedMessage } from '@ui';
 import { useTranslation } from 'react-i18next';
 import SubscriptionSelectionForm from '@features/subscription/ui/user/SubscriptionSelectionForm/SubscriptionSelectionForm';
@@ -11,9 +11,11 @@ import { useAuth } from '@app/providers/auth/useAuthContext';
 import { PanelProps } from '@type';
 import CryptoSelectionForm from '@features/payments/ui/user/CryptoSelectionForm/CryptoSelectionForm';
 
-const SubscriptionUser: FC<PanelProps> = ({ onClose }) => {
+/**
+ * Widget composition: subscription + payments features (FSD cross-feature lives here).
+ */
+const SubscriptionPanel: FC<PanelProps> = ({ onClose }) => {
     const { t } = useTranslation('subscriptions');
-    // Подписочная логика
     const {
         subscribeData,
         subscribeLoading,
@@ -28,7 +30,6 @@ const SubscriptionUser: FC<PanelProps> = ({ onClose }) => {
         subscribeSubmit,
     } = useSubscriptionLogic();
 
-    // Полная логика платежа и криптоплатежей
     const {
         paymentData,
         paymentLoading,
@@ -121,4 +122,4 @@ const SubscriptionUser: FC<PanelProps> = ({ onClose }) => {
     );
 };
 
-export default SubscriptionUser;
+export default SubscriptionPanel;

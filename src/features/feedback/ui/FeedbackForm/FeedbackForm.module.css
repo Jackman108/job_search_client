@@ -1,0 +1,33 @@
+.formContainer {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.inputsContainer {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.buttonsContainer {
+    display: flex;
+    gap: 10px;
+    margin: 15px 0 60px;
+    flex-direction: column;
+    width: 100%;
+}
+
+@media (max-width: 768px) {
+    .formContainer {
+        padding: 12px;
+    }
+
+    .buttonsContainer {
+        flex-direction: column;
+    }
+
+    .button {
+        width: 100%;
+    }
+}

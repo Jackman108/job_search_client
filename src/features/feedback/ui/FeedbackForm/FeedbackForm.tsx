@@ -1,6 +1,6 @@
 import React, { FC } from 'react';
 import { PanelProps } from '@type';
-import styles from '@features/vacancies/ui/SearchForm/SearchForm.module.css';
+import styles from './FeedbackForm.module.css';
 import { Button, FormContainer, ManagementSection, RenderInput } from '@ui';
 import useFeedbackLogic from '../../hooks/useFeedbackLogic';
 import { useTranslation } from 'react-i18next';
