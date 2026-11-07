@@ -1,6 +1,6 @@
 import useSearchFields from '@features/vacancies/hooks/useSearchFields';
 import { useSearchFormContext } from '@app/providers/search/useSearchFormContext';
-import { FormValues } from '@features/vacancies/props/SearchForm.props';
+import { FormValues } from '@entities/search';
 
 const useFieldManagement = (formValues: FormValues) => {
     const { createSearchField, updateSearchField, deleteSearchField } = useSearchFields();

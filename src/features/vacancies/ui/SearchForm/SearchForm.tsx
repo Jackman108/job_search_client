@@ -1,5 +1,6 @@
 import { FC } from 'react';
 import styles from './SearchForm.module.css';
+import formLayout from '@shared/styles/FormLayout.module.css';
 import { PanelProps } from '@type';
 import useSearchFormLogic from '../../hooks/useSearchFormLogic';
 import { Button, FormContainer, ManagementSection, RenderInput, RenderSelect, RenderTextarea } from '@ui';
@@ -56,8 +57,8 @@ const SearchForm: FC<PanelProps> = ({ onClose }) => {
                 disabled={isLoading}
             />
 
-            <form className={styles.formContainer} onSubmit={onSubmit}>
-                <div className={styles.inputsContainer}>
+            <form className={formLayout.formContainer} onSubmit={onSubmit}>
+                <div className={formLayout.inputsContainer}>
                     {Object.entries(FORM_CONFIG.fields).map(([key, fieldConfig]) => (
                         <RenderInput
                             key={key}
@@ -95,12 +96,12 @@ const SearchForm: FC<PanelProps> = ({ onClose }) => {
                         />
                     ))}
                 </div>
-                <div className={styles.buttonsContainer}>
-                    <Button className={styles.button} type="submit" disabled={isLoading}>
+                <div className={formLayout.buttonsContainer}>
+                    <Button className={formLayout.button} type="submit" disabled={isLoading}>
                         {isLoading ? t('form.isLoading') : t('button.start')}
                     </Button>
                     <Button
-                        className={styles.button}
+                        className={formLayout.button}
                         type="button"
                         onClick={onStop}
                         disabled={!isLoading}

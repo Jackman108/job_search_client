@@ -1,4 +1,4 @@
-import { FormConfig } from '@features/vacancies/props/SearchForm.props';
+import { FormConfig } from './types/SearchForm.types';
 
 export const DEFAULT_SEARCH = {
     text: 'Middle frontend developer',

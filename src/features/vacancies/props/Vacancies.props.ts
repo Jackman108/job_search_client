@@ -14,13 +14,6 @@ export interface VacancySubmitParams {
     setIsLoading: Dispatch<SetStateAction<boolean>>;
 }
 
-export type SortDirection = 'ascending' | 'descending';
-
-export interface SortConfig<T> {
-    key: keyof T;
-    direction: SortDirection;
-}
-
 export interface VacancyHeaderProps {
     handleSort: (key: keyof Vacancy) => void;
     getSortArrow: (key: keyof Vacancy) => string;

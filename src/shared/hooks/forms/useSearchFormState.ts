@@ -1,8 +1,7 @@
 import { ChangeEvent, useCallback, useEffect, useMemo, useState } from 'react';
 import { buildVacancyUrl } from '@utils';
-import { FormValues } from '@features/vacancies/props/SearchForm.props';
 import { Errors } from '@type';
-import { DEFAULT_SEARCH, SearchAuthData, SearchFieldData } from '@entities/search';
+import { DEFAULT_SEARCH, FormValues, SearchAuthData, SearchFieldData } from '@entities/search';
 
 const useSearchFormState = (
     initialAuths: SearchAuthData | null = null,
