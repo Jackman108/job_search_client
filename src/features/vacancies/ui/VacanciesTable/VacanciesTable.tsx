@@ -1,17 +1,17 @@
-import {FC} from 'react';
-import {useVacancyContext} from '@app/providers/vacancy/useVacancyContext';
+import { FC } from 'react';
+import { useVacancyContext } from '@app/providers/vacancy/useVacancyContext';
 import styles from './VacanciesTable.module.css';
-import {ErrorAlert, Graph, Tooltip, UnauthorizedMessage} from '@ui';
-import {TABLE_VACANCIES} from "@entities/vacancy";
-import useFeedbackByVacancyId from "@features/feedback/hooks/useFeedbackByVacancyId";
-import useTableHandlers from "@features/vacancies/hooks/useTableHandlers";
-import VacancyRow from "@features/vacancies/ui/VacancyRow/VacancyRow";
-import {LOCALES} from "@config";
-import VacancyHeader from "@features/vacancies/ui/VacancyHeader/VacancyHeader";
+import { ErrorAlert, Graph, Tooltip, UnauthorizedMessage } from '@ui';
+import { TABLE_VACANCIES } from '@entities/vacancy';
+import { useFeedbackByVacancyId } from '@entities/feedback';
+import useTableHandlers from '@features/vacancies/hooks/useTableHandlers';
+import VacancyRow from '@features/vacancies/ui/VacancyRow/VacancyRow';
+import { LOCALES } from '@config';
+import VacancyHeader from '@features/vacancies/ui/VacancyHeader/VacancyHeader';
 
 const VacanciesTable: FC = () => {
-    const {vacancies, loading, error: vacancyError, deleteVacancy} = useVacancyContext();
-    const {getFeedbackByVacancyId, error: feedbackError} = useFeedbackByVacancyId();
+    const { vacancies, loading, error: vacancyError, deleteVacancy } = useVacancyContext();
+    const { getFeedbackByVacancyId, error: feedbackError } = useFeedbackByVacancyId();
 
     const {
         sortedData,
@@ -25,31 +25,31 @@ const VacanciesTable: FC = () => {
 
     if (loading) return <div>{LOCALES.LOADING}</div>;
     if (vacancies.length === 0 && !vacancyError) return <div>{LOCALES.WELCOME_MESSAGE}</div>;
-    if (vacancyError) return <UnauthorizedMessage/>;
+    if (vacancyError) return <UnauthorizedMessage />;
 
     return (
         <div className={styles.vacanciesTable}>
             <h1>{TABLE_VACANCIES.tableTitle}</h1>
-            <Tooltip text={tooltipState.text} position={tooltipState.position}/>
-            {feedbackError && <ErrorAlert message={LOCALES.FEEDBACK_ERROR}/>}
-            {sortError && <ErrorAlert message={LOCALES.SORT_ERROR}/>}
+            <Tooltip text={tooltipState.text} position={tooltipState.position} />
+            {feedbackError && <ErrorAlert message={LOCALES.FEEDBACK_ERROR} />}
+            {sortError && <ErrorAlert message={LOCALES.SORT_ERROR} />}
 
             <table>
-                <VacancyHeader handleSort={handleSort} getSortArrow={getSortArrow}/>
+                <VacancyHeader handleSort={handleSort} getSortArrow={getSortArrow} />
                 <tbody>
-                {sortedData.map(vacancy => (
-                    <VacancyRow
-                        key={vacancy.id}
-                        vacancy={vacancy}
-                        feedback={getFeedbackByVacancyId(vacancy.id)}
-                        onMouseEnter={handleMouseEnter}
-                        onMouseLeave={handleMouseLeave}
-                        onDelete={deleteVacancy}
-                    />
-                ))}
+                    {sortedData.map((vacancy) => (
+                        <VacancyRow
+                            key={vacancy.id}
+                            vacancy={vacancy}
+                            feedback={getFeedbackByVacancyId(vacancy.id)}
+                            onMouseEnter={handleMouseEnter}
+                            onMouseLeave={handleMouseLeave}
+                            onDelete={deleteVacancy}
+                        />
+                    ))}
                 </tbody>
             </table>
-            <Graph vacancies={sortedData}/>
+            <Graph vacancies={sortedData} />
         </div>
     );
 };
