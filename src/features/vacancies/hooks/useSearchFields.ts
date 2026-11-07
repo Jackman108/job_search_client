@@ -1,12 +1,16 @@
-import {useMutation, useQuery, useQueryClient} from '@tanstack/react-query';
-import {useDataApi} from "@api";
-import {SearchFieldData} from "@entities/search";
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
+import { useDataApi } from '@api';
+import { SearchFieldData } from '@entities/search';
 
 const useSearchFields = () => {
-    const {request} = useDataApi();
+    const { request } = useDataApi();
     const queryClient = useQueryClient();
 
-    const {data: fields, isLoading, error} = useQuery<SearchFieldData[], Error>({
+    const {
+        data: fields,
+        isLoading,
+        error,
+    } = useQuery<SearchFieldData[], Error>({
         queryKey: ['searchField'],
         queryFn: async () => request<SearchFieldData[]>('get', '/vacancy-field'),
         staleTime: 1000 * 60 * 10,
@@ -18,7 +22,7 @@ const useSearchFields = () => {
         },
         onSuccess: async () => {
             try {
-                await queryClient.invalidateQueries({queryKey: ['searchField']});
+                await queryClient.invalidateQueries({ queryKey: ['searchField'] });
             } catch (error) {
                 console.error('Ошибка при обновлении данных:', error);
             }
@@ -31,8 +35,8 @@ const useSearchFields = () => {
         },
         onSuccess: async (updatedSearch) => {
             try {
-                await queryClient.invalidateQueries({queryKey: ['searchField']});
-                await queryClient.invalidateQueries({queryKey: ['searchFieldId', updatedSearch.id]});
+                await queryClient.invalidateQueries({ queryKey: ['searchField'] });
+                await queryClient.invalidateQueries({ queryKey: ['searchFieldId', updatedSearch.id] });
             } catch (error) {
                 console.error('Ошибка при обновлении данных:', error);
             }
@@ -45,7 +49,7 @@ const useSearchFields = () => {
         },
         onSuccess: async () => {
             try {
-                await queryClient.invalidateQueries({queryKey: ['searchField']});
+                await queryClient.invalidateQueries({ queryKey: ['searchField'] });
             } catch (error) {
                 console.error('Ошибка при обновлении данных:', error);
             }
@@ -61,6 +65,5 @@ const useSearchFields = () => {
         deleteSearchField: deleteSearchField.mutateAsync,
     };
 };
-
 
 export default useSearchFields;

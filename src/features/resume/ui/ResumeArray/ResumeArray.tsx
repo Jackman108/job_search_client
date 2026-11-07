@@ -1,35 +1,23 @@
-import {FC, FormEvent} from 'react';
-import {Button, RenderInput} from '@ui';
-import {useFetchByType} from "@api";
-import {useResumeHandlersById} from '../../hooks/useResumeHandlersById';
+import { FC, FormEvent } from 'react';
+import { Button, RenderInput } from '@ui';
+import { useFetchByType } from '@api';
+import { useResumeHandlersById } from '../../hooks/useResumeHandlersById';
 import styles from './ResumeArray.module.css';
-import {formatDate} from "@utils";
-import {ResumeArrayProps} from "@features/resume/props/Resume.props";
+import { formatDate } from '@utils';
+import { ResumeArrayProps } from '@features/resume/props/Resume.props';
 
-const ResumeArray: FC<ResumeArrayProps> = ({config, type}) => {
-    const {
-        formData,
-        isEditing,
-        handleEditClick,
-        handleCancelClick,
-        handleInputChange,
-    } = useResumeHandlersById();
+const ResumeArray: FC<ResumeArrayProps> = ({ config, type }) => {
+    const { formData, isEditing, handleEditClick, handleCancelClick, handleInputChange } = useResumeHandlersById();
 
-    const {
-        fetchedData,
-        loading,
-        error,
-        deleteItem,
-        saveItem,
-    } = useFetchByType(config);
+    const { fetchedData, loading, error, deleteItem, saveItem } = useFetchByType(config);
 
     const handleSubmit = async (e: FormEvent<HTMLFormElement>, id: number) => {
         e.preventDefault();
         try {
-            await saveItem({type, id, formData, isEditing: isEditing[id]});
+            await saveItem({ type, id, formData, isEditing: isEditing[id] });
             handleCancelClick(id);
         } catch (error) {
-            console.error("Ошибка при сохранении:", error);
+            console.error('Ошибка при сохранении:', error);
         }
     };
 
@@ -52,8 +40,12 @@ const ResumeArray: FC<ResumeArrayProps> = ({config, type}) => {
                     />
                 );
             })}
-            <Button type="submit" variant="primary">Сохранить</Button>
-            <Button type="button" variant="secondary" onClick={() => handleCancelClick(item.id)}>Отменить</Button>
+            <Button type="submit" variant="primary">
+                Сохранить
+            </Button>
+            <Button type="button" variant="secondary" onClick={() => handleCancelClick(item.id)}>
+                Отменить
+            </Button>
         </form>
     );
 
@@ -77,9 +69,11 @@ const ResumeArray: FC<ResumeArrayProps> = ({config, type}) => {
             })}
             <div className={styles.buttonGroup}>
                 <Button onClick={() => handleEditClick(item)} variant="secondary">
-                    <img src="/icons/pen.svg" alt="Edit" className={styles.editIcon}/>
+                    <img src="/icons/pen.svg" alt="Edit" className={styles.editIcon} />
                 </Button>
-                <Button onClick={() => deleteItem({type, id: item.id})} variant="secondary">Удалить</Button>
+                <Button onClick={() => deleteItem({ type, id: item.id })} variant="secondary">
+                    Удалить
+                </Button>
             </div>
         </>
     );

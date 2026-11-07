@@ -120,4 +120,4 @@ export interface WebPayResponse {
     makeReturnRedirect: boolean;
     /** Блок переводов */
     translate_block: Record<string, string>;
-} 
+}

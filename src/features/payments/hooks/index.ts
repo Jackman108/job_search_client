@@ -10,9 +10,7 @@ export { usePaymentLogic } from './base/usePaymentLogic';
 // Fiat payment hooks (WebPay, ERIP)
 export { useProcessHandler } from './fiat/useProcessHandler';
 
-
 // Crypto payment hooks
 export { useCryptoPaymentLogic } from './crypto/useCryptoPaymentLogic';
 export { useCryptoForm as useCryptoPaymentViewModel } from './crypto/useCryptoForm';
 export { useTransactionConfirmations } from './crypto/useTransactionConfirmations';
-

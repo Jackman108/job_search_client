@@ -1,37 +1,36 @@
 /* src/components/Layout/Layout.module.css */
 .layout {
-  display: flex;
+    display: flex;
 }
 
 .sidebarLeft,
 .sidebarRight {
-  width: 3rem;
-  height: 100vh;
-  background-color: #f4f4f4;
-  padding: 5px;
-  position: fixed;
+    width: 3rem;
+    height: 100vh;
+    background-color: #f4f4f4;
+    padding: 5px;
+    position: fixed;
 }
 
 .sidebarRight {
-  right: 0;
+    right: 0;
 }
 
 .content {
-  width: calc(100% - 8%);
-  padding: 20px;
-  overflow: auto;
-  margin: 0 auto;
+    width: calc(100% - 8%);
+    padding: 20px;
+    overflow: auto;
+    margin: 0 auto;
 }
 
 @media (max-width: 768px) {
+    .sidebarLeft,
+    .sidebarRight {
+        width: 2rem;
+        padding: 0;
+    }
 
-  .sidebarLeft,
-  .sidebarRight {
-    width: 2rem;
-    padding: 0;
-  }
-
-  .content {
-    width: 80%;
-  }
+    .content {
+        width: 80%;
+    }
 }

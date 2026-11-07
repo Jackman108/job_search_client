@@ -2,99 +2,104 @@ import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { AuthResponse, RegisterResponse } from '@features/auth/types/Auth.props';
 import { useAuth } from '@app/providers/auth/useAuthContext';
 import { decodeToken, handleAuthError, isTokenExpired } from '@utils';
-import { useAuthApi } from "@api";
-import { AxiosResponse } from "axios";
+import { useAuthApi } from '@api';
+import { AxiosResponse } from 'axios';
 
 const useFetchAuth = () => {
     const queryClient = useQueryClient();
     const { setToken } = useAuth();
     const { request } = useAuthApi();
 
-    const refreshAuthToken = useMutation<string, Error>(
+    const refreshAuthToken = useMutation<string, Error>({
+        mutationFn: async () => {
+            const response = await request('get', '/auth/refresh-tokens', undefined, { withCredentials: true });
+            return response.data.accessToken;
+        },
+        onSuccess: (token: string) => {
+            setToken(token);
+            queryClient.invalidateQueries();
+        },
+        onError: (err: Error) => {
+            const errorMessage = handleAuthError(err);
+            throw new Error(errorMessage);
+        },
+    });
+
+    const login = useMutation<AxiosResponse<AuthResponse>, Error, { email: string; password: string }>({
+        mutationFn: async ({ email, password }: { email: string; password: string }) => {
+            return await request<AuthResponse>('post', '/auth/login', { email, password }, { withCredentials: false });
+        },
+        onSuccess: (response: AxiosResponse<AuthResponse>) => {
+            if (isTokenExpired(decodeToken(response.data.accessToken).exp)) {
+                refreshAuthToken.mutate();
+                return;
+            }
+            setToken(response.data.accessToken);
+            queryClient.invalidateQueries();
+        },
+        onError: (err: Error) => {
+            const errorMessage = handleAuthError(err);
+            throw new Error(errorMessage);
+        },
+    });
+
+    const register = useMutation<
+        AxiosResponse<AuthResponse>,
+        Error,
         {
-            mutationFn: async () => {
-                const response = await request('get', '/auth/refresh-tokens', undefined, { withCredentials: true });
-                return response.data.accessToken;
-            },
-            onSuccess: (token: string) => {
-                setToken(token);
-                queryClient.invalidateQueries();
-            },
-            onError: (err: Error) => {
-                const errorMessage = handleAuthError(err);
-                throw new Error(errorMessage);
-            },
+            email: string;
+            password: string;
+            passwordRepeat: string;
         }
-    );
+    >({
+        mutationFn: async ({
+            email,
+            password,
+            passwordRepeat,
+        }: {
+            email: string;
+            password: string;
+            passwordRepeat: string;
+        }) => {
+            if (password !== passwordRepeat) {
+                throw new Error('Passwords do not match');
+            }
 
-    const login = useMutation<AxiosResponse<AuthResponse>, Error, { email: string; password: string }>(
-        {
-            mutationFn: async ({ email, password }: { email: string; password: string }) => {
-                return await request<AuthResponse>('post', '/auth/login', { email, password }, { withCredentials: false });
-            },
-            onSuccess: (response: AxiosResponse<AuthResponse>) => {
-                if (isTokenExpired(decodeToken(response.data.accessToken).exp)) {
-                    refreshAuthToken.mutate();
-                    return;
-                }
-                setToken(response.data.accessToken);
-                queryClient.invalidateQueries();
-            },
-            onError: (err: Error) => {
-                const errorMessage = handleAuthError(err);
-                throw new Error(errorMessage);
-            },
-        }
-    );
-
-    const register = useMutation<AxiosResponse<AuthResponse>, Error, {
-        email: string;
-        password: string;
-        passwordRepeat: string
-    }>(
-        {
-            mutationFn: async ({ email, password, passwordRepeat }: {
-                email: string;
-                password: string;
-                passwordRepeat: string
-            }) => {
-                if (password !== passwordRepeat) {
-                    throw new Error('Passwords do not match');
-                }
-
-                await request<RegisterResponse>('post', '/auth/register', {
+            await request<RegisterResponse>(
+                'post',
+                '/auth/register',
+                {
                     email,
                     password,
-                    passwordRepeat
-                }, { withCredentials: false });
-                return await request<AuthResponse>('post', '/auth/login', { email, password }, { withCredentials: false });
-            },
-            onSuccess: (response: AxiosResponse<AuthResponse>) => {
-                setToken(response.data.accessToken);
-                queryClient.invalidateQueries();
-            },
-            onError: (err: Error) => {
-                const errorMessage = handleAuthError(err);
-                throw new Error(errorMessage);
-            },
-        }
-    );
+                    passwordRepeat,
+                },
+                { withCredentials: false },
+            );
+            return await request<AuthResponse>('post', '/auth/login', { email, password }, { withCredentials: false });
+        },
+        onSuccess: (response: AxiosResponse<AuthResponse>) => {
+            setToken(response.data.accessToken);
+            queryClient.invalidateQueries();
+        },
+        onError: (err: Error) => {
+            const errorMessage = handleAuthError(err);
+            throw new Error(errorMessage);
+        },
+    });
 
-    const logout = useMutation<void, Error>(
-        {
-            mutationFn: async () => {
-                await request('get', '/auth/logout', undefined, { withCredentials: true });
-            },
-            onSuccess: () => {
-                setToken(null);
-                queryClient.clear();
-            },
-            onError: (err: Error) => {
-                const errorMessage = handleAuthError(err);
-                throw new Error(errorMessage);
-            },
-        }
-    );
+    const logout = useMutation<void, Error>({
+        mutationFn: async () => {
+            await request('get', '/auth/logout', undefined, { withCredentials: true });
+        },
+        onSuccess: () => {
+            setToken(null);
+            queryClient.clear();
+        },
+        onError: (err: Error) => {
+            const errorMessage = handleAuthError(err);
+            throw new Error(errorMessage);
+        },
+    });
 
     return {
         login: login.mutateAsync,

@@ -1,6 +1,6 @@
-import {useCallback, useMemo, useState} from 'react';
-import {SortConfig, SortDirection} from '@features/vacancies/props/Vacancies.props';
-import {LOCALES} from "@config";
+import { useCallback, useMemo, useState } from 'react';
+import { SortConfig, SortDirection } from '@features/vacancies/props/Vacancies.props';
+import { LOCALES } from '@config';
 
 const useSortedData = <T extends Record<string, any>>(data: T[]) => {
     const [sortConfig, setSortConfig] = useState<SortConfig<T>>({
@@ -37,18 +37,21 @@ const useSortedData = <T extends Record<string, any>>(data: T[]) => {
             if (prevConfig.key === key && prevConfig.direction === 'ascending') {
                 direction = 'descending';
             }
-            return {key, direction};
+            return { key, direction };
         });
     }, []);
 
-    const getSortArrow = useCallback((key: keyof T) => {
-        if (sortConfig.key === key) {
-            return sortConfig.direction === 'ascending' ? '↑' : '↓';
-        }
-        return '↕';
-    }, [sortConfig]);
+    const getSortArrow = useCallback(
+        (key: keyof T) => {
+            if (sortConfig.key === key) {
+                return sortConfig.direction === 'ascending' ? '↑' : '↓';
+            }
+            return '↕';
+        },
+        [sortConfig],
+    );
 
-    return {sortedData, handleSort, getSortArrow, error: sortedData === data ? LOCALES.SORT_ERROR : null};
+    return { sortedData, handleSort, getSortArrow, error: sortedData === data ? LOCALES.SORT_ERROR : null };
 };
 
 export default useSortedData;

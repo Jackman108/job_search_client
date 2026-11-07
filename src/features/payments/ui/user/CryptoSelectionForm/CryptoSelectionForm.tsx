@@ -45,7 +45,7 @@ const CryptoSelectionForm: React.FC<CryptoPaymentDetailsProps> = ({ details, onU
      */
     const getStatusColor = (status: string) => {
         if (!status) return styles.statusPending;
-        
+
         switch (status.toLowerCase()) {
             case PAYMENT_STATUS.COMPLETED:
                 return styles.statusCompleted;
@@ -62,7 +62,7 @@ const CryptoSelectionForm: React.FC<CryptoPaymentDetailsProps> = ({ details, onU
         <>
             <div className={styles.container}>
                 <h3 className={styles.title}>{t('form.title')}</h3>
-                
+
                 <div className={styles.details}>
                     <div className={styles.row}>
                         <RenderSelect
@@ -108,21 +108,12 @@ const CryptoSelectionForm: React.FC<CryptoPaymentDetailsProps> = ({ details, onU
 
                     {address && (
                         <div className={styles.qrCode}>
-                            <button
-                                className={styles.toggleQR}
-                                onClick={toggleQR}
-                            >
+                            <button className={styles.toggleQR} onClick={toggleQR}>
                                 {showQR ? t('form.hideQR') : t('form.showQR')}
                             </button>
                             {showQR && (
                                 <QRCodeSVG
-                                    value={
-                                        details.payment_url ?? getWalletUrl(
-                                            network,
-                                            address,
-                                            cryptoAmount
-                                        )
-                                    }
+                                    value={details.payment_url ?? getWalletUrl(network, address, cryptoAmount)}
                                     size={200}
                                     level="H"
                                     includeMargin={true}
@@ -146,14 +137,12 @@ const CryptoSelectionForm: React.FC<CryptoPaymentDetailsProps> = ({ details, onU
                     {details.confirmations && (
                         <div className={styles.confirmationStatus}>
                             <div className={styles.confirmationProgress}>
-                                <div 
-                                    className={styles.confirmationBar} 
+                                <div
+                                    className={styles.confirmationBar}
                                     style={{ width: `${getConfirmationProgress()}%` }}
                                 />
                             </div>
-                            <span className={styles.confirmationText}>
-                                {getConfirmationText()}
-                            </span>
+                            <span className={styles.confirmationText}>{getConfirmationText()}</span>
                         </div>
                     )}
 
@@ -165,16 +154,13 @@ const CryptoSelectionForm: React.FC<CryptoPaymentDetailsProps> = ({ details, onU
                     )}
                 </div>
 
-                <div className={styles.warning}>
-                    {t('form.warning')}
-                </div>
+                <div className={styles.warning}>{t('form.warning')}</div>
 
                 {address && (
                     <div className={styles.paymentUrl}>
-                        <button
-                            onClick={handleOpenWallet}
-                            className={styles.paymentButton}
-                        >{t('form.openWallet')}</button>
+                        <button onClick={handleOpenWallet} className={styles.paymentButton}>
+                            {t('form.openWallet')}
+                        </button>
                     </div>
                 )}
             </div>
@@ -182,4 +168,4 @@ const CryptoSelectionForm: React.FC<CryptoPaymentDetailsProps> = ({ details, onU
     );
 };
 
-export default CryptoSelectionForm; 
+export default CryptoSelectionForm;

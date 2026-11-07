@@ -1,4 +1,4 @@
-import {ConfigItem} from "@type";
+import { ConfigItem } from '@type';
 
 export const resumeConfig: Record<string, ConfigItem> = {
     resume: {
@@ -10,7 +10,7 @@ export const resumeConfig: Record<string, ConfigItem> = {
             employment_type: 'Тип занятости',
             work_schedule: 'График работы',
             travel_time: 'Время на дорогу',
-            business_trip_readiness: 'Готовность к командировкам'
+            business_trip_readiness: 'Готовность к командировкам',
         },
     },
     contacts: {
@@ -19,16 +19,16 @@ export const resumeConfig: Record<string, ConfigItem> = {
         fields: {
             phone: 'Телефон',
             email: 'Email',
-            personal_site: 'Личный сайт'
-        }
+            personal_site: 'Личный сайт',
+        },
     },
     skills: {
         title: 'Навыки',
         apiEndpoint: '/skills',
         fields: {
             skill_name: 'Навык',
-            proficiency_level: 'Уровень'
-        }
+            proficiency_level: 'Уровень',
+        },
     },
     workExperience: {
         title: 'Опыт работы',
@@ -38,7 +38,7 @@ export const resumeConfig: Record<string, ConfigItem> = {
             position: 'Должность',
             start_date: 'Дата начала',
             end_date: 'Дата окончания',
-            description: 'Описание'
-        }
-    }
+            description: 'Описание',
+        },
+    },
 };

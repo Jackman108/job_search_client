@@ -1,15 +1,15 @@
 import React from 'react';
-import {Button} from "@ui";
-import {useTranslation} from "react-i18next";
-import {formatDate} from "@utils";
-import {getSubscriptionStatus} from "@features/subscription/utils/getSubscriptionStatus";
+import { Button } from '@ui';
+import { useTranslation } from 'react-i18next';
+import { formatDate } from '@utils';
+import { getSubscriptionStatus } from '@features/subscription/utils/getSubscriptionStatus';
 import styles from './SubscriptionActive.module.css';
-import {SUBSCRIPTION_TYPE_OPTIONS, SubscriptionTypes} from "@entities/subscription";
-import {PAYMENT_STATUS, BasePayment} from "@entities/payment";
-import {useSubscriptionStatus} from "@features/subscription/hooks/useSubscriptionStatus";
-import {useCurrency} from "@hooks";
-import {ACTION_TYPES} from "@config";
-import {getCardBackground} from "@features/subscription/utils/getCardBackground";
+import { SUBSCRIPTION_TYPE_OPTIONS, SubscriptionTypes } from '@entities/subscription';
+import { PAYMENT_STATUS, BasePayment } from '@entities/payment';
+import { useSubscriptionStatus } from '@features/subscription/hooks/useSubscriptionStatus';
+import { useCurrency } from '@hooks';
+import { ACTION_TYPES } from '@config';
+import { getCardBackground } from '@features/subscription/utils/getCardBackground';
 
 interface SubscriptionActiveCardProps {
     subscribeData: SubscriptionTypes[];
@@ -20,15 +20,17 @@ interface SubscriptionActiveCardProps {
 }
 
 const SubscriptionActive: React.FC<SubscriptionActiveCardProps> = ({
-                                                                       subscribeData,
-                                                                       paymentData,
-                                                                       subscribeEditClick,
-                                                                       paymentEditClick,
-                                                                   }) => {
-    const {t} = useTranslation('subscriptions');
-    const {currency, convertCurrency} = useCurrency();
-    const {getSubscriptionLabel} = useSubscriptionStatus();
-    const latestPayment = paymentData?.find((payment: BasePayment) => payment.payment_status === PAYMENT_STATUS.PENDING);
+    subscribeData,
+    paymentData,
+    subscribeEditClick,
+    paymentEditClick,
+}) => {
+    const { t } = useTranslation('subscriptions');
+    const { currency, convertCurrency } = useCurrency();
+    const { getSubscriptionLabel } = useSubscriptionStatus();
+    const latestPayment = paymentData?.find(
+        (payment: BasePayment) => payment.payment_status === PAYMENT_STATUS.PENDING,
+    );
 
     const renderActions = (subscribe: SubscriptionTypes) => {
         return (
@@ -58,8 +60,8 @@ const SubscriptionActive: React.FC<SubscriptionActiveCardProps> = ({
                     <div className={styles.cardHeader}>
                         <h2>{getSubscriptionLabel(subscribe.subscription_type, SUBSCRIPTION_TYPE_OPTIONS)}</h2>
                         <span className={styles.status}>
-                                {t(`subscriptions.status.${getSubscriptionStatus(subscribe, paymentData)}`)}
-                            </span>
+                            {t(`subscriptions.status.${getSubscriptionStatus(subscribe, paymentData)}`)}
+                        </span>
                     </div>
                     <div className={styles.cardBody}>
                         <p>

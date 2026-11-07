@@ -2,27 +2,29 @@ import {
     SUBSCRIPTION_TYPE_OPTIONS,
     SUBSCRIPTION_TYPES,
     SubscriptionTypes,
-    SubscriptionVariant
-} from "@entities/subscription";
+    SubscriptionVariant,
+} from '@entities/subscription';
 import { SubscriptionFormProps } from '@features/subscription/props/Subscription.props';
-import SubscriptionOption from "@features/subscription/ui/user/SubscriptionOption/SubscriptionOption";
-import { getCardBackground } from "@features/subscription/utils/getCardBackground";
-import { useFormState } from "@hooks";
-import { Button } from "@ui";
+import SubscriptionOption from '@features/subscription/ui/user/SubscriptionOption/SubscriptionOption';
+import { getCardBackground } from '@features/subscription/utils/getCardBackground';
+import { useFormState } from '@hooks';
+import { Button } from '@ui';
 import React, { useCallback, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import styles from './SubscriptionSelectionForm.module.css';
 
 const SubscriptionSelectionForm: React.FC<SubscriptionFormProps> = ({
-                                                                        initialData,
-                                                                        onSubmit,
-                                                                        handleCancelClick,
-                                                                        isLoading,
-                                                                        isEditing
-                                                                    }) => {
-    const {formData, setFormData} = useFormState<Partial<SubscriptionTypes>>();
-    const {t} = useTranslation('subscriptions');
-    const [selectedType, setSelectedType] = useState<string>(initialData?.subscription_type || SUBSCRIPTION_TYPES.WEEKLY);
+    initialData,
+    onSubmit,
+    handleCancelClick,
+    isLoading,
+    isEditing,
+}) => {
+    const { formData, setFormData } = useFormState<Partial<SubscriptionTypes>>();
+    const { t } = useTranslation('subscriptions');
+    const [selectedType, setSelectedType] = useState<string>(
+        initialData?.subscription_type || SUBSCRIPTION_TYPES.WEEKLY,
+    );
 
     useEffect(() => {
         if (initialData) {
@@ -37,17 +39,20 @@ const SubscriptionSelectionForm: React.FC<SubscriptionFormProps> = ({
         }
     }, [initialData, setFormData]);
 
-    const handleCardClick = useCallback((type: SubscriptionVariant, price: number) => {
-        setSelectedType(type);
-        const updatedSubscription = {
-            ...formData,
-            subscription_type: type,
-            price,
-            start_date: formData.start_date || new Date().toISOString(),
-            end_date: formData.end_date || new Date().toISOString(),
-        };
-        setFormData(updatedSubscription);
-    }, [formData, setFormData]);
+    const handleCardClick = useCallback(
+        (type: SubscriptionVariant, price: number) => {
+            setSelectedType(type);
+            const updatedSubscription = {
+                ...formData,
+                subscription_type: type,
+                price,
+                start_date: formData.start_date || new Date().toISOString(),
+                end_date: formData.end_date || new Date().toISOString(),
+            };
+            setFormData(updatedSubscription);
+        },
+        [formData, setFormData],
+    );
 
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();
@@ -64,7 +69,7 @@ const SubscriptionSelectionForm: React.FC<SubscriptionFormProps> = ({
                     {t('cardHeaders.chooseSubscriptionType')}
                 </p>
                 <div className={styles.cardContainer} role="group" aria-label="Subscription options">
-                    {SUBSCRIPTION_TYPE_OPTIONS.map(option => (
+                    {SUBSCRIPTION_TYPE_OPTIONS.map((option) => (
                         <SubscriptionOption
                             key={option.value}
                             label={option.label}
@@ -78,12 +83,21 @@ const SubscriptionSelectionForm: React.FC<SubscriptionFormProps> = ({
                     ))}
                 </div>
                 <div className={styles.buttonGroup}>
-                    <Button type="submit" variant="primary" disabled={isLoading}
-                            aria-label={isEditing ? t('cardHeaders.update') : t('cardHeaders.create')}>
+                    <Button
+                        type="submit"
+                        variant="primary"
+                        disabled={isLoading}
+                        aria-label={isEditing ? t('cardHeaders.update') : t('cardHeaders.create')}
+                    >
                         {isEditing ? t('cardHeaders.update') : t('cardHeaders.create')}
                     </Button>
-                    <Button type="button" variant="secondary" onClick={() => handleCancelClick(formData.id)}
-                            disabled={isLoading} aria-label={t('cardHeaders.cancel')}>
+                    <Button
+                        type="button"
+                        variant="secondary"
+                        onClick={() => handleCancelClick(formData.id)}
+                        disabled={isLoading}
+                        aria-label={t('cardHeaders.cancel')}
+                    >
                         {t('cardHeaders.cancel')}
                     </Button>
                 </div>

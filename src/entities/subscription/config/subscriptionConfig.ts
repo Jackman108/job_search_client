@@ -1,4 +1,4 @@
-import {ConfigItem} from "@type";
+import { ConfigItem } from '@type';
 
 export const subscriptionConfig: Record<string, ConfigItem> = {
     subscription: {
@@ -12,7 +12,7 @@ export const subscriptionConfig: Record<string, ConfigItem> = {
             start_date: 'Start Date',
             end_date: 'End Date',
             created_at: 'Created At',
-            updated_at: 'Updated At'
+            updated_at: 'Updated At',
         },
     },
 };

@@ -1,7 +1,7 @@
-import {isHhQueueResponse, pollHhJobUntilSettled, validateEmail, validateSearchUrl} from '@utils';
-import {SearchSubmitParams} from '@features/vacancies/props/SearchForm.props';
-import {useDataApi} from '@api';
-import {useMutation} from '@tanstack/react-query';
+import { isHhQueueResponse, pollHhJobUntilSettled, validateEmail, validateSearchUrl } from '@utils';
+import { SearchSubmitParams } from '@features/vacancies/props/SearchForm.props';
+import { useDataApi } from '@api';
+import { useMutation } from '@tanstack/react-query';
 
 const useSubmitRequest = () => {
     const { request } = useDataApi();

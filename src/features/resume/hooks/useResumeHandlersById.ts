@@ -1,20 +1,13 @@
-import {ChangeEvent} from 'react';
-import {useFormState} from "@hooks";
+import { ChangeEvent } from 'react';
+import { useFormState } from '@hooks';
 
 export const useResumeHandlersById = () => {
-    const {
-        formData,
-        isEditing,
-        isCreating,
-        setFormData,
-        handleEditClick,
-        handleCancelClick,
-    } = useFormState();
+    const { formData, isEditing, isCreating, setFormData, handleEditClick, handleCancelClick } = useFormState();
 
     const handleInputChange = (e: ChangeEvent<HTMLInputElement>, key: string) => {
         const value = e.target.type === 'checkbox' ? e.target.checked : e.target.value;
 
-        setFormData((prev) => ({...prev, [key]: value}));
+        setFormData((prev) => ({ ...prev, [key]: value }));
     };
 
     return {

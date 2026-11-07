@@ -1,21 +1,15 @@
 import { FC } from 'react';
-import { ButtonProps } from "@type";
+import { ButtonProps } from '@type';
 import styles from './Button.module.css';
 
-const Button: FC<ButtonProps> = ({
-  variant = 'primary',
-  isLoading = false,
-  className = '',
-  children,
-  ...props
-}) => {
-  const buttonClass = `${styles.button} ${styles[variant]} ${className}`;
+const Button: FC<ButtonProps> = ({ variant = 'primary', isLoading = false, className = '', children, ...props }) => {
+    const buttonClass = `${styles.button} ${styles[variant]} ${className}`;
 
-  return (
-    <button className={buttonClass} disabled={isLoading} {...props}>
-      {isLoading ? 'Загрузка...' : children}
-    </button>
-  );
+    return (
+        <button className={buttonClass} disabled={isLoading} {...props}>
+            {isLoading ? 'Загрузка...' : children}
+        </button>
+    );
 };
 
 export default Button;

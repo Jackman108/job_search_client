@@ -1,10 +1,13 @@
 {
-  "header": {
-    "title": "EMPLOYMENT"
-  },
-  "nav": {
-    "vacancies": "Vacancies",
-    "feedback": "Feedback",
-    "resume": "Resume"
-  }
+    "header": {
+        "title": "EMPLOYMENT"
+    },
+    "nav": {
+        "vacancies": "Vacancies",
+        "feedback": "Feedback",
+        "resume": "Resume",
+        "payments": "Payments",
+        "subscriptions": "Subscriptions",
+        "cryptoPayments": "Crypto payments"
+    }
 }

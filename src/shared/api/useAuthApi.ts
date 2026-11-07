@@ -18,7 +18,7 @@ export const useAuthApi = () => {
         method: 'get' | 'post',
         endpoint: string,
         data?: any,
-        config = {}
+        config = {},
     ): Promise<AxiosResponse<T>> => {
         return axiosAuthInstance.request({
             method,

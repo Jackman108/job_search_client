@@ -1,18 +1,18 @@
-import {FC} from 'react';
-import {Button} from '@ui';
+import { FC } from 'react';
+import { Button } from '@ui';
 import styles from '@shared/ui/ManagementSection/ManagementSection.module.css';
-import {ManagementSectionProps} from "@type";
+import { ManagementSectionProps } from '@type';
 
 const ManagementSection: FC<ManagementSectionProps> = ({
-                                                           title,
-                                                           selectedId,
-                                                           setSelectedId,
-                                                           items,
-                                                           onCreate,
-                                                           onUpdate,
-                                                           onDelete,
-                                                           disabled = false,
-                                                       }) => {
+    title,
+    selectedId,
+    setSelectedId,
+    items,
+    onCreate,
+    onUpdate,
+    onDelete,
+    disabled = false,
+}) => {
     return (
         <div className={styles.managementContainer}>
             <h3>{title}</h3>
@@ -21,14 +21,14 @@ const ManagementSection: FC<ManagementSectionProps> = ({
                 onChange={(e) => setSelectedId(e.target.value ? Number(e.target.value) : null)}
             >
                 <option value="">Выберите...</option>
-                {items?.map(item => (
+                {items?.map((item) => (
                     <option key={item.id} value={item.id}>
                         {item.label}
                     </option>
                 ))}
             </select>
             <Button onClick={onUpdate} disabled={!selectedId || disabled} variant="primary">
-                <img src="/icons/pen.svg" alt="Edit" className={styles.editIcon}/>
+                <img src="/icons/pen.svg" alt="Edit" className={styles.editIcon} />
             </Button>
             <Button onClick={onCreate} disabled={!!selectedId || disabled} variant="primary">
                 Создать

@@ -1,4 +1,4 @@
-import {useCallback, useState} from 'react';
+import { useCallback, useState } from 'react';
 
 const useFormState = <T extends Record<string, any>>(initialFormData: Partial<T> = {}) => {
     const [formData, setFormData] = useState<Record<string, any>>(initialFormData);
@@ -8,20 +8,26 @@ const useFormState = <T extends Record<string, any>>(initialFormData: Partial<T>
     const resetFormData = useCallback(() => setFormData({}), []);
 
     const handleEditClick = useCallback((id: string, item: any) => {
-        setIsEditing((prev) => ({...prev, [id]: true}));
+        setIsEditing((prev) => ({ ...prev, [id]: true }));
         setFormData(item);
     }, []);
 
-    const handleCancelClick = useCallback((id: string) => {
-        setIsEditing((prev) => ({...prev, [id]: false}));
-        setIsCreating((prev) => ({...prev, [id]: false}));
-        resetFormData();
-    }, [resetFormData]);
+    const handleCancelClick = useCallback(
+        (id: string) => {
+            setIsEditing((prev) => ({ ...prev, [id]: false }));
+            setIsCreating((prev) => ({ ...prev, [id]: false }));
+            resetFormData();
+        },
+        [resetFormData],
+    );
 
-    const handleCreateClick = useCallback((id: string) => {
-        setIsCreating((prev) => ({...prev, [id]: true}));
-        resetFormData();
-    }, [resetFormData]);
+    const handleCreateClick = useCallback(
+        (id: string) => {
+            setIsCreating((prev) => ({ ...prev, [id]: true }));
+            resetFormData();
+        },
+        [resetFormData],
+    );
 
     return {
         formData,

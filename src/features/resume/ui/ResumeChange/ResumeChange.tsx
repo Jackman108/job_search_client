@@ -1,14 +1,18 @@
 import React from 'react';
-import {Button} from '@ui';
-import {businessTripReadiness, employmentTypes, travelTimes, workSchedules} from '@entities/resume';
+import { Button } from '@ui';
+import { businessTripReadiness, employmentTypes, travelTimes, workSchedules } from '@entities/resume';
 import styles from './ResumeChange.module.css';
 import ResumeField from '../ResumeField/ResumeField';
-import {ResumeChangeProps} from "@features/resume/props/Resume.props";
+import { ResumeChangeProps } from '@features/resume/props/Resume.props';
 
-const ResumeChange: React.FC<ResumeChangeProps> = (
-    {type, fields, formData, onCancel, handleSubmit, handleInputChange}
-) => (
-
+const ResumeChange: React.FC<ResumeChangeProps> = ({
+    type,
+    fields,
+    formData,
+    onCancel,
+    handleSubmit,
+    handleInputChange,
+}) => (
     <form className={styles.createForm} onSubmit={(e) => handleSubmit(e, type)}>
         {Object.entries(fields).map(([key, label]) => (
             <ResumeField
@@ -19,19 +23,30 @@ const ResumeChange: React.FC<ResumeChangeProps> = (
                 onChange={handleInputChange}
                 formData={formData}
                 fieldType={
-                    key === 'employment_type' || key === 'work_schedule' ? 'checkbox' :
-                        key === 'travel_time' || key === 'business_trip_readiness' ? 'radio' : 'text'
+                    key === 'employment_type' || key === 'work_schedule'
+                        ? 'checkbox'
+                        : key === 'travel_time' || key === 'business_trip_readiness'
+                          ? 'radio'
+                          : 'text'
                 }
                 options={
-                    key === 'employment_type' ? employmentTypes :
-                        key === 'work_schedule' ? workSchedules :
-                            key === 'travel_time' ? travelTimes : businessTripReadiness
+                    key === 'employment_type'
+                        ? employmentTypes
+                        : key === 'work_schedule'
+                          ? workSchedules
+                          : key === 'travel_time'
+                            ? travelTimes
+                            : businessTripReadiness
                 }
             />
         ))}
         <div className={styles.buttonGroup}>
-            <Button type="submit" variant="primary">Сохранить</Button>
-            <Button type="button" variant="secondary" onClick={onCancel}>Отменить</Button>
+            <Button type="submit" variant="primary">
+                Сохранить
+            </Button>
+            <Button type="button" variant="secondary" onClick={onCancel}>
+                Отменить
+            </Button>
         </div>
     </form>
 );

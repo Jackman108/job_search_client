@@ -1,6 +1,6 @@
 // src/contexts/useAuthContext.ts
 import { createContext, useContext } from 'react';
-import {AuthContextProps} from "@app/providers/auth/AuthProvider.props";
+import { AuthContextProps } from '@app/providers/auth/AuthProvider.props';
 
 const AuthContext = createContext<AuthContextProps | undefined>(undefined);
 

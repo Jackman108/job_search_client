@@ -7,16 +7,15 @@ export function buildVacancyUrl(params: {
     experience?: string;
     searchPeriod?: string;
 }): string {
-
     const baseUrl = 'https://hh.ru/search/vacancy';
     const url = new URL(baseUrl);
     const queryParams = new URLSearchParams();
 
     Object.entries(params).forEach(([key, value]) => {
         if (value) {
-          queryParams.set(key, value);
+            queryParams.set(key, value);
         }
-      });
+    });
 
     queryParams.set('excluded_text', '');
     queryParams.set('hhtmFrom', 'vacancy_search_list');

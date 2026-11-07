@@ -17,7 +17,6 @@ export const useDataApi = () => {
 
     const request = useCallback(
         async <T = any>(method: 'get' | 'post' | 'put' | 'delete', endpoint: string, data?: any): Promise<T> => {
-
             // Проверяем наличие токена авторизации
             if (!token) throw new Error('Token is missing');
 
@@ -29,7 +28,7 @@ export const useDataApi = () => {
             });
             return response.data;
         },
-        [token]
+        [token],
     );
 
     return { request };

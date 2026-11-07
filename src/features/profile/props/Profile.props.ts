@@ -1,5 +1,5 @@
-import {ChangeEvent} from "react";
-import {UserProfile} from "@entities/profile";
+import { ChangeEvent } from 'react';
+import { UserProfile } from '@entities/profile';
 
 export interface UseProfileHandlersProps {
     userProfile: UserProfile | null;

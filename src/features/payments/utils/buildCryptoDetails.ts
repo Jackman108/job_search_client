@@ -1,5 +1,9 @@
 import { CryptoPaymentDetails, mockCryptoResponse } from '@entities/payment';
-import { CRYPTO_PAYMENT_SETTINGS, DEFAULT_CRYPTO_NETWORK, getWalletUrl } from '@entities/payment/config/cryptoPaymentConfig';
+import {
+    CRYPTO_PAYMENT_SETTINGS,
+    DEFAULT_CRYPTO_NETWORK,
+    getWalletUrl,
+} from '@entities/payment/config/cryptoPaymentConfig';
 
 /**
  * Утилита для сборки объекта деталей криптоплатежа.
@@ -46,4 +50,4 @@ export function buildCryptoDetails(paymentData: CryptoPaymentDetails): CryptoPay
         wallet_provider: process.env.NODE_ENV === 'development' ? mockCryptoResponse.wallet_provider : 'default',
         payment_url: getWalletUrl(network, cryptoAddress, amount.toString()),
     };
-} 
+}

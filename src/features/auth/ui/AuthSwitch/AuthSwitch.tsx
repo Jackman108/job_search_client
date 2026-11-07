@@ -1,11 +1,11 @@
-import React, {FC} from "react";
+import React, { FC } from 'react';
 import styles from './AuthSwitch.module.css';
-import {Button} from "@ui";
-import {AuthSwitchProps} from "@features/auth/types/Auth.props";
-import {useTranslation} from "react-i18next";
+import { Button } from '@ui';
+import { AuthSwitchProps } from '@features/auth/types/Auth.props';
+import { useTranslation } from 'react-i18next';
 
-const AuthSwitch: FC<AuthSwitchProps> = ({isSign, setIsSign}) => {
-    const {t} = useTranslation('auth');
+const AuthSwitch: FC<AuthSwitchProps> = ({ isSign, setIsSign }) => {
+    const { t } = useTranslation('auth');
 
     return (
         <div className={styles.tabContainer}>
@@ -26,7 +26,7 @@ const AuthSwitch: FC<AuthSwitchProps> = ({isSign, setIsSign}) => {
                 {t('button.SignUp')}
             </Button>
         </div>
-    )
+    );
 };
 
 export default AuthSwitch;

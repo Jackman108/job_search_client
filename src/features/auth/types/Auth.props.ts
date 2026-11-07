@@ -25,4 +25,3 @@ export interface SignInProps {
     error: string | Error | null;
     loading: boolean;
 }
-

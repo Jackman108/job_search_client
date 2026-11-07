@@ -1,4 +1,4 @@
-import {useState} from 'react';
+import { useState } from 'react';
 
 interface TooltipState {
     text: string | null;
@@ -6,14 +6,14 @@ interface TooltipState {
 }
 
 const useTooltip = () => {
-    const [tooltipState, setTooltipState] = useState<TooltipState>({text: null, position: null});
+    const [tooltipState, setTooltipState] = useState<TooltipState>({ text: null, position: null });
 
     const showTooltip = (text: string, position: { x: number; y: number }) => {
-        setTooltipState({text, position});
+        setTooltipState({ text, position });
     };
 
     const hideTooltip = () => {
-        setTooltipState({text: null, position: null});
+        setTooltipState({ text: null, position: null });
     };
 
     return {

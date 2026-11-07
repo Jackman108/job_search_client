@@ -14,4 +14,4 @@ export const vacancyConfig: Record<string, ConfigItem> = {
             response_date: 'Response Date',
         },
     },
-}; 
+};

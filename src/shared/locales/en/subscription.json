@@ -1,66 +1,66 @@
 {
-  "subscriptions": {
-    "title": "Subscriptions",
-    "addSubscription": "Add subscription",
-    "extendSubscription": "Extend subscription",
-    "success": "Subscription successfully updated!",
-    "error": "Error updating subscription.",
-    "hideForm": "Hide form",
-    "noData": "No subscription data",
-    "actions": {
-      "pay": "Pay",
-      "edit": "Edit",
-      "delete": "Delete",
-      "deleteConfirm": "Are you sure you want to delete this subscription?"
+    "subscriptions": {
+        "title": "Subscriptions",
+        "addSubscription": "Add subscription",
+        "extendSubscription": "Extend subscription",
+        "success": "Subscription successfully updated!",
+        "error": "Error updating subscription.",
+        "hideForm": "Hide form",
+        "noData": "No subscription data",
+        "actions": {
+            "pay": "Pay",
+            "edit": "Edit",
+            "delete": "Delete",
+            "deleteConfirm": "Are you sure you want to delete this subscription?"
+        },
+        "status": {
+            "active": "Active",
+            "extended_unpaid": "Extended but not paid for",
+            "expired": "expired",
+            "unknown": "unknown"
+        }
     },
-    "status": {
-      "active": "Active",
-      "extended_unpaid": "Extended but not paid for",
-      "expired": "expired",
-      "unknown": "unknown"
+    "tableHeaders": {
+        "id": "ID",
+        "userId": "User ID",
+        "subscriptionType": "Subscription type",
+        "price": "Price",
+        "startDate": "Start date",
+        "endDate": "End date",
+        "paymentStatus": "Payment status",
+        "createdAt": "Created at",
+        "updatedAt": "Updated at",
+        "subscriptionStatus": "Subscription status",
+        "actions": "Actions"
+    },
+    "cardHeaders": {
+        "editSubscription": "Renew Subscription",
+        "createSubscription": "Create Subscription",
+        "chooseSubscriptionType": "Select the desired subscription type",
+        "create": "Subscribe",
+        "update": "Renew",
+        "cancel": "Cancel"
+    },
+    "form": {
+        "userId": "User ID",
+        "subscriptionType": "Subscription type",
+        "price": "Price",
+        "startDate": "Start date",
+        "endDate": "End date",
+        "save": "Save",
+        "create": "Create",
+        "cancel": "Cancel",
+        "extend": "Extend",
+        "update": "Update"
+    },
+    "common": {
+        "loading": "Loading...",
+        "error": "Error",
+        "back": "Back"
+    },
+    "variants": {
+        "day": "Day",
+        "weekly": "Week",
+        "monthly": "Month"
     }
-  },
-  "tableHeaders": {
-    "id": "ID",
-    "userId": "User ID",
-    "subscriptionType": "Subscription type",
-    "price": "Price",
-    "startDate": "Start date",
-    "endDate": "End date",
-    "paymentStatus": "Payment status",
-    "createdAt": "Created at",
-    "updatedAt": "Updated at",
-    "subscriptionStatus": "Subscription status",
-    "actions": "Actions"
-  },
-  "cardHeaders": {
-    "editSubscription": "Renew Subscription",
-    "createSubscription": "Create Subscription",
-    "chooseSubscriptionType": "Select the desired subscription type",
-    "create": "Subscribe",
-    "update": "Renew",
-    "cancel": "Cancel"
-  },
-  "form": {
-    "userId": "User ID",
-    "subscriptionType": "Subscription type",
-    "price": "Price",
-    "startDate": "Start date",
-    "endDate": "End date",
-    "save": "Save",
-    "create": "Create",
-    "cancel": "Cancel",
-    "extend": "Extend",
-    "update": "Update"
-  },
-  "common": {
-    "loading": "Loading...",
-    "error": "Error",
-    "back": "Back"
-  },
-  "variants": {
-    "day": "Day",
-    "weekly": "Week",
-    "monthly": "Month"
-  }
 }

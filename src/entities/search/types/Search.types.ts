@@ -1,4 +1,4 @@
-import {FORM_LABELS, FORM_PARAMS} from "@entities/search";
+import { FORM_LABELS, FORM_PARAMS } from '@entities/search';
 
 export interface SearchAuthData {
     id?: number;

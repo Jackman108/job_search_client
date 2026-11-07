@@ -1,19 +1,18 @@
-import {WS_ERRORS, WS_EVENTS} from "@config";
+import { WS_ERRORS, WS_EVENTS } from '@config';
 
 export const handleWebSocketMessage = (data: string, loadData: () => void, setAlert: (message: string) => void) => {
-    const handleIdMessage = (data: string, prefix: string, loadData: () => void) => {
-        const id = parseInt(data.split('ID ')[1], 10);
+    const handleIdMessage = (message: string) => {
+        const id = parseInt(message.split('ID ')[1], 10);
         if (!isNaN(id)) {
-            console.log(`${prefix} with ID ${id} was saved`);
             loadData();
         } else {
-            console.error('Invalid ID in message:', data);
+            console.error('Invalid ID in message:', message);
         }
     };
 
     switch (true) {
         case data.startsWith(WS_EVENTS.VACANCY_SAVED):
-            handleIdMessage(data, 'Vacancy', loadData);
+            handleIdMessage(data);
             break;
 
         case data === WS_EVENTS.ERROR_DETECTED:

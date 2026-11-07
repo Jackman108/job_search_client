@@ -1,10 +1,10 @@
-import {FC} from 'react';
-import {ImageUploaderProps} from "@type";
+import { FC } from 'react';
+import { ImageUploaderProps } from '@type';
 import styles from './ImageUploader.module.css';
-import {useTranslation} from "react-i18next";
+import { useTranslation } from 'react-i18next';
 
-const ImageUploader: FC<ImageUploaderProps> = ({onChange}) => {
-    const {t} = useTranslation('profile');
+const ImageUploader: FC<ImageUploaderProps> = ({ onChange }) => {
+    const { t } = useTranslation('profile');
 
     return (
         <div className={styles.uploaderContainer}>
@@ -20,7 +20,7 @@ const ImageUploader: FC<ImageUploaderProps> = ({onChange}) => {
                 {t('button.selectImage')}
             </label>
         </div>
-    )
+    );
 };
 
 export default ImageUploader;

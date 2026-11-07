@@ -1,4 +1,4 @@
-import { Vacancy } from "@entities/vacancy";
+import { Vacancy } from '@entities/vacancy';
 
 export interface VacancyContextType {
     vacancies: Vacancy[];

@@ -1,12 +1,18 @@
-import React, {useEffect} from 'react';
-import {PAYMENT_STATUS_OPTIONS, PaymentStatusOption, BasePayment, PaymentFormProps, PAYMENT_STATUS} from "@entities/payment";
-import {Button, RenderInput, RenderSelect} from "@ui";
-import {useFormState} from "@hooks";
-import {useTranslation} from "react-i18next";
+import React, { useEffect } from 'react';
+import {
+    PAYMENT_STATUS_OPTIONS,
+    PaymentStatusOption,
+    BasePayment,
+    PaymentFormProps,
+    PAYMENT_STATUS,
+} from '@entities/payment';
+import { Button, RenderInput, RenderSelect } from '@ui';
+import { useFormState } from '@hooks';
+import { useTranslation } from 'react-i18next';
 
-const PaymentForm: React.FC<PaymentFormProps> = ({initialData, onSubmit, handleCancelClick, isLoading}) => {
-    const {formData, setFormData} = useFormState<Partial<BasePayment>>();
-    const {t} = useTranslation('payments');
+const PaymentForm: React.FC<PaymentFormProps> = ({ initialData, onSubmit, handleCancelClick, isLoading }) => {
+    const { formData, setFormData } = useFormState<Partial<BasePayment>>();
+    const { t } = useTranslation('payments');
     const statusOptions: PaymentStatusOption[] = PAYMENT_STATUS_OPTIONS;
 
     useEffect(() => {
@@ -16,14 +22,14 @@ const PaymentForm: React.FC<PaymentFormProps> = ({initialData, onSubmit, handleC
                 user_id: initialData.subscription_id || '',
                 amount: initialData.amount || 0,
                 payment_method: initialData.payment_method || '',
-                payment_status: initialData.payment_status || PAYMENT_STATUS.PENDING
+                payment_status: initialData.payment_status || PAYMENT_STATUS.PENDING,
             });
         }
     }, [initialData, setFormData]);
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
-        const {name, value} = e.target;
-        setFormData(prev => ({...prev, [name]: value}));
+        const { name, value } = e.target;
+        setFormData((prev) => ({ ...prev, [name]: value }));
     };
 
     const handleSubmit = (e: React.FormEvent) => {
@@ -68,8 +74,12 @@ const PaymentForm: React.FC<PaymentFormProps> = ({initialData, onSubmit, handleC
             <Button type="submit" variant="primary" disabled={isLoading}>
                 {initialData ? t('form.save') : t('form.create')}
             </Button>
-            <Button type="button" variant="secondary" onClick={() => handleCancelClick(formData.id)}
-                    disabled={isLoading}>
+            <Button
+                type="button"
+                variant="secondary"
+                onClick={() => handleCancelClick(formData.id)}
+                disabled={isLoading}
+            >
                 {t('form.cancel')}
             </Button>
         </form>

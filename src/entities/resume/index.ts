@@ -1,3 +1,3 @@
-export {employmentTypes, workSchedules, travelTimes, businessTripReadiness} from './constants';
+export { employmentTypes, workSchedules, travelTimes, businessTripReadiness } from './constants';
 
-export {resumeConfig} from './config/resumeConfig';
+export { resumeConfig } from './config/resumeConfig';

@@ -1,6 +1,6 @@
 import { useEntityFetch } from '@hooks';
 import { ACTION_TYPES } from '@config';
-import { BasePayment, PAYMENT_STATUS, UsePaymentStatusHandlerReturn, paymentConfig } from "@entities/payment";
+import { BasePayment, PAYMENT_STATUS, UsePaymentStatusHandlerReturn, paymentConfig } from '@entities/payment';
 
 /**
  * Хук для обработки статусов платежей
@@ -23,7 +23,7 @@ export const usePaymentStatusHandler = (): UsePaymentStatusHandlerReturn => {
                     payment_status: PAYMENT_STATUS.COMPLETED,
                     payment_method: paymentData.payment_method,
                     amount: paymentData.amount,
-                    updated_at: new Date()
+                    updated_at: new Date(),
                 },
                 isEditing: true,
             });
@@ -82,4 +82,4 @@ export const usePaymentStatusHandler = (): UsePaymentStatusHandlerReturn => {
         handleProcessFailure,
         handleProcessExpired,
     };
-}; 
+};

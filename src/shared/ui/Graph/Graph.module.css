@@ -1,30 +1,30 @@
 .graphContainer {
-  border: 1px solid #222;
-  margin-top: 20px;
-  max-width: 100%;
+    border: 1px solid #222;
+    margin-top: 20px;
+    max-width: 100%;
 }
 
 .bar {
-  transition: fill 0.3s ease;
+    transition: fill 0.3s ease;
 }
 
 .axisLine {
-  stroke: #222;
+    stroke: #222;
 }
 
 .label {
-  font-size: 12px;
-  text-anchor: middle;
-  fill: #222;
+    font-size: 12px;
+    text-anchor: middle;
+    fill: #222;
 }
 
 .dateLabel {
-  font-size: 12px;
-  text-anchor: middle;
-  fill: #222;
+    font-size: 12px;
+    text-anchor: middle;
+    fill: #222;
 }
 
 .legendLabel {
-  font-size: 12px;
-  fill: #222;
+    font-size: 12px;
+    fill: #222;
 }

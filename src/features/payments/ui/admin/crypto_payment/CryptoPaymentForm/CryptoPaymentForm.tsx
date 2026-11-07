@@ -7,8 +7,12 @@ import { useTranslation } from 'react-i18next';
 import styles from './CryptoPaymentForm.module.css';
 import { CryptoPaymentFormProps } from '@entities/payment/types/components.types';
 
-
-const CryptoPaymentForm: React.FC<CryptoPaymentFormProps> = ({ initialData, onSubmit, handleCancelClick, isLoading }) => {
+const CryptoPaymentForm: React.FC<CryptoPaymentFormProps> = ({
+    initialData,
+    onSubmit,
+    handleCancelClick,
+    isLoading,
+}) => {
     const { t } = useTranslation('cryptoPayments');
     const { formData, setFormData } = useFormState<Partial<CryptoPaymentDetails>>();
 
@@ -26,7 +30,7 @@ const CryptoPaymentForm: React.FC<CryptoPaymentFormProps> = ({ initialData, onSu
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
         const { name, value } = e.target;
-        setFormData(prev => ({ ...prev, [name]: value }));
+        setFormData((prev) => ({ ...prev, [name]: value }));
     };
 
     const handleSubmit = (e: React.FormEvent) => {
@@ -38,7 +42,7 @@ const CryptoPaymentForm: React.FC<CryptoPaymentFormProps> = ({ initialData, onSu
         <form onSubmit={handleSubmit} className={styles.form}>
             <RenderSelect
                 label={t('form.network')}
-                options={SUPPORTED_CRYPTO_NETWORKS.map(net => ({ value: net.value, label: net.label }))}
+                options={SUPPORTED_CRYPTO_NETWORKS.map((net) => ({ value: net.value, label: net.label }))}
                 name="network"
                 value={formData.network || ''}
                 onChange={handleChange}
@@ -64,7 +68,12 @@ const CryptoPaymentForm: React.FC<CryptoPaymentFormProps> = ({ initialData, onSu
                 <Button type="submit" variant="primary" disabled={isLoading}>
                     {initialData ? t('form.save') : t('form.create')}
                 </Button>
-                <Button type="button" variant="secondary" onClick={() => handleCancelClick(formData.id)} disabled={isLoading}>
+                <Button
+                    type="button"
+                    variant="secondary"
+                    onClick={() => handleCancelClick(formData.id)}
+                    disabled={isLoading}
+                >
                     {t('form.cancel')}
                 </Button>
             </div>
@@ -72,4 +81,4 @@ const CryptoPaymentForm: React.FC<CryptoPaymentFormProps> = ({ initialData, onSu
     );
 };
 
-export default CryptoPaymentForm; 
+export default CryptoPaymentForm;

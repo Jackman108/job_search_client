@@ -15,7 +15,7 @@ export const usePaymentForm = ({
     initialData,
     onSubmit,
     handleCancelClick,
-    isLoading = false
+    isLoading = false,
 }: PaymentFormProps): UsePaymentFormReturn => {
     const { formData, setFormData } = useFormState<Partial<BasePayment>>();
 
@@ -29,11 +29,11 @@ export const usePaymentForm = ({
                 subscription_id: initialData.subscription_id,
                 amount: initialData.amount || 0,
                 payment_status: initialData.payment_status || PAYMENT_STATUS.PENDING,
-                payment_method: initialData.payment_method || PAYMENT_METHOD.WEBPAY
+                payment_method: initialData.payment_method || PAYMENT_METHOD.WEBPAY,
             });
         } else {
             setFormData({
-                payment_method: PAYMENT_METHOD.WEBPAY
+                payment_method: PAYMENT_METHOD.WEBPAY,
             });
         }
     }, [initialData, setFormData]);
@@ -41,18 +41,24 @@ export const usePaymentForm = ({
     /**
      * Обработчик изменения полей формы
      */
-    const handleChange = useCallback((e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
-        const { name, value } = e.target;
-        setFormData(prev => ({ ...prev, [name]: value }));
-    }, [setFormData]);
+    const handleChange = useCallback(
+        (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
+            const { name, value } = e.target;
+            setFormData((prev) => ({ ...prev, [name]: value }));
+        },
+        [setFormData],
+    );
 
     /**
      * Обработчик отправки формы
      */
-    const handleSubmit = useCallback((e: React.FormEvent) => {
-        e.preventDefault();
-        onSubmit(formData);
-    }, [formData, onSubmit]);
+    const handleSubmit = useCallback(
+        (e: React.FormEvent) => {
+            e.preventDefault();
+            onSubmit(formData);
+        },
+        [formData, onSubmit],
+    );
 
     /**
      * Обработчик отмены
@@ -68,6 +74,6 @@ export const usePaymentForm = ({
         handleChange,
         handleSubmit,
         handleCancel,
-        isLoading
+        isLoading,
     };
-}; 
+};

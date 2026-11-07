@@ -1,60 +1,59 @@
 .formContainer {
-	display: flex;
-	flex-direction: column;
-	gap: 15px;
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
 }
 
 .inputsContainer {
-	display: flex;
-	flex-direction: column;
-	gap: 15px;
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
 }
 
 .textareaContainer {
-	display: flex;
-	flex-direction: column;
-	gap: 15px;
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
 }
 
 .selectsContainer {
-	display: flex;
-	flex-direction: column;
-	gap: 15px;
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
 }
 
 .buttonsContainer {
-	display: flex;
-	gap: 10px;
-	margin: 15px 0 60px;
-	flex-direction: column;
-	width: 100%;
+    display: flex;
+    gap: 10px;
+    margin: 15px 0 60px;
+    flex-direction: column;
+    width: 100%;
 }
 
 .error {
-	border-color: red;
+    border-color: red;
 }
 
 .errorText {
-	color: red;
-	font-size: 0.875em;
-	margin-top: 5px;
+    color: red;
+    font-size: 0.875em;
+    margin-top: 5px;
 }
 
-
 @media (max-width: 768px) {
-	.sectionContainer {
-		padding: 16px;
-	}
+    .sectionContainer {
+        padding: 16px;
+    }
 
-	.formContainer {
-		padding: 12px;
-	}
+    .formContainer {
+        padding: 12px;
+    }
 
-	.buttonsContainer {
-		flex-direction: column;
-	}
+    .buttonsContainer {
+        flex-direction: column;
+    }
 
-	.button {
-		width: 100%;
-	}
+    .button {
+        width: 100%;
+    }
 }

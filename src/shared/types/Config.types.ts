@@ -9,5 +9,5 @@ export interface ConfigItem {
 }
 
 export interface QueryConfigProps {
-    config: Record<string, ConfigItem>
+    config: Record<string, ConfigItem>;
 }

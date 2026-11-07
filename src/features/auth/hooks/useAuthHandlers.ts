@@ -1,18 +1,18 @@
-import {useCallback, useState} from 'react';
-import {useAuth} from '@app/providers/auth/useAuthContext';
+import { useCallback, useState } from 'react';
+import { useAuth } from '@app/providers/auth/useAuthContext';
 import useFetchAuth from './useFetchAuth';
-import {getErrorValidate, validateEmail, validatePassword} from '@utils';
+import { getErrorValidate, validateEmail, validatePassword } from '@utils';
 
 export const useAuthHandlers = () => {
-    const {login, register, logout, isLoading: authLoading, error: authError} = useFetchAuth();
-    const {token} = useAuth();
+    const { login, register, logout, isLoading: authLoading, error: authError } = useFetchAuth();
+    const { token } = useAuth();
 
     const [isSign, setIsSign] = useState<boolean>(!!token);
     const [formError, setFormError] = useState<string | null>(null);
 
     const validateCredentials = (email: string, password: string, passwordRepeat?: string) => {
-        const {isValidEmail, emailError} = validateEmail(email);
-        const {isValidPassword, passwordError} = validatePassword(password);
+        const { isValidEmail, emailError } = validateEmail(email);
+        const { isValidPassword, passwordError } = validatePassword(password);
 
         if (!isValidEmail || !isValidPassword) {
             setFormError(getErrorValidate(emailError?.email, passwordError?.password));
@@ -27,27 +27,33 @@ export const useAuthHandlers = () => {
         return true;
     };
 
-    const handleSignIn = useCallback(async (email: string, password: string) => {
-        setFormError(null);
-        if (!validateCredentials(email, password)) return;
+    const handleSignIn = useCallback(
+        async (email: string, password: string) => {
+            setFormError(null);
+            if (!validateCredentials(email, password)) return;
 
-        try {
-            await login({email, password});
-        } catch (err) {
-            setFormError(err instanceof Error ? err.message : 'Ошибка при входе');
-        }
-    }, [login]);
+            try {
+                await login({ email, password });
+            } catch (err) {
+                setFormError(err instanceof Error ? err.message : 'Ошибка при входе');
+            }
+        },
+        [login],
+    );
 
-    const handleRegister = useCallback(async (email: string, password: string, passwordRepeat: string) => {
-        setFormError(null);
-        if (!validateCredentials(email, password, passwordRepeat)) return;
+    const handleRegister = useCallback(
+        async (email: string, password: string, passwordRepeat: string) => {
+            setFormError(null);
+            if (!validateCredentials(email, password, passwordRepeat)) return;
 
-        try {
-            await register({email, password, passwordRepeat});
-        } catch (err) {
-            setFormError(err instanceof Error ? err.message : 'Ошибка при регистрации');
-        }
-    }, [register]);
+            try {
+                await register({ email, password, passwordRepeat });
+            } catch (err) {
+                setFormError(err instanceof Error ? err.message : 'Ошибка при регистрации');
+            }
+        },
+        [register],
+    );
 
     const handleSignOut = useCallback(async () => {
         setFormError(null);
