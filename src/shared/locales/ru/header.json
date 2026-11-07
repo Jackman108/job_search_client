@@ -1,10 +1,13 @@
 {
-  "header": {
-    "title": "ТРУДОУСТРОЙСТВО"
-  },
-  "nav": {
-    "vacancies": "Вакансии",
-    "feedback": "Обратная связь",
-    "resume": "Резюме"
-  }
+    "header": {
+        "title": "ТРУДОУСТРОЙСТВО"
+    },
+    "nav": {
+        "vacancies": "Вакансии",
+        "feedback": "Обратная связь",
+        "resume": "Резюме",
+        "payments": "Платежи",
+        "subscriptions": "Подписки",
+        "cryptoPayments": "Криптоплатежи"
+    }
 }

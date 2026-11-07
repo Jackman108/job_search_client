@@ -1,10 +1,12 @@
-import {ButtonHTMLAttributes, ChangeEvent, FC} from "react";
+import { ButtonHTMLAttributes, ChangeEvent, FC } from 'react';
 
 export interface ButtonConfig<T> {
     icon: string;
     tooltipText: string;
     Component: FC<T>;
     position: 'left' | 'right';
+    /** When true, button is hidden for guests (login chrome stays visible). */
+    requiresAuth?: boolean;
 }
 
 export interface InteractiveButtonProps {
@@ -49,4 +51,3 @@ export interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
     variant?: 'primary' | 'secondary' | 'danger' | 'close';
     isLoading?: boolean;
 }
-

@@ -5,5 +5,7 @@ export { formatValue } from './formatValue';
 export { handleWebSocketMessage } from './handleWebSocketMessage';
 export { parseArrayFromString } from './parseArrayFromString';
 export { decodeToken, isTokenExpired } from './tokenUtils';
+export { ADMIN_ROLE, canAccess, getRolesFromToken, isAuthenticatedToken, tokenHasRole } from './authSession.utils';
+export type { AccessLevel } from './authSession.utils';
 export { validateEmail, validatePassword, validateSearchUrl } from './validateUtils';
 export { isHhQueueResponse, pollHhJobUntilSettled } from './pollHhJob';
