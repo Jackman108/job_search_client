@@ -1,6 +1,6 @@
 import React, { FC } from 'react';
 import { PanelProps } from '@type';
-import styles from './FeedbackForm.module.css';
+import formLayout from '@shared/styles/FormLayout.module.css';
 import { Button, FormContainer, ManagementSection, RenderInput } from '@ui';
 import useFeedbackLogic from '../../hooks/useFeedbackLogic';
 import { useTranslation } from 'react-i18next';
@@ -37,8 +37,8 @@ const FeedbackForm: FC<PanelProps> = ({ onClose }) => {
                 onDelete={handleDeleteAuth}
                 disabled={isLoading}
             />
-            <form className={styles.formContainer} onSubmit={onSubmit}>
-                <div className={styles.inputsContainer}>
+            <form className={formLayout.formContainer} onSubmit={onSubmit}>
+                <div className={formLayout.inputsContainer}>
                     {Object.entries(FORM_CONFIG.fields)
                         .filter(([key]) => key === 'email' || key === 'password')
                         .map(([key, fieldConfig]) => (
@@ -57,12 +57,12 @@ const FeedbackForm: FC<PanelProps> = ({ onClose }) => {
                         ))}
                 </div>
 
-                <div className={styles.buttonsContainer}>
-                    <Button className={styles.button} type="submit" disabled={isLoading}>
+                <div className={formLayout.buttonsContainer}>
+                    <Button className={formLayout.button} type="submit" disabled={isLoading}>
                         {isLoading ? t('form.isLoading') : t('button.start')}
                     </Button>
                     <Button
-                        className={styles.button}
+                        className={formLayout.button}
                         type="button"
                         onClick={onStop}
                         disabled={!isLoading}

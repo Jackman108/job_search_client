@@ -36,3 +36,5 @@ export type { ManagementSectionProps } from './ManagementSection.props';
 export type { WebSocketHook, UseWebSocketParams } from './WebSocket.types';
 
 export type { HhJobStatus, HhJobKind, HhQueueResponse, HhJobStatusResponse } from './HhJob.types';
+
+export type { SortDirection, SortConfig } from './Sort.types';
