@@ -1,14 +1,16 @@
 import { useCallback } from 'react';
 import { ACTION_TYPES } from '@config';
-import { useTableLogic } from '@hooks';
-import { useEntityFetch } from '@hooks';
-import { PAYMENT_STATUS } from '@entities/payment';
+import { useTableLogic, useEntityFetch } from '@hooks';
+import { BasePayment, PAYMENT_STATUS, paymentConfig } from '@entities/payment';
 import { subscriptionConfig, SubscriptionTypes } from '@entities/subscription';
-import { usePaymentLogic } from '@features/payments/hooks';
 
 export const useSubscriptionLogic = () => {
-    // Для создания платежа по умолчанию
-    const { createPayment } = usePaymentLogic();
+    // Default pending payment via entity config — no payments-feature import
+    const { handleFormSubmit: createPayment } = useTableLogic<BasePayment>(
+        paymentConfig,
+        useEntityFetch,
+        ACTION_TYPES.PAYMENT,
+    );
 
     const {
         data: subscribeData,
@@ -24,7 +26,6 @@ export const useSubscriptionLogic = () => {
         handleCancelAction: subscribeCancel,
     } = useTableLogic<SubscriptionTypes>(subscriptionConfig, useEntityFetch, ACTION_TYPES.SUBSCRIPTION);
 
-    // Создание платежа по умолчанию
     const createDefaultPayment = useCallback(
         async (subscription: SubscriptionTypes) => {
             try {
@@ -40,7 +41,6 @@ export const useSubscriptionLogic = () => {
         [createPayment],
     );
 
-    // Создание подписки с последующим платежом
     const subscriptionWithPayment = useCallback(
         async (formData: Partial<SubscriptionTypes>) => {
             try {
@@ -56,7 +56,6 @@ export const useSubscriptionLogic = () => {
         [subscribeSubmit, createDefaultPayment, subscribeIsEditing.subscription],
     );
 
-    // Открытие формы редактирования подписки
     const subscribeEditClick = useCallback(
         (type: string, item: any) => {
             subscribeEdit(type, item);

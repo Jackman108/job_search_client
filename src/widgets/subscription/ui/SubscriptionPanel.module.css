@@ -10,3 +10,13 @@
 .custom-loading-error {
     margin-top: 20px;
 }
+
+.cryptoPaymentContainer {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.closeButton {
+    align-self: flex-start;
+}
