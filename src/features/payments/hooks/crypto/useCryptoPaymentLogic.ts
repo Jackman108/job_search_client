@@ -23,24 +23,21 @@ export const useCryptoPaymentLogic = () => {
         handleToggleForm: cryptoToggleForm,
         handleCancelAction,
         loadData: reloadCryptoPayments,
-    } = useTableLogic<CryptoPaymentDetails>(
-        cryptoPaymentConfig,
-        useEntityFetch,
-        ACTION_TYPES.CRYPTO
-    );
-
+    } = useTableLogic<CryptoPaymentDetails>(cryptoPaymentConfig, useEntityFetch, ACTION_TYPES.CRYPTO);
 
     /** Обновляет детали криптоплатежа и перезагружает список */
-    const updateCryptoPaymentDetails = useCallback((details: CryptoPaymentDetails) => {
-        setCryptoPaymentDetails(details);
-        reloadCryptoPayments();
-    }, [reloadCryptoPayments]);
+    const updateCryptoPaymentDetails = useCallback(
+        (details: CryptoPaymentDetails) => {
+            setCryptoPaymentDetails(details);
+            reloadCryptoPayments();
+        },
+        [reloadCryptoPayments],
+    );
 
     const cryptoCancel = useCallback(() => {
         if (cryptoFormData.id) {
             handleCancelAction(cryptoFormData.id);
             reloadCryptoPayments();
-
         }
     }, [cryptoFormData.id, handleCancelAction, reloadCryptoPayments]);
 
@@ -61,4 +58,4 @@ export const useCryptoPaymentLogic = () => {
         setCryptoPaymentDetails,
         updateCryptoPaymentDetails,
     };
-}; 
+};

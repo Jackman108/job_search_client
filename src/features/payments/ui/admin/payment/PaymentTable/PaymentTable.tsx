@@ -1,15 +1,14 @@
-import { ACTION_TYPES } from "@config";
-import PaymentTableBody from "@features/payments/ui/admin/payment/PaymentTableBody/PaymentTableBody";
-import { usePaymentLogic } from "@features/payments/hooks";
-import { LanguageSwitcher } from "@ui";
-import { useTranslation } from "react-i18next";
+import { ACTION_TYPES } from '@config';
+import PaymentTableBody from '@features/payments/ui/admin/payment/PaymentTableBody/PaymentTableBody';
+import { usePaymentLogic } from '@features/payments/hooks';
+import { LanguageSwitcher } from '@ui';
+import { useTranslation } from 'react-i18next';
 import { Link } from 'react-router-dom';
 import PaymentForm from '../PaymentForm/PaymentForm';
 import styles from './PaymentTable.module.css';
-        
 
 const PaymentTable = () => {
-    const {t} = useTranslation('payments');
+    const { t } = useTranslation('payments');
 
     const {
         paymentData,
@@ -27,9 +26,11 @@ const PaymentTable = () => {
 
     return (
         <div className={styles.container}>
-            <LanguageSwitcher/>
+            <LanguageSwitcher />
 
-            <Link to="/" className="home-button">🏠</Link>
+            <Link to="/" className="home-button">
+                🏠
+            </Link>
             <h1>{t('payments.title')}</h1>
             <button onClick={paymentToggleForm}>
                 {paymentShowForm ? t('payments.hideForm') : t('payments.addPayment')}
@@ -43,7 +44,11 @@ const PaymentTable = () => {
                 />
             )}
             {paymentLoading && <p>{t('common.loading')}</p>}
-            {paymentError && <p>{t('common.error')}: {paymentError.message}</p>}
+            {paymentError && (
+                <p>
+                    {t('common.error')}: {paymentError.message}
+                </p>
+            )}
             {paymentData && paymentData.length > 0 ? (
                 <PaymentTableBody
                     paymentData={paymentData}
@@ -51,7 +56,8 @@ const PaymentTable = () => {
                     handleDelete={paymentDelete}
                 />
             ) : (
-                !paymentLoading && !paymentError && <p>{t('payments.noData')}</p>)}
+                !paymentLoading && !paymentError && <p>{t('payments.noData')}</p>
+            )}
         </div>
     );
 };

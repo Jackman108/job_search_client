@@ -23,4 +23,4 @@ const ServerError: FC = () => {
     );
 };
 
-export default ServerError; 
+export default ServerError;

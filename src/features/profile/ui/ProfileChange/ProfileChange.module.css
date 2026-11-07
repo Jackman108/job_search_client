@@ -1,22 +1,22 @@
 .editForm {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 1rem;
-  width: 100%;
-  margin: 0 auto;
-  padding: 1rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1rem;
+    width: 100%;
+    margin: 0 auto;
+    padding: 1rem;
 }
 
 .avatarContainer {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 1rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1rem;
 }
 
 .buttonGroup {
-  display: flex;
-  justify-content: space-between;
-  gap: 1rem;
+    display: flex;
+    justify-content: space-between;
+    gap: 1rem;
 }

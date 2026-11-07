@@ -1,8 +1,8 @@
 import { useCallback, useEffect, useRef } from 'react';
-import { UseWebSocketParams, WebSocketHook } from "@type";
-import { useAuth } from "@app/providers/auth/useAuthContext";
-import { useWebSocketReducer } from "@hooks";
-import { handleWebSocketMessage } from "@utils";
+import { UseWebSocketParams, WebSocketHook } from '@type';
+import { useAuth } from '@app/providers/auth/useAuthContext';
+import { useWebSocketReducer } from '@hooks';
+import { handleWebSocketMessage } from '@utils';
 
 const RECONNECT_INTERVAL = 5000;
 
@@ -11,9 +11,12 @@ const useWebSocket = ({ WS_URL, loadData, setAlert }: UseWebSocketParams): WebSo
     const wsRef = useRef<WebSocket | null>(null);
     const { token } = useAuth();
 
-    const handleMessage = useCallback((data: string) => {
-        handleWebSocketMessage(data, loadData, setAlert);
-    }, [loadData, setAlert]);
+    const handleMessage = useCallback(
+        (data: string) => {
+            handleWebSocketMessage(data, loadData, setAlert);
+        },
+        [loadData, setAlert],
+    );
 
     const connect = useCallback(() => {
         // Проверяем наличие токена для подключения
@@ -29,7 +32,6 @@ const useWebSocket = ({ WS_URL, loadData, setAlert }: UseWebSocketParams): WebSo
             wsRef.current = new WebSocket(`${WS_URL}?token=${token.replace('Bearer ', '')}`);
 
             wsRef.current.onopen = () => {
-                console.log('WebSocket connection established');
                 dispatch({ type: 'SET_OPEN', payload: true });
             };
 
@@ -44,7 +46,6 @@ const useWebSocket = ({ WS_URL, loadData, setAlert }: UseWebSocketParams): WebSo
             };
 
             wsRef.current.onclose = (event) => {
-                console.log('WebSocket connection closed:', event.code, event.reason);
                 dispatch({ type: 'SET_OPEN', payload: false });
                 wsRef.current = null;
 

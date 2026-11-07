@@ -1,13 +1,13 @@
-import {FC} from 'react';
+import { FC } from 'react';
 import styles from './SearchForm.module.css';
-import {PanelProps} from "@type";
+import { PanelProps } from '@type';
 import useSearchFormLogic from '../../hooks/useSearchFormLogic';
-import {Button, FormContainer, ManagementSection, RenderInput, RenderSelect, RenderTextarea} from '@ui';
-import {useTranslation} from "react-i18next";
-import {FORM_CONFIG, FORM_LABELS, FORM_PARAMS, FORM_TEXTS, FormLabelKeys, FormParamKeys} from "@entities/search";
+import { Button, FormContainer, ManagementSection, RenderInput, RenderSelect, RenderTextarea } from '@ui';
+import { useTranslation } from 'react-i18next';
+import { FORM_CONFIG, FORM_LABELS, FORM_PARAMS, FORM_TEXTS, FormLabelKeys, FormParamKeys } from '@entities/search';
 
-const SearchForm: FC<PanelProps> = ({onClose}) => {
-    const {t} = useTranslation('auth');
+const SearchForm: FC<PanelProps> = ({ onClose }) => {
+    const { t } = useTranslation('auth');
 
     const {
         token,
@@ -38,7 +38,7 @@ const SearchForm: FC<PanelProps> = ({onClose}) => {
                 title="Управление Аккаунтами"
                 selectedId={selectedAuthId}
                 setSelectedId={setSelectedAuthId}
-                items={searchAuths?.map(auth => ({id: auth.id || 0, label: auth.email})) || []}
+                items={searchAuths?.map((auth) => ({ id: auth.id || 0, label: auth.email })) || []}
                 onCreate={handleCreateAuth}
                 onUpdate={handleUpdateAuth}
                 onDelete={handleDeleteAuth}
@@ -49,7 +49,7 @@ const SearchForm: FC<PanelProps> = ({onClose}) => {
                 title="Управление Опциями"
                 selectedId={selectedFieldId}
                 setSelectedId={setSelectedFieldId}
-                items={searchFields?.map(field => ({id: field.id || 0, label: field.position})) || []}
+                items={searchFields?.map((field) => ({ id: field.id || 0, label: field.position })) || []}
                 onCreate={handleCreateField}
                 onUpdate={handleUpdateField}
                 onDelete={handleDeleteField}
@@ -92,16 +92,11 @@ const SearchForm: FC<PanelProps> = ({onClose}) => {
                             value={formValues[key as keyof typeof formValues]}
                             onChange={handleSelectChange(FORM_PARAMS[key as FormParamKeys])}
                             isLoading={isLoading}
-
                         />
                     ))}
                 </div>
                 <div className={styles.buttonsContainer}>
-                    <Button
-                        className={styles.button}
-                        type="submit"
-                        disabled={isLoading}
-                    >
+                    <Button className={styles.button} type="submit" disabled={isLoading}>
                         {isLoading ? t('form.isLoading') : t('button.start')}
                     </Button>
                     <Button

@@ -1,4 +1,4 @@
-import { ConfigItem } from "@type";
+import { ConfigItem } from '@type';
 
 /**
  * Конфигурация для работы с криптоплатежами
@@ -20,9 +20,9 @@ export const cryptoPaymentConfig: Record<string, ConfigItem> = {
             created_at: 'Created At',
             expires_at: 'Expires At',
             transaction_hash: 'Transaction Hash',
-            wallet_provider: 'Wallet Provider'
-        }
-    }
+            wallet_provider: 'Wallet Provider',
+        },
+    },
 };
 
 /**
@@ -33,7 +33,7 @@ export const SUPPORTED_CRYPTO_NETWORKS = [
     { value: 'BTC', label: 'Bitcoin' },
     { value: 'USDT', label: 'Tether (USDT)' },
     { value: 'BCH', label: 'Bitcoin Cash' },
-    { value: 'LTC', label: 'Litecoin' }
+    { value: 'LTC', label: 'Litecoin' },
 ] as const;
 
 /**
@@ -52,10 +52,10 @@ export const CRYPTO_PAYMENT_SETTINGS = {
         BTC: 3,
         USDT: 12,
         BCH: 3,
-        LTC: 3
+        LTC: 3,
     },
     refreshInterval: 10000, // 10 seconds
-    maxRetries: 3
+    maxRetries: 3,
 } as const;
 
 // Конфигурация обменных курсов к USD
@@ -63,7 +63,7 @@ export const CRYPTO_EXCHANGE_RATES: Record<string, number> = {
     BTC: 0.0001,
     USDT: 1,
     BCH: 0.0002,
-    LTC: 0.01
+    LTC: 0.01,
 };
 
 // Конфигурация адресов кошельков для различных крипто-сетей
@@ -97,4 +97,4 @@ export function getWalletUrl(network: string, address: string, amount?: string):
 }
 
 /** Ключи операций для работы с криптоплатежами */
-export type CryptoPaymentAction = keyof typeof cryptoPaymentConfig; 
+export type CryptoPaymentAction = keyof typeof cryptoPaymentConfig;

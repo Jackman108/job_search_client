@@ -35,4 +35,4 @@ export const usePaymentTimer = (expiresAt: Date) => {
     }, [expiresAt, t]);
 
     return timeLeft;
-}; 
+};

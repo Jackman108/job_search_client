@@ -25,8 +25,8 @@ export interface BasePayment {
 /**
  * Типы статусов платежа
  */
-export type PaymentStatus = typeof PAYMENT_STATUS[keyof typeof PAYMENT_STATUS];
-export type PaymentMethod = typeof PAYMENT_METHOD[keyof typeof PAYMENT_METHOD];
+export type PaymentStatus = (typeof PAYMENT_STATUS)[keyof typeof PAYMENT_STATUS];
+export type PaymentMethod = (typeof PAYMENT_METHOD)[keyof typeof PAYMENT_METHOD];
 
 /**
  * Опции для выбора статуса платежа
@@ -42,4 +42,4 @@ export interface PaymentStatusOption {
 export interface PaymentMethodOption {
     value: PaymentMethod;
     label: string;
-} 
+}

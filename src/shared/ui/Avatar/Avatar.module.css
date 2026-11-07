@@ -1,7 +1,6 @@
 /* src/components/User/Avatar.module.css */
 .avatar {
     object-fit: cover;
-    border: 2px solid #ddd; 
+    border: 2px solid #ddd;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-  }
-  
+}

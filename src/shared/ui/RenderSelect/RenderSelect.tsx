@@ -1,8 +1,8 @@
-import {FC} from 'react';
+import { FC } from 'react';
 import styles from './RenderSelect.module.css';
-import {RenderSelectProps} from "@type";
+import { RenderSelectProps } from '@type';
 
-const RenderSelect: FC<RenderSelectProps> = ({label, options, value, name, onChange, isLoading, required}) => (
+const RenderSelect: FC<RenderSelectProps> = ({ label, options, value, name, onChange, isLoading, required }) => (
     <div className={styles.formGroup}>
         <label className={styles.label}>{label}:</label>
         <select
@@ -12,10 +12,11 @@ const RenderSelect: FC<RenderSelectProps> = ({label, options, value, name, onCha
             value={value}
             name={name}
             required={required}
-
         >
-            {options?.map(option => (
-                <option key={option.value} value={option.value}>{option.label}</option>
+            {options?.map((option) => (
+                <option key={option.value} value={option.value}>
+                    {option.label}
+                </option>
             ))}
         </select>
     </div>

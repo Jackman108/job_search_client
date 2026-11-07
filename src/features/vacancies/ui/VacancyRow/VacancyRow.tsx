@@ -1,12 +1,11 @@
-import {FC} from 'react';
-import {Button} from '@ui';
-import {TABLE_VACANCIES} from "@entities/vacancy";
-import {BUTTON_SYMBOL} from "@config";
+import { FC } from 'react';
+import { Button } from '@ui';
+import { TABLE_VACANCIES } from '@entities/vacancy';
+import { BUTTON_SYMBOL } from '@config';
 import styles from './VacancyRow.module.css';
-import {VacancyRowProps} from "@features/vacancies/props/Vacancies.props";
+import { VacancyRowProps } from '@features/vacancies/props/Vacancies.props';
 
-
-const VacancyRow: FC<VacancyRowProps> = ({vacancy, feedback, onMouseEnter, onMouseLeave, onDelete}) => {
+const VacancyRow: FC<VacancyRowProps> = ({ vacancy, feedback, onMouseEnter, onMouseLeave, onDelete }) => {
     return (
         <tr className={styles.VacancyRow}>
             <td>{vacancy.id}</td>
@@ -20,17 +19,12 @@ const VacancyRow: FC<VacancyRowProps> = ({vacancy, feedback, onMouseEnter, onMou
                     {vacancy.title_company}
                 </a>
             </td>
-            <td>
-                {vacancy.vacancy_status === 'true' ? TABLE_VACANCIES.tableResponded : TABLE_VACANCIES.tableMissed}
-            </td>
+            <td>{vacancy.vacancy_status === 'true' ? TABLE_VACANCIES.tableResponded : TABLE_VACANCIES.tableMissed}</td>
             <td>
                 <div className={styles.tableDate}>{vacancy.response_date_time}</div>
                 <div className={styles.tableDate}>{vacancy.response_date_date}</div>
             </td>
-            <td
-                onMouseEnter={(e) => onMouseEnter(e, feedback?.feedback_text || null)}
-                onMouseLeave={onMouseLeave}
-            >
+            <td onMouseEnter={(e) => onMouseEnter(e, feedback?.feedback_text || null)} onMouseLeave={onMouseLeave}>
                 {feedback?.response_status}
             </td>
             <td>

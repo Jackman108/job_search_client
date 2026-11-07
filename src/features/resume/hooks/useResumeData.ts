@@ -1,10 +1,10 @@
-import {FormEvent} from 'react';
-import {useResumeHandlersByType} from "./useResumeHandlersByType";
-import {useFetchByType} from "@api";
-import {QueryConfigProps} from "@type";
+import { FormEvent } from 'react';
+import { useResumeHandlersByType } from './useResumeHandlersByType';
+import { useFetchByType } from '@api';
+import { QueryConfigProps } from '@type';
 
 export const useResumeData = (config: QueryConfigProps['config']) => {
-    const {fetchedData, loading, error, loadData, saveItem, deleteItem} = useFetchByType(config);
+    const { fetchedData, loading, error, loadData, saveItem, deleteItem } = useFetchByType(config);
 
     const {
         formData,
@@ -14,18 +14,18 @@ export const useResumeData = (config: QueryConfigProps['config']) => {
         handleEditClick,
         handleCreateClick,
         handleCancelClick,
-        prepareDataForSubmit
+        prepareDataForSubmit,
     } = useResumeHandlersByType(fetchedData);
 
     const handleSubmit = async (e: FormEvent<HTMLFormElement>, type: string) => {
         e.preventDefault();
         try {
             const updatedFormData = prepareDataForSubmit(type, formData);
-            await saveItem({type, id: formData.id, formData: updatedFormData, isEditing: isEditing[type]});
+            await saveItem({ type, id: formData.id, formData: updatedFormData, isEditing: isEditing[type] });
             handleCancelClick(type);
             await loadData();
         } catch (error) {
-            console.error("Ошибка при сохранении:", error);
+            console.error('Ошибка при сохранении:', error);
         }
     };
 

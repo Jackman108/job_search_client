@@ -25,9 +25,19 @@ export interface UseCryptoPaymentHandlerReturn {
     /** Обработчик создания криптоплатежа */
     handleCryptoPayment: (paymentData: BasePayment) => Promise<CryptoPaymentDetails>;
     /** Обработчик проверки статуса криптоплатежа */
-    checkCryptoPaymentStatus: (paymentId: string, status: string, confirmations?: number, transactionHash?: string | null) => Promise<any>;
+    checkCryptoPaymentStatus: (
+        paymentId: string,
+        status: string,
+        confirmations?: number,
+        transactionHash?: string | null,
+    ) => Promise<any>;
     /** Обработчик обновления опций платежа */
-    updateCryptoOptions: (data: { paymentId: string; network?: string; crypto_address?: string; crypto_amount?: string }) => Promise<any>;
+    updateCryptoOptions: (data: {
+        paymentId: string;
+        network?: string;
+        crypto_address?: string;
+        crypto_amount?: string;
+    }) => Promise<any>;
     /** Флаг загрузки */
     loadingCryptoProcess: boolean;
     /** Ошибка процесса */
@@ -68,4 +78,4 @@ export interface UseClipboardReturn {
     isCopied: boolean;
     /** Функция сброса состояния копирования */
     resetCopyState: () => void;
-} 
+}

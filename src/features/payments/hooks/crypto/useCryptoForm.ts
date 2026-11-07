@@ -1,5 +1,10 @@
 import { ACTION_TYPES } from '@config';
-import { CRYPTO_EXCHANGE_RATES, CRYPTO_WALLET_ADDRESSES, CryptoPaymentDetails, PAYMENT_STATUS } from '@entities/payment';
+import {
+    CRYPTO_EXCHANGE_RATES,
+    CRYPTO_WALLET_ADDRESSES,
+    CryptoPaymentDetails,
+    PAYMENT_STATUS,
+} from '@entities/payment';
 import { getWalletUrl } from '@entities/payment/config/cryptoPaymentConfig';
 import { usePaymentTimer } from '@features/payments/hooks/base/usePaymentTimer';
 import { useCryptoPaymentLogic, usePaymentStatusHandler } from '@features/payments/hooks';
@@ -9,10 +14,7 @@ import { useEffect, useState } from 'react';
 /**
  * Hook for managing state and business logic for crypto payment details view.
  */
-export const useCryptoForm = (
-    details: CryptoPaymentDetails,
-    onUpdate?: (updated: CryptoPaymentDetails) => void
-) => {
+export const useCryptoForm = (details: CryptoPaymentDetails, onUpdate?: (updated: CryptoPaymentDetails) => void) => {
     const [showQR, setShowQR] = useState(true);
     const [isAddressCopied, setIsAddressCopied] = useState(false);
     const [isAmountCopied, setIsAmountCopied] = useState(false);
@@ -41,7 +43,7 @@ export const useCryptoForm = (
                 const resp = await cryptoSubmit({
                     id: details.id,
                     payment_id: details.payment_id,
-                    payment_status: PAYMENT_STATUS.EXPIRED
+                    payment_status: PAYMENT_STATUS.EXPIRED,
                 });
                 await handleProcessExpired(details);
                 const updated = (resp as any).data as CryptoPaymentDetails;
@@ -68,10 +70,10 @@ export const useCryptoForm = (
     const { copyToClipboard } = useClipboard();
     const { getConfirmationProgress, getConfirmationText } = useTransactionConfirmations(
         network,
-        details.confirmations
+        details.confirmations,
     );
 
-    const toggleQR = () => setShowQR(prev => !prev);
+    const toggleQR = () => setShowQR((prev) => !prev);
 
     const handleCopyAddress = async () => {
         await copyToClipboard(address);
@@ -96,7 +98,7 @@ export const useCryptoForm = (
                 payment_id: details.payment_id,
                 network: net,
                 crypto_address: addr,
-                crypto_amount: newAmt
+                crypto_amount: newAmt,
             });
             const updated: CryptoPaymentDetails = (resp as any).data;
             onUpdate?.(updated);
@@ -112,7 +114,7 @@ export const useCryptoForm = (
                 payment_id: details.payment_id,
                 network,
                 crypto_address: address,
-                crypto_amount: cryptoAmount
+                crypto_amount: cryptoAmount,
             });
             const updated: CryptoPaymentDetails = (resp as any).data;
             onUpdate?.(updated);
@@ -140,4 +142,4 @@ export const useCryptoForm = (
         loadingCryptoProcess,
         errorCryptoProcess,
     };
-}; 
+};

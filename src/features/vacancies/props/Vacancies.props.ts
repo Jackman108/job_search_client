@@ -1,7 +1,7 @@
-import {Dispatch, MouseEvent, SetStateAction} from "react";
-import {Errors} from "@type";
-import {Vacancy} from "@entities/vacancy";
-import {Feedback} from "@entities/feedback";
+import { Dispatch, MouseEvent, SetStateAction } from 'react';
+import { Errors } from '@type';
+import { Vacancy } from '@entities/vacancy';
+import { Feedback } from '@entities/feedback';
 
 export interface VacancySubmitParams {
     token: string | null;

@@ -6,13 +6,9 @@ import { useFetchByType } from '@api';
  * @param config - Конфигурация с ключом и endpoint'ом
  * @returns объект с данными, статусом загрузки, ошибкой и методами CRUD
  */
-export default function useEntityFetch<T>(
-    config: QueryConfigProps['config'],
-    keyOverride?: string
-) {
+export default function useEntityFetch<T>(config: QueryConfigProps['config'], keyOverride?: string) {
     const key = keyOverride || Object.keys(config)[0];
-    const { fetchedData = {}, loading, error, saveItem, deleteItem, loadData } =
-        useFetchByType(config);
+    const { fetchedData = {}, loading, error, saveItem, deleteItem, loadData } = useFetchByType(config);
     const data = (fetchedData[key] as T[]) || [];
     return { data, loading, error, saveItem, deleteItem, loadData };
-} 
+}

@@ -1,4 +1,4 @@
-import { ConfigItem } from "@type";
+import { ConfigItem } from '@type';
 
 export const paymentProcessConfig: Record<string, ConfigItem> = {
     webpay: {
@@ -8,7 +8,7 @@ export const paymentProcessConfig: Record<string, ConfigItem> = {
             payment_id: 'Payment ID',
             amount: 'Amount',
             payment_status: 'Payment Status',
-        }
+        },
     },
     erip: {
         title: 'ERIP',
@@ -17,7 +17,7 @@ export const paymentProcessConfig: Record<string, ConfigItem> = {
             payment_id: 'Payment ID',
             amount: 'Amount',
             payment_status: 'Payment Status',
-        }
+        },
     },
     nowpayments: {
         title: 'NowPayments',
@@ -34,7 +34,7 @@ export const paymentProcessConfig: Record<string, ConfigItem> = {
             created_at: 'Created At',
             expires_at: 'Expires At',
             transaction_hash: 'Transaction Hash',
-            wallet_provider: 'Wallet Provider'
-        }
-    }
+            wallet_provider: 'Wallet Provider',
+        },
+    },
 };

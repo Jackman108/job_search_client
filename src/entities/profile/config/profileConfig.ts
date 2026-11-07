@@ -1,4 +1,4 @@
-import {ConfigItem} from "@type";
+import { ConfigItem } from '@type';
 
 export const profileConfig: Record<string, ConfigItem> = {
     profile: {

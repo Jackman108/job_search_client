@@ -24,7 +24,7 @@ const useClipboard = (): UseClipboardReturn => {
     return {
         copyToClipboard,
         isCopied,
-        resetCopyState
+        resetCopyState,
     };
 };
 

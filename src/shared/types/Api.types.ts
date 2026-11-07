@@ -1,4 +1,4 @@
-import {ConfigItem} from "@type";
+import { ConfigItem } from '@type';
 
 export interface FetchByTypeConfig {
     config: ConfigItem | Record<string, ConfigItem>;

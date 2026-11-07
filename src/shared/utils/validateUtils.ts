@@ -1,5 +1,5 @@
-import {ERROR_MESSAGES} from "@config";
-import {Errors, ValidationEmail, ValidationPassword, ValidationSearchUrl} from "@type";
+import { ERROR_MESSAGES } from '@config';
+import { Errors, ValidationEmail, ValidationPassword, ValidationSearchUrl } from '@type';
 
 const EMAIL_REGEX = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 const PASSWORD_MIN_LENGTH = 6;
@@ -10,13 +10,12 @@ export const validateEmail = (email: string): ValidationEmail => {
     const errors: Errors = {};
     let isValidEmail = true;
 
-
     if (!EMAIL_REGEX.test(email)) {
         errors.email = ERROR_MESSAGES.email;
         isValidEmail = false;
     }
 
-    return {isValidEmail, emailError: errors};
+    return { isValidEmail, emailError: errors };
 };
 
 export const validateSearchUrl = (vacancyUrl: string): ValidationSearchUrl => {
@@ -26,7 +25,7 @@ export const validateSearchUrl = (vacancyUrl: string): ValidationSearchUrl => {
         errors.searchUrl = ERROR_MESSAGES.vacancyUrl;
         isValidSearchUrl = false;
     }
-    return {isValidSearchUrl, searchUrlError: errors};
+    return { isValidSearchUrl, searchUrlError: errors };
 };
 
 export const validatePassword = (password: string): ValidationPassword => {
@@ -45,6 +44,5 @@ export const validatePassword = (password: string): ValidationPassword => {
         errors.password = ERROR_MESSAGES.passwordNumber;
         isValidPassword = false;
     }
-    return {isValidPassword, passwordError: errors};
+    return { isValidPassword, passwordError: errors };
 };
-

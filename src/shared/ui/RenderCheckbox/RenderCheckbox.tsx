@@ -10,14 +10,7 @@ interface RenderCheckboxProps {
     error?: string;
 }
 
-const RenderCheckbox: React.FC<RenderCheckboxProps> = ({
-                                                           label,
-                                                           name,
-                                                           options,
-                                                           selectedValues,
-                                                           onChange,
-                                                           error,
-                                                       }) => {
+const RenderCheckbox: React.FC<RenderCheckboxProps> = ({ label, name, options, selectedValues, onChange, error }) => {
     return (
         <div className={styles.checkboxGroup}>
             <label className={styles.label}>{label}:</label>

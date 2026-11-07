@@ -1,12 +1,12 @@
-import {useCallback, useEffect} from 'react';
-import {useFetchByType} from "@api";
-import {profileConfig} from "@entities/profile/config/profileConfig";
-import {UserProfile} from "@entities/profile";
-import {useAuth} from '@app/providers/auth/useAuthContext';
-import {UseProfileHandlersProps} from "@features/profile/props/Profile.props";
+import { useCallback, useEffect } from 'react';
+import { useFetchByType } from '@api';
+import { profileConfig } from '@entities/profile/config/profileConfig';
+import { UserProfile } from '@entities/profile';
+import { useAuth } from '@app/providers/auth/useAuthContext';
+import { UseProfileHandlersProps } from '@features/profile/props/Profile.props';
 
 export const useProfile = (): UseProfileHandlersProps => {
-    const {token} = useAuth();
+    const { token } = useAuth();
     const {
         fetchedData,
         loading: profileLoading,
@@ -27,7 +27,7 @@ export const useProfile = (): UseProfileHandlersProps => {
     }, [fetchProfile]);
 
     return {
-        userProfile: fetchedData?.profile as UserProfile || null,
+        userProfile: (fetchedData?.profile as UserProfile) || null,
         profileLoading,
         profileError,
         handleUpdateProfile,

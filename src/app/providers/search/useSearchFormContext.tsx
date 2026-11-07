@@ -1,5 +1,5 @@
-import {createContext, useContext} from 'react';
-import {SearchFormState} from "@app/providers/search/SearchFormProvider.props";
+import { createContext, useContext } from 'react';
+import { SearchFormState } from '@app/providers/search/SearchFormProvider.props';
 
 const SearchFormContext = createContext<SearchFormState | undefined>(undefined);
 

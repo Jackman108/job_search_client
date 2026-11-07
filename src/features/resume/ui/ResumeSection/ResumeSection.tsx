@@ -1,14 +1,14 @@
-import {Link} from 'react-router-dom';
-import {Button, UnauthorizedMessage} from '@ui';
-import {useResumeData} from '../../hooks/useResumeData';
+import { Link } from 'react-router-dom';
+import { Button, UnauthorizedMessage } from '@ui';
+import { useResumeData } from '../../hooks/useResumeData';
 import styles from './ResumeSection.module.css';
 import ResumeChange from '@features/resume/ui/ResumeChange/ResumeChange';
 import ResumeView from '../ResumeView/ResumeView';
-import {LOCALES} from "@config";
-import {resumeConfig} from "@entities/resume";
+import { LOCALES } from '@config';
+import { resumeConfig } from '@entities/resume';
 
 const ResumeSection = () => {
-    const config = resumeConfig
+    const config = resumeConfig;
 
     const {
         fetchedData,
@@ -26,12 +26,15 @@ const ResumeSection = () => {
     } = useResumeData(config);
 
     if (loading) return <div>{LOCALES.LOADING}</div>;
-    if (error) return <UnauthorizedMessage/>;
+    if (error) return <UnauthorizedMessage />;
     const hasResume = fetchedData.resume && !isEditing.resume && !isCreating.resume;
 
     return (
         <div>
-            <Link to="/" className="home-button"> 🏠 </Link>
+            <Link to="/" className="home-button">
+                {' '}
+                🏠{' '}
+            </Link>
             {Object.entries(config).map(([type, item]) => {
                 if (!hasResume && type !== 'resume') {
                     return null;
@@ -47,7 +50,7 @@ const ResumeSection = () => {
                                 data={fetchedData[type]}
                                 config={config}
                                 onEditClick={handleEditClick}
-                                onDeleteClick={() => deleteItem({type})}
+                                onDeleteClick={() => deleteItem({ type })}
                                 onCreateClick={handleCreateClick}
                             />
                         )}

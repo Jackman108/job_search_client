@@ -1,11 +1,11 @@
-import React, {ChangeEvent} from 'react';
-import {SignInProps} from '../../types/Auth.props';
-import {Button, RenderInput} from '@ui';
-import {useTranslation} from "react-i18next";
+import React, { ChangeEvent } from 'react';
+import { SignInProps } from '../../types/Auth.props';
+import { Button, RenderInput } from '@ui';
+import { useTranslation } from 'react-i18next';
 import { useLocalStorage } from '@hooks';
 
-const SignIn: React.FC<SignInProps> = ({onSignIn, error, loading}) => {
-    const {t} = useTranslation('auth');
+const SignIn: React.FC<SignInProps> = ({ onSignIn, error, loading }) => {
+    const { t } = useTranslation('auth');
 
     // Сохраняем и подставляем последние введённые данные для входа
     const [email, setEmail] = useLocalStorage<string>('lastEmail', '');

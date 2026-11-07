@@ -1,41 +1,41 @@
 {
-  "payments": {
-    "title": "Payments",
-    "addPayment": "Add payment",
-    "hideForm": "Hide form",
-    "noData": "No payment data",
-    "actions": {
-      "edit": "Edit",
-      "delete": "Delete",
-      "deleteConfirm": "Are you sure you want to delete this payment?"
+    "payments": {
+        "title": "Payments",
+        "addPayment": "Add payment",
+        "hideForm": "Hide form",
+        "noData": "No payment data",
+        "actions": {
+            "edit": "Edit",
+            "delete": "Delete",
+            "deleteConfirm": "Are you sure you want to delete this payment?"
+        }
+    },
+    "tableHeaders": {
+        "id": "ID",
+        "subscriptionId": "Subscription ID",
+        "amount": "Amount",
+        "paymentStatus": "Payment status",
+        "paymentMethod": "Payment method",
+        "createdAt": "Created at",
+        "updatedAt": "Updated at",
+        "actions": "Actions"
+    },
+    "form": {
+        "userId": "User ID",
+        "subscriptionId": "Subscription ID",
+        "amount": "Amount",
+        "paymentStatus": "Payment status",
+        "paymentMethod": "Payment method",
+        "pay": "Pay",
+        "save": "Save",
+        "create": "Create",
+        "cancel": "Cancel"
+    },
+    "common": {
+        "loading": "Loading...",
+        "error": "Error",
+        "success": "Success",
+        "retry": "Retry",
+        "cancel": "Cancel"
     }
-  },
-  "tableHeaders": {
-    "id": "ID",
-    "subscriptionId": "Subscription ID",
-    "amount": "Amount",
-    "paymentStatus": "Payment status",
-    "paymentMethod": "Payment method",
-    "createdAt": "Created at",
-    "updatedAt": "Updated at",
-    "actions": "Actions"
-  },
-  "form": {
-    "userId": "User ID",
-    "subscriptionId": "Subscription ID",
-    "amount": "Amount",
-    "paymentStatus": "Payment status",
-    "paymentMethod": "Payment method",
-    "pay": "Pay",
-    "save": "Save",
-    "create": "Create",
-    "cancel": "Cancel"
-  },
-  "common": {
-    "loading": "Loading...",
-    "error": "Error",
-    "success": "Success",
-    "retry": "Retry",
-    "cancel": "Cancel"
-  }
 }

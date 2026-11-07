@@ -11,7 +11,6 @@ const formatVacancy = (vacancy: Vacancy): Vacancy => ({
     response_date_date: formatDate(vacancy.response_date).date,
 });
 
-
 const useFetchVacancies = () => {
     const { fetchedData, loading, error, deleteItem, saveItem, loadData } = useFetchByType(vacancyConfig);
 
@@ -23,14 +22,14 @@ const useFetchVacancies = () => {
         async (id: number) => {
             await deleteItem({ type: ACTION_TYPES.VACANCY, id });
         },
-        [deleteItem]
+        [deleteItem],
     );
 
     const saveVacancy = useCallback(
         async (formData: Partial<Vacancy>, isEditing: boolean, id?: number) => {
             await saveItem({ type: ACTION_TYPES.VACANCY, id, formData, isEditing });
         },
-        [saveItem]
+        [saveItem],
     );
 
     return { vacancies, loading, error, deleteVacancy, saveVacancy, loadData };

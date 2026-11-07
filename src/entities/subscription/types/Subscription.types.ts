@@ -1,4 +1,4 @@
-import {SUBSCRIPTION_TYPES} from "@entities/subscription";
+import { SUBSCRIPTION_TYPES } from '@entities/subscription';
 
 export interface SubscriptionTypes {
     id?: string;
@@ -11,7 +11,7 @@ export interface SubscriptionTypes {
     updated_at?: Date;
 }
 
-export type SubscriptionVariant = typeof SUBSCRIPTION_TYPES[keyof typeof SUBSCRIPTION_TYPES];
+export type SubscriptionVariant = (typeof SUBSCRIPTION_TYPES)[keyof typeof SUBSCRIPTION_TYPES];
 
 export interface SubscriptionVariantOption {
     value: SubscriptionVariant;

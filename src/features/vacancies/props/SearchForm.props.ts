@@ -1,5 +1,5 @@
-import {Dispatch, SetStateAction} from 'react';
-import {Errors, FormOption} from "@type";
+import { Dispatch, SetStateAction } from 'react';
+import { Errors, FormOption } from '@type';
 
 export interface FormValues {
     email: string;
@@ -20,7 +20,7 @@ export interface SearchSubmitParams {
     position?: string;
     message?: string;
     vacancyUrl?: string;
-    setErrors: Dispatch<SetStateAction<Errors>>
+    setErrors: Dispatch<SetStateAction<Errors>>;
     setIsLoading: (loading: boolean) => void;
     endpoint: string;
 }

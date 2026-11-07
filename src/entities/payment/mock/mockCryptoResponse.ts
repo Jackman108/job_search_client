@@ -14,10 +14,10 @@ export const mockCryptoResponse: CryptoPaymentDetails = {
     network: 'BTC',
     payment_url: 'bitcoin:bc1qxy2kgdygjrsqtzq2n0yrf2493p83kkfjhx0wlh?amount=0.00123456',
     transaction_hash: null,
-    wallet_provider: 'mock'
+    wallet_provider: 'mock',
 };
 
-export const mockCryptoPaymentMethods = SUPPORTED_CRYPTO_NETWORKS.map(network => ({
+export const mockCryptoPaymentMethods = SUPPORTED_CRYPTO_NETWORKS.map((network) => ({
     id: network.value,
     name: network.label,
     icon: `/assets/crypto/${network.value.toLowerCase()}.svg`,
@@ -25,5 +25,5 @@ export const mockCryptoPaymentMethods = SUPPORTED_CRYPTO_NETWORKS.map(network =>
     maxAmount: 1.0,
     fee: 0.0001,
     processingTime: '10-30 minutes',
-    confirmations: network.value === 'BTC' ? 3 : 12
-})); 
+    confirmations: network.value === 'BTC' ? 3 : 12,
+}));

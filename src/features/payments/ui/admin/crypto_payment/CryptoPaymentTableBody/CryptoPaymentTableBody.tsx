@@ -6,8 +6,11 @@ import { formatDate } from '@utils';
 import styles from '../CryptoPaymentTable/CryptoPaymentTable.module.css';
 import { CryptoPaymentTableBodyProps } from '@entities/payment/types/components.types';
 
-
-const CryptoPaymentTableBody: React.FC<CryptoPaymentTableBodyProps> = ({ cryptoPaymentData, handleEditClick, handleDelete }) => {
+const CryptoPaymentTableBody: React.FC<CryptoPaymentTableBodyProps> = ({
+    cryptoPaymentData,
+    handleEditClick,
+    handleDelete,
+}) => {
     const { t } = useTranslation('cryptoPayments');
     return (
         <table className={styles.table}>
@@ -29,7 +32,7 @@ const CryptoPaymentTableBody: React.FC<CryptoPaymentTableBodyProps> = ({ cryptoP
                 </tr>
             </thead>
             <tbody>
-                {cryptoPaymentData.map(crypto => (
+                {cryptoPaymentData.map((crypto) => (
                     <tr key={crypto.id}>
                         <td>{crypto.id}</td>
                         <td>{crypto.payment_id}</td>
@@ -47,9 +50,7 @@ const CryptoPaymentTableBody: React.FC<CryptoPaymentTableBodyProps> = ({ cryptoP
                             <Button onClick={() => handleEditClick(ACTION_TYPES.CRYPTO, crypto)}>
                                 {t('tableActions.edit')}
                             </Button>
-                            <Button onClick={() => handleDelete(crypto.id!)}>
-                                {t('tableActions.delete')}
-                            </Button>
+                            <Button onClick={() => handleDelete(crypto.id!)}>{t('tableActions.delete')}</Button>
                         </td>
                     </tr>
                 ))}
@@ -58,4 +59,4 @@ const CryptoPaymentTableBody: React.FC<CryptoPaymentTableBodyProps> = ({ cryptoP
     );
 };
 
-export default CryptoPaymentTableBody; 
+export default CryptoPaymentTableBody;

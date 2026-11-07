@@ -1,18 +1,18 @@
-import {FC} from 'react';
+import { FC } from 'react';
 import styles from './RenderInput.module.css';
-import {RenderInputProps} from "@type";
+import { RenderInputProps } from '@type';
 
 const RenderInput: FC<RenderInputProps> = ({
-                                               label,
-                                               name,
-                                               value,
-                                               onChange,
-                                               error,
-                                               isLoading,
-                                               type = 'text',
-                                               placeholder,
-                                               required
-                                           }) => {
+    label,
+    name,
+    value,
+    onChange,
+    error,
+    isLoading,
+    type = 'text',
+    placeholder,
+    required,
+}) => {
     const autoCompleteValue = type === 'password' ? 'current-password' : 'off';
     return (
         <div className={styles.formGroup}>
@@ -26,9 +26,10 @@ const RenderInput: FC<RenderInputProps> = ({
                 placeholder={placeholder || ''}
                 required={required}
                 autoComplete={autoCompleteValue}
-
             />
-            <label htmlFor={name} className={styles.label}>{label}:</label>
+            <label htmlFor={name} className={styles.label}>
+                {label}:
+            </label>
             {error && <p className={styles.errorText}>{error}</p>}
         </div>
     );

@@ -14,7 +14,11 @@ export const useTransactionConfirmations = (network: string, confirmations?: num
      * Получает минимальное количество подтверждений для сети
      */
     const getMinConfirmations = () => {
-        return CRYPTO_PAYMENT_SETTINGS.minConfirmations[network as keyof typeof CRYPTO_PAYMENT_SETTINGS.minConfirmations] || 3;
+        return (
+            CRYPTO_PAYMENT_SETTINGS.minConfirmations[
+                network as keyof typeof CRYPTO_PAYMENT_SETTINGS.minConfirmations
+            ] || 3
+        );
     };
 
     /**
@@ -33,13 +37,13 @@ export const useTransactionConfirmations = (network: string, confirmations?: num
         if (!confirmations) return null;
         return t('crypto.confirmations', {
             current: confirmations,
-            required: getMinConfirmations()
+            required: getMinConfirmations(),
         });
     };
 
     return {
         getMinConfirmations,
         getConfirmationProgress,
-        getConfirmationText
+        getConfirmationText,
     };
-}; 
+};

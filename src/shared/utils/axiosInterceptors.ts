@@ -7,12 +7,12 @@ import { AxiosInstance } from 'axios';
 export function setupNetworkErrorInterceptor(
     instance: AxiosInstance,
     redirectPath: string = '/server-error',
-    throttleMs: number = 10000
+    throttleMs: number = 10000,
 ): void {
     let lastRedirect = 0;
     instance.interceptors.response.use(
-        response => response,
-        error => {
+        (response) => response,
+        (error) => {
             if (!error.response && window.location.pathname !== redirectPath) {
                 const now = Date.now();
                 if (now - lastRedirect > throttleMs) {
@@ -21,6 +21,6 @@ export function setupNetworkErrorInterceptor(
                 }
             }
             return Promise.reject(error);
-        }
+        },
     );
-} 
+}

@@ -1,4 +1,4 @@
-import {businessTripReadiness} from "@entities/resume/constants";
+import { businessTripReadiness } from '@entities/resume/constants';
 
 export const formatValue = (key: string, value: any): string => {
     switch (key) {

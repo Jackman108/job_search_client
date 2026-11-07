@@ -1,9 +1,9 @@
 import React from 'react';
-import { Button, RenderSelect } from "@ui";
-import { useTranslation } from "react-i18next";
-import { PAYMENT_METHOD_OPTIONS, PAYMENT_METHOD } from "@entities/payment";
-import { PaymentFormProps } from "@entities/payment";
-import { usePaymentForm } from '@features/payments/hooks';     
+import { Button, RenderSelect } from '@ui';
+import { useTranslation } from 'react-i18next';
+import { PAYMENT_METHOD_OPTIONS, PAYMENT_METHOD } from '@entities/payment';
+import { PaymentFormProps } from '@entities/payment';
+import { usePaymentForm } from '@features/payments/hooks';
 import styles from './PaymentSelectionForm.module.css';
 
 /**
@@ -12,13 +12,7 @@ import styles from './PaymentSelectionForm.module.css';
  */
 const PaymentSelectionForm: React.FC<PaymentFormProps> = (props) => {
     const { t } = useTranslation('payments');
-    const {
-        formData,
-        handleChange,
-        handleSubmit,
-        handleCancel,
-        isLoading
-    } = usePaymentForm(props);
+    const { formData, handleChange, handleSubmit, handleCancel, isLoading } = usePaymentForm(props);
 
     return (
         <form onSubmit={handleSubmit} className={styles.form}>
@@ -31,17 +25,12 @@ const PaymentSelectionForm: React.FC<PaymentFormProps> = (props) => {
                 isLoading={isLoading}
             />
             <div className={styles.buttonGroup}>
-                <Button 
-                    type="submit" 
-                    variant="primary" 
-                    disabled={isLoading}
-                    aria-label={t('form.pay')}
-                >
+                <Button type="submit" variant="primary" disabled={isLoading} aria-label={t('form.pay')}>
                     {t('form.pay')}
                 </Button>
-                <Button 
-                    type="button" 
-                    variant="secondary" 
+                <Button
+                    type="button"
+                    variant="secondary"
                     onClick={handleCancel}
                     disabled={isLoading}
                     aria-label={t('form.cancel')}

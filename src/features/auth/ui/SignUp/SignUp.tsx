@@ -1,18 +1,19 @@
-import React, {ChangeEvent, useState} from 'react';
-import {SignUpProps} from '@features/auth/types/Auth.props';
-import {Button, RenderInput} from '@ui';
-import {useTranslation} from "react-i18next";
+import React, { ChangeEvent, useState } from 'react';
+import { SignUpProps } from '@features/auth/types/Auth.props';
+import { Button, RenderInput } from '@ui';
+import { useTranslation } from 'react-i18next';
 
-const SignUp: React.FC<SignUpProps> = ({onSignUp, error, loading}) => {
-    const {t} = useTranslation('auth');
+const SignUp: React.FC<SignUpProps> = ({ onSignUp, error, loading }) => {
+    const { t } = useTranslation('auth');
 
     const [email, setEmail] = useState<string>('');
     const [password, setPassword] = useState<string>('');
     const [passwordRepeat, setPasswordRepeat] = useState<string>('');
 
-    const handleChange = (setter: React.Dispatch<React.SetStateAction<string>>) => (e: ChangeEvent<HTMLInputElement>) => {
-        setter(e.target.value);
-    };
+    const handleChange =
+        (setter: React.Dispatch<React.SetStateAction<string>>) => (e: ChangeEvent<HTMLInputElement>) => {
+            setter(e.target.value);
+        };
 
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();

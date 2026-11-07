@@ -17,7 +17,7 @@ export function useEntityPost<TConfig extends Record<string, ConfigItem>>(config
      */
     const post = async <K extends keyof TConfig>(
         type: K,
-        options: { id?: string; formData: any; isEditing?: boolean }
+        options: { id?: string; formData: any; isEditing?: boolean },
     ) => {
         return saveItem({
             type: String(type),
@@ -28,4 +28,4 @@ export function useEntityPost<TConfig extends Record<string, ConfigItem>>(config
     };
 
     return { post, loading, error };
-} 
+}

@@ -1,6 +1,6 @@
-import {Dispatch, SetStateAction} from "react";
-import {Errors} from "@type";
-import {Feedback} from "@entities/feedback";
+import { Dispatch, SetStateAction } from 'react';
+import { Errors } from '@type';
+import { Feedback } from '@entities/feedback';
 
 export interface FeedbackHeaderProps {
     handleSort: (key: keyof Feedback) => void;
@@ -19,5 +19,3 @@ export interface HandleFeedbackParams {
     setErrors: Dispatch<SetStateAction<Errors>>;
     setIsLoading: Dispatch<SetStateAction<boolean>>;
 }
-
-

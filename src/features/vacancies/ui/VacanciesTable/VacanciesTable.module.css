@@ -1,29 +1,30 @@
 .vacanciesTable {
-	font-family: Arial, sans-serif;
-	margin: 0 10vw;
+    font-family: Arial, sans-serif;
+    margin: 0 10vw;
 }
 
 .vacanciesTable h1 {
-	text-align: center;
-	margin: 20px 0;
+    text-align: center;
+    margin: 20px 0;
 }
 
 .vacanciesTable table {
-	width: 100%;
-	border-collapse: collapse;
-	margin: 0 auto;
+    width: 100%;
+    border-collapse: collapse;
+    margin: 0 auto;
 }
 
-.vacanciesTable th, .vacanciesTable td {
-	border: 1px solid #ddd;
-	padding: 8px;
-	text-align: left;
+.vacanciesTable th,
+.vacanciesTable td {
+    border: 1px solid #ddd;
+    padding: 8px;
+    text-align: left;
 }
 
 .vacanciesTable tr:nth-child(even) {
-	background-color: #f9f9f9;
+    background-color: #f9f9f9;
 }
 
 .vacanciesTable tr:hover {
-	background-color: #f1f1f1;
+    background-color: #f1f1f1;
 }

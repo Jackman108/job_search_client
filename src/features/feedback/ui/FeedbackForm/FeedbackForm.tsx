@@ -1,13 +1,13 @@
-import React, {FC} from "react";
-import {PanelProps} from "@type";
-import styles from "@features/vacancies/ui/SearchForm/SearchForm.module.css";
-import {Button, FormContainer, ManagementSection, RenderInput} from "@ui";
-import useFeedbackLogic from "../../hooks/useFeedbackLogic";
-import {useTranslation} from "react-i18next";
-import {FORM_CONFIG} from "@entities/search";
+import React, { FC } from 'react';
+import { PanelProps } from '@type';
+import styles from '@features/vacancies/ui/SearchForm/SearchForm.module.css';
+import { Button, FormContainer, ManagementSection, RenderInput } from '@ui';
+import useFeedbackLogic from '../../hooks/useFeedbackLogic';
+import { useTranslation } from 'react-i18next';
+import { FORM_CONFIG } from '@entities/search';
 
-const FeedbackForm: FC<PanelProps> = ({onClose}) => {
-    const {t} = useTranslation('auth');
+const FeedbackForm: FC<PanelProps> = ({ onClose }) => {
+    const { t } = useTranslation('auth');
 
     const {
         token,
@@ -31,7 +31,7 @@ const FeedbackForm: FC<PanelProps> = ({onClose}) => {
                 title="Управление Аккаунтами"
                 selectedId={selectedAuthId}
                 setSelectedId={setSelectedAuthId}
-                items={searchAuths?.map(auth => ({id: auth.id || 0, label: auth.email})) || []}
+                items={searchAuths?.map((auth) => ({ id: auth.id || 0, label: auth.email })) || []}
                 onCreate={handleCreateAuth}
                 onUpdate={handleUpdateAuth}
                 onDelete={handleDeleteAuth}
@@ -58,11 +58,7 @@ const FeedbackForm: FC<PanelProps> = ({onClose}) => {
                 </div>
 
                 <div className={styles.buttonsContainer}>
-                    <Button
-                        className={styles.button}
-                        type="submit"
-                        disabled={isLoading}
-                    >
+                    <Button className={styles.button} type="submit" disabled={isLoading}>
                         {isLoading ? t('form.isLoading') : t('button.start')}
                     </Button>
                     <Button

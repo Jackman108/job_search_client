@@ -1,4 +1,4 @@
-import {ConfigItem} from "@type";
+import { ConfigItem } from '@type';
 
 export const paymentConfig: Record<string, ConfigItem> = {
     payment: {
@@ -12,8 +12,7 @@ export const paymentConfig: Record<string, ConfigItem> = {
             payment_status: 'Payment Status',
             payment_method: 'Payment Method',
             created_at: 'Created At',
-            updated_at: 'Updated At'
+            updated_at: 'Updated At',
         },
     },
 };
-

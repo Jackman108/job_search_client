@@ -1,14 +1,14 @@
-import React, {useEffect} from 'react';
-import {SubscriptionFormProps} from '@features/subscription/props/Subscription.props';
-import {useFormState} from "@hooks";
-import {Button, RenderInput, RenderSelect} from "@ui";
-import {useTranslation} from 'react-i18next';
-import {formatDate} from "@utils";
-import {SUBSCRIPTION_TYPE_OPTIONS, SubscriptionTypes} from "@entities/subscription";
+import React, { useEffect } from 'react';
+import { SubscriptionFormProps } from '@features/subscription/props/Subscription.props';
+import { useFormState } from '@hooks';
+import { Button, RenderInput, RenderSelect } from '@ui';
+import { useTranslation } from 'react-i18next';
+import { formatDate } from '@utils';
+import { SUBSCRIPTION_TYPE_OPTIONS, SubscriptionTypes } from '@entities/subscription';
 
-const SubscriptionForm: React.FC<SubscriptionFormProps> = ({initialData, onSubmit, handleCancelClick, isLoading}) => {
-    const {formData, setFormData} = useFormState<Partial<SubscriptionTypes>>();
-    const {t} = useTranslation('subscriptions');
+const SubscriptionForm: React.FC<SubscriptionFormProps> = ({ initialData, onSubmit, handleCancelClick, isLoading }) => {
+    const { formData, setFormData } = useFormState<Partial<SubscriptionTypes>>();
+    const { t } = useTranslation('subscriptions');
 
     useEffect(() => {
         if (initialData) {
@@ -24,8 +24,8 @@ const SubscriptionForm: React.FC<SubscriptionFormProps> = ({initialData, onSubmi
     }, [initialData, setFormData]);
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
-        const {name, value} = e.target;
-        setFormData(prev => ({...prev, [name]: value}));
+        const { name, value } = e.target;
+        setFormData((prev) => ({ ...prev, [name]: value }));
     };
 
     const handleSubmit = (e: React.FormEvent) => {
@@ -77,11 +77,15 @@ const SubscriptionForm: React.FC<SubscriptionFormProps> = ({initialData, onSubmi
                 isLoading={isLoading}
             />
 
-
             <Button type="submit" variant="primary" disabled={isLoading}>
                 {initialData ? t('form.save') : t('form.create')}
             </Button>
-            <Button type="button" variant="secondary" onClick={() => handleCancelClick(formData.id)} disabled={isLoading}>
+            <Button
+                type="button"
+                variant="secondary"
+                onClick={() => handleCancelClick(formData.id)}
+                disabled={isLoading}
+            >
                 {t('form.cancel')}
             </Button>
         </form>

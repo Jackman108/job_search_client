@@ -1,7 +1,16 @@
-import { usePostByType } from "@api";
-import { BasePayment, CryptoPaymentDetails, mockWebPayResponse, PAYMENT_METHOD, PAYMENT_STATUS, paymentProcessConfig, UseProcessHandlerReturn, WebPayResponse } from "@entities/payment";
+import { usePostByType } from '@api';
+import {
+    BasePayment,
+    CryptoPaymentDetails,
+    mockWebPayResponse,
+    PAYMENT_METHOD,
+    PAYMENT_STATUS,
+    paymentProcessConfig,
+    UseProcessHandlerReturn,
+    WebPayResponse,
+} from '@entities/payment';
 import { useCryptoPaymentLogic } from '@features/payments/hooks';
-import { usePaymentStatusHandler } from "@features/payments/hooks/base/usePaymentStatusHandler";
+import { usePaymentStatusHandler } from '@features/payments/hooks/base/usePaymentStatusHandler';
 import { buildCryptoDetails } from '@features/payments/utils/buildCryptoDetails';
 
 /**
@@ -27,7 +36,7 @@ export const useProcessHandler = (): UseProcessHandlerReturn => {
      * Обрабатывает платежный процесс
      * В зависимости от метода оплаты (WebPay или Crypto) выполняет соответствующие действия
      * В dev режиме использует моковые данные, в prod - реальные запросы
-     * 
+     *
      * @param paymentData - Данные платежа для обработки
      * @returns Promise с ответом от платежной системы
      * @throws Error если произошла ошибка при обработке платежа
@@ -48,7 +57,9 @@ export const useProcessHandler = (): UseProcessHandlerReturn => {
                     // В dev режиме сначала проверяем существующие незавершенные криптоплатежи
                     await reloadCryptoPayments();
                     const existingDev = cryptoPayments?.find(
-                        (p: CryptoPaymentDetails) => p.payment_id === paymentData.id && p.payment_status.toLowerCase() === PAYMENT_STATUS.PENDING
+                        (p: CryptoPaymentDetails) =>
+                            p.payment_id === paymentData.id &&
+                            p.payment_status.toLowerCase() === PAYMENT_STATUS.PENDING,
                     );
                     if (existingDev) {
                         // Если есть незавершенный, возвращаем без создания нового
@@ -67,7 +78,9 @@ export const useProcessHandler = (): UseProcessHandlerReturn => {
                             // при дубликате перезагружаем и возвращаем существующий
                             await reloadCryptoPayments();
                             const existingAfter = cryptoPayments?.find(
-                                (p: CryptoPaymentDetails) => p.id === paymentData.id && p.payment_status.toLowerCase() === PAYMENT_STATUS.PENDING
+                                (p: CryptoPaymentDetails) =>
+                                    p.id === paymentData.id &&
+                                    p.payment_status.toLowerCase() === PAYMENT_STATUS.PENDING,
                             );
                             if (existingAfter) {
                                 return existingAfter;
@@ -83,7 +96,7 @@ export const useProcessHandler = (): UseProcessHandlerReturn => {
                 }
             } else {
                 // В продакшене делаем реальный запрос
-                response = await processRequest({
+                response = (await processRequest({
                     type: paymentSystem,
                     formData: {
                         id: paymentData.id,
@@ -93,7 +106,7 @@ export const useProcessHandler = (): UseProcessHandlerReturn => {
                         payment_status: PAYMENT_STATUS.PENDING,
                     },
                     isEditing: false,
-                }) as WebPayResponse | CryptoPaymentDetails;
+                })) as WebPayResponse | CryptoPaymentDetails;
                 // В продакшене для криптоплатежей сохраняем в БД через общий хук
                 if (paymentSystem === PAYMENT_METHOD.CRYPTO && 'crypto_address' in response) {
                     try {
@@ -114,7 +127,7 @@ export const useProcessHandler = (): UseProcessHandlerReturn => {
                 } else {
                     await handleProcessFailure(response);
                 }
-            } else if ('page' in response && response.page === "success") {
+            } else if ('page' in response && response.page === 'success') {
                 await handleProcessSuccess(paymentData);
             } else {
                 await handleProcessFailure(paymentData);

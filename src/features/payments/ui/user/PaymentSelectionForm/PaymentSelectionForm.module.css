@@ -1,16 +1,16 @@
 .form {
-	max-width: 400px;
-	margin: 20px auto;
-	padding: 100px 20px;
-	border: 1px solid #ddd;
-	border-radius: 8px;
-	display: flex;
-	flex-direction: column;
-	gap: 15px;
+    max-width: 400px;
+    margin: 20px auto;
+    padding: 100px 20px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
 }
 
 .buttonGroup {
-	display: flex;
-	gap: 10px;
-	justify-content: center;
+    display: flex;
+    gap: 10px;
+    justify-content: center;
 }

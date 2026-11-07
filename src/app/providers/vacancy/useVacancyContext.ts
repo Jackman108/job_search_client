@@ -1,5 +1,5 @@
 import { createContext, useContext } from 'react';
-import { VacancyContextType } from "@app/providers/vacancy/VacancyProvider.props";
+import { VacancyContextType } from '@app/providers/vacancy/VacancyProvider.props';
 
 const TableContext = createContext<VacancyContextType | undefined>(undefined);
 

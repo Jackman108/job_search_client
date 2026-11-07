@@ -1,15 +1,15 @@
 import React from 'react';
 import styles from './SubscriptionOption.module.css';
-import {SubscriptionOptionProps} from "@features/subscription/props/Subscription.props";
+import { SubscriptionOptionProps } from '@features/subscription/props/Subscription.props';
 
 const SubscriptionOption: React.FC<SubscriptionOptionProps> = ({
-                                                                   label,
-                                                                   price,
-                                                                   currency,
-                                                                   isSelected,
-                                                                   onClick,
-                                                                   style,
-                                                               }) => {
+    label,
+    price,
+    currency,
+    isSelected,
+    onClick,
+    style,
+}) => {
     return (
         <article
             className={`${styles.card} ${isSelected ? styles.selected : ''}`}
@@ -21,7 +21,9 @@ const SubscriptionOption: React.FC<SubscriptionOptionProps> = ({
             onKeyDown={(e) => e.key === 'Enter' && onClick()}
         >
             <h3 className={styles.label}>{label}</h3>
-            <p className={styles.price}>{price} {currency}</p>
+            <p className={styles.price}>
+                {price} {currency}
+            </p>
         </article>
     );
 };

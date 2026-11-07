@@ -1,23 +1,21 @@
 import React from 'react';
-import ReactDOM, {Root} from 'react-dom/client';
+import ReactDOM, { Root } from 'react-dom/client';
 import './index.css';
 import reportWebVitals from './reportWebVitals';
-import {QueryClient, QueryClientProvider} from '@tanstack/react-query';
-import {ReactQueryDevtools} from '@tanstack/react-query-devtools'
-import App from "@app/ui/App";
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
+import App from '@app/ui/App';
 
 const queryClient = new QueryClient();
 
-const root: Root = ReactDOM.createRoot(
-    document.getElementById('root') as HTMLElement
-);
+const root: Root = ReactDOM.createRoot(document.getElementById('root') as HTMLElement);
 root.render(
     <React.StrictMode>
         <QueryClientProvider client={queryClient}>
-            <App/>
-            <ReactQueryDevtools initialIsOpen buttonPosition={"top-right"}/>
+            <App />
+            <ReactQueryDevtools initialIsOpen buttonPosition={'top-right'} />
         </QueryClientProvider>
-    </React.StrictMode>
+    </React.StrictMode>,
 );
 
 reportWebVitals();

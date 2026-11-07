@@ -1,4 +1,4 @@
-import {FormConfig} from "@features/vacancies/props/SearchForm.props";
+import { FormConfig } from '@features/vacancies/props/SearchForm.props';
 
 export const DEFAULT_SEARCH = {
     text: 'Middle frontend developer',
@@ -17,7 +17,6 @@ export const FORM_TEXTS = {
     positionLabel: 'Название вакансии',
     messageLabel: 'Письмо',
 };
-
 
 export const FORM_LABELS = {
     schedule: 'График работы',
@@ -65,32 +64,32 @@ export const FORM_CONFIG: FormConfig = {
 
     options: {
         schedule: [
-            {value: 'remote', label: 'Удаленная работа'},
-            {value: 'fullDay', label: 'Полный день'},
-            {value: 'flexible', label: 'Гибкий график'},
-            {value: 'shift', label: 'Сменный график'},
+            { value: 'remote', label: 'Удаленная работа' },
+            { value: 'fullDay', label: 'Полный день' },
+            { value: 'flexible', label: 'Гибкий график' },
+            { value: 'shift', label: 'Сменный график' },
         ],
         orderBy: [
-            {value: 'salary_desc', label: 'По убыванию зарплаты'},
-            {value: 'salary_asc', label: 'По возрастанию зарплаты'},
-            {value: 'publication_time', label: 'По дате'},
-            {value: 'relevance', label: 'По соответствию'},
+            { value: 'salary_desc', label: 'По убыванию зарплаты' },
+            { value: 'salary_asc', label: 'По возрастанию зарплаты' },
+            { value: 'publication_time', label: 'По дате' },
+            { value: 'relevance', label: 'По соответствию' },
         ],
         searchField: [
-            {value: 'name', label: 'По названию'},
-            {value: 'company', label: 'По компании'},
-            {value: 'description', label: 'По описанию'},
+            { value: 'name', label: 'По названию' },
+            { value: 'company', label: 'По компании' },
+            { value: 'description', label: 'По описанию' },
         ],
         experience: [
-            {value: 'between1And3', label: 'От 1 до 3 лет'},
-            {value: 'between3And6', label: 'От 3 до 6 лет'},
-            {value: 'moreThan6', label: 'Более 6 лет'},
-            {value: '', label: 'Нет опыта'},
+            { value: 'between1And3', label: 'От 1 до 3 лет' },
+            { value: 'between3And6', label: 'От 3 до 6 лет' },
+            { value: 'moreThan6', label: 'Более 6 лет' },
+            { value: '', label: 'Нет опыта' },
         ],
         searchPeriod: [
-            {value: '1', label: '1 день'},
-            {value: '3', label: '3 дня'},
-            {value: '7', label: 'Неделя'},
+            { value: '1', label: '1 день' },
+            { value: '3', label: '3 дня' },
+            { value: '7', label: 'Неделя' },
         ],
     },
 } as const;

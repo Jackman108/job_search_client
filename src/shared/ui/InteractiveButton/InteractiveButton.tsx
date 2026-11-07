@@ -1,15 +1,15 @@
-import {ReactElement} from 'react';
+import { ReactElement } from 'react';
 import styles from './InteractiveButton.module.css';
-import {InteractiveButtonProps} from "@type";
-import {useComponentToggle} from "@hooks";
+import { InteractiveButtonProps } from '@type';
+import { useComponentToggle } from '@hooks';
 
 const InteractiveButton = ({
-                               icon,
-                               tooltipText,
-                               Component,
-                               position = 'left',
-                           }: InteractiveButtonProps): ReactElement => {
-    const {isComponentOpen, toggleComponent, handleKeyPress} = useComponentToggle();
+    icon,
+    tooltipText,
+    Component,
+    position = 'left',
+}: InteractiveButtonProps): ReactElement => {
+    const { isComponentOpen, toggleComponent, handleKeyPress } = useComponentToggle();
 
     return (
         <>
@@ -21,10 +21,10 @@ const InteractiveButton = ({
                 aria-expanded={isComponentOpen}
                 aria-controls="drawer"
             >
-                <img src={icon} alt={tooltipText || 'Icon'} className={styles.icon}/>
+                <img src={icon} alt={tooltipText || 'Icon'} className={styles.icon} />
                 <span className={`${styles.tooltip} ${position === 'left' ? styles.tooltipLeft : styles.tooltipRight}`}>
-          {tooltipText}
-        </span>
+                    {tooltipText}
+                </span>
             </button>
             {isComponentOpen && (
                 <>
@@ -32,18 +32,15 @@ const InteractiveButton = ({
                         id="drawer"
                         className={`${styles.backdrop} ${position === 'left' ? styles.backdropLeft : styles.backdropRight}
           ${isComponentOpen ? styles.open : ''}`}
-                        onClick={toggleComponent}>
-                    </div>
-                    <div className={`${styles.drawer} ${position === 'left' ? styles.drawerLeft : styles.drawerRight} 
+                        onClick={toggleComponent}
+                    ></div>
+                    <div
+                        className={`${styles.drawer} ${position === 'left' ? styles.drawerLeft : styles.drawerRight} 
           ${isComponentOpen ? styles.open : ''}`}
-                         role="dialog"
-                         aria-labelledby="drawer"
+                        role="dialog"
+                        aria-labelledby="drawer"
                     >
-                        <Component
-                            onClose={toggleComponent}
-                            isOpen={isComponentOpen}
-
-                        />
+                        <Component onClose={toggleComponent} isOpen={isComponentOpen} />
                     </div>
                 </>
             )}

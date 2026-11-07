@@ -1,4 +1,4 @@
-import {FC} from 'react';
+import { FC } from 'react';
 import styles from './Tooltip.module.css';
 
 interface TooltipProps {
@@ -6,7 +6,7 @@ interface TooltipProps {
     position: { x: number; y: number } | null;
 }
 
-const Tooltip: FC<TooltipProps> = ({text, position}) => {
+const Tooltip: FC<TooltipProps> = ({ text, position }) => {
     if (!text || !position) return null;
 
     return (

@@ -1,4 +1,4 @@
-import {ChangeEvent, ReactNode} from "react";
+import { ChangeEvent, ReactNode } from 'react';
 
 export interface RenderInputProps {
     id?: string;
@@ -18,7 +18,7 @@ export interface RenderInputProps {
 
 export interface RenderSelectProps {
     label: string;
-    options?: readonly FormOption[]
+    options?: readonly FormOption[];
     value: string;
     name: string;
     onChange: (e: ChangeEvent<HTMLSelectElement>) => void;
@@ -33,7 +33,6 @@ export interface RenderTextareaProps {
     onChange: (e: ChangeEvent<HTMLTextAreaElement>) => void;
     isLoading: boolean;
 }
-
 
 export interface FormOption {
     value: string;

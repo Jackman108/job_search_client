@@ -1,4 +1,4 @@
-import {ChangeEvent, FormEvent} from "react";
+import { ChangeEvent, FormEvent } from 'react';
 
 export interface ResumeArrayProps {
     config: Record<string, any>;

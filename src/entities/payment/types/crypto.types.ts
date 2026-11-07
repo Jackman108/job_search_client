@@ -61,4 +61,4 @@ export interface CryptoPaymentStatus {
     transactionHash?: string;
     /** Сообщение об ошибке (если есть) */
     error?: string;
-} 
+}
