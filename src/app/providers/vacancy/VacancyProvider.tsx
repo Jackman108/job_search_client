@@ -1,6 +1,7 @@
 import { useMemo } from 'react';
-import { CaptchaAlert } from '@ui';
+import { CaptchaAlert, HhCaptchaModal } from '@ui';
 import { useAlert, useRefreshWhileHhJob, useWebSocketConnection } from '@hooks';
+import { useHhJobContext } from '@app/providers/hhJob/useHhJobContext';
 import useFetchVacancies from '@features/vacancies/hooks/useFetchVacancies';
 import TableContext from './useVacancyContext';
 import { AppProvidersProps } from '@app/types/AppProviders.props';
@@ -11,9 +12,9 @@ const APPLY_JOB_KINDS: readonly HhJobKind[] = ['sendFeedback'];
 const VacancyProvider = ({ children }: AppProvidersProps) => {
     const { vacancies, loading, error, deleteVacancy, loadData } = useFetchVacancies();
     const { alertState, setAlert, handleCloseAlert } = useAlert();
+    const { awaitingCaptcha, captchaSrc, captchaBusy, captchaError, submitCaptchaAnswer } = useHhJobContext();
 
     useWebSocketConnection(loadData, setAlert);
-    // Detached HH worker cannot push WS; refresh table while apply job runs.
     useRefreshWhileHhJob(loadData, APPLY_JOB_KINDS);
 
     const contextValue = useMemo(
@@ -24,13 +25,21 @@ const VacancyProvider = ({ children }: AppProvidersProps) => {
     return (
         <TableContext.Provider value={contextValue}>
             {children}
-            {alertState.message && (
+            {awaitingCaptcha ? (
+                <HhCaptchaModal
+                    captchaSrc={captchaSrc}
+                    busy={captchaBusy}
+                    error={captchaError}
+                    onSubmit={submitCaptchaAnswer}
+                />
+            ) : null}
+            {alertState.message && !awaitingCaptcha ? (
                 <CaptchaAlert
                     message={alertState.message}
                     captchaSrc={alertState.captchaSrc}
                     onClose={handleCloseAlert}
                 />
-            )}
+            ) : null}
         </TableContext.Provider>
     );
 };

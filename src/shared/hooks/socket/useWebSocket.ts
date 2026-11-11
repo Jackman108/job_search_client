@@ -14,19 +14,15 @@ const useWebSocket = ({ WS_URL, loadData, setAlert }: UseWebSocketParams): WebSo
 
     const handleMessage = useCallback(
         (data: string) => {
+            // Table reload / captcha alerts only — no console spam per frame.
             handleWebSocketMessage(data, loadData, setAlert);
         },
         [loadData, setAlert],
     );
 
     const connect = useCallback(() => {
-        // Проверяем наличие токена для подключения
-        if (!token) {
-            console.warn('No token available for WebSocket connection');
-            return;
-        }
+        if (!token) return;
 
-        // Если уже подключены или подключение в процессе, выходим
         if (wsRef.current?.readyState === WebSocket.OPEN || wsRef.current?.readyState === WebSocket.CONNECTING) return;
 
         try {
@@ -41,8 +37,7 @@ const useWebSocket = ({ WS_URL, loadData, setAlert }: UseWebSocketParams): WebSo
                 handleMessage(event.data);
             };
 
-            wsRef.current.onerror = (err) => {
-                console.error('WebSocket Error:', err);
+            wsRef.current.onerror = () => {
                 dispatch({ type: 'SET_ERROR', payload: 'WebSocket Error' });
             };
 
@@ -51,23 +46,17 @@ const useWebSocket = ({ WS_URL, loadData, setAlert }: UseWebSocketParams): WebSo
                 wsRef.current = null;
 
                 if (event.code !== 1000) {
-                    console.warn('WebSocket closed unexpectedly. Reconnecting...');
                     setTimeout(connect, RECONNECT_INTERVAL);
                 }
             };
-        } catch (error) {
-            console.error('WebSocket connection failed:', error);
+        } catch {
             dispatch({ type: 'SET_ERROR', payload: 'WebSocket connection failed' });
             setTimeout(connect, RECONNECT_INTERVAL);
         }
     }, [dispatch, token, WS_URL, handleMessage]);
 
     useEffect(() => {
-        // Проверяем наличие токена авторизации
-        if (!token) {
-            // Expected when logged out — avoid noisy console.warn spam.
-            return;
-        }
+        if (!token) return;
 
         connect();
 

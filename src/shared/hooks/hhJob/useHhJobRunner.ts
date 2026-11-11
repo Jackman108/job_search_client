@@ -18,16 +18,35 @@ const useHhJobRunner = () => {
     const { token } = useAuth();
     const [activeJob, setActiveJob] = useState<ActiveHhJob | null>(() => readActiveHhJob());
     const [status, setStatus] = useState<HhJobStatus | 'idle'>(() => (readActiveHhJob() ? 'queued' : 'idle'));
+    const [awaitingCaptcha, setAwaitingCaptcha] = useState(false);
+    const [captchaSrc, setCaptchaSrc] = useState<string | undefined>();
+    const [tableRevision, setTableRevision] = useState<string | undefined>();
+    const [captchaBusy, setCaptchaBusy] = useState(false);
+    const [captchaError, setCaptchaError] = useState<string | null>(null);
     const abortRef = useRef<AbortController | null>(null);
     const watchPromiseRef = useRef<Promise<HhJobStatusResponse> | null>(null);
     const watchingIdRef = useRef<string | null>(null);
 
     const isJobActive = status === 'queued' || status === 'running';
 
+    const applyPollUpdate = useCallback((next: HhJobStatusResponse) => {
+        setStatus(next.status);
+        setAwaitingCaptcha(next.awaitingCaptcha === true);
+        setCaptchaSrc(next.captchaSrc);
+        if (next.lastEventAt) {
+            setTableRevision(next.lastEventAt);
+        }
+    }, []);
+
     const clearJob = useCallback(() => {
         clearActiveHhJob();
         setActiveJob(null);
         setStatus('idle');
+        setAwaitingCaptcha(false);
+        setCaptchaSrc(undefined);
+        setTableRevision(undefined);
+        setCaptchaError(null);
+        setCaptchaBusy(false);
         watchingIdRef.current = null;
         watchPromiseRef.current = null;
     }, []);
@@ -51,11 +70,12 @@ const useHhJobRunner = () => {
             writeActiveHhJob(job);
             setActiveJob(job);
             setStatus('queued');
+            setCaptchaError(null);
             watchingIdRef.current = jobId;
 
             const promise = pollHhJobUntilSettled(request, jobId, {
                 signal: ac.signal,
-                onUpdate: (next) => setStatus(next.status),
+                onUpdate: applyPollUpdate,
             })
                 .then((result) => {
                     if (watchingIdRef.current === jobId) {
@@ -73,7 +93,26 @@ const useHhJobRunner = () => {
             watchPromiseRef.current = promise;
             return promise;
         },
-        [abortPolling, clearJob, request],
+        [abortPolling, applyPollUpdate, clearJob, request],
+    );
+
+    const submitCaptchaAnswer = useCallback(
+        async (answer: string) => {
+            if (!activeJob?.jobId) return;
+            setCaptchaBusy(true);
+            setCaptchaError(null);
+            try {
+                await request('post', `/jobs/${activeJob.jobId}/captcha`, { answer });
+                setAwaitingCaptcha(false);
+            } catch (error: unknown) {
+                const message = error instanceof Error ? error.message : 'Не удалось отправить ответ капчи';
+                setCaptchaError(message);
+                throw error;
+            } finally {
+                setCaptchaBusy(false);
+            }
+        },
+        [activeJob?.jobId, request],
     );
 
     const stopJob = useCallback(async () => {
@@ -87,7 +126,6 @@ const useHhJobRunner = () => {
         }
     }, [abortPolling, clearJob, request]);
 
-    // Resume poll when jobId is in sessionStorage (panel remount / tab return).
     useEffect(() => {
         if (!token) return;
         const stored = readActiveHhJob();
@@ -101,7 +139,6 @@ const useHhJobRunner = () => {
         });
     }, [token, watchJob]);
 
-    // Logout: abort poll and drop persisted jobId.
     useEffect(() => {
         if (token) return;
         if (!activeJob && status === 'idle') return;
@@ -113,9 +150,15 @@ const useHhJobRunner = () => {
         activeJob,
         status,
         isJobActive,
+        awaitingCaptcha,
+        captchaSrc,
+        tableRevision,
+        captchaBusy,
+        captchaError,
         watchJob,
         stopJob,
         clearJob,
+        submitCaptchaAnswer,
         isAbortError,
     };
 };
