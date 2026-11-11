@@ -12,9 +12,7 @@ describe('formatHhJobError', () => {
     });
 
     it('maps login credential failures', () => {
-        expect(formatHhJobError('HH login failed: invalid email or password')).toBe(
-            WS_ERRORS.INVALID_EMAIL_PASSWORD,
-        );
+        expect(formatHhJobError('HH login failed: invalid email or password')).toBe(WS_ERRORS.INVALID_EMAIL_PASSWORD);
     });
 
     it('maps Magritte gate failures to login retry copy', () => {
