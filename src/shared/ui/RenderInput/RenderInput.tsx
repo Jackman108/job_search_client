@@ -9,6 +9,7 @@ const RenderInput: FC<RenderInputProps> = ({
     onChange,
     error,
     isLoading,
+    disabled = false,
     type = 'text',
     placeholder,
     required,
@@ -22,7 +23,7 @@ const RenderInput: FC<RenderInputProps> = ({
                 name={name}
                 value={value}
                 onChange={onChange}
-                disabled={isLoading}
+                disabled={isLoading || disabled}
                 placeholder={placeholder || ''}
                 required={required}
                 autoComplete={autoCompleteValue}

@@ -1,9 +1,9 @@
-import { FormEvent } from 'react';
+import { FormEvent, useEffect, useState } from 'react';
 import { useAuth } from '@app/providers/auth/useAuthContext';
 import useVacancySubmit from './useVacancySubmit';
 import { useSearchFormContext } from '@app/providers/search/useSearchFormContext';
-import useFieldManagement from './useFieldManagement';
-import { useAuthManagement, useSearchAuth, useSearchFormState } from '@hooks';
+import useVacancyProfileManagement from './useVacancyProfileManagement';
+import { useSearchAuth, useSearchFormState } from '@hooks';
 import useSearchFields from '@features/vacancies/hooks/useSearchFields';
 import useClearStaleProfileSelection from '@shared/hooks/forms/useClearStaleProfileSelection';
 
@@ -12,15 +12,22 @@ const useSearchFormLogic = () => {
     const { vacancySubmit, vacancyStop } = useVacancySubmit();
     const { isLoading, setIsLoading, selectedAuthId, setSelectedAuthId, selectedFieldId, setSelectedFieldId } =
         useSearchFormContext();
+    const [isEditing, setIsEditing] = useState(false);
 
     const { auths: searchAuths } = useSearchAuth();
     const { fields: searchFields } = useSearchFields();
 
-    useClearStaleProfileSelection(searchAuths, selectedAuthId, setSelectedAuthId);
     useClearStaleProfileSelection(searchFields, selectedFieldId, setSelectedFieldId);
 
-    const selectedAuth = searchAuths?.find((v) => v.id === selectedAuthId) || null;
     const selectedField = searchFields?.find((f) => f.id === selectedFieldId) || null;
+    const linkedAuthId = selectedField?.vacancy_auth_id ?? null;
+    const selectedAuth = searchAuths?.find((auth) => auth.id === (linkedAuthId ?? selectedAuthId)) || null;
+
+    useEffect(() => {
+        if (linkedAuthId != null && linkedAuthId !== selectedAuthId) {
+            setSelectedAuthId(linkedAuthId);
+        }
+    }, [linkedAuthId, selectedAuthId, setSelectedAuthId]);
 
     const {
         formValues,
@@ -32,13 +39,15 @@ const useSearchFormLogic = () => {
         resetFieldToBlank,
     } = useSearchFormState(selectedAuth, selectedField);
 
-    const { handleStartCreateField, handleCreateField, handleUpdateField, handleDeleteField } = useFieldManagement(
+    const resetProfileToBlank = (opts?: { keepDraft?: boolean }) => {
+        resetAuthToBlank();
+        resetFieldToBlank(opts);
+    };
+
+    const { handleStartCreateProfile, handleSaveProfile, handleDeleteProfile } = useVacancyProfileManagement(
         formValues,
-        resetFieldToBlank,
-    );
-    const { handleStartCreateAuth, handleCreateAuth, handleUpdateAuth, handleDeleteAuth } = useAuthManagement(
-        formValues,
-        resetAuthToBlank,
+        linkedAuthId,
+        resetProfileToBlank,
     );
 
     const onSubmit = async (event: FormEvent) => {
@@ -55,29 +64,26 @@ const useSearchFormLogic = () => {
         setIsLoading(false);
     };
 
+    const fieldsLocked = !isEditing || isLoading;
+
     return {
         token,
         isLoading,
+        fieldsLocked,
+        isEditing,
+        setIsEditing,
         errors,
         formValues,
-        searchAuths,
         searchFields,
-        selectedAuthId,
         selectedFieldId,
-        setSelectedAuthId,
         setSelectedFieldId,
         handleInputChange,
         handleSelectChange,
         onSubmit,
         onStop,
-        handleStartCreateAuth,
-        handleCreateAuth,
-        handleUpdateAuth,
-        handleDeleteAuth,
-        handleStartCreateField,
-        handleCreateField,
-        handleUpdateField,
-        handleDeleteField,
+        handleStartCreateProfile,
+        handleSaveProfile,
+        handleDeleteProfile,
     };
 };
 

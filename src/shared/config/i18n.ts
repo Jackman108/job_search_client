@@ -10,6 +10,8 @@ import profileRu from '@shared/locales/ru/profile.json';
 import profileEn from '@shared/locales/en/profile.json';
 import authRu from '@shared/locales/ru/auth.json';
 import authEn from '@shared/locales/en/auth.json';
+import searchRu from '@shared/locales/ru/search.json';
+import searchEn from '@shared/locales/en/search.json';
 import cryptoPaymentRu from '@shared/locales/ru/cryptoPayment.json';
 import cryptoPaymentEn from '@shared/locales/en/cryptoPayment.json';
 import errorsRu from '@shared/locales/ru/errors.json';
@@ -29,6 +31,7 @@ export const initializeI18n = async () => {
                 header: headerRu,
                 profile: profileRu,
                 auth: authRu,
+                search: searchRu,
                 cryptoPayments: cryptoPaymentRu,
                 errors: errorsRu,
             },
@@ -38,6 +41,7 @@ export const initializeI18n = async () => {
                 header: headerEn,
                 profile: profileEn,
                 auth: authEn,
+                search: searchEn,
                 cryptoPayments: cryptoPaymentEn,
                 errors: errorsEn,
             },

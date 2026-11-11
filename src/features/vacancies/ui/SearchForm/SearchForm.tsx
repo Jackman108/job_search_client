@@ -8,66 +8,58 @@ import { useTranslation } from 'react-i18next';
 import { FORM_CONFIG, FORM_LABELS, FORM_PARAMS, FORM_TEXTS, FormLabelKeys, FormParamKeys } from '@entities/search';
 
 const SearchForm: FC<PanelProps> = ({ onClose }) => {
-    const { t } = useTranslation('auth');
+    const { t } = useTranslation(['auth', 'search']);
 
     const {
         token,
         isLoading,
+        fieldsLocked,
+        isEditing,
+        setIsEditing,
         errors,
         formValues,
-        searchAuths,
         searchFields,
-        selectedAuthId,
         selectedFieldId,
-        setSelectedAuthId,
         setSelectedFieldId,
         handleInputChange,
         handleSelectChange,
         onSubmit,
         onStop,
-        handleStartCreateAuth,
-        handleCreateAuth,
-        handleUpdateAuth,
-        handleDeleteAuth,
-        handleStartCreateField,
-        handleCreateField,
-        handleUpdateField,
-        handleDeleteField,
+        handleStartCreateProfile,
+        handleSaveProfile,
+        handleDeleteProfile,
     } = useSearchFormLogic();
 
     return (
         <FormContainer token={token} onClose={onClose}>
             <ManagementSection
-                title="Управление Аккаунтами"
-                emptyTitle="Нет аккаунтов HH"
-                emptyDescription="Создайте аккаунт — email и пароль будут пустыми, затем сохраните."
-                createCtaLabel="Создать аккаунт"
-                selectedId={selectedAuthId}
-                setSelectedId={setSelectedAuthId}
-                items={(searchAuths ?? []).flatMap((auth) =>
-                    auth.id != null ? [{ id: auth.id, label: auth.email }] : [],
-                )}
-                onStartCreate={handleStartCreateAuth}
-                onCreate={handleCreateAuth}
-                onUpdate={handleUpdateAuth}
-                onDelete={handleDeleteAuth}
-                disabled={isLoading}
-            />
-
-            <ManagementSection
-                title="Управление Опциями"
-                emptyTitle="Нет профилей поиска"
-                emptyDescription="Создайте профиль — название и письмо будут пустыми, затем сохраните."
-                createCtaLabel="Создать профиль"
+                title={t('search:profile.title')}
+                emptyTitle={t('search:profile.emptyTitle')}
+                emptyDescription={t('search:profile.emptyDescription')}
+                createCtaLabel={t('search:profile.createCta')}
+                selectPlaceholder={t('search:profile.selectPlaceholder')}
+                draftHint={t('search:profile.draftHint')}
+                newLabel={t('search:profile.new')}
+                saveLabel={t('search:profile.save')}
+                editLabel={t('search:profile.edit')}
+                deleteLabel={t('search:profile.delete')}
                 selectedId={selectedFieldId}
                 setSelectedId={setSelectedFieldId}
                 items={(searchFields ?? []).flatMap((field) =>
-                    field.id != null ? [{ id: field.id, label: field.position || `Профиль #${field.id}` }] : [],
+                    field.id != null
+                        ? [
+                              {
+                                  id: field.id,
+                                  label: field.position || t('search:profile.profileLabel', { id: field.id }),
+                              },
+                          ]
+                        : [],
                 )}
-                onStartCreate={handleStartCreateField}
-                onCreate={handleCreateField}
-                onUpdate={handleUpdateField}
-                onDelete={handleDeleteField}
+                onStartCreate={handleStartCreateProfile}
+                onSave={handleSaveProfile}
+                onDelete={handleDeleteProfile}
+                isEditing={isEditing}
+                onEditingChange={setIsEditing}
                 disabled={isLoading}
             />
 
@@ -82,6 +74,7 @@ const SearchForm: FC<PanelProps> = ({ onClose }) => {
                             onChange={handleInputChange(key as keyof typeof formValues)}
                             error={errors[key as keyof typeof errors]}
                             isLoading={isLoading}
+                            disabled={fieldsLocked}
                             type={fieldConfig.type}
                             placeholder={fieldConfig.placeholder}
                             required={fieldConfig.required}
@@ -95,6 +88,7 @@ const SearchForm: FC<PanelProps> = ({ onClose }) => {
                         value={formValues.message}
                         onChange={handleInputChange('message')}
                         isLoading={isLoading}
+                        disabled={fieldsLocked}
                     />
                 </div>
                 <div className={styles.selectsContainer}>
@@ -107,12 +101,13 @@ const SearchForm: FC<PanelProps> = ({ onClose }) => {
                             value={formValues[key as keyof typeof formValues]}
                             onChange={handleSelectChange(FORM_PARAMS[key as FormParamKeys])}
                             isLoading={isLoading}
+                            disabled={fieldsLocked}
                         />
                     ))}
                 </div>
                 <div className={formLayout.buttonsContainer}>
                     <Button className={formLayout.button} type="submit" disabled={isLoading}>
-                        {isLoading ? t('form.isLoading') : t('button.start')}
+                        {isLoading ? t('auth:form.isLoading') : t('auth:button.start')}
                     </Button>
                     <Button
                         className={formLayout.button}
@@ -121,7 +116,7 @@ const SearchForm: FC<PanelProps> = ({ onClose }) => {
                         disabled={!isLoading}
                         variant="danger"
                     >
-                        {t('button.stop')}
+                        {t('auth:button.stop')}
                     </Button>
                 </div>
             </form>

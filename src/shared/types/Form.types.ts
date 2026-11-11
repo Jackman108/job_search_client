@@ -9,6 +9,7 @@ export interface RenderInputProps {
     accept?: string;
     error?: string;
     isLoading: boolean;
+    disabled?: boolean;
     type?: string;
     placeholder?: string;
     className?: string;
@@ -23,6 +24,7 @@ export interface RenderSelectProps {
     name: string;
     onChange: (e: ChangeEvent<HTMLSelectElement>) => void;
     isLoading: boolean;
+    disabled?: boolean;
     required?: boolean;
 }
 
@@ -32,6 +34,7 @@ export interface RenderTextareaProps {
     value: string;
     onChange: (e: ChangeEvent<HTMLTextAreaElement>) => void;
     isLoading: boolean;
+    disabled?: boolean;
 }
 
 export interface FormOption {

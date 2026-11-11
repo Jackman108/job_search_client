@@ -1,0 +1,22 @@
+{
+    "profile": {
+        "title": "Search profile",
+        "emptyTitle": "No search profiles",
+        "emptyDescription": "Create a vacancy profile — HH login, filters, and cover letter start blank; then save.",
+        "createCta": "Create profile",
+        "selectPlaceholder": "Select a profile...",
+        "draftHint": "Fill in the fields below and click Save.",
+        "new": "New",
+        "save": "Save",
+        "edit": "Edit",
+        "delete": "Delete",
+        "profileLabel": "Profile #{{id}}"
+    },
+    "hhAuth": {
+        "title": "HH credentials",
+        "emptyTitle": "No HH credentials",
+        "emptyDescription": "Create an entry — email and password start blank; then save.",
+        "createCta": "Create",
+        "selectPlaceholder": "Select..."
+    }
+}

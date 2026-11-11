@@ -56,6 +56,8 @@ const useSearchFields = () => {
         onSuccess: async () => {
             try {
                 await queryClient.invalidateQueries({ queryKey: ['searchField'] });
+                // Profile delete also removes linked vacancy_auth on the backend.
+                await queryClient.invalidateQueries({ queryKey: ['searchAuth'] });
             } catch (error) {
                 console.error('Ошибка при обновлении данных:', error);
             }
