@@ -1,4 +1,4 @@
-import { FormEvent, useEffect, useState } from 'react';
+import { FormEvent, useEffect, useMemo, useState } from 'react';
 import { useAuth } from '@app/providers/auth/useAuthContext';
 import useVacancySubmit from './useVacancySubmit';
 import { useSearchFormContext } from '@app/providers/search/useSearchFormContext';
@@ -6,6 +6,12 @@ import useVacancyProfileManagement from './useVacancyProfileManagement';
 import { useSearchAuth, useSearchFormState } from '@hooks';
 import useSearchFields from '@features/vacancies/hooks/useSearchFields';
 import useClearStaleProfileSelection from '@shared/hooks/forms/useClearStaleProfileSelection';
+import { FORM_CONFIG, FormValues } from '@entities/search';
+import { hasFilledRequiredFields } from '@shared/utils/formRequired.utils';
+
+const PROFILE_REQUIRED_KEYS = (Object.entries(FORM_CONFIG.fields) as [keyof FormValues, { required?: boolean }][])
+    .filter(([, config]) => config.required)
+    .map(([key]) => key);
 
 const useSearchFormLogic = () => {
     const { token } = useAuth();
@@ -33,6 +39,7 @@ const useSearchFormLogic = () => {
         formValues,
         errors,
         setErrors,
+        isDirty,
         handleInputChange,
         handleSelectChange,
         resetAuthToBlank,
@@ -65,6 +72,10 @@ const useSearchFormLogic = () => {
     };
 
     const fieldsLocked = !isEditing || isLoading;
+    const canCommit = useMemo(
+        () => isDirty && hasFilledRequiredFields(formValues, PROFILE_REQUIRED_KEYS),
+        [formValues, isDirty],
+    );
 
     return {
         token,
@@ -72,6 +83,7 @@ const useSearchFormLogic = () => {
         fieldsLocked,
         isEditing,
         setIsEditing,
+        canCommit,
         errors,
         formValues,
         searchFields,

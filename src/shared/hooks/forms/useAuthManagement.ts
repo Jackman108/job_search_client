@@ -34,13 +34,9 @@ const useAuthManagement = (formValues: Pick<SearchAuthData, 'email' | 'password'
 
     const handleDeleteAuth = async () => {
         if (!selectedAuthId) return;
-        try {
-            await deleteSearchAuth(selectedAuthId);
-            setSelectedAuthId(null);
-            resetAuthToBlank();
-        } catch (error) {
-            console.error('Failed to delete search auth', error);
-        }
+        await deleteSearchAuth(selectedAuthId);
+        setSelectedAuthId(null);
+        resetAuthToBlank();
     };
 
     return {

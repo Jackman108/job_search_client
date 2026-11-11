@@ -7,39 +7,51 @@
     cursor: pointer;
     transition:
         background-color 0.3s,
-        color 0.3s;
+        color 0.3s,
+        opacity 0.2s;
+}
+
+.button:disabled {
+    cursor: not-allowed;
+    opacity: 0.45;
+    box-shadow: none;
+    pointer-events: none;
 }
 
 .primary {
     background-color: #007bff;
     color: #fff;
 }
-.primary:hover {
+.primary:hover:not(:disabled) {
     background-color: #0056b3;
 }
 .primary:disabled {
-    background-color: #3e76b2;
-    cursor: not-allowed;
+    background-color: #9bb6d4;
+    color: #f5f7fa;
 }
 
 .secondary {
     background-color: #6c757d;
     color: #fff;
 }
-.secondary:hover {
+.secondary:hover:not(:disabled) {
     background-color: #5a6268;
+}
+.secondary:disabled {
+    background-color: #b0b5ba;
+    color: #f5f7fa;
 }
 
 .danger {
     background-color: #dc3545;
     color: #fff;
 }
-.danger:hover {
+.danger:hover:not(:disabled) {
     background-color: #c82333;
 }
 .danger:disabled {
-    background-color: #ae5760;
-    cursor: not-allowed;
+    background-color: #c9a0a5;
+    color: #f5f7fa;
 }
 
 .close {

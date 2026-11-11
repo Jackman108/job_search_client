@@ -26,12 +26,27 @@ input:not(:-webkit-autofill) {
     box-sizing: border-box;
 }
 
-.input:hover {
+.input:hover:not(:disabled) {
     border-color: #3e5f8a;
 }
 
 .input:focus {
     border-color: #3e5f8a;
+}
+
+.input:disabled,
+.input[aria-disabled='true'] {
+    background-color: #f0f2f4;
+    color: #6a737c;
+    border-color: #d0d5db;
+    cursor: not-allowed;
+    opacity: 0.85;
+}
+
+.input:disabled ~ .label,
+.input[aria-disabled='true'] ~ .label {
+    color: #8a93a0;
+    cursor: not-allowed;
 }
 
 .label {

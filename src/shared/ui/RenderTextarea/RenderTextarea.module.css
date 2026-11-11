@@ -23,12 +23,28 @@
     resize: none;
 }
 
-.textarea:hover {
+.textarea:hover:not(:disabled) {
     border-color: #3e5f8a;
 }
 
 .textarea:focus {
     border-color: #3e5f8a;
+}
+
+.textarea:disabled,
+.textarea[aria-disabled='true'] {
+    background-color: #f0f2f4;
+    color: #6a737c;
+    border-color: #d0d5db;
+    cursor: not-allowed;
+    opacity: 0.85;
+    resize: none;
+}
+
+.textarea:disabled ~ .label,
+.textarea[aria-disabled='true'] ~ .label {
+    color: #8a93a0;
+    cursor: not-allowed;
 }
 
 .label {

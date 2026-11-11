@@ -15,6 +15,7 @@ const FeedbackForm: FC<PanelProps> = ({ onClose }) => {
         fieldsLocked,
         isEditing,
         setIsEditing,
+        canCommit,
         errors,
         formValues,
         searchAuths,
@@ -50,6 +51,7 @@ const FeedbackForm: FC<PanelProps> = ({ onClose }) => {
                 onDelete={handleDeleteAuth}
                 isEditing={isEditing}
                 onEditingChange={setIsEditing}
+                canCommit={canCommit}
                 disabled={isLoading}
             />
             <form className={formLayout.formContainer} onSubmit={onSubmit}>

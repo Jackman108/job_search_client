@@ -24,6 +24,7 @@ const RenderInput: FC<RenderInputProps> = ({
                 value={value}
                 onChange={onChange}
                 disabled={isLoading || disabled}
+                aria-disabled={isLoading || disabled}
                 placeholder={placeholder || ''}
                 required={required}
                 autoComplete={autoCompleteValue}

@@ -16,6 +16,7 @@ const SearchForm: FC<PanelProps> = ({ onClose }) => {
         fieldsLocked,
         isEditing,
         setIsEditing,
+        canCommit,
         errors,
         formValues,
         searchFields,
@@ -60,6 +61,7 @@ const SearchForm: FC<PanelProps> = ({ onClose }) => {
                 onDelete={handleDeleteProfile}
                 isEditing={isEditing}
                 onEditingChange={setIsEditing}
+                canCommit={canCommit}
                 disabled={isLoading}
             />
 
