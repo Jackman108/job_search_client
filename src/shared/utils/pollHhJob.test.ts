@@ -1,6 +1,13 @@
 import { isHhQueueResponse, pollHhJobUntilSettled } from './pollHhJob';
 import type { HhJobStatusResponse } from '../types/HhJob.types';
 
+type RequestFn = Parameters<typeof pollHhJobUntilSettled>[0];
+
+const asRequestFn = (impl: () => HhJobStatusResponse): { request: RequestFn; mock: jest.Mock } => {
+    const mock = jest.fn(async <T = unknown>(): Promise<T> => impl() as T);
+    return { request: mock as RequestFn, mock };
+};
+
 describe('pollHhJob', () => {
     it('detects queue response shape', () => {
         expect(isHhQueueResponse({ jobId: 'abc' })).toBe(true);
@@ -24,17 +31,17 @@ describe('pollHhJob', () => {
             },
         ];
         let i = 0;
-        const request = jest.fn(async () => statuses[i++]);
+        const { request, mock } = asRequestFn(() => statuses[i++]);
         const result = await pollHhJobUntilSettled(request, 'j1', { intervalMs: 1, timeoutMs: 1000 });
         expect(result.status).toBe('done');
-        expect(request).toHaveBeenCalled();
+        expect(mock).toHaveBeenCalled();
     });
 
     it('throws on error status with detail', async () => {
-        const request = jest.fn(async () => ({
+        const { request } = asRequestFn(() => ({
             id: 'j1',
-            status: 'error' as const,
-            kind: 'sendFeedback' as const,
+            status: 'error',
+            kind: 'sendFeedback',
             createdAt: '2026-01-01T00:00:00.000Z',
             error: 'CAPTCHA',
         }));
