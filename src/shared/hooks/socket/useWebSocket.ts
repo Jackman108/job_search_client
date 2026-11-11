@@ -3,6 +3,7 @@ import { UseWebSocketParams, WebSocketHook } from '@type';
 import { useAuth } from '@app/providers/auth/useAuthContext';
 import { useWebSocketReducer } from '@hooks';
 import { handleWebSocketMessage } from '@utils';
+import { stripBearerPrefix } from '@shared/utils/toBearerAuthorization';
 
 const RECONNECT_INTERVAL = 5000;
 
@@ -29,7 +30,7 @@ const useWebSocket = ({ WS_URL, loadData, setAlert }: UseWebSocketParams): WebSo
         if (wsRef.current?.readyState === WebSocket.OPEN || wsRef.current?.readyState === WebSocket.CONNECTING) return;
 
         try {
-            wsRef.current = new WebSocket(`${WS_URL}?token=${token.replace('Bearer ', '')}`);
+            wsRef.current = new WebSocket(`${WS_URL}?token=${stripBearerPrefix(token)}`);
 
             wsRef.current.onopen = () => {
                 dispatch({ type: 'SET_OPEN', payload: true });

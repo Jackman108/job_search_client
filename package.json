@@ -10,12 +10,14 @@
     "build": "react-app-rewired build",
     "dev": "react-app-rewired start",
     "start": "serve -s build -l 3000",
-    "test": "react-app-rewired test",
+    "test": "react-app-rewired test --watchAll=false --ci",
     "lint": "eslint \"src/**/*.{ts,tsx}\" --max-warnings 0",
     "lint:fix": "eslint \"src/**/*.{ts,tsx}\" --fix",
     "format": "prettier --write \"src/**/*.{ts,tsx,css,json}\"",
     "format:check": "prettier --check \"src/**/*.{ts,tsx,css,json}\"",
     "typecheck": "tsc --noEmit",
+    "check:structure": "node scripts/check-structure.mjs",
+    "check:fsd": "node scripts/check-fsd.mjs",
     "eject": "react-app-rewired eject"
   },
   "dependencies": {
@@ -43,12 +45,28 @@
     "typescript": "^5.7.3",
     "web-vitals": "^4.2.4"
   },
+  "jest": {
+    "moduleNameMapper": {
+      "^@app/(.*)$": "<rootDir>/src/app/$1",
+      "^@features/(.*)$": "<rootDir>/src/features/$1",
+      "^@shared/(.*)$": "<rootDir>/src/shared/$1",
+      "^@entities/(.*)$": "<rootDir>/src/entities/$1",
+      "^@api$": "<rootDir>/src/shared/api/index.ts",
+      "^@ui$": "<rootDir>/src/shared/ui/index.ts",
+      "^@type$": "<rootDir>/src/shared/types/index.ts",
+      "^@hooks$": "<rootDir>/src/shared/hooks/index.ts",
+      "^@utils$": "<rootDir>/src/shared/utils/index.ts",
+      "^@config$": "<rootDir>/src/shared/config/index.ts",
+      "^@styles$": "<rootDir>/src/shared/styles/index.ts"
+    }
+  },
   "eslintConfig": {
     "extends": [
       "react-app",
       "react-app/jest"
     ]
   },
+
   "browserslist": {
     "production": [
       ">0.2%",
