@@ -1,4 +1,4 @@
-import React, { FC } from 'react';
+import { FC } from 'react';
 import { PanelProps } from '@type';
 import formLayout from '@shared/styles/FormLayout.module.css';
 import { Button, FormContainer, ManagementSection, RenderInput } from '@ui';
@@ -18,37 +18,45 @@ const FeedbackForm: FC<PanelProps> = ({ onClose }) => {
         canCommit,
         errors,
         formValues,
-        searchAuths,
-        selectedAuthId,
-        setSelectedAuthId,
+        searchFields,
+        selectedFieldId,
+        setSelectedFieldId,
         handleInputChange,
         onSubmit,
         onStop,
-        handleStartCreateAuth,
-        handleSaveAuth,
-        handleDeleteAuth,
+        handleStartCreateProfile,
+        handleSaveProfile,
+        handleDeleteProfile,
     } = useFeedbackLogic();
 
     return (
         <FormContainer token={token} onClose={onClose}>
             <ManagementSection
-                title={t('search:hhAuth.title')}
-                emptyTitle={t('search:hhAuth.emptyTitle')}
-                emptyDescription={t('search:hhAuth.emptyDescription')}
-                createCtaLabel={t('search:hhAuth.createCta')}
-                selectPlaceholder={t('search:hhAuth.selectPlaceholder')}
+                title={t('search:profile.title')}
+                emptyTitle={t('search:profile.emptyTitle')}
+                emptyDescription={t('search:profile.emptyDescription')}
+                createCtaLabel={t('search:profile.createCta')}
+                selectPlaceholder={t('search:profile.selectPlaceholder')}
+                draftHint={t('search:profile.draftHint')}
                 newLabel={t('search:profile.new')}
                 saveLabel={t('search:profile.save')}
                 editLabel={t('search:profile.edit')}
                 deleteLabel={t('search:profile.delete')}
-                selectedId={selectedAuthId}
-                setSelectedId={setSelectedAuthId}
-                items={(searchAuths ?? []).flatMap((auth) =>
-                    auth.id != null ? [{ id: auth.id, label: auth.email }] : [],
+                selectedId={selectedFieldId}
+                setSelectedId={setSelectedFieldId}
+                items={(searchFields ?? []).flatMap((field) =>
+                    field.id != null
+                        ? [
+                              {
+                                  id: field.id,
+                                  label: field.position || t('search:profile.profileLabel', { id: field.id }),
+                              },
+                          ]
+                        : [],
                 )}
-                onStartCreate={handleStartCreateAuth}
-                onSave={handleSaveAuth}
-                onDelete={handleDeleteAuth}
+                onStartCreate={handleStartCreateProfile}
+                onSave={handleSaveProfile}
+                onDelete={handleDeleteProfile}
                 isEditing={isEditing}
                 onEditingChange={setIsEditing}
                 canCommit={canCommit}

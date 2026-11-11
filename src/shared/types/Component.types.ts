@@ -1,4 +1,5 @@
 import { ButtonHTMLAttributes, ChangeEvent, FC } from 'react';
+import type { HhJobKind } from './HhJob.types';
 
 export interface ButtonConfig<T> {
     icon: string;
@@ -7,6 +8,8 @@ export interface ButtonConfig<T> {
     position: 'left' | 'right';
     /** When true, button is hidden for guests (login chrome stays visible). */
     requiresAuth?: boolean;
+    /** When set, sidebar shows a spinner while this HH job kind is active. */
+    jobKind?: HhJobKind;
 }
 
 export interface InteractiveButtonProps {
@@ -14,6 +17,8 @@ export interface InteractiveButtonProps {
     tooltipText: string;
     Component: FC<{ onClose: () => void; isOpen: boolean }>;
     position?: 'left' | 'right';
+    jobKind?: HhJobKind;
+    isJobBusy?: boolean;
 }
 
 export interface PanelProps {
