@@ -1,7 +1,14 @@
-import { isHhQueueResponse, pollHhJobUntilSettled, validateEmail, validateSearchUrl } from '@utils';
+import {
+    formatHhJobError,
+    isHhQueueResponse,
+    pollHhJobUntilSettled,
+    validateEmail,
+    validateSearchUrl,
+} from '@utils';
 import { SearchSubmitParams } from '@entities/search';
 import { useDataApi } from '@api';
 import { useMutation } from '@tanstack/react-query';
+import { shouldRedirectToServerUnavailable } from '@shared/utils/serverUnavailableRedirect';
 
 const useSubmitRequest = () => {
     const { request } = useDataApi();
@@ -56,7 +63,12 @@ const useSubmitRequest = () => {
                 await pollHhJobUntilSettled(request, result.jobId);
             }
         } catch (error) {
-            setErrors({ email: (error as Error).message });
+            // Real API outage → let interceptor/redirect handle; do not map as HH job copy.
+            if (shouldRedirectToServerUnavailable(error as { response?: { status?: number } })) {
+                throw error;
+            }
+            const raw = error instanceof Error ? error.message : String(error);
+            setErrors({ email: formatHhJobError(raw) });
             throw error;
         } finally {
             setIsLoading(false);
