@@ -1,17 +1,16 @@
 import React, { FC } from 'react';
-import { useAuthHandlers } from '@features/auth/hooks/useAuthHandlers';
-import { useProfileForm } from '@features/profile/hooks/useProfileForm';
-import { useProfile } from '@features/profile/hooks/useProfile';
+import { Auth, useAuthHandlers } from '@features/auth';
+import { ProfileChange, ProfileView, useProfile, useProfileForm } from '@features/profile';
 import styles from '@shared/styles/Container.module.css';
-import ProfileChange from '@features/profile/ui/ProfileChange/ProfileChange';
-import ProfileView from '@features/profile/ui/ProfileView/ProfileView';
-import Auth from '@features/auth/ui/Auth';
 import { PanelProps } from '@type';
 import { UserProfile } from '@entities/profile';
 import { useTranslation } from 'react-i18next';
 import { LoadingOrError } from '@ui';
 
-const ProfileSection: FC<PanelProps> = () => {
+/**
+ * Widget composition: profile + auth features (FSD cross-feature lives here).
+ */
+const ProfilePanel: FC<PanelProps> = () => {
     const { handleSignOut } = useAuthHandlers();
     const { t } = useTranslation('profile');
     const { userProfile, handleUpdateProfile, profileLoading, profileError } = useProfile();
@@ -52,4 +51,4 @@ const ProfileSection: FC<PanelProps> = () => {
     );
 };
 
-export default ProfileSection;
+export default ProfilePanel;

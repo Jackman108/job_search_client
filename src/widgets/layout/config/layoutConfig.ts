@@ -1,9 +1,9 @@
 import { ButtonConfig } from '@type';
-import ProfileSection from '@features/profile/ui/ProfileSection/ProfileSection';
 import ResumeButton from '@features/resume/ui/ResumeButton/ResumeButton';
 import SearchForm from '@features/vacancies/ui/SearchForm/SearchForm';
 import FeedbackForm from '@features/feedback/ui/FeedbackForm/FeedbackForm';
 import SubscriptionPanel from '../../subscription/ui/SubscriptionPanel';
+import ProfilePanel from '../../profile/ui/ProfilePanel';
 
 export const layoutConfig: ButtonConfig<any>[] = [
     {
@@ -23,7 +23,7 @@ export const layoutConfig: ButtonConfig<any>[] = [
     {
         icon: '/icons/profile.svg',
         tooltipText: 'Профиль',
-        Component: ProfileSection,
+        Component: ProfilePanel,
         position: 'right',
     },
     {
