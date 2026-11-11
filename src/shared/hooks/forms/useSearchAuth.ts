@@ -1,10 +1,13 @@
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { useDataApi } from '@api';
 import { SearchAuthData } from '@entities/search';
+import { useAuth } from '@app/providers/auth/useAuthContext';
+import { shouldRetryAuthenticatedQuery } from '@shared/utils/authQueryOptions.utils';
 
 const useSearchAuth = () => {
     const queryClient = useQueryClient();
     const { request } = useDataApi();
+    const { token } = useAuth();
 
     const {
         data: auths,
@@ -13,7 +16,10 @@ const useSearchAuth = () => {
     } = useQuery<SearchAuthData[], Error>({
         queryKey: ['searchAuth'],
         queryFn: async () => request('get', '/vacancy-auth'),
+        enabled: !!token,
         staleTime: 1000 * 60 * 10,
+        refetchOnWindowFocus: false,
+        retry: shouldRetryAuthenticatedQuery,
     });
 
     const createSearchAuth = useMutation<SearchAuthData, Error, Omit<SearchAuthData, 'id'>>({

@@ -64,7 +64,7 @@ const useWebSocket = ({ WS_URL, loadData, setAlert }: UseWebSocketParams): WebSo
     useEffect(() => {
         // Проверяем наличие токена авторизации
         if (!token) {
-            console.warn('No authorization token');
+            // Expected when logged out — avoid noisy console.warn spam.
             return;
         }
 

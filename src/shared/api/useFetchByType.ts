@@ -2,6 +2,8 @@ import { useMutation, useQuery } from '@tanstack/react-query';
 import { useDataApi } from '@api';
 import { ACTION_TYPES } from '@config';
 import { useCallback } from 'react';
+import { useAuth } from '@app/providers/auth/useAuthContext';
+import { shouldRetryAuthenticatedQuery } from '@shared/utils/authQueryOptions.utils';
 import {
     ConfigItem,
     DeleteItemMutationParams,
@@ -26,6 +28,7 @@ const getQueryKey = (config: FetchByTypeConfig['config']) => {
 
 export const useFetchByType = (config: FetchByTypeConfig['config']) => {
     const { request } = useDataApi();
+    const { token } = useAuth();
 
     const fetchData = useCallback(
         async (endpoint: string) => {
@@ -48,7 +51,10 @@ export const useFetchByType = (config: FetchByTypeConfig['config']) => {
             }
             return results;
         },
+        enabled: !!token,
         staleTime: 1000 * 60 * 10,
+        refetchOnWindowFocus: false,
+        retry: shouldRetryAuthenticatedQuery,
     });
 
     const deleteItemMutation = useMutation<void, Error, DeleteItemMutationParams>({

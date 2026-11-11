@@ -1,10 +1,13 @@
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { useDataApi } from '@api';
 import { SearchFieldData } from '@entities/search';
+import { useAuth } from '@app/providers/auth/useAuthContext';
+import { shouldRetryAuthenticatedQuery } from '@shared/utils/authQueryOptions.utils';
 
 const useSearchFields = () => {
     const { request } = useDataApi();
     const queryClient = useQueryClient();
+    const { token } = useAuth();
 
     const {
         data: fields,
@@ -13,7 +16,10 @@ const useSearchFields = () => {
     } = useQuery<SearchFieldData[], Error>({
         queryKey: ['searchField'],
         queryFn: async () => request<SearchFieldData[]>('get', '/vacancy-field'),
+        enabled: !!token,
         staleTime: 1000 * 60 * 10,
+        refetchOnWindowFocus: false,
+        retry: shouldRetryAuthenticatedQuery,
     });
 
     const createSearchField = useMutation<SearchFieldData, Error, Omit<SearchFieldData, 'id'>>({
