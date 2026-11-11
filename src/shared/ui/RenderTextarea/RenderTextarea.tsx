@@ -10,6 +10,7 @@ const RenderTextarea: FC<RenderTextareaProps> = ({ label, name, value, onChange,
             value={value}
             onChange={onChange}
             disabled={isLoading || disabled}
+            aria-disabled={isLoading || disabled}
             placeholder=""
         />
         <label htmlFor={name} className={styles.label}>

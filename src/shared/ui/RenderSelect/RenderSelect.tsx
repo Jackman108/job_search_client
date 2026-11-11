@@ -18,6 +18,7 @@ const RenderSelect: FC<RenderSelectProps> = ({
             className={styles.select}
             onChange={onChange}
             disabled={isLoading || disabled}
+            aria-disabled={isLoading || disabled}
             value={value}
             name={name}
             required={required}

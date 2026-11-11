@@ -83,14 +83,10 @@ const useVacancyProfileManagement = (
 
     const handleDeleteProfile = async () => {
         if (!selectedFieldId) return;
-        try {
-            await deleteSearchField(selectedFieldId);
-            setSelectedFieldId(null);
-            setSelectedAuthId(null);
-            resetProfileToBlank();
-        } catch (error) {
-            console.error('Failed to delete vacancy profile', error);
-        }
+        await deleteSearchField(selectedFieldId);
+        setSelectedFieldId(null);
+        setSelectedAuthId(null);
+        resetProfileToBlank();
     };
 
     return {

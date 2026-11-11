@@ -7,7 +7,7 @@ export interface ManagementSectionProps {
     onStartCreate: () => void;
     /** Persist current form: create when no selection, update when selected. */
     onSave: () => void | Promise<void>;
-    onDelete: () => void;
+    onDelete: () => void | Promise<void>;
     disabled?: boolean;
     emptyTitle?: string;
     emptyDescription?: string;
@@ -21,4 +21,6 @@ export interface ManagementSectionProps {
     /** True while creating or editing; form fields should unlock when true. */
     isEditing: boolean;
     onEditingChange: (editing: boolean) => void;
+    /** Dirty + required fields filled — Save stays disabled until true while editing. */
+    canCommit?: boolean;
 }

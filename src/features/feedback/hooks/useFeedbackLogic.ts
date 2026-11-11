@@ -1,9 +1,13 @@
 import { useAuth } from '@app/providers/auth/useAuthContext';
 import { useSearchFormContext } from '@app/providers/search/useSearchFormContext';
 import useFeedbackSubmit from './useFeedbackSubmit';
-import { FormEvent, useState } from 'react';
+import { FormEvent, useMemo, useState } from 'react';
 import { useAuthManagement, useSearchAuth, useSearchFormState } from '@hooks';
 import useClearStaleProfileSelection from '@shared/hooks/forms/useClearStaleProfileSelection';
+import { FormValues } from '@entities/search';
+import { hasFilledRequiredFields } from '@shared/utils/formRequired.utils';
+
+const HH_AUTH_REQUIRED_KEYS: (keyof FormValues & string)[] = ['email', 'password'];
 
 const useFeedbackLogic = () => {
     const { token } = useAuth();
@@ -14,7 +18,7 @@ const useFeedbackLogic = () => {
 
     useClearStaleProfileSelection(searchAuths, selectedAuthId, setSelectedAuthId);
 
-    const { formValues, errors, setErrors, handleInputChange, resetAuthToBlank } = useSearchFormState(
+    const { formValues, errors, setErrors, isDirty, handleInputChange, resetAuthToBlank } = useSearchFormState(
         searchAuths?.find((v) => v.id === selectedAuthId) || null,
     );
 
@@ -35,6 +39,10 @@ const useFeedbackLogic = () => {
     };
 
     const fieldsLocked = !isEditing || isLoading;
+    const canCommit = useMemo(
+        () => isDirty && hasFilledRequiredFields(formValues, HH_AUTH_REQUIRED_KEYS),
+        [formValues, isDirty],
+    );
 
     return {
         token,
@@ -42,6 +50,7 @@ const useFeedbackLogic = () => {
         fieldsLocked,
         isEditing,
         setIsEditing,
+        canCommit,
         errors,
         formValues,
         searchAuths,

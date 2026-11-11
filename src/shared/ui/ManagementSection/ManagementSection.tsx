@@ -2,7 +2,15 @@ import { FC, useEffect, useState } from 'react';
 import { Button } from '@ui';
 import styles from '@shared/ui/ManagementSection/ManagementSection.module.css';
 import { ManagementSectionProps } from '@type';
+import useManagementControlState from '@shared/hooks/forms/useManagementControlState';
 import ProfileEmptyState from './ProfileEmptyState';
+
+const actionErrorMessage = (error: unknown): string => {
+    if (error instanceof Error && error.message) {
+        return error.message;
+    }
+    return 'Не удалось выполнить действие. Попробуйте ещё раз.';
+};
 
 const ManagementSection: FC<ManagementSectionProps> = ({
     title,
@@ -24,9 +32,18 @@ const ManagementSection: FC<ManagementSectionProps> = ({
     deleteLabel = 'Удалить',
     isEditing,
     onEditingChange,
+    canCommit = false,
 }) => {
     const [drafting, setDrafting] = useState(false);
     const [saving, setSaving] = useState(false);
+    const [actionError, setActionError] = useState<string | null>(null);
+    const busy = disabled || saving;
+    const { canNew, canSave, canEdit, canDelete } = useManagementControlState({
+        busy,
+        selectedId,
+        isEditing,
+        canCommit,
+    });
 
     useEffect(() => {
         if (items.length > 0 || selectedId != null) {
@@ -35,12 +52,14 @@ const ManagementSection: FC<ManagementSectionProps> = ({
     }, [items.length, selectedId]);
 
     const handleStartCreate = () => {
+        setActionError(null);
         setDrafting(true);
         onEditingChange(true);
         onStartCreate();
     };
 
     const handleSelect = (value: string) => {
+        setActionError(null);
         const nextId = value ? Number(value) : null;
         setSelectedId(nextId);
         onEditingChange(false);
@@ -48,11 +67,27 @@ const ManagementSection: FC<ManagementSectionProps> = ({
 
     const handleSave = async () => {
         setSaving(true);
+        setActionError(null);
         try {
             await onSave();
             onEditingChange(false);
         } catch (error) {
             console.error('Failed to save profile', error);
+            setActionError(actionErrorMessage(error));
+        } finally {
+            setSaving(false);
+        }
+    };
+
+    const handleDelete = async () => {
+        setSaving(true);
+        setActionError(null);
+        try {
+            await onDelete();
+            onEditingChange(false);
+        } catch (error) {
+            console.error('Failed to delete profile', error);
+            setActionError(actionErrorMessage(error));
         } finally {
             setSaving(false);
         }
@@ -70,13 +105,16 @@ const ManagementSection: FC<ManagementSectionProps> = ({
         );
     }
 
-    const busy = disabled || saving;
-
     return (
         <div className={styles.managementContainer}>
             <h3>{title}</h3>
             {items.length > 0 ? (
-                <select value={selectedId ?? ''} onChange={(e) => handleSelect(e.target.value)} disabled={busy}>
+                <select
+                    value={selectedId ?? ''}
+                    onChange={(e) => handleSelect(e.target.value)}
+                    disabled={busy}
+                    aria-disabled={busy}
+                >
                     <option value="">{selectPlaceholder}</option>
                     {items.map((item) => (
                         <option key={item.id} value={item.id}>
@@ -88,24 +126,32 @@ const ManagementSection: FC<ManagementSectionProps> = ({
                 <p className={styles.draftHint}>{draftHint}</p>
             )}
             {items.length > 0 && (
-                <Button type="button" onClick={handleStartCreate} disabled={busy} variant="primary">
+                <Button type="button" onClick={handleStartCreate} disabled={!canNew} variant="primary">
                     {newLabel}
                 </Button>
             )}
-            <Button type="button" onClick={handleSave} disabled={busy || !isEditing} variant="primary">
+            <Button type="button" onClick={handleSave} disabled={!canSave} variant="primary">
                 {saveLabel}
             </Button>
             <Button
                 type="button"
-                onClick={() => onEditingChange(true)}
-                disabled={busy || !selectedId || isEditing}
-                variant="primary"
+                onClick={() => {
+                    setActionError(null);
+                    onEditingChange(true);
+                }}
+                disabled={!canEdit}
+                variant="secondary"
             >
                 {editLabel}
             </Button>
-            <Button type="button" onClick={onDelete} disabled={!selectedId || busy} variant="danger">
+            <Button type="button" onClick={handleDelete} disabled={!canDelete} variant="danger">
                 {deleteLabel}
             </Button>
+            {actionError ? (
+                <p className={styles.actionError} role="alert">
+                    {actionError}
+                </p>
+            ) : null}
         </div>
     );
 };

@@ -99,11 +99,20 @@ const useSearchFormState = (
         [],
     );
 
+    const isDirty = useMemo(
+        () =>
+            (Object.keys(initialFormValues) as (keyof FormValues)[]).some(
+                (key) => formValues[key] !== initialFormValues[key],
+            ),
+        [formValues, initialFormValues],
+    );
+
     return {
         formValues,
         errors,
         setErrors,
         setFormValues,
+        isDirty,
         resetAuthToBlank,
         resetFieldToBlank,
         handleInputChange,
