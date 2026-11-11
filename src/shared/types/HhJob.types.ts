@@ -21,4 +21,6 @@ export interface HhJobStatusResponse {
     lastEvent?: string;
     lastEventAt?: string;
     captchaSrc?: string;
+    /** Worker blocked — submit answer via POST /jobs/:id/captcha. */
+    awaitingCaptcha?: boolean;
 }
