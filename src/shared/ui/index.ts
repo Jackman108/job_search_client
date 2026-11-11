@@ -3,6 +3,7 @@ export { default as UnauthorizedMessage } from './UnauthorizedMessage/Unauthoriz
 export { default as Avatar } from './Avatar/Avatar';
 export { default as Button } from './Button/Button';
 export { default as CaptchaAlert } from './CaptchaAlert/CaptchaAlert';
+export { default as HhCaptchaModal } from './HhCaptchaModal/HhCaptchaModal';
 export { default as ErrorAlert } from './ErrorAlert/ErrorAlert';
 export { default as FormContainer } from './FormContainer/FormContainer';
 export { default as Graph } from './Graph/Graph';

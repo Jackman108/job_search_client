@@ -4,16 +4,15 @@ import { useWebSocket } from '@hooks';
 
 const useWebSocketConnection = (loadData: () => void, setAlert: (message: string) => void) => {
     const { error: wsError } = useWebSocket({
-        WS_URL,
         API_URL,
+        WS_URL,
         loadData,
         setAlert,
     });
 
     useEffect(() => {
-        if (wsError) {
-            console.error('WebSocket error:', wsError);
-        }
+        // Persist error in reducer only — avoid console spam on transient WS blips.
+        void wsError;
     }, [wsError]);
 };
 
