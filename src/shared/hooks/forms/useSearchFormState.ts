@@ -2,17 +2,30 @@ import { ChangeEvent, useCallback, useEffect, useMemo, useState } from 'react';
 import { buildVacancyUrl } from '@utils';
 import { Errors } from '@type';
 import { DEFAULT_SEARCH, FormValues, SearchAuthData, SearchFieldData } from '@entities/search';
-import { clearSearchFormDraft, readSearchFormDraft, writeSearchFormDraft } from '@shared/utils/searchFormDraft.utils';
+import {
+    clearSearchFormDraft,
+    readSearchFormDraft,
+    writeSearchFormDraft,
+    type SearchFormDraft,
+} from '@shared/utils/searchFormDraft.utils';
 
-const blankFieldSlice = (draft?: { position: string; message: string } | null) => ({
+const blankFieldSlice = (draft?: SearchFormDraft | null) => ({
     position: draft?.position || '',
     message: draft?.message || '',
-    vacancyUrl: buildVacancyUrl(DEFAULT_SEARCH),
-    schedule: DEFAULT_SEARCH.schedule,
-    orderBy: DEFAULT_SEARCH.orderBy,
-    searchField: DEFAULT_SEARCH.searchField,
-    experience: DEFAULT_SEARCH.experience,
-    searchPeriod: DEFAULT_SEARCH.searchPeriod,
+    vacancyUrl: buildVacancyUrl({
+        ...DEFAULT_SEARCH,
+        text: draft?.position || '',
+        schedule: draft?.schedule || DEFAULT_SEARCH.schedule,
+        orderBy: draft?.orderBy || DEFAULT_SEARCH.orderBy,
+        searchField: draft?.searchField || DEFAULT_SEARCH.searchField,
+        experience: draft?.experience || DEFAULT_SEARCH.experience,
+        searchPeriod: draft?.searchPeriod || DEFAULT_SEARCH.searchPeriod,
+    }),
+    schedule: draft?.schedule || DEFAULT_SEARCH.schedule,
+    orderBy: draft?.orderBy || DEFAULT_SEARCH.orderBy,
+    searchField: draft?.searchField || DEFAULT_SEARCH.searchField,
+    experience: draft?.experience || DEFAULT_SEARCH.experience,
+    searchPeriod: draft?.searchPeriod || DEFAULT_SEARCH.searchPeriod,
 });
 
 const useSearchFormState = (
@@ -35,7 +48,8 @@ const useSearchFormState = (
             : blankFieldSlice(draft);
 
         return {
-            email: initialAuths?.email || '',
+            // Never restore password from local draft.
+            email: initialAuths?.email || (!initialAuths ? draft?.email || '' : ''),
             password: initialAuths?.password || '',
             ...fieldSlice,
         };
@@ -50,8 +64,27 @@ const useSearchFormState = (
 
     useEffect(() => {
         if (initialFields) return;
-        writeSearchFormDraft({ position: formValues.position, message: formValues.message });
-    }, [formValues.position, formValues.message, initialFields]);
+        writeSearchFormDraft({
+            email: formValues.email,
+            position: formValues.position,
+            message: formValues.message,
+            schedule: formValues.schedule,
+            orderBy: formValues.orderBy,
+            searchField: formValues.searchField,
+            experience: formValues.experience,
+            searchPeriod: formValues.searchPeriod,
+        });
+    }, [
+        formValues.email,
+        formValues.position,
+        formValues.message,
+        formValues.schedule,
+        formValues.orderBy,
+        formValues.searchField,
+        formValues.experience,
+        formValues.searchPeriod,
+        initialFields,
+    ]);
 
     const resetAuthToBlank = useCallback(() => {
         setFormValues((prev) => ({ ...prev, email: '', password: '' }));
@@ -68,7 +101,12 @@ const useSearchFormState = (
         if (!opts?.keepDraft) {
             clearSearchFormDraft();
         }
-        setFormValues((prev) => ({ ...prev, ...blankFieldSlice(draft) }));
+        setFormValues((prev) => ({
+            ...prev,
+            ...blankFieldSlice(draft),
+            email: opts?.keepDraft ? draft?.email || prev.email : '',
+            password: '',
+        }));
     }, []);
 
     const handleInputChange = useCallback(

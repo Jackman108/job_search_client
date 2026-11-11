@@ -15,7 +15,11 @@ export { default as useToggleFormState } from './forms/useToggleFormState';
 export { default as useAuthManagement } from './forms/useAuthManagement';
 export { default as useFormState } from './forms/useFormState';
 export { default as useSearchAuth } from './forms/useSearchAuth';
+export { default as useSearchFields } from './forms/useSearchFields';
+export { default as useVacancyProfileManagement } from './forms/useVacancyProfileManagement';
+export { default as useSharedSearchProfile } from './forms/useSharedSearchProfile';
 export { default as useManagementControlState } from './forms/useManagementControlState';
+export { default as useHhJobRunner } from './hhJob/useHhJobRunner';
 
 export { default as useWebSocketReducer } from './socket/useWebSocketReducer';
 export { default as useWebSocket } from './socket/useWebSocket';
