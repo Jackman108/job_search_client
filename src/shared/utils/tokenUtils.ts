@@ -1,4 +1,5 @@
 import { jwtDecode } from 'jwt-decode';
+import { stripBearerPrefix } from './toBearerAuthorization';
 
 interface DecodedToken {
     id: string;
@@ -10,8 +11,7 @@ interface DecodedToken {
 
 export const decodeToken = (token: string): DecodedToken => {
     try {
-        const raw = token.startsWith('Bearer ') ? token.slice('Bearer '.length) : token;
-        return jwtDecode<DecodedToken>(raw);
+        return jwtDecode<DecodedToken>(stripBearerPrefix(token));
     } catch {
         throw new Error('Invalid token');
     }

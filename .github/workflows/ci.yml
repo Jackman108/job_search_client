@@ -37,3 +37,12 @@ jobs:
 
       - name: Typecheck
         run: yarn typecheck
+
+      - name: Unit tests
+        run: yarn test
+
+      - name: Structure (≤300 lines)
+        run: yarn check:structure
+
+      - name: FSD boundaries
+        run: yarn check:fsd

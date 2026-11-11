@@ -2,6 +2,7 @@ import axios, { AxiosResponse } from 'axios';
 import { AUTH_URL } from '@config';
 import { useAuth } from '@app/providers/auth/useAuthContext';
 import { setupNetworkErrorInterceptor } from '@shared/utils/axiosInterceptors';
+import { toBearerAuthorization } from '@shared/utils/toBearerAuthorization';
 
 const axiosAuthInstance = axios.create({
     baseURL: AUTH_URL,
@@ -24,7 +25,7 @@ export const useAuthApi = () => {
             method,
             url: endpoint,
             data,
-            headers: token ? { Authorization: token.startsWith('Bearer ') ? token : `Bearer ${token}` } : {},
+            headers: token ? { Authorization: toBearerAuthorization(token) } : {},
             ...config,
         });
     };

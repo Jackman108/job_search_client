@@ -3,6 +3,7 @@ import { useCallback } from 'react';
 import { API_URL } from '@config';
 import { useAuth } from '@app/providers/auth/useAuthContext';
 import { setupNetworkErrorInterceptor } from '@shared/utils/axiosInterceptors';
+import { toBearerAuthorization } from '@shared/utils/toBearerAuthorization';
 
 const axiosInstance = axios.create({
     baseURL: API_URL,
@@ -25,7 +26,7 @@ export const useDataApi = () => {
                 url: endpoint,
                 data,
                 headers: {
-                    Authorization: token.startsWith('Bearer ') ? token : `Bearer ${token}`,
+                    Authorization: toBearerAuthorization(token),
                 },
             });
             return response.data;
