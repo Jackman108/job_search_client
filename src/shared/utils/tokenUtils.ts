@@ -10,8 +10,9 @@ interface DecodedToken {
 
 export const decodeToken = (token: string): DecodedToken => {
     try {
-        return jwtDecode<DecodedToken>(token);
-    } catch (error) {
+        const raw = token.startsWith('Bearer ') ? token.slice('Bearer '.length) : token;
+        return jwtDecode<DecodedToken>(raw);
+    } catch {
         throw new Error('Invalid token');
     }
 };

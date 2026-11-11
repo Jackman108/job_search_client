@@ -24,7 +24,9 @@ export const useAuthApi = () => {
             method,
             url: endpoint,
             data,
-            headers: token ? { Authorization: `Bearer ${token}` } : {},
+            headers: token
+                ? { Authorization: token.startsWith('Bearer ') ? token : `Bearer ${token}` }
+                : {},
             ...config,
         });
     };
