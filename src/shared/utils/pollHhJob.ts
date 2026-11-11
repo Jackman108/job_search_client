@@ -45,10 +45,11 @@ export async function pollHhJobUntilSettled(
             return status;
         }
         if (status.status === 'error' || status.status === 'cancelled') {
+            // Prefer job file fields; caller formats for UI (not server-unavailable).
             const detail =
                 status.error ||
                 status.lastEvent ||
-                (status.captchaSrc ? `CAPTCHA ${status.captchaSrc}` : undefined) ||
+                (status.captchaSrc ? `CAPTCHA detected restart ${status.captchaSrc}` : undefined) ||
                 'HH job failed';
             throw new Error(detail);
         }
