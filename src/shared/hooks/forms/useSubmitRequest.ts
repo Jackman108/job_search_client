@@ -1,10 +1,4 @@
-import {
-    formatHhJobError,
-    isHhQueueResponse,
-    pollHhJobUntilSettled,
-    validateEmail,
-    validateSearchUrl,
-} from '@utils';
+import { formatHhJobError, isHhQueueResponse, pollHhJobUntilSettled, validateEmail, validateSearchUrl } from '@utils';
 import { SearchSubmitParams } from '@entities/search';
 import { useDataApi } from '@api';
 import { useMutation } from '@tanstack/react-query';
