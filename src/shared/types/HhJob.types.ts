@@ -1,4 +1,4 @@
-export type HhJobStatus = 'queued' | 'running' | 'done' | 'error';
+export type HhJobStatus = 'queued' | 'running' | 'done' | 'error' | 'cancelled';
 
 export type HhJobKind = 'sendFeedback' | 'getFeedback';
 
@@ -18,4 +18,7 @@ export interface HhJobStatusResponse {
     finishedAt?: string;
     error?: string;
     countersUpdated?: boolean;
+    lastEvent?: string;
+    lastEventAt?: string;
+    captchaSrc?: string;
 }

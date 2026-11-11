@@ -3,6 +3,9 @@
   "version": "0.1.0",
   "private": true,
   "license": "Proprietary License",
+  "engines": {
+    "node": "20.x"
+  },
   "scripts": {
     "build": "react-app-rewired build",
     "dev": "react-app-rewired start",
