@@ -37,3 +37,10 @@
     height: 20px;
     margin-right: 8px;
 }
+
+.draftHint {
+    margin: 0 8px;
+    flex: 1 1 100%;
+    font-size: 14px;
+    color: #555;
+}

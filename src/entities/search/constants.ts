@@ -1,7 +1,8 @@
 import { FormConfig } from './types/SearchForm.types';
 
+/** HH filter defaults for URL building — no seeded position/message for users. */
 export const DEFAULT_SEARCH = {
-    text: 'Middle frontend developer',
+    text: '',
     schedule: 'remote',
     oredClusters: 'true',
     orderBy: 'salary_desc',

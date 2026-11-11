@@ -25,9 +25,11 @@ const SearchForm: FC<PanelProps> = ({ onClose }) => {
         handleSelectChange,
         onSubmit,
         onStop,
+        handleStartCreateAuth,
         handleCreateAuth,
         handleUpdateAuth,
         handleDeleteAuth,
+        handleStartCreateField,
         handleCreateField,
         handleUpdateField,
         handleDeleteField,
@@ -37,9 +39,15 @@ const SearchForm: FC<PanelProps> = ({ onClose }) => {
         <FormContainer token={token} onClose={onClose}>
             <ManagementSection
                 title="Управление Аккаунтами"
+                emptyTitle="Нет аккаунтов HH"
+                emptyDescription="Создайте аккаунт — email и пароль будут пустыми, затем сохраните."
+                createCtaLabel="Создать аккаунт"
                 selectedId={selectedAuthId}
                 setSelectedId={setSelectedAuthId}
-                items={searchAuths?.map((auth) => ({ id: auth.id || 0, label: auth.email })) || []}
+                items={(searchAuths ?? []).flatMap((auth) =>
+                    auth.id != null ? [{ id: auth.id, label: auth.email }] : [],
+                )}
+                onStartCreate={handleStartCreateAuth}
                 onCreate={handleCreateAuth}
                 onUpdate={handleUpdateAuth}
                 onDelete={handleDeleteAuth}
@@ -48,9 +56,15 @@ const SearchForm: FC<PanelProps> = ({ onClose }) => {
 
             <ManagementSection
                 title="Управление Опциями"
+                emptyTitle="Нет профилей поиска"
+                emptyDescription="Создайте профиль — название и письмо будут пустыми, затем сохраните."
+                createCtaLabel="Создать профиль"
                 selectedId={selectedFieldId}
                 setSelectedId={setSelectedFieldId}
-                items={searchFields?.map((field) => ({ id: field.id || 0, label: field.position })) || []}
+                items={(searchFields ?? []).flatMap((field) =>
+                    field.id != null ? [{ id: field.id, label: field.position || `Профиль #${field.id}` }] : [],
+                )}
+                onStartCreate={handleStartCreateField}
                 onCreate={handleCreateField}
                 onUpdate={handleUpdateField}
                 onDelete={handleDeleteField}

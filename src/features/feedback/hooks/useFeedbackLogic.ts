@@ -3,6 +3,7 @@ import { useSearchFormContext } from '@app/providers/search/useSearchFormContext
 import useFeedbackSubmit from './useFeedbackSubmit';
 import { FormEvent } from 'react';
 import { useAuthManagement, useSearchAuth, useSearchFormState } from '@hooks';
+import useClearStaleProfileSelection from '@shared/hooks/forms/useClearStaleProfileSelection';
 
 const useFeedbackLogic = () => {
     const { token } = useAuth();
@@ -10,11 +11,16 @@ const useFeedbackLogic = () => {
     const { isLoading, setIsLoading, selectedAuthId, setSelectedAuthId } = useSearchFormContext();
     const { auths: searchAuths } = useSearchAuth();
 
-    const { formValues, errors, setErrors, handleInputChange } = useSearchFormState(
+    useClearStaleProfileSelection(searchAuths, selectedAuthId, setSelectedAuthId);
+
+    const { formValues, errors, setErrors, handleInputChange, resetAuthToBlank } = useSearchFormState(
         searchAuths?.find((v) => v.id === selectedAuthId) || null,
     );
 
-    const { handleCreateAuth, handleUpdateAuth, handleDeleteAuth } = useAuthManagement(formValues);
+    const { handleStartCreateAuth, handleCreateAuth, handleUpdateAuth, handleDeleteAuth } = useAuthManagement(
+        formValues,
+        resetAuthToBlank,
+    );
 
     const onSubmit = async (event: FormEvent) => {
         event.preventDefault();
@@ -41,6 +47,7 @@ const useFeedbackLogic = () => {
         handleInputChange,
         onSubmit,
         onStop,
+        handleStartCreateAuth,
         handleCreateAuth,
         handleUpdateAuth,
         handleDeleteAuth,
