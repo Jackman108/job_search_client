@@ -18,6 +18,8 @@ export interface SearchFieldData {
     search_field: string;
     experience: string;
     search_period: string;
+    /** Linked HH credentials (`vacancy_auth.id`). */
+    vacancy_auth_id?: number | null;
     createdAt?: Date;
     updatedAt?: Date;
 }

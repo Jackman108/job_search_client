@@ -13,30 +13,22 @@ const useAuthManagement = (formValues: Pick<SearchAuthData, 'email' | 'password'
         resetAuthToBlank();
     };
 
-    const handleCreateAuth = async () => {
-        try {
-            const created = (await createSearchAuth({
-                email: formValues.email,
-                password: formValues.password,
-            })) as CreatedId;
-            if (created?.id) {
-                setSelectedAuthId(created.id);
-            }
-        } catch (error) {
-            console.error('Failed to create search auth', error);
-        }
-    };
-
-    const handleUpdateAuth = async () => {
-        if (!selectedAuthId) return;
-        try {
+    const handleSaveAuth = async () => {
+        if (selectedAuthId) {
             await updateSearchAuth({
                 id: selectedAuthId,
                 email: formValues.email,
                 password: formValues.password,
             });
-        } catch (error) {
-            console.error('Failed to update search auth', error);
+            return;
+        }
+
+        const created = (await createSearchAuth({
+            email: formValues.email,
+            password: formValues.password,
+        })) as CreatedId;
+        if (created?.id) {
+            setSelectedAuthId(created.id);
         }
     };
 
@@ -53,8 +45,7 @@ const useAuthManagement = (formValues: Pick<SearchAuthData, 'email' | 'password'
 
     return {
         handleStartCreateAuth,
-        handleCreateAuth,
-        handleUpdateAuth,
+        handleSaveAuth,
         handleDeleteAuth,
     };
 };

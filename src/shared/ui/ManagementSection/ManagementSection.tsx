@@ -10,15 +10,23 @@ const ManagementSection: FC<ManagementSectionProps> = ({
     setSelectedId,
     items,
     onStartCreate,
-    onCreate,
-    onUpdate,
+    onSave,
     onDelete,
     disabled = false,
     emptyTitle,
     emptyDescription = 'Пока нет сохранённых профилей. Создайте новый — поля будут пустыми, затем сохраните.',
     createCtaLabel = 'Создать',
+    selectPlaceholder = 'Выберите...',
+    draftHint = 'Заполните поля ниже и нажмите «Сохранить».',
+    newLabel = 'Новое',
+    saveLabel = 'Сохранить',
+    editLabel = 'Редактировать',
+    deleteLabel = 'Удалить',
+    isEditing,
+    onEditingChange,
 }) => {
     const [drafting, setDrafting] = useState(false);
+    const [saving, setSaving] = useState(false);
 
     useEffect(() => {
         if (items.length > 0 || selectedId != null) {
@@ -28,7 +36,26 @@ const ManagementSection: FC<ManagementSectionProps> = ({
 
     const handleStartCreate = () => {
         setDrafting(true);
+        onEditingChange(true);
         onStartCreate();
+    };
+
+    const handleSelect = (value: string) => {
+        const nextId = value ? Number(value) : null;
+        setSelectedId(nextId);
+        onEditingChange(false);
+    };
+
+    const handleSave = async () => {
+        setSaving(true);
+        try {
+            await onSave();
+            onEditingChange(false);
+        } catch (error) {
+            console.error('Failed to save profile', error);
+        } finally {
+            setSaving(false);
+        }
     };
 
     if (items.length === 0 && !drafting) {
@@ -43,15 +70,14 @@ const ManagementSection: FC<ManagementSectionProps> = ({
         );
     }
 
+    const busy = disabled || saving;
+
     return (
         <div className={styles.managementContainer}>
             <h3>{title}</h3>
             {items.length > 0 ? (
-                <select
-                    value={selectedId ?? ''}
-                    onChange={(e) => setSelectedId(e.target.value ? Number(e.target.value) : null)}
-                >
-                    <option value="">Выберите...</option>
+                <select value={selectedId ?? ''} onChange={(e) => handleSelect(e.target.value)} disabled={busy}>
+                    <option value="">{selectPlaceholder}</option>
                     {items.map((item) => (
                         <option key={item.id} value={item.id}>
                             {item.label || `Профиль #${item.id}`}
@@ -59,21 +85,26 @@ const ManagementSection: FC<ManagementSectionProps> = ({
                     ))}
                 </select>
             ) : (
-                <p className={styles.draftHint}>Заполните поля ниже и нажмите «Сохранить».</p>
+                <p className={styles.draftHint}>{draftHint}</p>
             )}
             {items.length > 0 && (
-                <Button type="button" onClick={handleStartCreate} disabled={disabled} variant="primary">
-                    Новый
+                <Button type="button" onClick={handleStartCreate} disabled={busy} variant="primary">
+                    {newLabel}
                 </Button>
             )}
-            <Button type="button" onClick={onCreate} disabled={!!selectedId || disabled} variant="primary">
-                Сохранить
+            <Button type="button" onClick={handleSave} disabled={busy || !isEditing} variant="primary">
+                {saveLabel}
             </Button>
-            <Button type="button" onClick={onUpdate} disabled={!selectedId || disabled} variant="primary">
-                <img src="/icons/pen.svg" alt="Edit" className={styles.editIcon} />
+            <Button
+                type="button"
+                onClick={() => onEditingChange(true)}
+                disabled={busy || !selectedId || isEditing}
+                variant="primary"
+            >
+                {editLabel}
             </Button>
-            <Button type="button" onClick={onDelete} disabled={!selectedId || disabled} variant="danger">
-                Удалить
+            <Button type="button" onClick={onDelete} disabled={!selectedId || busy} variant="danger">
+                {deleteLabel}
             </Button>
         </div>
     );

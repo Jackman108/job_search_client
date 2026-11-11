@@ -2,13 +2,22 @@ import { FC } from 'react';
 import styles from './RenderSelect.module.css';
 import { RenderSelectProps } from '@type';
 
-const RenderSelect: FC<RenderSelectProps> = ({ label, options, value, name, onChange, isLoading, required }) => (
+const RenderSelect: FC<RenderSelectProps> = ({
+    label,
+    options,
+    value,
+    name,
+    onChange,
+    isLoading,
+    disabled = false,
+    required,
+}) => (
     <div className={styles.formGroup}>
         <label className={styles.label}>{label}:</label>
         <select
             className={styles.select}
             onChange={onChange}
-            disabled={isLoading}
+            disabled={isLoading || disabled}
             value={value}
             name={name}
             required={required}

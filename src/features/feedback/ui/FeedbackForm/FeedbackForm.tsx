@@ -7,11 +7,14 @@ import { useTranslation } from 'react-i18next';
 import { FORM_CONFIG } from '@entities/search';
 
 const FeedbackForm: FC<PanelProps> = ({ onClose }) => {
-    const { t } = useTranslation('auth');
+    const { t } = useTranslation(['auth', 'search']);
 
     const {
         token,
         isLoading,
+        fieldsLocked,
+        isEditing,
+        setIsEditing,
         errors,
         formValues,
         searchAuths,
@@ -21,27 +24,32 @@ const FeedbackForm: FC<PanelProps> = ({ onClose }) => {
         onSubmit,
         onStop,
         handleStartCreateAuth,
-        handleCreateAuth,
-        handleUpdateAuth,
+        handleSaveAuth,
         handleDeleteAuth,
     } = useFeedbackLogic();
 
     return (
         <FormContainer token={token} onClose={onClose}>
             <ManagementSection
-                title="Управление Аккаунтами"
-                emptyTitle="Нет аккаунтов HH"
-                emptyDescription="Создайте аккаунт — email и пароль будут пустыми, затем сохраните."
-                createCtaLabel="Создать аккаунт"
+                title={t('search:hhAuth.title')}
+                emptyTitle={t('search:hhAuth.emptyTitle')}
+                emptyDescription={t('search:hhAuth.emptyDescription')}
+                createCtaLabel={t('search:hhAuth.createCta')}
+                selectPlaceholder={t('search:hhAuth.selectPlaceholder')}
+                newLabel={t('search:profile.new')}
+                saveLabel={t('search:profile.save')}
+                editLabel={t('search:profile.edit')}
+                deleteLabel={t('search:profile.delete')}
                 selectedId={selectedAuthId}
                 setSelectedId={setSelectedAuthId}
                 items={(searchAuths ?? []).flatMap((auth) =>
                     auth.id != null ? [{ id: auth.id, label: auth.email }] : [],
                 )}
                 onStartCreate={handleStartCreateAuth}
-                onCreate={handleCreateAuth}
-                onUpdate={handleUpdateAuth}
+                onSave={handleSaveAuth}
                 onDelete={handleDeleteAuth}
+                isEditing={isEditing}
+                onEditingChange={setIsEditing}
                 disabled={isLoading}
             />
             <form className={formLayout.formContainer} onSubmit={onSubmit}>
@@ -57,6 +65,7 @@ const FeedbackForm: FC<PanelProps> = ({ onClose }) => {
                                 onChange={handleInputChange(key as keyof typeof formValues)}
                                 error={errors[key as keyof typeof errors]}
                                 isLoading={isLoading}
+                                disabled={fieldsLocked}
                                 type={fieldConfig.type}
                                 placeholder={fieldConfig.placeholder}
                                 required={fieldConfig.required}
@@ -66,7 +75,7 @@ const FeedbackForm: FC<PanelProps> = ({ onClose }) => {
 
                 <div className={formLayout.buttonsContainer}>
                     <Button className={formLayout.button} type="submit" disabled={isLoading}>
-                        {isLoading ? t('form.isLoading') : t('button.start')}
+                        {isLoading ? t('auth:form.isLoading') : t('auth:button.start')}
                     </Button>
                     <Button
                         className={formLayout.button}
@@ -75,7 +84,7 @@ const FeedbackForm: FC<PanelProps> = ({ onClose }) => {
                         disabled={!isLoading}
                         variant="danger"
                     >
-                        {t('button.stop')}
+                        {t('auth:button.stop')}
                     </Button>
                 </div>
             </form>
