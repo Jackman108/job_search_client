@@ -11,6 +11,8 @@ export { ADMIN_ROLE, canAccess, getRolesFromToken, isAuthenticatedToken, tokenHa
 export type { AccessLevel } from './authSession.utils';
 export { validateEmail, validatePassword, validateSearchUrl } from './validateUtils';
 export { isHhQueueResponse, pollHhJobUntilSettled } from './pollHhJob';
+export { clearActiveHhJob, endpointToHhJobKind, readActiveHhJob, writeActiveHhJob } from './activeHhJob.utils';
+export type { ActiveHhJob } from './activeHhJob.utils';
 export { formatHhJobError } from './formatHhJobError';
 export { stripBearerPrefix, toBearerAuthorization } from './toBearerAuthorization';
 export { shouldRetryAuthenticatedQuery } from './authQueryOptions.utils';

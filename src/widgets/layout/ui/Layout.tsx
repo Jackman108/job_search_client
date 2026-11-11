@@ -2,9 +2,11 @@ import { FC, ReactNode } from 'react';
 import styles from './Layout.module.css';
 import { InteractiveButton } from '@ui';
 import { useVisibleLayoutButtons } from '../hooks/useVisibleLayoutButtons';
+import { useHhJobContext } from '@app/providers/hhJob/useHhJobContext';
 
 const Layout: FC<{ children: ReactNode }> = ({ children }) => {
     const buttons = useVisibleLayoutButtons();
+    const { activeJob, isJobActive } = useHhJobContext();
 
     const renderButtons = (position: 'left' | 'right') =>
         buttons
@@ -16,6 +18,8 @@ const Layout: FC<{ children: ReactNode }> = ({ children }) => {
                     tooltipText={config.tooltipText}
                     Component={config.Component}
                     position={config.position}
+                    jobKind={config.jobKind}
+                    isJobBusy={Boolean(config.jobKind && isJobActive && activeJob?.kind === config.jobKind)}
                     aria-label={config.tooltipText}
                 />
             ));

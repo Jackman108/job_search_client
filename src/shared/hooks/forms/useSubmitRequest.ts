@@ -1,22 +1,18 @@
-import { formatHhJobError, isHhQueueResponse, pollHhJobUntilSettled, validateEmail, validateSearchUrl } from '@utils';
+import { endpointToHhJobKind, formatHhJobError, isHhQueueResponse, validateEmail, validateSearchUrl } from '@utils';
 import { SearchSubmitParams } from '@entities/search';
 import { useDataApi } from '@api';
 import { useMutation } from '@tanstack/react-query';
 import { shouldRedirectToServerUnavailable } from '@shared/utils/serverUnavailableRedirect';
+import { useHhJobContext } from '@app/providers/hhJob/useHhJobContext';
 
 const useSubmitRequest = () => {
     const { request } = useDataApi();
+    const { watchJob, stopJob, isAbortError } = useHhJobContext();
 
     const submitMutation = useMutation<unknown, Error, { endpoint: string; data: Record<string, unknown> }>({
         mutationFn: async (params) => {
             const { endpoint, data } = params;
             return request('post', endpoint, data);
-        },
-    });
-
-    const stopMutation = useMutation<unknown, Error, void>({
-        mutationFn: async () => {
-            return request('post', '/stop', {});
         },
     });
 
@@ -52,12 +48,14 @@ const useSubmitRequest = () => {
                 data: { email, password, position, message, vacancyUrl },
             });
 
-            // Queue mode (default): API returns 202 + jobId; wait for detached worker.
+            // Queue mode: API returns 202 + jobId; app-level runner polls (survives panel close).
             if (isHhQueueResponse(result) && result.jobId) {
-                await pollHhJobUntilSettled(request, result.jobId);
+                await watchJob(result.jobId, endpointToHhJobKind(endpoint));
             }
         } catch (error) {
-            // Real API outage → let interceptor/redirect handle; do not map as HH job copy.
+            if (isAbortError(error)) {
+                return;
+            }
             if (shouldRedirectToServerUnavailable(error as { response?: { status?: number } })) {
                 throw error;
             }
@@ -70,11 +68,7 @@ const useSubmitRequest = () => {
     };
 
     const handleStopRequest = async (): Promise<void> => {
-        try {
-            await stopMutation.mutateAsync();
-        } catch (error) {
-            console.error('Stop error:', error);
-        }
+        await stopJob();
     };
 
     return { handleSubmitRequest, handleStopRequest };

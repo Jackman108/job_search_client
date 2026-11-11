@@ -49,4 +49,17 @@ describe('pollHhJob', () => {
             'CAPTCHA',
         );
     });
+
+    it('aborts when signal is aborted', async () => {
+        const { request } = asRequestFn(() => ({
+            id: 'j1',
+            status: 'running',
+            kind: 'sendFeedback',
+            createdAt: '2026-01-01T00:00:00.000Z',
+        }));
+        const ac = new AbortController();
+        const pending = pollHhJobUntilSettled(request, 'j1', { intervalMs: 50, timeoutMs: 5000, signal: ac.signal });
+        ac.abort();
+        await expect(pending).rejects.toMatchObject({ name: 'AbortError' });
+    });
 });

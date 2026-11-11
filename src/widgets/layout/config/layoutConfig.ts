@@ -12,6 +12,7 @@ export const layoutConfig: ButtonConfig<any>[] = [
         Component: SearchForm,
         position: 'left',
         requiresAuth: true,
+        jobKind: 'sendFeedback',
     },
     {
         icon: '/icons/update.svg',
@@ -19,6 +20,7 @@ export const layoutConfig: ButtonConfig<any>[] = [
         Component: FeedbackForm,
         position: 'left',
         requiresAuth: true,
+        jobKind: 'getFeedback',
     },
     {
         icon: '/icons/profile.svg',
