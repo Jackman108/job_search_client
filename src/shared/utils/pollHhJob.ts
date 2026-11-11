@@ -17,14 +17,21 @@ type RequestFn = <T = unknown>(
     data?: unknown,
 ) => Promise<T>;
 
+export type PollHhJobOptions = {
+    intervalMs?: number;
+    timeoutMs?: number;
+    /** Fired each successful poll (CAPTCHA/lastEvent available while running). */
+    onUpdate?: (status: HhJobStatusResponse) => void;
+};
+
 /**
- * Poll GET /jobs/:id until done|error. Detached worker does not push WS into the API process,
- * so the client must wait and then refetch vacancies/feedback.
+ * Poll GET /jobs/:id until done|error. Detached worker does not push WS into the API process;
+ * job file fields (lastEvent / captchaSrc / error) are the source of truth.
  */
 export async function pollHhJobUntilSettled(
     request: RequestFn,
     jobId: string,
-    options?: { intervalMs?: number; timeoutMs?: number },
+    options?: PollHhJobOptions,
 ): Promise<HhJobStatusResponse> {
     const intervalMs = options?.intervalMs ?? DEFAULT_INTERVAL_MS;
     const timeoutMs = options?.timeoutMs ?? DEFAULT_TIMEOUT_MS;
@@ -32,11 +39,18 @@ export async function pollHhJobUntilSettled(
 
     while (Date.now() - started < timeoutMs) {
         const status = await request<HhJobStatusResponse>('get', `/jobs/${jobId}`);
+        options?.onUpdate?.(status);
+
         if (status.status === 'done') {
             return status;
         }
-        if (status.status === 'error') {
-            throw new Error(status.error || 'HH job failed');
+        if (status.status === 'error' || status.status === 'cancelled') {
+            const detail =
+                status.error ||
+                status.lastEvent ||
+                (status.captchaSrc ? `CAPTCHA ${status.captchaSrc}` : undefined) ||
+                'HH job failed';
+            throw new Error(detail);
         }
         await sleep(intervalMs);
     }
