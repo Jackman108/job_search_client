@@ -20,6 +20,7 @@ export { default as useVacancyProfileManagement } from './forms/useVacancyProfil
 export { default as useSharedSearchProfile } from './forms/useSharedSearchProfile';
 export { default as useManagementControlState } from './forms/useManagementControlState';
 export { default as useHhJobRunner } from './hhJob/useHhJobRunner';
+export { default as useRefreshWhileHhJob } from './hhJob/useRefreshWhileHhJob';
 
 export { default as useWebSocketReducer } from './socket/useWebSocketReducer';
 export { default as useWebSocket } from './socket/useWebSocket';

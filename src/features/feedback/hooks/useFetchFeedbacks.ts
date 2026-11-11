@@ -3,9 +3,14 @@ import { useFetchByType } from '@api';
 import { useCallback } from 'react';
 import { ACTION_TYPES } from '@config';
 import { Feedback, feedbackConfig, formatFeedbackDate } from '@entities/feedback';
+import { useRefreshWhileHhJob } from '@hooks';
+import type { HhJobKind } from '@type';
+
+const FEEDBACK_JOB_KINDS: readonly HhJobKind[] = ['getFeedback'];
 
 const useFetchFeedback = () => {
     const { fetchedData, loading, error, deleteItem, saveItem, loadData } = useFetchByType(feedbackConfig);
+    useRefreshWhileHhJob(loadData, FEEDBACK_JOB_KINDS);
 
     const feedbacks = fetchedData.feedback
         ? formatAndSortData(fetchedData.feedback, formatFeedbackDate, 'feedback_date')
