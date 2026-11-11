@@ -20,7 +20,7 @@ export function formatHhJobError(raw: unknown): string {
     }
 
     if (
-        /LOGIN button not found|account-login-form not found|credential-type-email|expand-login-by-password|email input not found|password input not found|login submit not found|account-type SUBMIT|login did not complete|HH login:/i.test(
+        /LOGIN button not found|account-login-form not found|credential-type-email|expand-login-by-password|Войти с паролем|email input not found|password input not found|login submit not found|Войти not found|account-type SUBMIT|login did not complete|HH login:/i.test(
             text,
         )
     ) {

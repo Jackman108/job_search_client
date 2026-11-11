@@ -17,6 +17,9 @@ describe('formatHhJobError', () => {
 
     it('maps Magritte gate failures to login retry copy', () => {
         expect(formatHhJobError(new Error('HH login: password input not found (x)'))).toMatch(/Не удалось войти/);
+        expect(formatHhJobError('HH login: Войти с паролем / expand-login-by-password not found')).toMatch(
+            /Не удалось войти/,
+        );
     });
 
     it('keeps unknown job detail (not server-down)', () => {
