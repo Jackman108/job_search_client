@@ -5,6 +5,7 @@ import { useSearchFormContext } from '@app/providers/search/useSearchFormContext
 import useFieldManagement from './useFieldManagement';
 import { useAuthManagement, useSearchAuth, useSearchFormState } from '@hooks';
 import useSearchFields from '@features/vacancies/hooks/useSearchFields';
+import useClearStaleProfileSelection from '@shared/hooks/forms/useClearStaleProfileSelection';
 
 const useSearchFormLogic = () => {
     const { token } = useAuth();
@@ -15,16 +16,30 @@ const useSearchFormLogic = () => {
     const { auths: searchAuths } = useSearchAuth();
     const { fields: searchFields } = useSearchFields();
 
+    useClearStaleProfileSelection(searchAuths, selectedAuthId, setSelectedAuthId);
+    useClearStaleProfileSelection(searchFields, selectedFieldId, setSelectedFieldId);
+
     const selectedAuth = searchAuths?.find((v) => v.id === selectedAuthId) || null;
     const selectedField = searchFields?.find((f) => f.id === selectedFieldId) || null;
 
-    const { formValues, errors, setErrors, handleInputChange, handleSelectChange } = useSearchFormState(
-        selectedAuth,
-        selectedField,
-    );
+    const {
+        formValues,
+        errors,
+        setErrors,
+        handleInputChange,
+        handleSelectChange,
+        resetAuthToBlank,
+        resetFieldToBlank,
+    } = useSearchFormState(selectedAuth, selectedField);
 
-    const { handleCreateField, handleUpdateField, handleDeleteField } = useFieldManagement(formValues);
-    const { handleCreateAuth, handleUpdateAuth, handleDeleteAuth } = useAuthManagement(formValues);
+    const { handleStartCreateField, handleCreateField, handleUpdateField, handleDeleteField } = useFieldManagement(
+        formValues,
+        resetFieldToBlank,
+    );
+    const { handleStartCreateAuth, handleCreateAuth, handleUpdateAuth, handleDeleteAuth } = useAuthManagement(
+        formValues,
+        resetAuthToBlank,
+    );
 
     const onSubmit = async (event: FormEvent) => {
         event.preventDefault();
@@ -55,9 +70,11 @@ const useSearchFormLogic = () => {
         handleSelectChange,
         onSubmit,
         onStop,
+        handleStartCreateAuth,
         handleCreateAuth,
         handleUpdateAuth,
         handleDeleteAuth,
+        handleStartCreateField,
         handleCreateField,
         handleUpdateField,
         handleDeleteField,

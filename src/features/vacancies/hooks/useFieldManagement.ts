@@ -1,14 +1,22 @@
 import useSearchFields from '@features/vacancies/hooks/useSearchFields';
 import { useSearchFormContext } from '@app/providers/search/useSearchFormContext';
 import { FormValues } from '@entities/search';
+import { clearSearchFormDraft } from '@shared/utils/searchFormDraft.utils';
 
-const useFieldManagement = (formValues: FormValues) => {
+type CreatedId = { id?: number };
+
+const useFieldManagement = (formValues: FormValues, resetFieldToBlank: (opts?: { keepDraft?: boolean }) => void) => {
     const { createSearchField, updateSearchField, deleteSearchField } = useSearchFields();
     const { selectedFieldId, setSelectedFieldId } = useSearchFormContext();
 
+    const handleStartCreateField = () => {
+        setSelectedFieldId(null);
+        resetFieldToBlank({ keepDraft: true });
+    };
+
     const handleCreateField = async () => {
         try {
-            const newField = await createSearchField({
+            const created = (await createSearchField({
                 position: formValues.position,
                 message: formValues.message,
                 vacancy_url: formValues.vacancyUrl,
@@ -17,9 +25,10 @@ const useFieldManagement = (formValues: FormValues) => {
                 search_field: formValues.searchField,
                 experience: formValues.experience,
                 search_period: formValues.searchPeriod,
-            });
-            if (newField?.id) {
-                setSelectedFieldId(newField.id);
+            })) as CreatedId;
+            if (created?.id) {
+                clearSearchFormDraft();
+                setSelectedFieldId(created.id);
             }
         } catch (error) {
             console.error('Failed to create search field', error);
@@ -50,12 +59,14 @@ const useFieldManagement = (formValues: FormValues) => {
         try {
             await deleteSearchField(selectedFieldId);
             setSelectedFieldId(null);
+            resetFieldToBlank();
         } catch (error) {
             console.error('Failed to delete search field', error);
         }
     };
 
     return {
+        handleStartCreateField,
         handleCreateField,
         handleUpdateField,
         handleDeleteField,

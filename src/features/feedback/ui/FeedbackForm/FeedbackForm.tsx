@@ -20,6 +20,7 @@ const FeedbackForm: FC<PanelProps> = ({ onClose }) => {
         handleInputChange,
         onSubmit,
         onStop,
+        handleStartCreateAuth,
         handleCreateAuth,
         handleUpdateAuth,
         handleDeleteAuth,
@@ -29,9 +30,15 @@ const FeedbackForm: FC<PanelProps> = ({ onClose }) => {
         <FormContainer token={token} onClose={onClose}>
             <ManagementSection
                 title="Управление Аккаунтами"
+                emptyTitle="Нет аккаунтов HH"
+                emptyDescription="Создайте аккаунт — email и пароль будут пустыми, затем сохраните."
+                createCtaLabel="Создать аккаунт"
                 selectedId={selectedAuthId}
                 setSelectedId={setSelectedAuthId}
-                items={searchAuths?.map((auth) => ({ id: auth.id || 0, label: auth.email })) || []}
+                items={(searchAuths ?? []).flatMap((auth) =>
+                    auth.id != null ? [{ id: auth.id, label: auth.email }] : [],
+                )}
+                onStartCreate={handleStartCreateAuth}
                 onCreate={handleCreateAuth}
                 onUpdate={handleUpdateAuth}
                 onDelete={handleDeleteAuth}
