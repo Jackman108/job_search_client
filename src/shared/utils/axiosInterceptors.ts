@@ -4,9 +4,13 @@ import { shouldRedirectToServerUnavailable } from './serverUnavailableRedirect';
 const isJobsPollUrl = (url: unknown): boolean =>
     typeof url === 'string' && (url.includes('/jobs/') || url.endsWith('/jobs'));
 
+/** Payment schema drift must not hard-redirect the whole app away from search. */
+const isPaymentUrl = (url: unknown): boolean =>
+    typeof url === 'string' && (url.includes('/payment') || url.includes('/payments'));
+
 /**
  * Redirect to /server-error only for real network/5xx failures.
- * Never redirect HH job poll failures — those surface as job error/captcha/login messages.
+ * Never redirect HH job poll or payment list failures — those stay in-panel.
  */
 export function setupNetworkErrorInterceptor(
     instance: AxiosInstance,
@@ -17,7 +21,8 @@ export function setupNetworkErrorInterceptor(
     instance.interceptors.response.use(
         (response) => response,
         (error: AxiosError) => {
-            if (isJobsPollUrl(error.config?.url)) {
+            const url = error.config?.url;
+            if (isJobsPollUrl(url) || isPaymentUrl(url)) {
                 return Promise.reject(error);
             }
 
