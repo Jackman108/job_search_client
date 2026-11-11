@@ -24,7 +24,9 @@ export const useDataApi = () => {
                 method,
                 url: endpoint,
                 data,
-                headers: { Authorization: token },
+                headers: {
+                    Authorization: token.startsWith('Bearer ') ? token : `Bearer ${token}`,
+                },
             });
             return response.data;
         },
