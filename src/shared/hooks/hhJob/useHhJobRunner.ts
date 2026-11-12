@@ -23,6 +23,7 @@ function completionFromResult(result: HhJobStatusResponse): HhJobCompletion | nu
         skipped,
         failed,
         pages: result.summary?.pages,
+        endReason: result.summary?.endReason,
         lastEvent: result.lastEvent,
     };
 }

@@ -40,6 +40,7 @@ export type {
     HhJobKind,
     HhQueueResponse,
     HhJobStatusResponse,
+    HhApplyEndReason,
     HhApplySummary,
     HhJobCompletion,
 } from './HhJob.types';
