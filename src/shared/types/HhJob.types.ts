@@ -2,11 +2,11 @@ export type HhJobStatus = 'queued' | 'running' | 'done' | 'error' | 'cancelled';
 
 export type HhJobKind = 'sendFeedback' | 'getFeedback';
 
-/** POST /start|/refresh may return this when HH_WORKER_MODE=queue (default). */
+/** POST /start|/refresh always returns 202 queue mode (detached hh-worker). */
 export interface HhQueueResponse {
     message?: string;
     jobId?: string;
-    mode?: 'queue' | 'sync';
+    mode?: 'queue';
 }
 
 export interface HhApplySummary {
@@ -42,6 +42,7 @@ export interface HhJobCompletion {
     found?: number;
     success: number;
     skipped: number;
+    failed: number;
     pages?: number;
     lastEvent?: string;
 }
