@@ -40,7 +40,6 @@ const useSharedSearchProfile = (commitKeys: (keyof FormValues & string)[] = PROF
         formValues,
         errors,
         setErrors,
-        isDirty,
         handleInputChange,
         handleSelectChange,
         resetAuthToBlank,
@@ -59,10 +58,10 @@ const useSharedSearchProfile = (commitKeys: (keyof FormValues & string)[] = PROF
     );
 
     const fieldsLocked = !isEditing || isLoading;
-    const canCommit = useMemo(
-        () => isDirty && hasFilledRequiredFields(formValues, commitKeys),
-        [formValues, isDirty, commitKeys],
-    );
+    // Save must work in edit mode once required fields are filled.
+    // Requiring isDirty left «Сохранить» stuck disabled after Edit with a valid form
+    // (draft restore / unchanged password re-type that matches baseline).
+    const canCommit = useMemo(() => hasFilledRequiredFields(formValues, commitKeys), [formValues, commitKeys]);
 
     return {
         isLoading,
