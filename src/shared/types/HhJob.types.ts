@@ -9,6 +9,13 @@ export interface HhQueueResponse {
     mode?: 'queue' | 'sync';
 }
 
+export interface HhApplySummary {
+    success: number;
+    skipped: number;
+    failed: number;
+    pages: number;
+}
+
 export interface HhJobStatusResponse {
     id: string;
     kind: HhJobKind;
@@ -25,4 +32,13 @@ export interface HhJobStatusResponse {
     hasCaptchaImage?: boolean;
     /** Worker blocked — submit answer via POST /jobs/:id/captcha. */
     awaitingCaptcha?: boolean;
+    /** Present when sendFeedback finished (completion modal). */
+    summary?: HhApplySummary;
+}
+
+export interface HhJobCompletion {
+    success: number;
+    skipped: number;
+    pages?: number;
+    lastEvent?: string;
 }

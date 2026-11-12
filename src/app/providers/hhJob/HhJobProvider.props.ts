@@ -1,4 +1,4 @@
-import type { HhJobKind, HhJobStatus, HhJobStatusResponse } from '@type';
+import type { HhJobCompletion, HhJobKind, HhJobStatus, HhJobStatusResponse } from '@type';
 import type { ActiveHhJob } from '@shared/utils/activeHhJob.utils';
 
 export interface HhJobState {
@@ -11,6 +11,9 @@ export interface HhJobState {
     tableRevision?: string;
     captchaBusy: boolean;
     captchaError: string | null;
+    /** Set when sendFeedback settles — show completion modal. */
+    completion: HhJobCompletion | null;
+    dismissCompletion: () => void;
     watchJob: (jobId: string, kind: HhJobKind) => Promise<HhJobStatusResponse>;
     stopJob: () => Promise<void>;
     clearJob: () => void;

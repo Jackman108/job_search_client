@@ -37,17 +37,18 @@ describe('pollHhJob', () => {
         expect(mock).toHaveBeenCalled();
     });
 
-    it('throws on error status with detail', async () => {
+    it('resolves on error status so callers can read summary', async () => {
         const { request } = asRequestFn(() => ({
             id: 'j1',
             status: 'error',
             kind: 'sendFeedback',
             createdAt: '2026-01-01T00:00:00.000Z',
             error: 'CAPTCHA',
+            summary: { success: 1, skipped: 2, failed: 1, pages: 1 },
         }));
-        await expect(pollHhJobUntilSettled(request, 'j1', { intervalMs: 1, timeoutMs: 500 })).rejects.toThrow(
-            'CAPTCHA',
-        );
+        const result = await pollHhJobUntilSettled(request, 'j1', { intervalMs: 1, timeoutMs: 500 });
+        expect(result.status).toBe('error');
+        expect(result.summary?.success).toBe(1);
     });
 
     it('aborts when signal is aborted', async () => {
