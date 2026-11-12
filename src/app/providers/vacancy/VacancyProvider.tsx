@@ -1,5 +1,5 @@
 import { useMemo } from 'react';
-import { CaptchaAlert, HhCaptchaModal } from '@ui';
+import { CaptchaAlert, HhCaptchaModal, HhJobDoneModal } from '@ui';
 import { useAlert, useRefreshWhileHhJob, useWebSocketConnection } from '@hooks';
 import { useHhJobContext } from '@app/providers/hhJob/useHhJobContext';
 import useFetchVacancies from '@features/vacancies/hooks/useFetchVacancies';
@@ -12,7 +12,15 @@ const APPLY_JOB_KINDS: readonly HhJobKind[] = ['sendFeedback'];
 const VacancyProvider = ({ children }: AppProvidersProps) => {
     const { vacancies, loading, error, deleteVacancy, loadData } = useFetchVacancies();
     const { alertState, setAlert, handleCloseAlert } = useAlert();
-    const { awaitingCaptcha, captchaSrc, captchaBusy, captchaError, submitCaptchaAnswer } = useHhJobContext();
+    const {
+        awaitingCaptcha,
+        captchaSrc,
+        captchaBusy,
+        captchaError,
+        submitCaptchaAnswer,
+        completion,
+        dismissCompletion,
+    } = useHhJobContext();
 
     useWebSocketConnection(loadData, setAlert);
     useRefreshWhileHhJob(loadData, APPLY_JOB_KINDS);
@@ -33,7 +41,15 @@ const VacancyProvider = ({ children }: AppProvidersProps) => {
                     onSubmit={submitCaptchaAnswer}
                 />
             ) : null}
-            {alertState.message && !awaitingCaptcha ? (
+            {!awaitingCaptcha && completion ? (
+                <HhJobDoneModal
+                    success={completion.success}
+                    skipped={completion.skipped}
+                    pages={completion.pages}
+                    onClose={dismissCompletion}
+                />
+            ) : null}
+            {alertState.message && !awaitingCaptcha && !completion ? (
                 <CaptchaAlert
                     message={alertState.message}
                     captchaSrc={alertState.captchaSrc}

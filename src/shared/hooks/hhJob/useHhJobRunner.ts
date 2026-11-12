@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { useAuth } from '@app/providers/auth/useAuthContext';
 import { useDataApi } from '@api';
-import type { HhJobKind, HhJobStatus, HhJobStatusResponse } from '@type';
+import type { HhJobCompletion, HhJobKind, HhJobStatus, HhJobStatusResponse } from '@type';
 import { clearActiveHhJob, readActiveHhJob, writeActiveHhJob, type ActiveHhJob } from '@shared/utils/activeHhJob.utils';
 import { pollHhJobUntilSettled } from '@shared/utils/pollHhJob';
 import useCaptchaImageUrl from './useCaptchaImageUrl';
@@ -9,6 +9,19 @@ import useCaptchaImageUrl from './useCaptchaImageUrl';
 const isAbortError = (error: unknown) =>
     (error instanceof DOMException && error.name === 'AbortError') ||
     (error instanceof Error && error.name === 'AbortError');
+
+function completionFromResult(result: HhJobStatusResponse): HhJobCompletion | null {
+    if (result.kind !== 'sendFeedback') return null;
+    if (result.status !== 'done' && result.status !== 'error') return null;
+    const success = result.summary?.success ?? 0;
+    const skipped = result.summary?.skipped ?? 0;
+    return {
+        success,
+        skipped,
+        pages: result.summary?.pages,
+        lastEvent: result.lastEvent,
+    };
+}
 
 /**
  * App-level HH job lifecycle: persists jobId, resumes poll after panel close / remount.
@@ -25,6 +38,7 @@ const useHhJobRunner = () => {
     const [tableRevision, setTableRevision] = useState<string | undefined>();
     const [captchaBusy, setCaptchaBusy] = useState(false);
     const [captchaError, setCaptchaError] = useState<string | null>(null);
+    const [completion, setCompletion] = useState<HhJobCompletion | null>(null);
     const abortRef = useRef<AbortController | null>(null);
     const watchPromiseRef = useRef<Promise<HhJobStatusResponse> | null>(null);
     const watchingIdRef = useRef<string | null>(null);
@@ -62,6 +76,10 @@ const useHhJobRunner = () => {
         watchPromiseRef.current = null;
     }, []);
 
+    const dismissCompletion = useCallback(() => {
+        setCompletion(null);
+    }, []);
+
     const abortPolling = useCallback(() => {
         abortRef.current?.abort();
         abortRef.current = null;
@@ -82,6 +100,7 @@ const useHhJobRunner = () => {
             setActiveJob(job);
             setStatus('queued');
             setCaptchaError(null);
+            setCompletion(null);
             watchingIdRef.current = jobId;
 
             const promise = pollHhJobUntilSettled(request, jobId, {
@@ -90,7 +109,17 @@ const useHhJobRunner = () => {
             })
                 .then((result) => {
                     if (watchingIdRef.current === jobId) {
+                        const done = completionFromResult(result);
+                        if (done) setCompletion(done);
                         clearJob();
+                    }
+                    if (result.status === 'error' || result.status === 'cancelled') {
+                        const detail =
+                            result.error ||
+                            result.lastEvent ||
+                            (result.captchaSrc ? `CAPTCHA detected restart ${result.captchaSrc}` : undefined) ||
+                            'HH job failed';
+                        throw new Error(detail);
                     }
                     return result;
                 })
@@ -134,6 +163,7 @@ const useHhJobRunner = () => {
             console.error('Stop error:', error);
         } finally {
             clearJob();
+            setCompletion(null);
         }
     }, [abortPolling, clearJob, request]);
 
@@ -155,6 +185,7 @@ const useHhJobRunner = () => {
         if (!activeJob && status === 'idle') return;
         abortPolling();
         clearJob();
+        setCompletion(null);
     }, [token, activeJob, status, abortPolling, clearJob]);
 
     return {
@@ -166,6 +197,8 @@ const useHhJobRunner = () => {
         tableRevision,
         captchaBusy,
         captchaError,
+        completion,
+        dismissCompletion,
         watchJob,
         stopJob,
         clearJob,

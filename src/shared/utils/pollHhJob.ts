@@ -60,16 +60,9 @@ export async function pollHhJobUntilSettled(
         const status = await request<HhJobStatusResponse>('get', `/jobs/${jobId}`);
         options?.onUpdate?.(status);
 
-        if (status.status === 'done') {
+        if (status.status === 'done' || status.status === 'error' || status.status === 'cancelled') {
+            // Return full payload (incl. summary) — caller shows completion modal / maps errors.
             return status;
-        }
-        if (status.status === 'error' || status.status === 'cancelled') {
-            const detail =
-                status.error ||
-                status.lastEvent ||
-                (status.captchaSrc ? `CAPTCHA detected restart ${status.captchaSrc}` : undefined) ||
-                'HH job failed';
-            throw new Error(detail);
         }
         await sleep(intervalMs, signal);
     }
