@@ -2,9 +2,21 @@ import styles from './HhJobDoneModal.module.css';
 import type { HhJobDoneModalProps } from './HhJobDoneModal.props';
 import { doneModalBody, doneModalTitle } from './endReasonCopy';
 
-const HhJobDoneModal = ({ found, success, skipped, failed = 0, pages, endReason, onClose }: HhJobDoneModalProps) => {
+const HhJobDoneModal = ({
+    found,
+    foundListed,
+    applyablePage1,
+    alreadyInDb,
+    success,
+    skipped,
+    failed = 0,
+    pages,
+    endReason,
+    onClose,
+}: HhJobDoneModalProps) => {
     const title = doneModalTitle(endReason);
     const body = doneModalBody(endReason);
+    const listed = foundListed ?? found;
 
     return (
         <div className={styles.backdrop} role="presentation" onClick={onClose}>
@@ -25,9 +37,19 @@ const HhJobDoneModal = ({ found, success, skipped, failed = 0, pages, endReason,
                 </div>
                 <p className={styles.body}>{body}</p>
                 <ul className={styles.stats}>
-                    {typeof found === 'number' && found > 0 ? (
+                    {typeof listed === 'number' && listed > 0 ? (
                         <li>
-                            Найдено в начале: <strong>{found}</strong>
+                            Найдено в выдаче: <strong>{listed}</strong>
+                        </li>
+                    ) : null}
+                    {typeof applyablePage1 === 'number' ? (
+                        <li>
+                            К отклику на стр.1: <strong>{applyablePage1}</strong>
+                        </li>
+                    ) : null}
+                    {typeof alreadyInDb === 'number' && alreadyInDb > 0 ? (
+                        <li>
+                            Уже в базе (skip): <strong>{alreadyInDb}</strong>
                         </li>
                     ) : null}
                     <li>

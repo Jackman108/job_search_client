@@ -19,6 +19,9 @@ function completionFromResult(result: HhJobStatusResponse): HhJobCompletion | nu
     const failed = result.summary?.failed ?? 0;
     return {
         found: result.summary?.found,
+        foundListed: result.summary?.foundListed,
+        applyablePage1: result.summary?.applyablePage1,
+        alreadyInDb: result.summary?.alreadyInDb,
         success,
         skipped,
         failed,
