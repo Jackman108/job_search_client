@@ -1,7 +1,11 @@
 import styles from './HhJobDoneModal.module.css';
 import type { HhJobDoneModalProps } from './HhJobDoneModal.props';
+import { doneModalBody, doneModalTitle } from './endReasonCopy';
 
-const HhJobDoneModal = ({ found, success, skipped, failed = 0, pages, onClose }: HhJobDoneModalProps) => {
+const HhJobDoneModal = ({ found, success, skipped, failed = 0, pages, endReason, onClose }: HhJobDoneModalProps) => {
+    const title = doneModalTitle(endReason);
+    const body = doneModalBody(endReason);
+
     return (
         <div className={styles.backdrop} role="presentation" onClick={onClose}>
             <div
@@ -13,13 +17,13 @@ const HhJobDoneModal = ({ found, success, skipped, failed = 0, pages, onClose }:
             >
                 <div className={styles.header}>
                     <h2 id="hh-job-done-title" className={styles.title}>
-                        Поиск вакансий окончен
+                        {title}
                     </h2>
                     <button type="button" className={styles.close} aria-label="Закрыть" onClick={onClose}>
                         ×
                     </button>
                 </div>
-                <p className={styles.body}>Скрипт прошёл выдачу до последней доступной страницы.</p>
+                <p className={styles.body}>{body}</p>
                 <ul className={styles.stats}>
                     {typeof found === 'number' && found > 0 ? (
                         <li>

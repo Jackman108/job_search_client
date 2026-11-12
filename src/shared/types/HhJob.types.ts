@@ -9,6 +9,8 @@ export interface HhQueueResponse {
     mode?: 'queue';
 }
 
+export type HhApplyEndReason = 'last_page' | 'page_cap' | 'stopped' | 'aborted';
+
 export interface HhApplySummary {
     /** HH SERP total after search/filters. */
     found?: number;
@@ -16,6 +18,7 @@ export interface HhApplySummary {
     skipped: number;
     failed: number;
     pages: number;
+    endReason?: HhApplyEndReason;
 }
 
 export interface HhJobStatusResponse {
@@ -44,5 +47,6 @@ export interface HhJobCompletion {
     skipped: number;
     failed: number;
     pages?: number;
+    endReason?: HhApplyEndReason;
     lastEvent?: string;
 }
