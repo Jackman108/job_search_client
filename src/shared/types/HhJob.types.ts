@@ -12,8 +12,11 @@ export interface HhQueueResponse {
 export type HhApplyEndReason = 'last_page' | 'page_cap' | 'stopped' | 'aborted';
 
 export interface HhApplySummary {
-    /** HH SERP total after search/filters. */
+    /** Alias of foundListed (legacy). */
     found?: number;
+    foundListed?: number;
+    applyablePage1?: number;
+    alreadyInDb?: number;
     success: number;
     skipped: number;
     failed: number;
@@ -43,6 +46,9 @@ export interface HhJobStatusResponse {
 
 export interface HhJobCompletion {
     found?: number;
+    foundListed?: number;
+    applyablePage1?: number;
+    alreadyInDb?: number;
     success: number;
     skipped: number;
     failed: number;

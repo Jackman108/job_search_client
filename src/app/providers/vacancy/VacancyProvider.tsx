@@ -47,6 +47,9 @@ const VacancyProvider = ({ children }: AppProvidersProps) => {
             {!awaitingCaptcha && completion ? (
                 <HhJobDoneModal
                     found={completion.found}
+                    foundListed={completion.foundListed}
+                    applyablePage1={completion.applyablePage1}
+                    alreadyInDb={completion.alreadyInDb}
                     success={completion.success}
                     skipped={completion.skipped}
                     failed={completion.failed}
