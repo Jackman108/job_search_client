@@ -37,7 +37,9 @@ const useSearchAuth = () => {
 
     const updateSearchAuth = useMutation<SearchAuthData, Error, SearchAuthData>({
         mutationFn: async (updatedSearch) => {
-            return await request('put', `/vacancy-auth/${updatedSearch.id}`, updatedSearch);
+            const { password, ...rest } = updatedSearch;
+            const body = typeof password === 'string' && password.trim() === '' ? rest : { ...rest, password };
+            return await request('put', `/vacancy-auth/${updatedSearch.id}`, body);
         },
         onSuccess: async (updatedSearch) => {
             try {

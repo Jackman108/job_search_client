@@ -12,13 +12,16 @@ const isAbortError = (error: unknown) =>
 
 function completionFromResult(result: HhJobStatusResponse): HhJobCompletion | null {
     if (result.kind !== 'sendFeedback') return null;
-    if (result.status !== 'done' && result.status !== 'error') return null;
+    // Success modal only for clean done — error/cancelled keep alert / form errors.
+    if (result.status !== 'done') return null;
     const success = result.summary?.success ?? 0;
     const skipped = result.summary?.skipped ?? 0;
+    const failed = result.summary?.failed ?? 0;
     return {
         found: result.summary?.found,
         success,
         skipped,
+        failed,
         pages: result.summary?.pages,
         lastEvent: result.lastEvent,
     };

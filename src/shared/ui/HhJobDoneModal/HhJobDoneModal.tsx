@@ -1,7 +1,7 @@
 import styles from './HhJobDoneModal.module.css';
 import type { HhJobDoneModalProps } from './HhJobDoneModal.props';
 
-const HhJobDoneModal = ({ found, success, skipped, pages, onClose }: HhJobDoneModalProps) => {
+const HhJobDoneModal = ({ found, success, skipped, failed = 0, pages, onClose }: HhJobDoneModalProps) => {
     return (
         <div className={styles.backdrop} role="presentation" onClick={onClose}>
             <div
@@ -32,6 +32,11 @@ const HhJobDoneModal = ({ found, success, skipped, pages, onClose }: HhJobDoneMo
                     <li>
                         Пропущено: <strong>{skipped}</strong>
                     </li>
+                    {failed > 0 ? (
+                        <li>
+                            Ошибки отклика: <strong>{failed}</strong>
+                        </li>
+                    ) : null}
                 </ul>
                 {typeof pages === 'number' && pages > 0 ? <p className={styles.hint}>Страниц SERP: {pages}</p> : null}
                 <button type="button" className={styles.ok} onClick={onClose}>

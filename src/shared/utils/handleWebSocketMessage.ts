@@ -15,17 +15,9 @@ export const handleWebSocketMessage = (data: string, loadData: () => void, setAl
             handleIdMessage(data);
             break;
 
+        // HH apply/login CAPTCHA is poll SoT (GET /jobs/:id) — detached worker cannot push WS.
         case data === WS_EVENTS.ERROR_DETECTED:
-            setAlert(WS_ERRORS.INVALID_EMAIL_PASSWORD);
-            break;
-
         case data.startsWith(WS_EVENTS.CAPTCHA_DETECTED):
-            const captchaSrc = data.split(' ')[2];
-            if (captchaSrc) {
-                setAlert(`${WS_ERRORS.CAPTCHA_REQUIRED} ${captchaSrc}`);
-            } else {
-                console.error('Invalid captcha source in message:', data);
-            }
             break;
 
         case data === WS_EVENTS.HH_CLOSED:

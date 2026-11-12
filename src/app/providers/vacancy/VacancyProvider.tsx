@@ -49,6 +49,7 @@ const VacancyProvider = ({ children }: AppProvidersProps) => {
                     found={completion.found}
                     success={completion.success}
                     skipped={completion.skipped}
+                    failed={completion.failed}
                     pages={completion.pages}
                     onClose={dismissCompletion}
                 />
