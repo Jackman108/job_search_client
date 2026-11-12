@@ -4,6 +4,7 @@ import { useDataApi } from '@api';
 import type { HhJobKind, HhJobStatus, HhJobStatusResponse } from '@type';
 import { clearActiveHhJob, readActiveHhJob, writeActiveHhJob, type ActiveHhJob } from '@shared/utils/activeHhJob.utils';
 import { pollHhJobUntilSettled } from '@shared/utils/pollHhJob';
+import useCaptchaImageUrl from './useCaptchaImageUrl';
 
 const isAbortError = (error: unknown) =>
     (error instanceof DOMException && error.name === 'AbortError') ||
@@ -19,7 +20,8 @@ const useHhJobRunner = () => {
     const [activeJob, setActiveJob] = useState<ActiveHhJob | null>(() => readActiveHhJob());
     const [status, setStatus] = useState<HhJobStatus | 'idle'>(() => (readActiveHhJob() ? 'queued' : 'idle'));
     const [awaitingCaptcha, setAwaitingCaptcha] = useState(false);
-    const [captchaSrc, setCaptchaSrc] = useState<string | undefined>();
+    const [remoteCaptchaSrc, setRemoteCaptchaSrc] = useState<string | undefined>();
+    const [hasCaptchaImage, setHasCaptchaImage] = useState(false);
     const [tableRevision, setTableRevision] = useState<string | undefined>();
     const [captchaBusy, setCaptchaBusy] = useState(false);
     const [captchaError, setCaptchaError] = useState<string | null>(null);
@@ -28,11 +30,19 @@ const useHhJobRunner = () => {
     const watchingIdRef = useRef<string | null>(null);
 
     const isJobActive = status === 'queued' || status === 'running';
+    const captchaSrc = useCaptchaImageUrl(
+        activeJob?.jobId,
+        awaitingCaptcha,
+        hasCaptchaImage,
+        remoteCaptchaSrc,
+        tableRevision,
+    );
 
     const applyPollUpdate = useCallback((next: HhJobStatusResponse) => {
         setStatus(next.status);
         setAwaitingCaptcha(next.awaitingCaptcha === true);
-        setCaptchaSrc(next.captchaSrc);
+        setRemoteCaptchaSrc(next.captchaSrc);
+        setHasCaptchaImage(next.hasCaptchaImage === true);
         if (next.lastEventAt) {
             setTableRevision(next.lastEventAt);
         }
@@ -43,7 +53,8 @@ const useHhJobRunner = () => {
         setActiveJob(null);
         setStatus('idle');
         setAwaitingCaptcha(false);
-        setCaptchaSrc(undefined);
+        setRemoteCaptchaSrc(undefined);
+        setHasCaptchaImage(false);
         setTableRevision(undefined);
         setCaptchaError(null);
         setCaptchaBusy(false);
@@ -103,7 +114,7 @@ const useHhJobRunner = () => {
             setCaptchaError(null);
             try {
                 await request('post', `/jobs/${activeJob.jobId}/captcha`, { answer });
-                setAwaitingCaptcha(false);
+                // Keep modal until poll clears awaitingCaptcha (wrong answer → retry).
             } catch (error: unknown) {
                 const message = error instanceof Error ? error.message : 'Не удалось отправить ответ капчи';
                 setCaptchaError(message);
