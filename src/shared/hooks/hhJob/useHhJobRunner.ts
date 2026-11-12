@@ -16,6 +16,7 @@ function completionFromResult(result: HhJobStatusResponse): HhJobCompletion | nu
     const success = result.summary?.success ?? 0;
     const skipped = result.summary?.skipped ?? 0;
     return {
+        found: result.summary?.found,
         success,
         skipped,
         pages: result.summary?.pages,
@@ -39,6 +40,7 @@ const useHhJobRunner = () => {
     const [captchaBusy, setCaptchaBusy] = useState(false);
     const [captchaError, setCaptchaError] = useState<string | null>(null);
     const [completion, setCompletion] = useState<HhJobCompletion | null>(null);
+    const [foundNotice, setFoundNotice] = useState<string | null>(null);
     const abortRef = useRef<AbortController | null>(null);
     const watchPromiseRef = useRef<Promise<HhJobStatusResponse> | null>(null);
     const watchingIdRef = useRef<string | null>(null);
@@ -60,6 +62,9 @@ const useHhJobRunner = () => {
         if (next.lastEventAt) {
             setTableRevision(next.lastEventAt);
         }
+        if (next.lastEvent && /^Найдено\s+\d+/i.test(next.lastEvent)) {
+            setFoundNotice(next.lastEvent);
+        }
     }, []);
 
     const clearJob = useCallback(() => {
@@ -72,12 +77,17 @@ const useHhJobRunner = () => {
         setTableRevision(undefined);
         setCaptchaError(null);
         setCaptchaBusy(false);
+        setFoundNotice(null);
         watchingIdRef.current = null;
         watchPromiseRef.current = null;
     }, []);
 
     const dismissCompletion = useCallback(() => {
         setCompletion(null);
+    }, []);
+
+    const dismissFoundNotice = useCallback(() => {
+        setFoundNotice(null);
     }, []);
 
     const abortPolling = useCallback(() => {
@@ -101,6 +111,7 @@ const useHhJobRunner = () => {
             setStatus('queued');
             setCaptchaError(null);
             setCompletion(null);
+            setFoundNotice(null);
             watchingIdRef.current = jobId;
 
             const promise = pollHhJobUntilSettled(request, jobId, {
@@ -199,6 +210,8 @@ const useHhJobRunner = () => {
         captchaError,
         completion,
         dismissCompletion,
+        foundNotice,
+        dismissFoundNotice,
         watchJob,
         stopJob,
         clearJob,

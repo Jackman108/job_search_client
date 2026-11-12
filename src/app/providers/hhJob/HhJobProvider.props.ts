@@ -14,6 +14,9 @@ export interface HhJobState {
     /** Set when sendFeedback settles — show completion modal. */
     completion: HhJobCompletion | null;
     dismissCompletion: () => void;
+    /** SERP «Найдено N…» toast while job is running. */
+    foundNotice: string | null;
+    dismissFoundNotice: () => void;
     watchJob: (jobId: string, kind: HhJobKind) => Promise<HhJobStatusResponse>;
     stopJob: () => Promise<void>;
     clearJob: () => void;
