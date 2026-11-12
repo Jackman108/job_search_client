@@ -20,6 +20,9 @@ const VacancyProvider = ({ children }: AppProvidersProps) => {
         submitCaptchaAnswer,
         completion,
         dismissCompletion,
+        foundNotice,
+        dismissFoundNotice,
+        isJobActive,
     } = useHhJobContext();
 
     useWebSocketConnection(loadData, setAlert);
@@ -43,13 +46,17 @@ const VacancyProvider = ({ children }: AppProvidersProps) => {
             ) : null}
             {!awaitingCaptcha && completion ? (
                 <HhJobDoneModal
+                    found={completion.found}
                     success={completion.success}
                     skipped={completion.skipped}
                     pages={completion.pages}
                     onClose={dismissCompletion}
                 />
             ) : null}
-            {alertState.message && !awaitingCaptcha && !completion ? (
+            {!awaitingCaptcha && !completion && foundNotice && isJobActive ? (
+                <CaptchaAlert message={foundNotice} onClose={dismissFoundNotice} />
+            ) : null}
+            {alertState.message && !awaitingCaptcha && !completion && !foundNotice ? (
                 <CaptchaAlert
                     message={alertState.message}
                     captchaSrc={alertState.captchaSrc}

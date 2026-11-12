@@ -10,6 +10,8 @@ export interface HhQueueResponse {
 }
 
 export interface HhApplySummary {
+    /** HH SERP total after search/filters. */
+    found?: number;
     success: number;
     skipped: number;
     failed: number;
@@ -37,6 +39,7 @@ export interface HhJobStatusResponse {
 }
 
 export interface HhJobCompletion {
+    found?: number;
     success: number;
     skipped: number;
     pages?: number;

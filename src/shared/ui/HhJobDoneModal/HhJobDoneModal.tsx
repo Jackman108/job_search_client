@@ -1,7 +1,7 @@
 import styles from './HhJobDoneModal.module.css';
 import type { HhJobDoneModalProps } from './HhJobDoneModal.props';
 
-const HhJobDoneModal = ({ success, skipped, pages, onClose }: HhJobDoneModalProps) => {
+const HhJobDoneModal = ({ found, success, skipped, pages, onClose }: HhJobDoneModalProps) => {
     return (
         <div className={styles.backdrop} role="presentation" onClick={onClose}>
             <div
@@ -21,6 +21,11 @@ const HhJobDoneModal = ({ success, skipped, pages, onClose }: HhJobDoneModalProp
                 </div>
                 <p className={styles.body}>Скрипт прошёл выдачу до последней доступной страницы.</p>
                 <ul className={styles.stats}>
+                    {typeof found === 'number' && found > 0 ? (
+                        <li>
+                            Найдено в начале: <strong>{found}</strong>
+                        </li>
+                    ) : null}
                     <li>
                         Успешно откликнулись: <strong>{success}</strong>
                     </li>
