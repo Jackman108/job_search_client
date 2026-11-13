@@ -12,11 +12,18 @@ const isAbortError = (error: unknown) =>
 
 function completionFromResult(result: HhJobStatusResponse): HhJobCompletion | null {
     if (result.kind !== 'sendFeedback') return null;
-    // Success modal only for clean done — error/cancelled keep alert / form errors.
-    if (result.status !== 'done') return null;
+    // Show stats modal for done and for error/cancelled when we already have SERP numbers
+    // (mid-apply abort used to skip the modal — users never saw «Найдено»).
+    if (result.status !== 'done' && result.status !== 'error' && result.status !== 'cancelled') {
+        return null;
+    }
     const success = result.summary?.success ?? 0;
     const skipped = result.summary?.skipped ?? 0;
     const failed = result.summary?.failed ?? 0;
+    const found = result.summary?.foundListed ?? result.summary?.found;
+    if (result.status !== 'done' && !(typeof found === 'number' && found > 0) && success + skipped + failed === 0) {
+        return null;
+    }
     return {
         found: result.summary?.found,
         foundListed: result.summary?.foundListed,
@@ -26,7 +33,7 @@ function completionFromResult(result: HhJobStatusResponse): HhJobCompletion | nu
         skipped,
         failed,
         pages: result.summary?.pages,
-        endReason: result.summary?.endReason,
+        endReason: result.summary?.endReason ?? (result.status === 'done' ? undefined : 'aborted'),
         lastEvent: result.lastEvent,
     };
 }
