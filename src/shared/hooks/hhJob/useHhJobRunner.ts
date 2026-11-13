@@ -150,7 +150,10 @@ const useHhJobRunner = () => {
                 })
                 .catch((error: unknown) => {
                     if (watchingIdRef.current === jobId) {
-                        clearJob();
+                        // Keep jobId in sessionStorage so CAPTCHA modal / poll can resume
+                        // after a transient 401 (token refresh) — only Stop/logout clearJob.
+                        watchingIdRef.current = null;
+                        watchPromiseRef.current = null;
                     }
                     throw error;
                 });

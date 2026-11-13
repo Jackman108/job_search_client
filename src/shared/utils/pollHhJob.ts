@@ -52,17 +52,32 @@ export async function pollHhJobUntilSettled(
     const signal = options?.signal;
     const started = Date.now();
 
+    /** Transient 401/network: keep polling so CAPTCHA modal survives token refresh. */
+    const maxTransientFailures = 5;
+    let transientFailures = 0;
+
     while (Date.now() - started < timeoutMs) {
         if (signal?.aborted) {
             throw new DOMException('HH job poll aborted', 'AbortError');
         }
 
-        const status = await request<HhJobStatusResponse>('get', `/jobs/${jobId}`);
-        options?.onUpdate?.(status);
+        try {
+            const status = await request<HhJobStatusResponse>('get', `/jobs/${jobId}`);
+            transientFailures = 0;
+            options?.onUpdate?.(status);
 
-        if (status.status === 'done' || status.status === 'error' || status.status === 'cancelled') {
-            // Return full payload (incl. summary) — caller shows completion modal / maps errors.
-            return status;
+            if (status.status === 'done' || status.status === 'error' || status.status === 'cancelled') {
+                // Return full payload (incl. summary) — caller shows completion modal / maps errors.
+                return status;
+            }
+        } catch (error) {
+            if (signal?.aborted || (error instanceof DOMException && error.name === 'AbortError')) {
+                throw error instanceof DOMException
+                    ? error
+                    : new DOMException('HH job poll aborted', 'AbortError');
+            }
+            transientFailures += 1;
+            if (transientFailures >= maxTransientFailures) throw error;
         }
         await sleep(intervalMs, signal);
     }
