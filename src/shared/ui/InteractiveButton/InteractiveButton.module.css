@@ -10,6 +10,33 @@
     margin: 5px 0;
 }
 
+.badge {
+    position: absolute;
+    top: -2px;
+    right: 2px;
+    min-width: 14px;
+    height: 14px;
+    padding: 0 3px;
+    border-radius: 7px;
+    font-size: 9px;
+    font-weight: 700;
+    line-height: 14px;
+    color: #fff;
+    text-align: center;
+}
+
+.badgeApply {
+    background: #167dfc;
+}
+
+.badgeRefresh {
+    background: #c97800;
+}
+
+.badgeCaptcha {
+    background: #b42318;
+}
+
 .icon {
     width: 24px;
     height: 24px;

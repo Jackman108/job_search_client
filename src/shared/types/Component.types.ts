@@ -12,6 +12,8 @@ export interface ButtonConfig<T> {
     jobKind?: HhJobKind;
 }
 
+export type SidebarJobBadge = 'apply' | 'refresh' | 'captcha';
+
 export interface InteractiveButtonProps {
     icon: string;
     tooltipText: string;
@@ -19,6 +21,8 @@ export interface InteractiveButtonProps {
     position?: 'left' | 'right';
     jobKind?: HhJobKind;
     isJobBusy?: boolean;
+    /** Compact status chip on the sidebar icon (apply / refresh / captcha). */
+    jobBadge?: SidebarJobBadge | null;
 }
 
 export interface PanelProps {

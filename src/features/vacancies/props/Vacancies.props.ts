@@ -10,6 +10,8 @@ export interface VacancySubmitParams {
     position: string;
     message: string;
     vacancyUrl: string;
+    dryRun?: boolean;
+    applyCap?: number;
     setErrors: Dispatch<SetStateAction<Errors>>;
     setIsLoading: Dispatch<SetStateAction<boolean>>;
 }

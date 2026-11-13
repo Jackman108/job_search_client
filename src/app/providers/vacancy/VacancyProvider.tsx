@@ -14,10 +14,12 @@ const VacancyProvider = ({ children }: AppProvidersProps) => {
     const { alertState, setAlert, handleCloseAlert } = useAlert();
     const {
         awaitingCaptcha,
+        captchaWaitingSince,
         captchaSrc,
         captchaBusy,
         captchaError,
         submitCaptchaAnswer,
+        requestCaptchaRefresh,
         completion,
         dismissCompletion,
         foundNotice,
@@ -42,6 +44,8 @@ const VacancyProvider = ({ children }: AppProvidersProps) => {
                     busy={captchaBusy}
                     error={captchaError}
                     onSubmit={submitCaptchaAnswer}
+                    onRefreshImage={requestCaptchaRefresh}
+                    waitingSince={captchaWaitingSince}
                 />
             ) : null}
             {!awaitingCaptcha && completion ? (

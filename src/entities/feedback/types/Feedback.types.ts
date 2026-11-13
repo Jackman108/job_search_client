@@ -6,4 +6,7 @@ export interface Feedback {
     feedback_date: string;
     feedback_date_time?: string;
     feedback_date_date?: string;
+    /** Joined from vacancy table when available. */
+    title_vacancy?: string;
+    title_company?: string;
 }

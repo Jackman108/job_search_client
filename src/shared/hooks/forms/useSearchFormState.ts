@@ -1,5 +1,5 @@
 import { ChangeEvent, useCallback, useEffect, useMemo, useState } from 'react';
-import { buildVacancyUrl } from '@utils';
+import { buildVacancyUrl, readVacancyUrlParam } from '@utils';
 import { Errors } from '@type';
 import { DEFAULT_SEARCH, FormValues, SearchAuthData, SearchFieldData } from '@entities/search';
 import {
@@ -20,12 +20,14 @@ const blankFieldSlice = (draft?: SearchFormDraft | null) => ({
         searchField: draft?.searchField || DEFAULT_SEARCH.searchField,
         experience: draft?.experience || DEFAULT_SEARCH.experience,
         searchPeriod: draft?.searchPeriod || DEFAULT_SEARCH.searchPeriod,
+        employment: draft?.employment || DEFAULT_SEARCH.employment,
     }),
     schedule: draft?.schedule || DEFAULT_SEARCH.schedule,
     orderBy: draft?.orderBy || DEFAULT_SEARCH.orderBy,
     searchField: draft?.searchField || DEFAULT_SEARCH.searchField,
     experience: draft?.experience || DEFAULT_SEARCH.experience,
     searchPeriod: draft?.searchPeriod || DEFAULT_SEARCH.searchPeriod,
+    employment: draft?.employment || DEFAULT_SEARCH.employment,
 });
 
 const useSearchFormState = (
@@ -44,6 +46,8 @@ const useSearchFormState = (
                   searchField: initialFields.search_field || DEFAULT_SEARCH.searchField,
                   experience: initialFields.experience || DEFAULT_SEARCH.experience,
                   searchPeriod: initialFields.search_period || DEFAULT_SEARCH.searchPeriod,
+                  // No DB column: employment lives in the persisted vacancy_url.
+                  employment: readVacancyUrlParam(initialFields.vacancy_url, 'employment'),
               }
             : blankFieldSlice(draft);
 
@@ -73,6 +77,7 @@ const useSearchFormState = (
             searchField: formValues.searchField,
             experience: formValues.experience,
             searchPeriod: formValues.searchPeriod,
+            employment: formValues.employment,
         });
     }, [
         formValues.email,
@@ -83,6 +88,7 @@ const useSearchFormState = (
         formValues.searchField,
         formValues.experience,
         formValues.searchPeriod,
+        formValues.employment,
         initialFields,
     ]);
 
@@ -131,6 +137,7 @@ const useSearchFormState = (
                     searchField: param === 'searchField' ? value : prev.searchField,
                     experience: param === 'experience' ? value : prev.experience,
                     searchPeriod: param === 'searchPeriod' ? value : prev.searchPeriod,
+                    employment: param === 'employment' ? value : prev.employment,
                 }),
             }));
         },

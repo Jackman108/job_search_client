@@ -9,6 +9,7 @@ export const DEFAULT_SEARCH = {
     searchField: 'name',
     experience: 'between3And6',
     searchPeriod: '3',
+    employment: '',
 };
 
 export const FORM_TEXTS = {
@@ -25,6 +26,7 @@ export const FORM_LABELS = {
     searchField: 'Поиск по полям',
     experience: 'Опыт работы',
     searchPeriod: 'Период поиска',
+    employment: 'Тип занятости',
 };
 
 export const FORM_PARAMS = {
@@ -33,6 +35,7 @@ export const FORM_PARAMS = {
     searchField: 'searchField',
     experience: 'experience',
     searchPeriod: 'searchPeriod',
+    employment: 'employment',
 } as const;
 
 export const FORM_CONFIG: FormConfig = {
@@ -69,6 +72,7 @@ export const FORM_CONFIG: FormConfig = {
             { value: 'fullDay', label: 'Полный день' },
             { value: 'flexible', label: 'Гибкий график' },
             { value: 'shift', label: 'Сменный график' },
+            { value: 'flyInFlyOut', label: 'Вахтовый метод' },
         ],
         orderBy: [
             { value: 'salary_desc', label: 'По убыванию зарплаты' },
@@ -78,19 +82,28 @@ export const FORM_CONFIG: FormConfig = {
         ],
         searchField: [
             { value: 'name', label: 'По названию' },
-            { value: 'company', label: 'По компании' },
+            { value: 'company_name', label: 'По компании' },
             { value: 'description', label: 'По описанию' },
         ],
         experience: [
             { value: 'between1And3', label: 'От 1 до 3 лет' },
             { value: 'between3And6', label: 'От 3 до 6 лет' },
             { value: 'moreThan6', label: 'Более 6 лет' },
-            { value: '', label: 'Нет опыта' },
+            { value: 'noExperience', label: 'Нет опыта' },
         ],
         searchPeriod: [
             { value: '1', label: '1 день' },
             { value: '3', label: '3 дня' },
             { value: '7', label: 'Неделя' },
+            { value: '30', label: 'Месяц' },
+            { value: '0', label: 'За всё время' },
+        ],
+        employment: [
+            { value: '', label: 'Любая' },
+            { value: 'full', label: 'Полная занятость' },
+            { value: 'part', label: 'Частичная занятость' },
+            { value: 'project', label: 'Проектная работа' },
+            { value: 'probation', label: 'Стажировка' },
         ],
     },
 } as const;

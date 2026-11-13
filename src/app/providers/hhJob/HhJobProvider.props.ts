@@ -6,6 +6,8 @@ export interface HhJobState {
     status: HhJobStatus | 'idle';
     isJobActive: boolean;
     awaitingCaptcha: boolean;
+    /** ISO time when current CAPTCHA wait started (modal timer). */
+    captchaWaitingSince?: string;
     captchaSrc?: string;
     /** Changes when worker lastEventAt updates — use to refetch tables. */
     tableRevision?: string;
@@ -21,5 +23,6 @@ export interface HhJobState {
     stopJob: () => Promise<void>;
     clearJob: () => void;
     submitCaptchaAnswer: (answer: string) => Promise<void>;
+    requestCaptchaRefresh: () => Promise<void>;
     isAbortError: (error: unknown) => boolean;
 }

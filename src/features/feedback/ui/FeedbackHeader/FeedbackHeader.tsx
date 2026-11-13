@@ -12,6 +12,12 @@ const FeedbackHeader: FC<FeedbackHeaderProps> = ({ handleSort, getSortArrow }) =
             <th onClick={() => handleSort('vacancy_id')}>
                 {FEEDBACK_HEADER.vacancyId} {getSortArrow('vacancy_id')}
             </th>
+            <th onClick={() => handleSort('title_vacancy')}>
+                {FEEDBACK_HEADER.vacancyTitle} {getSortArrow('title_vacancy')}
+            </th>
+            <th onClick={() => handleSort('title_company')}>
+                {FEEDBACK_HEADER.company} {getSortArrow('title_company')}
+            </th>
             <th onClick={() => handleSort('feedback_text')}>
                 {FEEDBACK_HEADER.feedbackText} {getSortArrow('feedback_text')}
             </th>

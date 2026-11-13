@@ -1,23 +1,23 @@
 .emptyState {
     display: flex;
     flex-direction: column;
-    gap: 8px;
-    padding: 16px;
+    gap: 6px;
+    padding: 8px 10px;
     background-color: #f9f9f9;
-    border-radius: 8px;
+    border-radius: 6px;
     border: 1px solid #e0e0e0;
 }
 
 .title {
     margin: 0;
-    font-size: 18px;
+    font-size: 14px;
     font-weight: 600;
     color: #333;
 }
 
 .description {
     margin: 0;
-    font-size: 14px;
-    line-height: 1.4;
+    font-size: 12px;
+    line-height: 1.35;
     color: #555;
 }

@@ -48,6 +48,7 @@ const useHhJobRunner = () => {
     const [activeJob, setActiveJob] = useState<ActiveHhJob | null>(() => readActiveHhJob());
     const [status, setStatus] = useState<HhJobStatus | 'idle'>(() => (readActiveHhJob() ? 'queued' : 'idle'));
     const [awaitingCaptcha, setAwaitingCaptcha] = useState(false);
+    const [captchaWaitingSince, setCaptchaWaitingSince] = useState<string | undefined>();
     const [remoteCaptchaSrc, setRemoteCaptchaSrc] = useState<string | undefined>();
     const [hasCaptchaImage, setHasCaptchaImage] = useState(false);
     const [tableRevision, setTableRevision] = useState<string | undefined>();
@@ -70,7 +71,16 @@ const useHhJobRunner = () => {
 
     const applyPollUpdate = useCallback((next: HhJobStatusResponse) => {
         setStatus(next.status);
-        setAwaitingCaptcha(next.awaitingCaptcha === true);
+        setAwaitingCaptcha((prev) => {
+            const nextAwaiting = next.awaitingCaptcha === true;
+            if (nextAwaiting && !prev) {
+                setCaptchaWaitingSince(next.lastEventAt || new Date().toISOString());
+            }
+            if (!nextAwaiting) {
+                setCaptchaWaitingSince(undefined);
+            }
+            return nextAwaiting;
+        });
         setRemoteCaptchaSrc(next.captchaSrc);
         setHasCaptchaImage(next.hasCaptchaImage === true);
         if (next.lastEventAt) {
@@ -86,6 +96,7 @@ const useHhJobRunner = () => {
         setActiveJob(null);
         setStatus('idle');
         setAwaitingCaptcha(false);
+        setCaptchaWaitingSince(undefined);
         setRemoteCaptchaSrc(undefined);
         setHasCaptchaImage(false);
         setTableRevision(undefined);
@@ -150,7 +161,10 @@ const useHhJobRunner = () => {
                 })
                 .catch((error: unknown) => {
                     if (watchingIdRef.current === jobId) {
-                        clearJob();
+                        // Keep jobId in sessionStorage so CAPTCHA modal / poll can resume
+                        // after a transient 401 (token refresh) — only Stop/logout clearJob.
+                        watchingIdRef.current = null;
+                        watchPromiseRef.current = null;
                     }
                     throw error;
                 });
@@ -179,6 +193,12 @@ const useHhJobRunner = () => {
         },
         [activeJob?.jobId, request],
     );
+
+    const requestCaptchaRefresh = useCallback(async () => {
+        if (!activeJob?.jobId) return;
+        await request('post', `/jobs/${activeJob.jobId}/captcha-refresh`, {});
+        setTableRevision(new Date().toISOString());
+    }, [activeJob?.jobId, request]);
 
     const stopJob = useCallback(async () => {
         abortPolling();
@@ -218,6 +238,7 @@ const useHhJobRunner = () => {
         status,
         isJobActive,
         awaitingCaptcha,
+        captchaWaitingSince,
         captchaSrc,
         tableRevision,
         captchaBusy,
@@ -230,6 +251,7 @@ const useHhJobRunner = () => {
         stopJob,
         clearJob,
         submitCaptchaAnswer,
+        requestCaptchaRefresh,
         isAbortError,
     };
 };

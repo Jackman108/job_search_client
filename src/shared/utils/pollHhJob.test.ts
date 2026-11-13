@@ -63,4 +63,23 @@ describe('pollHhJob', () => {
         ac.abort();
         await expect(pending).rejects.toMatchObject({ name: 'AbortError' });
     });
+
+    it('retries transient request failures then settles', async () => {
+        const mock = jest
+            .fn()
+            .mockRejectedValueOnce(new Error('401'))
+            .mockRejectedValueOnce(new Error('network'))
+            .mockResolvedValue({
+                id: 'j1',
+                status: 'done',
+                kind: 'getFeedback',
+                createdAt: '2026-01-01T00:00:00.000Z',
+            });
+        const result = await pollHhJobUntilSettled(mock as RequestFn, 'j1', {
+            intervalMs: 1,
+            timeoutMs: 2000,
+        });
+        expect(result.status).toBe('done');
+        expect(mock).toHaveBeenCalledTimes(3);
+    });
 });

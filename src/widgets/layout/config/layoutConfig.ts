@@ -1,7 +1,7 @@
 import { ButtonConfig } from '@type';
 import ResumeButton from '@features/resume/ui/ResumeButton/ResumeButton';
 import SearchForm from '@features/vacancies/ui/SearchForm/SearchForm';
-import FeedbackForm from '@features/feedback/ui/FeedbackForm/FeedbackForm';
+import RefreshResultSlot from '@features/feedback/ui/RefreshResultSlot/RefreshResultSlot';
 import SubscriptionPanel from '../../subscription/ui/SubscriptionPanel';
 import ProfilePanel from '../../profile/ui/ProfilePanel';
 
@@ -17,9 +17,10 @@ export const layoutConfig: ButtonConfig<any>[] = [
     {
         icon: '/icons/update.svg',
         tooltipText: 'Обновить результат',
-        Component: FeedbackForm,
+        Component: RefreshResultSlot,
         position: 'left',
         requiresAuth: true,
+        // Empty panel UI; jobKind kept so sidebar badge tracks getFeedback.
         jobKind: 'getFeedback',
     },
     {

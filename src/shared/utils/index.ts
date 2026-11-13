@@ -1,4 +1,4 @@
-export { buildVacancyUrl } from './buildVacancyUrl';
+export { buildVacancyUrl, readVacancyUrlParam } from './buildVacancyUrl';
 export { clearSearchFormDraft, readSearchFormDraft, writeSearchFormDraft } from './searchFormDraft.utils';
 export type { SearchFormDraft } from './searchFormDraft.utils';
 export { handleAuthError, getErrorValidate } from './errorHandler';
