@@ -15,10 +15,12 @@ describe('searchFormDraft.utils', () => {
             searchField: 'name',
             experience: 'between3And6',
             searchPeriod: '3',
+            employment: 'full',
         });
         const draft = readSearchFormDraft();
         expect(draft?.email).toBe('a@b.c');
         expect(draft?.position).toBe('FE');
+        expect(draft?.employment).toBe('full');
         expect(JSON.stringify(draft)).not.toMatch(/password/i);
     });
 

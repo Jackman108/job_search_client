@@ -12,6 +12,7 @@ export type SearchFormDraft = {
     searchField: string;
     experience: string;
     searchPeriod: string;
+    employment: string;
 };
 
 const DRAFT_KEY = 'mh.searchFormDraft';
@@ -33,6 +34,7 @@ export const readSearchFormDraft = (): SearchFormDraft | null => {
             searchField: asString(parsed.searchField),
             experience: asString(parsed.experience),
             searchPeriod: asString(parsed.searchPeriod),
+            employment: asString(parsed.employment),
         };
     } catch {
         return null;
@@ -50,6 +52,7 @@ export const writeSearchFormDraft = (draft: SearchFormDraft): void => {
             searchField: draft.searchField,
             experience: draft.experience,
             searchPeriod: draft.searchPeriod,
+            employment: draft.employment,
         };
         localStorage.setItem(DRAFT_KEY, JSON.stringify(safe));
     } catch {

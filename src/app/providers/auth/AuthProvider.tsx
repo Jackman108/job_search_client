@@ -1,25 +1,13 @@
 import AuthContext from './useAuthContext';
 import { useLocalStorage } from '@hooks';
 import { AppProvidersProps } from '@app/types/AppProviders.props';
-import { useEffect } from 'react';
-import { decodeToken, isTokenExpired } from '@utils';
+import useExpiredTokenRefresh from './useExpiredTokenRefresh';
 
 const AuthProvider = ({ children }: AppProvidersProps) => {
     const [token, setToken] = useLocalStorage<string | null>('token', null);
 
-    // При монтировании проверяем срок жизни токена и очищаем при истечении
-    useEffect(() => {
-        if (token) {
-            try {
-                const { exp } = decodeToken(token);
-                if (isTokenExpired(exp)) {
-                    setToken(null);
-                }
-            } catch {
-                setToken(null);
-            }
-        }
-    }, [token, setToken]);
+    // Истёкший access (JWT_EXP ~5m): сначала refresh по cookie, очистка — только если refresh не удался.
+    useExpiredTokenRefresh(token, setToken);
 
     return <AuthContext.Provider value={{ token, setToken }}>{children}</AuthContext.Provider>;
 };

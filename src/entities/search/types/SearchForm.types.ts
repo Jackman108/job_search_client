@@ -12,6 +12,7 @@ export interface FormValues {
     searchField: string;
     experience: string;
     searchPeriod: string;
+    employment: string;
 }
 
 export interface SearchSubmitParams {

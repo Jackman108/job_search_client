@@ -23,8 +23,16 @@ const HhCaptchaModal = ({ captchaSrc, busy, error, onSubmit, onDismiss }: HhCapt
                         </button>
                     ) : null}
                 </header>
-                <p className={styles.hint}>Введите текст с картинки — браузер HH остаётся headless.</p>
-                {captchaSrc ? <img className={styles.image} src={captchaSrc} alt="CAPTCHA" /> : null}
+                <p className={styles.hint}>
+                    {captchaSrc
+                        ? 'Введите текст с картинки — браузер HH остаётся headless. Скрипт ждёт ответ.'
+                        : 'Капча на HH. Картинка ещё подгружается — модалка не закроется, пока не ответите или не истечёт таймаут.'}
+                </p>
+                {captchaSrc ? (
+                    <img className={styles.image} src={captchaSrc} alt="CAPTCHA" />
+                ) : (
+                    <p className={styles.waiting}>Ожидаем картинку Magritte…</p>
+                )}
                 <label className={styles.label}>
                     Текст с картинки
                     <input

@@ -1,5 +1,6 @@
 import { FC } from 'react';
 import { PanelProps } from '@type';
+import { getScriptControlState } from '@shared/utils/scriptControlState.utils';
 import formLayout from '@shared/styles/FormLayout.module.css';
 import { Button, FormContainer, ManagementSection, RenderInput } from '@ui';
 import useFeedbackLogic from '../../hooks/useFeedbackLogic';
@@ -28,6 +29,8 @@ const FeedbackForm: FC<PanelProps> = ({ onClose }) => {
         handleSaveProfile,
         handleDeleteProfile,
     } = useFeedbackLogic();
+
+    const { canStart, canStop } = getScriptControlState({ isLoading, isEditing, canCommit });
 
     return (
         <FormContainer token={token} onClose={onClose}>
@@ -84,14 +87,14 @@ const FeedbackForm: FC<PanelProps> = ({ onClose }) => {
                 </div>
 
                 <div className={formLayout.buttonsContainer}>
-                    <Button className={formLayout.button} type="submit" disabled={isLoading}>
+                    <Button className={formLayout.button} type="submit" disabled={!canStart}>
                         {isLoading ? t('auth:form.isLoading') : t('auth:button.start')}
                     </Button>
                     <Button
                         className={formLayout.button}
                         type="button"
                         onClick={onStop}
-                        disabled={!isLoading}
+                        disabled={!canStop}
                         variant="danger"
                     >
                         {t('auth:button.stop')}
