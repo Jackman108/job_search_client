@@ -1,5 +1,6 @@
 export { default as Tooltip } from './Tooltip/Tooltip';
 export { default as UnauthorizedMessage } from './UnauthorizedMessage/UnauthorizedMessage';
+export { default as Accordion } from './Accordion/Accordion';
 export { default as Avatar } from './Avatar/Avatar';
 export { default as Button } from './Button/Button';
 export { default as CaptchaAlert } from './CaptchaAlert/CaptchaAlert';

@@ -72,9 +72,7 @@ export async function pollHhJobUntilSettled(
             }
         } catch (error) {
             if (signal?.aborted || (error instanceof DOMException && error.name === 'AbortError')) {
-                throw error instanceof DOMException
-                    ? error
-                    : new DOMException('HH job poll aborted', 'AbortError');
+                throw error instanceof DOMException ? error : new DOMException('HH job poll aborted', 'AbortError');
             }
             transientFailures += 1;
             if (transientFailures >= maxTransientFailures) throw error;

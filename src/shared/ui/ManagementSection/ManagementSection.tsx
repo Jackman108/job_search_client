@@ -33,6 +33,7 @@ const ManagementSection: FC<ManagementSectionProps> = ({
     isEditing,
     onEditingChange,
     canCommit = false,
+    isDirty = false,
 }) => {
     const [drafting, setDrafting] = useState(false);
     const [saving, setSaving] = useState(false);
@@ -125,28 +126,59 @@ const ManagementSection: FC<ManagementSectionProps> = ({
             ) : (
                 <p className={styles.draftHint}>{draftHint}</p>
             )}
-            {items.length > 0 && (
-                <Button type="button" onClick={handleStartCreate} disabled={!canNew} variant="primary">
-                    {newLabel}
+            <div className={styles.actions}>
+                {items.length > 0 && (
+                    <Button
+                        type="button"
+                        className={styles.actionButton}
+                        onClick={handleStartCreate}
+                        disabled={!canNew}
+                        variant="primary"
+                        title={newLabel}
+                    >
+                        {newLabel}
+                    </Button>
+                )}
+                {isEditing ? (
+                    <Button
+                        type="button"
+                        className={styles.actionButton}
+                        onClick={handleSave}
+                        disabled={!canSave}
+                        variant="primary"
+                        title={isDirty ? `${saveLabel} (есть изменения)` : saveLabel}
+                        aria-label={saveLabel}
+                        data-dirty={isDirty || undefined}
+                    >
+                        {isDirty ? `${saveLabel}*` : saveLabel}
+                    </Button>
+                ) : (
+                    <Button
+                        type="button"
+                        className={styles.actionButton}
+                        onClick={() => {
+                            setActionError(null);
+                            onEditingChange(true);
+                        }}
+                        disabled={!canEdit}
+                        variant="secondary"
+                        title={editLabel}
+                        aria-label={editLabel}
+                    >
+                        {editLabel}
+                    </Button>
+                )}
+                <Button
+                    type="button"
+                    className={styles.actionButton}
+                    onClick={handleDelete}
+                    disabled={!canDelete}
+                    variant="danger"
+                    title={deleteLabel}
+                >
+                    {deleteLabel}
                 </Button>
-            )}
-            <Button type="button" onClick={handleSave} disabled={!canSave} variant="primary">
-                {saveLabel}
-            </Button>
-            <Button
-                type="button"
-                onClick={() => {
-                    setActionError(null);
-                    onEditingChange(true);
-                }}
-                disabled={!canEdit}
-                variant="secondary"
-            >
-                {editLabel}
-            </Button>
-            <Button type="button" onClick={handleDelete} disabled={!canDelete} variant="danger">
-                {deleteLabel}
-            </Button>
+            </div>
             {actionError ? (
                 <p className={styles.actionError} role="alert">
                     {actionError}

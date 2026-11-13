@@ -23,4 +23,6 @@ export interface ManagementSectionProps {
     onEditingChange: (editing: boolean) => void;
     /** Dirty + required fields filled — Save stays disabled until true while editing. */
     canCommit?: boolean;
+    /** Unsaved edits while editing — show dirty marker on Save. */
+    isDirty?: boolean;
 }

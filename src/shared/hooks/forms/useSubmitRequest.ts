@@ -22,6 +22,8 @@ const useSubmitRequest = () => {
         position,
         message,
         vacancyUrl,
+        dryRun,
+        applyCap,
         setErrors,
         setIsLoading,
         endpoint,
@@ -45,7 +47,15 @@ const useSubmitRequest = () => {
         try {
             const result = await submitMutation.mutateAsync({
                 endpoint,
-                data: { email, password, position, message, vacancyUrl },
+                data: {
+                    email,
+                    password,
+                    position,
+                    message,
+                    vacancyUrl,
+                    ...(dryRun ? { dryRun: true } : {}),
+                    ...(typeof applyCap === 'number' && applyCap > 0 ? { applyCap } : {}),
+                },
             });
 
             // Queue mode: API returns 202 + jobId; app-level runner polls (survives panel close).

@@ -9,7 +9,7 @@ export interface HhQueueResponse {
     mode?: 'queue';
 }
 
-export type HhApplyEndReason = 'last_page' | 'page_cap' | 'stopped' | 'aborted';
+export type HhApplyEndReason = 'last_page' | 'page_cap' | 'apply_cap' | 'dry_run' | 'stopped' | 'aborted';
 
 export interface HhApplySummary {
     /** Alias of foundListed (legacy). */

@@ -21,6 +21,8 @@ export interface SearchSubmitParams {
     position?: string;
     message?: string;
     vacancyUrl?: string;
+    dryRun?: boolean;
+    applyCap?: number;
     setErrors: Dispatch<SetStateAction<Errors>>;
     setIsLoading: (loading: boolean) => void;
     endpoint: string;

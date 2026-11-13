@@ -9,7 +9,7 @@
         "new": "New",
         "save": "Save",
         "edit": "Edit",
-        "delete": "Delete",
+        "delete": "Del",
         "profileLabel": "Profile #{{id}}"
     },
     "hhAuth": {
@@ -18,5 +18,23 @@
         "emptyDescription": "Create an entry — email and password start blank; then save.",
         "createCta": "Create",
         "selectPlaceholder": "Select..."
+    },
+    "accordions": {
+        "login": "Login",
+        "vacancyBlock": "Vacancy, URL & letter",
+        "searchTarget": "Vacancy & URL",
+        "message": "Cover letter",
+        "filters": "HH filters"
+    },
+    "toggles": {
+        "applyOff": "Start · apply",
+        "applyOn": "Stop · apply",
+        "applyOffHint": "Start sending applications",
+        "applyOnHint": "Stop sending applications",
+        "refreshOff": "↻ Refresh statuses",
+        "refreshOn": "↻ Stop refresh",
+        "refreshHint": "Refresh feedback statuses (not apply)",
+        "repeat": "↻ Last run",
+        "repeatHint": "Repeat last start with the same fields"
     }
 }

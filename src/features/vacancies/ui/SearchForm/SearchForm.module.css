@@ -1,27 +1,74 @@
-.textareaContainer {
+.accordionStack {
     display: flex;
     flex-direction: column;
-    gap: 15px;
+    gap: 6px;
 }
 
 .selectsContainer {
     display: flex;
     flex-direction: column;
-    gap: 15px;
+    gap: 8px;
 }
 
-.error {
-    border-color: red;
+.optionsRow {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    align-items: center;
+    font-size: 12px;
+    color: #444;
 }
 
-.errorText {
-    color: red;
-    font-size: 0.875em;
-    margin-top: 5px;
+.check {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
 }
 
-@media (max-width: 768px) {
-    .sectionContainer {
-        padding: 16px;
-    }
+.cap {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+}
+
+.capInput {
+    width: 56px;
+    padding: 2px 4px;
+    font-size: 12px;
+}
+
+.toggles {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    margin: 8px 0 24px;
+}
+
+.toggle {
+    flex: 1 1 120px;
+    margin: 0 !important;
+    padding: 6px 10px !important;
+    font-size: 12px !important;
+    line-height: 1.2 !important;
+    border-radius: 4px;
+    white-space: nowrap;
+}
+
+.toggleOn {
+    box-shadow: inset 0 0 0 2px rgba(0, 0, 0, 0.2);
+}
+
+.refreshToggle {
+    border: 1px dashed #5a7a9a !important;
+}
+
+.refreshToggle:not(:disabled) {
+    background-color: #eef5fb !important;
+    color: #1a4a73 !important;
+}
+
+.refreshToggleOn:not(:disabled) {
+    background-color: #c97800 !important;
+    color: #fff !important;
+    border-style: solid !important;
 }

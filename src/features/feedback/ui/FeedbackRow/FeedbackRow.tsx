@@ -8,6 +8,8 @@ const FeedbackRow: FC<FeedbackRowProps> = ({ feedback, deleteFeedback }) => (
     <tr key={feedback.id} className={styles.FeedbackRow}>
         <td>{feedback.id}</td>
         <td>{feedback.vacancy_id}</td>
+        <td>{feedback.title_vacancy || '—'}</td>
+        <td>{feedback.title_company || '—'}</td>
         <td>{feedback.feedback_text}</td>
         <td>
             <div className={styles.tableDate}>{feedback.feedback_date_time}</div>
