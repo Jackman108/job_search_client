@@ -18,6 +18,7 @@
     "typecheck": "tsc --noEmit",
     "check:structure": "node scripts/check-structure.mjs",
     "check:fsd": "node scripts/check-fsd.mjs",
+    "precommit": "npm run lint && npm run typecheck && npm run check:structure && npm run check:fsd && node scripts/precommit-runtime.mjs",
     "eject": "react-app-rewired eject"
   },
   "dependencies": {
