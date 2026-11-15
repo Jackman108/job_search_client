@@ -1,4 +1,4 @@
-import type { HhJobCompletion, HhJobKind, HhJobStatus, HhJobStatusResponse } from '@type';
+import type { HhJobCompletion, HhJobKind, HhJobStatus, HhJobStatusResponse, HhLiveApplySummary } from '@type';
 import type { ActiveHhJob } from '@shared/utils/activeHhJob.utils';
 
 export interface HhJobState {
@@ -19,6 +19,9 @@ export interface HhJobState {
     /** SERP «Найдено N…» toast while job is running. */
     foundNotice: string | null;
     dismissFoundNotice: () => void;
+    /** Live apply counters for in-panel banner. */
+    liveSummary: HhLiveApplySummary | null;
+    lastEvent?: string;
     watchJob: (jobId: string, kind: HhJobKind) => Promise<HhJobStatusResponse>;
     stopJob: () => Promise<void>;
     clearJob: () => void;

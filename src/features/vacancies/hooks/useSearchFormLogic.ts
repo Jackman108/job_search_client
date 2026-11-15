@@ -9,7 +9,7 @@ import { readLastApplySnapshot } from '@shared/utils/lastApplySnapshot.utils';
 
 const useSearchFormLogic = () => {
     const { token } = useAuth();
-    const { isJobActive, activeJob } = useHhJobContext();
+    const { isJobActive, activeJob, liveSummary, lastEvent, awaitingCaptcha, status } = useHhJobContext();
     const { vacancySubmit, vacancyStop } = useVacancySubmit();
     const { handleSubmitRequest, handleStopRequest } = useSubmitRequest();
     const profile = useSharedSearchProfile(PROFILE_REQUIRED_KEYS);
@@ -105,6 +105,10 @@ const useSearchFormLogic = () => {
         onApplyToggle,
         onRefreshToggle,
         onRepeatLast,
+        liveSummary,
+        lastEvent,
+        awaitingCaptcha,
+        jobStatus: status,
     };
 };
 

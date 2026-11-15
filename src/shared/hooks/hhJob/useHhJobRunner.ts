@@ -1,9 +1,11 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { useAuth } from '@app/providers/auth/useAuthContext';
 import { useDataApi } from '@api';
-import type { HhJobCompletion, HhJobKind, HhJobStatus, HhJobStatusResponse } from '@type';
+import type { HhJobCompletion, HhJobKind, HhJobStatus, HhJobStatusResponse, HhLiveApplySummary } from '@type';
 import { clearActiveHhJob, readActiveHhJob, writeActiveHhJob, type ActiveHhJob } from '@shared/utils/activeHhJob.utils';
+import { humanizeHhError } from '@shared/utils/hhHumanError.utils';
 import { pollHhJobUntilSettled } from '@shared/utils/pollHhJob';
+import useCaptchaAttention from './useCaptchaAttention';
 import useCaptchaImageUrl from './useCaptchaImageUrl';
 
 const isAbortError = (error: unknown) =>
@@ -35,6 +37,7 @@ function completionFromResult(result: HhJobStatusResponse): HhJobCompletion | nu
         pages: result.summary?.pages,
         endReason: result.summary?.endReason ?? (result.status === 'done' ? undefined : 'aborted'),
         lastEvent: result.lastEvent,
+        failReasons: result.summary?.failReasons,
     };
 }
 
@@ -56,6 +59,8 @@ const useHhJobRunner = () => {
     const [captchaError, setCaptchaError] = useState<string | null>(null);
     const [completion, setCompletion] = useState<HhJobCompletion | null>(null);
     const [foundNotice, setFoundNotice] = useState<string | null>(null);
+    const [liveSummary, setLiveSummary] = useState<HhLiveApplySummary | null>(null);
+    const [lastEvent, setLastEvent] = useState<string | undefined>();
     const abortRef = useRef<AbortController | null>(null);
     const watchPromiseRef = useRef<Promise<HhJobStatusResponse> | null>(null);
     const watchingIdRef = useRef<string | null>(null);
@@ -68,9 +73,11 @@ const useHhJobRunner = () => {
         remoteCaptchaSrc,
         tableRevision,
     );
+    useCaptchaAttention(awaitingCaptcha);
 
     const applyPollUpdate = useCallback((next: HhJobStatusResponse) => {
         setStatus(next.status);
+        setLastEvent(next.lastEvent);
         setAwaitingCaptcha((prev) => {
             const nextAwaiting = next.awaitingCaptcha === true;
             if (nextAwaiting && !prev) {
@@ -85,6 +92,17 @@ const useHhJobRunner = () => {
         setHasCaptchaImage(next.hasCaptchaImage === true);
         if (next.lastEventAt) {
             setTableRevision(next.lastEventAt);
+        }
+        if (next.summary) {
+            setLiveSummary({
+                found: next.summary.found,
+                foundListed: next.summary.foundListed,
+                applyablePage1: next.summary.applyablePage1,
+                alreadyInDb: next.summary.alreadyInDb,
+                success: next.summary.success,
+                skipped: next.summary.skipped,
+                failed: next.summary.failed,
+            });
         }
         if (next.lastEvent && /^Найдено\s+\d+/i.test(next.lastEvent)) {
             setFoundNotice(next.lastEvent);
@@ -103,6 +121,8 @@ const useHhJobRunner = () => {
         setCaptchaError(null);
         setCaptchaBusy(false);
         setFoundNotice(null);
+        setLiveSummary(null);
+        setLastEvent(undefined);
         watchingIdRef.current = null;
         watchPromiseRef.current = null;
     }, []);
@@ -137,6 +157,8 @@ const useHhJobRunner = () => {
             setCaptchaError(null);
             setCompletion(null);
             setFoundNotice(null);
+            setLiveSummary(null);
+            setLastEvent(undefined);
             watchingIdRef.current = jobId;
 
             const promise = pollHhJobUntilSettled(request, jobId, {
@@ -153,9 +175,9 @@ const useHhJobRunner = () => {
                         const detail =
                             result.error ||
                             result.lastEvent ||
-                            (result.captchaSrc ? `CAPTCHA detected restart ${result.captchaSrc}` : undefined) ||
+                            (result.captchaSrc ? 'CAPTCHA detected' : undefined) ||
                             'HH job failed';
-                        throw new Error(detail);
+                        throw new Error(humanizeHhError(detail));
                     }
                     return result;
                 })
@@ -247,6 +269,8 @@ const useHhJobRunner = () => {
         dismissCompletion,
         foundNotice,
         dismissFoundNotice,
+        liveSummary,
+        lastEvent,
         watchJob,
         stopJob,
         clearJob,
