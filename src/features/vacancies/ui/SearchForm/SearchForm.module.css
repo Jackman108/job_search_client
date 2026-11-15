@@ -37,11 +37,54 @@
     font-size: 12px;
 }
 
+.credHint,
+.guestHint,
+.repeatMeta,
+.liveTableHint {
+    margin: 4px 0 8px;
+    font-size: 11px;
+    color: #5a6a78;
+    line-height: 1.35;
+}
+
+.guestHint {
+    color: #6a4a18;
+}
+
+.dryRunOn {
+    background: #fff8e6;
+    border-radius: 4px;
+    padding: 4px 6px;
+}
+
+.dryRunCheck {
+    font-weight: 600;
+}
+
+.stickyActions {
+    position: sticky;
+    bottom: 0;
+    z-index: 2;
+    margin: 8px -4px 0;
+    padding: 8px 4px 12px;
+    background: linear-gradient(180deg, rgba(255, 255, 255, 0.75), #fff 35%);
+}
+
 .toggles {
     display: flex;
     flex-wrap: wrap;
     gap: 6px;
-    margin: 8px 0 24px;
+    margin: 0 0 4px;
+}
+
+@media (max-width: 640px) {
+    .toggle {
+        flex: 1 1 100%;
+    }
+
+    .stickyActions {
+        padding-bottom: 16px;
+    }
 }
 
 .toggle {

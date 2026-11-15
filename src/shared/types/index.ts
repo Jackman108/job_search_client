@@ -43,6 +43,7 @@ export type {
     HhApplyEndReason,
     HhApplySummary,
     HhJobCompletion,
+    HhLiveApplySummary,
 } from './HhJob.types';
 
 export type { SortDirection, SortConfig } from './Sort.types';

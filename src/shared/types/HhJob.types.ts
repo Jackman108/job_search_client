@@ -22,6 +22,7 @@ export interface HhApplySummary {
     failed: number;
     pages: number;
     endReason?: HhApplyEndReason;
+    failReasons?: Record<string, number>;
 }
 
 export interface HhJobStatusResponse {
@@ -55,4 +56,11 @@ export interface HhJobCompletion {
     pages?: number;
     endReason?: HhApplyEndReason;
     lastEvent?: string;
+    failReasons?: Record<string, number>;
 }
+
+/** Live counters while sendFeedback is running (banner). */
+export type HhLiveApplySummary = Pick<
+    HhApplySummary,
+    'found' | 'foundListed' | 'applyablePage1' | 'alreadyInDb' | 'success' | 'skipped' | 'failed'
+>;

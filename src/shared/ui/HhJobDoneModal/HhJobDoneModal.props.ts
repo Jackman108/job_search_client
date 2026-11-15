@@ -10,5 +10,6 @@ export interface HhJobDoneModalProps {
     failed?: number;
     pages?: number;
     endReason?: HhApplyEndReason;
+    failReasons?: Record<string, number>;
     onClose: () => void;
 }

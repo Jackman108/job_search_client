@@ -1,5 +1,6 @@
 import styles from './HhJobDoneModal.module.css';
 import type { HhJobDoneModalProps } from './HhJobDoneModal.props';
+import { formatFailReasonRows } from '@shared/utils/hhFailReasonLabel.utils';
 import { doneModalBody, doneModalTitle } from './endReasonCopy';
 
 const HhJobDoneModal = ({
@@ -12,11 +13,13 @@ const HhJobDoneModal = ({
     failed = 0,
     pages,
     endReason,
+    failReasons,
     onClose,
 }: HhJobDoneModalProps) => {
     const title = doneModalTitle(endReason);
     const body = doneModalBody(endReason);
     const listed = foundListed ?? found;
+    const failRows = formatFailReasonRows(failReasons);
 
     return (
         <div className={styles.backdrop} role="presentation" onClick={onClose}>
@@ -65,6 +68,18 @@ const HhJobDoneModal = ({
                     ) : null}
                 </ul>
                 {typeof pages === 'number' && pages > 0 ? <p className={styles.hint}>Страниц SERP: {pages}</p> : null}
+                {failRows.length > 0 ? (
+                    <div className={styles.fails}>
+                        <p className={styles.failsTitle}>Почему не откликнулись</p>
+                        <ul className={styles.failList}>
+                            {failRows.map((row) => (
+                                <li key={row.reason}>
+                                    {row.label}: <strong>{row.count}</strong>
+                                </li>
+                            ))}
+                        </ul>
+                    </div>
+                ) : null}
                 <button type="button" className={styles.ok} onClick={onClose}>
                     Понятно
                 </button>

@@ -9,6 +9,7 @@ import { FORM_CONFIG, FORM_LABELS, FORM_PARAMS, FORM_TEXTS, FormLabelKeys, FormP
 import { FILTER_OPTION_KEYS, LOGIN_FIELD_KEYS, VACANCY_SECTION_KEYS } from './searchFormFieldGroups';
 import ProfilePreview from './ProfilePreview';
 import JobHistoryList from './JobHistoryList';
+import HhJobLiveBanner from './HhJobLiveBanner';
 import { readLastApplySnapshot } from '@shared/utils/lastApplySnapshot.utils';
 
 const SearchForm: FC<PanelProps> = ({ onClose }) => {
@@ -44,11 +45,19 @@ const SearchForm: FC<PanelProps> = ({ onClose }) => {
         handleStartCreateProfile,
         handleSaveProfile,
         handleDeleteProfile,
+        liveSummary,
+        lastEvent,
+        awaitingCaptcha,
+        jobStatus,
     } = useSearchFormLogic();
 
     const applyToggleDisabled = applyActive ? false : !canStart;
     const refreshToggleDisabled = refreshActive ? false : !canRefresh;
-    const hasLast = Boolean(readLastApplySnapshot());
+    const lastSnap = readLastApplySnapshot();
+    const hasLast = Boolean(lastSnap);
+    const lastLabel = lastSnap
+        ? `${lastSnap.position || lastSnap.email} · ${new Date(lastSnap.savedAt).toLocaleString()}`
+        : '';
 
     return (
         <FormContainer token={token} onClose={onClose}>
@@ -90,6 +99,27 @@ const SearchForm: FC<PanelProps> = ({ onClose }) => {
                     email={formValues.email}
                     position={formValues.position}
                     vacancyUrl={formValues.vacancyUrl}
+                />
+            ) : null}
+
+            {!isEditing && formValues.email ? (
+                <p className={styles.credHint}>
+                    Пароль HH хранится в профиле и подставляется при Start (в превью не показывается).
+                </p>
+            ) : null}
+
+            {!token ? (
+                <p className={styles.guestHint}>
+                    Гость: войдите, чтобы запускать отклики. Подписка снимает лимиты оплаты, если они включены.
+                </p>
+            ) : null}
+
+            {applyActive ? (
+                <HhJobLiveBanner
+                    status={jobStatus}
+                    lastEvent={lastEvent}
+                    awaitingCaptcha={awaitingCaptcha}
+                    summary={liveSummary}
                 />
             ) : null}
 
@@ -167,15 +197,15 @@ const SearchForm: FC<PanelProps> = ({ onClose }) => {
                     </div>
                 ) : null}
 
-                <div className={styles.optionsRow}>
-                    <label className={styles.check}>
+                <div className={`${styles.optionsRow} ${dryRun ? styles.dryRunOn : ''}`}>
+                    <label className={`${styles.check} ${styles.dryRunCheck}`}>
                         <input
                             type="checkbox"
                             checked={dryRun}
                             onChange={(e) => setDryRun(e.target.checked)}
                             disabled={isLoading || isEditing}
                         />
-                        Dry-run (только SERP)
+                        Только поиск (dry-run) — без клика «Откликнуться»
                     </label>
                     <label className={styles.cap}>
                         Лимит откликов
@@ -194,39 +224,47 @@ const SearchForm: FC<PanelProps> = ({ onClose }) => {
                     </label>
                 </div>
 
-                <div className={styles.toggles}>
-                    <Button
-                        type="button"
-                        className={`${styles.toggle} ${applyActive ? styles.toggleOn : ''}`}
-                        variant={applyActive ? 'danger' : 'primary'}
-                        disabled={applyToggleDisabled}
-                        aria-pressed={applyActive}
-                        title={applyActive ? t('search:toggles.applyOnHint') : t('search:toggles.applyOffHint')}
-                        onClick={() => void onApplyToggle()}
-                    >
-                        {applyActive ? t('search:toggles.applyOn') : t('search:toggles.applyOff')}
-                    </Button>
-                    <Button
-                        type="button"
-                        className={`${styles.toggle} ${styles.refreshToggle} ${refreshActive ? styles.refreshToggleOn : ''}`}
-                        variant="secondary"
-                        disabled={refreshToggleDisabled}
-                        aria-pressed={refreshActive}
-                        title={t('search:toggles.refreshHint')}
-                        onClick={() => void onRefreshToggle()}
-                    >
-                        {refreshActive ? t('search:toggles.refreshOn') : t('search:toggles.refreshOff')}
-                    </Button>
-                    <Button
-                        type="button"
-                        className={styles.toggle}
-                        variant="secondary"
-                        disabled={!hasLast || isLoading || isEditing || applyActive}
-                        title={t('search:toggles.repeatHint')}
-                        onClick={() => void onRepeatLast()}
-                    >
-                        {t('search:toggles.repeat')}
-                    </Button>
+                <div className={styles.stickyActions}>
+                    <div className={styles.toggles}>
+                        <Button
+                            type="button"
+                            className={`${styles.toggle} ${applyActive ? styles.toggleOn : ''}`}
+                            variant={applyActive ? 'danger' : 'primary'}
+                            disabled={applyToggleDisabled}
+                            aria-pressed={applyActive}
+                            title={applyActive ? t('search:toggles.applyOnHint') : t('search:toggles.applyOffHint')}
+                            onClick={() => void onApplyToggle()}
+                        >
+                            {applyActive ? t('search:toggles.applyOn') : t('search:toggles.applyOff')}
+                        </Button>
+                        <Button
+                            type="button"
+                            className={`${styles.toggle} ${styles.refreshToggle} ${refreshActive ? styles.refreshToggleOn : ''}`}
+                            variant="secondary"
+                            disabled={refreshToggleDisabled}
+                            aria-pressed={refreshActive}
+                            title={t('search:toggles.refreshHint')}
+                            onClick={() => void onRefreshToggle()}
+                        >
+                            {refreshActive ? t('search:toggles.refreshOn') : t('search:toggles.refreshOff')}
+                        </Button>
+                        <Button
+                            type="button"
+                            className={styles.toggle}
+                            variant="secondary"
+                            disabled={!hasLast || isLoading || isEditing || applyActive}
+                            title={lastLabel || t('search:toggles.repeatHint')}
+                            onClick={() => void onRepeatLast()}
+                        >
+                            {t('search:toggles.repeat')}
+                        </Button>
+                    </div>
+                    {hasLast ? <p className={styles.repeatMeta}>Повтор: {lastLabel}</p> : null}
+                    {applyActive ? (
+                        <p className={styles.liveTableHint}>
+                            Таблица вакансий обновляется во время прогона — новые строки подсвечиваются при появлении.
+                        </p>
+                    ) : null}
                 </div>
             </form>
 

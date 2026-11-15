@@ -69,6 +69,29 @@
     color: #666;
 }
 
+.fails {
+    padding: 0.55rem 0.65rem;
+    border-radius: 8px;
+    background: #f7f2ef;
+}
+
+.failsTitle {
+    margin: 0 0 0.35rem;
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: #6a3a22;
+}
+
+.failList {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+    font-size: 0.85rem;
+}
+
 .ok {
     margin-top: 0.25rem;
     padding: 0.65rem 1rem;
