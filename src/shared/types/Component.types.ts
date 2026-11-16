@@ -10,6 +10,8 @@ export interface ButtonConfig<T> {
     requiresAuth?: boolean;
     /** When set, sidebar shows a spinner while this HH job kind is active. */
     jobKind?: HhJobKind;
+    /** Extra kinds that also drive this button’s spinner/badge (e.g. refresh lives in SearchForm). */
+    jobKinds?: HhJobKind[];
 }
 
 export type SidebarJobBadge = 'apply' | 'refresh' | 'captcha';

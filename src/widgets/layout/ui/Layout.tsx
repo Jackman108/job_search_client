@@ -12,13 +12,15 @@ const Layout: FC<{ children: ReactNode }> = ({ children }) => {
         buttons
             .filter((config) => config.position === position)
             .map((config, index) => {
-                const kindBusy = Boolean(config.jobKind && isJobActive && activeJob?.kind === config.jobKind);
+                const trackedKinds = config.jobKinds?.length ? config.jobKinds : config.jobKind ? [config.jobKind] : [];
+                const activeKind = activeJob?.kind;
+                const kindBusy = Boolean(isJobActive && activeKind && trackedKinds.includes(activeKind));
                 const jobBadge =
                     kindBusy && awaitingCaptcha
                         ? ('captcha' as const)
-                        : kindBusy && config.jobKind === 'sendFeedback'
+                        : kindBusy && activeKind === 'sendFeedback'
                           ? ('apply' as const)
-                          : kindBusy && config.jobKind === 'getFeedback'
+                          : kindBusy && activeKind === 'getFeedback'
                             ? ('refresh' as const)
                             : null;
 
