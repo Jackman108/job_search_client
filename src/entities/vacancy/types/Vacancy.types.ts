@@ -8,4 +8,6 @@ export interface Vacancy {
     response_date: string;
     response_date_time?: string;
     response_date_date?: string;
+    /** Joined from feedback for table sort/display (optional). */
+    feedback_status?: string;
 }

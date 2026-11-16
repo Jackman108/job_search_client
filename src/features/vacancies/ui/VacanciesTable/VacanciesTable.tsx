@@ -1,4 +1,4 @@
-import { FC } from 'react';
+import { FC, useMemo } from 'react';
 import { useVacancyContext } from '@app/providers/vacancy/useVacancyContext';
 import styles from './VacanciesTable.module.css';
 import { ErrorAlert, Graph, Tooltip, UnauthorizedMessage } from '@ui';
@@ -13,6 +13,15 @@ const VacanciesTable: FC = () => {
     const { vacancies, loading, error: vacancyError, deleteVacancy } = useVacancyContext();
     const { getFeedbackByVacancyId, error: feedbackError } = useFeedbackByVacancyId();
 
+    const rows = useMemo(
+        () =>
+            vacancies.map((vacancy) => ({
+                ...vacancy,
+                feedback_status: getFeedbackByVacancyId(vacancy.id)?.response_status || '',
+            })),
+        [vacancies, getFeedbackByVacancyId],
+    );
+
     const {
         sortedData,
         handleSort,
@@ -21,7 +30,7 @@ const VacanciesTable: FC = () => {
         handleMouseEnter,
         handleMouseLeave,
         error: sortError,
-    } = useTableHandlers(vacancies);
+    } = useTableHandlers(rows);
 
     if (loading) return <div>{LOCALES.LOADING}</div>;
     if (vacancies.length === 0 && !vacancyError) return <div>{LOCALES.WELCOME_MESSAGE}</div>;

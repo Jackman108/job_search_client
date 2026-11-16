@@ -22,7 +22,9 @@ const VacancyHeader: FC<VacancyHeaderProps> = memo(({ handleSort, getSortArrow }
                 <th onClick={() => handleSort('response_date')}>
                     {TABLE_VACANCIES.tableDate} {getSortArrow('response_date')}
                 </th>
-                <th>{TABLE_VACANCIES.feedbackStatus}</th>
+                <th onClick={() => handleSort('feedback_status')}>
+                    {TABLE_VACANCIES.feedbackStatus} {getSortArrow('feedback_status')}
+                </th>
                 <th>{TABLE_VACANCIES.deletedButton}</th>
             </tr>
         </thead>
