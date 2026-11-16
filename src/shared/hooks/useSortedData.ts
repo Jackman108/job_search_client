@@ -24,8 +24,8 @@ const useSortedData = <T extends Record<string, any>>(data: T[], options?: UseSo
                 if (custom) {
                     return custom(a, b, sortConfig.direction);
                 }
-                const aValue = a[sortConfig.key];
-                const bValue = b[sortConfig.key];
+                const aValue = a[sortConfig.key] as string | number | null | undefined;
+                const bValue = b[sortConfig.key] as string | number | null | undefined;
                 if (aValue === undefined || aValue === null || bValue === undefined || bValue === null) {
                     console.warn(`Значение для ключа ${String(sortConfig.key)} отсутствует у одного из элементов`);
                     return 0;
