@@ -8,6 +8,8 @@
         "spinCount": "Number of rotations",
         "successfulResponses": "Successful responses",
         "currentStatus": "Current status",
+        "rank": "Rank",
+        "rankProgress": "Rank progress",
         "noAvatar": "No"
     },
     "button": {

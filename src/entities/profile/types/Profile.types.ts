@@ -1,3 +1,12 @@
+export type ProfileRank = {
+    id: string;
+    level: number;
+    title: string;
+    progressPct: number;
+    nextTitle: string | null;
+    nextSuccessfulResponses: number | null;
+};
+
 export interface UserProfile {
     id: number;
     first_name: string;
@@ -9,4 +18,5 @@ export interface UserProfile {
     current_status: string;
     user_id: string | number;
     updated_at: string | Date;
+    rank?: ProfileRank;
 }

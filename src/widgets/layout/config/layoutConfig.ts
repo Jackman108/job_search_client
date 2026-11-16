@@ -3,6 +3,7 @@ import ResumeButton from '@features/resume/ui/ResumeButton/ResumeButton';
 import SearchForm from '@features/vacancies/ui/SearchForm/SearchForm';
 import SubscriptionPanel from '../../subscription/ui/SubscriptionPanel';
 import ProfilePanel from '../../profile/ui/ProfilePanel';
+import { NotificationsPanel } from '@features/notifications';
 
 export const layoutConfig: ButtonConfig<any>[] = [
     {
@@ -20,6 +21,13 @@ export const layoutConfig: ButtonConfig<any>[] = [
         tooltipText: 'Профиль',
         Component: ProfilePanel,
         position: 'right',
+    },
+    {
+        icon: '/icons/bell.svg',
+        tooltipText: 'Уведомления',
+        Component: NotificationsPanel,
+        position: 'right',
+        requiresAuth: true,
     },
     {
         icon: '/icons/resume.svg',
