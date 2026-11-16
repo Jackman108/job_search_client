@@ -1,13 +1,18 @@
 import { useCallback, useMemo } from 'react';
 import { useFetchByType } from '@api';
 import { formatAndSortData } from '@utils';
+import { useRefreshWhileHhJob } from '@hooks';
+import type { HhJobKind } from '@type';
 import { feedbackConfig } from '../config/feedbackConfig';
 import { Feedback } from '../types/Feedback.types';
 import { formatFeedbackDate } from '../utils/formatFeedbackDate';
 
+const FEEDBACK_JOB_KINDS: readonly HhJobKind[] = ['getFeedback'];
+
 /** Entity-level lookup so vacancies UI does not import features/feedback (A6). */
 const useFeedbackByVacancyId = () => {
-    const { fetchedData, error: feedbackError } = useFetchByType(feedbackConfig);
+    const { fetchedData, error: feedbackError, loadData } = useFetchByType(feedbackConfig);
+    useRefreshWhileHhJob(loadData, FEEDBACK_JOB_KINDS);
 
     const feedbacks: Feedback[] = useMemo(
         () =>

@@ -2,18 +2,31 @@ import { useCallback, useMemo, useState } from 'react';
 import { SortConfig, SortDirection } from '@type';
 import { LOCALES } from '@config';
 
-const useSortedData = <T extends Record<string, any>>(data: T[]) => {
+export type SortedDataComparator<T> = (a: T, b: T, direction: SortDirection) => number;
+
+export type UseSortedDataOptions<T> = {
+    initialKey?: keyof T;
+    initialDirection?: SortDirection;
+    comparators?: Partial<Record<keyof T & string, SortedDataComparator<T>>>;
+};
+
+const useSortedData = <T extends Record<string, any>>(data: T[], options?: UseSortedDataOptions<T>) => {
     const [sortConfig, setSortConfig] = useState<SortConfig<T>>({
-        key: (data[0] ? Object.keys(data[0])[0] : 'id') as keyof T,
-        direction: 'ascending',
+        key: (options?.initialKey ?? (data[0] ? (Object.keys(data[0])[0] as keyof T) : ('id' as keyof T))) as keyof T,
+        direction: options?.initialDirection ?? 'ascending',
     });
 
     const sortedData: T[] = useMemo(() => {
         try {
+            const key = String(sortConfig.key);
+            const custom = options?.comparators?.[key as keyof T & string];
             return [...data].sort((a, b) => {
+                if (custom) {
+                    return custom(a, b, sortConfig.direction);
+                }
                 const aValue = a[sortConfig.key];
                 const bValue = b[sortConfig.key];
-                if (aValue === undefined || bValue === undefined) {
+                if (aValue === undefined || aValue === null || bValue === undefined || bValue === null) {
                     console.warn(`Значение для ключа ${String(sortConfig.key)} отсутствует у одного из элементов`);
                     return 0;
                 }
@@ -29,7 +42,7 @@ const useSortedData = <T extends Record<string, any>>(data: T[]) => {
             console.error(LOCALES.SORT_ERROR, error);
             return data;
         }
-    }, [data, sortConfig]);
+    }, [data, sortConfig, options?.comparators]);
 
     const handleSort = useCallback((key: keyof T) => {
         setSortConfig((prevConfig) => {

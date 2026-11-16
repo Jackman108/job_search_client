@@ -1,16 +1,30 @@
-import { FC } from 'react';
+import { FC, useMemo } from 'react';
 import { UnauthorizedMessage } from '@ui';
 import styles from './FeedbackTable.module.css';
 import { useSortedData } from '@hooks';
 import { LOCALES } from '@config';
 import useFetchFeedbacks from '@features/feedback/hooks/useFetchFeedbacks';
-import { FEEDBACK_HEADER } from '@entities/feedback';
+import { compareFeedbackByStatusThenDate, FEEDBACK_HEADER, Feedback } from '@entities/feedback';
 import FeedbackRow from '@features/feedback/ui/FeedbackRow/FeedbackRow';
 import FeedbackHeader from '@features/feedback/ui/FeedbackHeader/FeedbackHeader';
+import type { SortDirection } from '@type';
+
+const statusComparator = (a: Feedback, b: Feedback, direction: SortDirection): number => {
+    const cmp = compareFeedbackByStatusThenDate(a, b);
+    return direction === 'ascending' ? cmp : -cmp;
+};
 
 const FeedbackTable: FC = () => {
     const { feedbacks, loading, error: feedbackError, deleteFeedback } = useFetchFeedbacks();
-    const { sortedData: sortedFeedbacks, handleSort, getSortArrow } = useSortedData(feedbacks || []);
+    const sortOptions = useMemo(
+        () => ({
+            initialKey: 'response_status' as const,
+            initialDirection: 'ascending' as const,
+            comparators: { response_status: statusComparator },
+        }),
+        [],
+    );
+    const { sortedData: sortedFeedbacks, handleSort, getSortArrow } = useSortedData(feedbacks || [], sortOptions);
 
     if (loading) return <div>{LOCALES.LOADING}</div>;
     if (feedbacks.length === 0 && !feedbackError) return <div>{LOCALES.WELCOME_MESSAGE}</div>;
