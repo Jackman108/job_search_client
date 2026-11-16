@@ -8,6 +8,8 @@
         "spinCount": "Количество вращений",
         "successfulResponses": "Успешные отклики",
         "currentStatus": "Текущий статус",
+        "rank": "Ранг",
+        "rankProgress": "Прогресс ранга",
         "noAvatar": "Нет"
     },
     "button": {

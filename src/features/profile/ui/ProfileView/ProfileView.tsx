@@ -17,6 +17,20 @@ const ProfileView: React.FC<UserInfoProps> = ({ userInfo, onEdit, onSignOut }) =
                 <RenderRow label={t('row.balance')} value={userInfo.balance} />
                 <RenderRow label={t('row.spinCount')} value={userInfo.spin_count} />
                 <RenderRow label={t('row.successfulResponses')} value={userInfo.successful_responses_count} />
+                <RenderRow
+                    label={t('row.rank')}
+                    value={userInfo.rank ? `${userInfo.rank.title} · ур. ${userInfo.rank.level}` : '—'}
+                />
+                <RenderRow
+                    label={t('row.rankProgress')}
+                    value={
+                        userInfo.rank
+                            ? userInfo.rank.nextTitle
+                                ? `${userInfo.rank.progressPct}% → ${userInfo.rank.nextTitle}`
+                                : `${userInfo.rank.progressPct}%`
+                            : '—'
+                    }
+                />
                 <RenderRow label={t('row.currentStatus')} value={userInfo.current_status} />
             </div>
 
