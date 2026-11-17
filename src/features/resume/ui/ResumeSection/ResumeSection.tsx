@@ -3,6 +3,7 @@ import { Button, UnauthorizedMessage } from '@ui';
 import { useResumeData } from '../../hooks/useResumeData';
 import styles from './ResumeSection.module.css';
 import ResumeChange from '@features/resume/ui/ResumeChange/ResumeChange';
+import ResumeSyncFromHh from '@features/resume/ui/ResumeSyncFromHh/ResumeSyncFromHh';
 import ResumeView from '../ResumeView/ResumeView';
 import { LOCALES } from '@config';
 import { resumeConfig } from '@entities/resume';
@@ -23,6 +24,7 @@ const ResumeSection = () => {
         handleSubmit,
         handleInputChange,
         handleCancelClick,
+        loadData,
     } = useResumeData(config);
 
     if (loading) return <div>{LOCALES.LOADING}</div>;
@@ -35,6 +37,7 @@ const ResumeSection = () => {
                 {' '}
                 🏠{' '}
             </Link>
+            <ResumeSyncFromHh onSynced={loadData} />
             {Object.entries(config).map(([type, item]) => {
                 if (!hasResume && type !== 'resume') {
                     return null;

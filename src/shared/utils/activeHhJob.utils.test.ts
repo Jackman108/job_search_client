@@ -8,6 +8,7 @@ describe('activeHhJob.utils', () => {
     it('maps endpoints to job kinds', () => {
         expect(endpointToHhJobKind('/start')).toBe('sendFeedback');
         expect(endpointToHhJobKind('/refresh')).toBe('getFeedback');
+        expect(endpointToHhJobKind('/sync-resume')).toBe('syncResume');
     });
 
     it('round-trips job id and kind in sessionStorage', () => {

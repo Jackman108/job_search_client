@@ -20,9 +20,11 @@ const Layout: FC<{ children: ReactNode }> = ({ children }) => {
                         ? ('captcha' as const)
                         : kindBusy && activeKind === 'sendFeedback'
                           ? ('apply' as const)
-                          : kindBusy && activeKind === 'getFeedback'
-                            ? ('refresh' as const)
-                            : null;
+                          : kindBusy && activeKind === 'syncResume'
+                            ? ('sync' as const)
+                            : kindBusy && activeKind === 'getFeedback'
+                              ? ('refresh' as const)
+                              : null;
 
                 return (
                     <InteractiveButton

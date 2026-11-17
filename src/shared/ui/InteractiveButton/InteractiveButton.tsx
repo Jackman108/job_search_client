@@ -7,6 +7,7 @@ const badgeLabel = (badge: InteractiveButtonProps['jobBadge']): string => {
     if (badge === 'captcha') return 'C';
     if (badge === 'refresh') return 'R';
     if (badge === 'apply') return 'A';
+    if (badge === 'sync') return 'S';
     return '';
 };
 
@@ -43,7 +44,9 @@ const InteractiveButton = ({
                     <span
                         className={`${styles.badge} ${jobBadge === 'captcha' ? styles.badgeCaptcha : ''} ${
                             jobBadge === 'refresh' ? styles.badgeRefresh : ''
-                        } ${jobBadge === 'apply' ? styles.badgeApply : ''}`}
+                        } ${jobBadge === 'apply' ? styles.badgeApply : ''} ${
+                            jobBadge === 'sync' ? styles.badgeRefresh : ''
+                        }`}
                         aria-hidden
                     >
                         {badge}
