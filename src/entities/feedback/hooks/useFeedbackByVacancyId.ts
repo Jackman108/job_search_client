@@ -25,7 +25,9 @@ const useFeedbackByVacancyId = () => {
             if (feedbackError || !feedbacks.length) {
                 return undefined;
             }
-            return feedbacks.find((feedback) => feedback.vacancy_id === vacancyId);
+            // pg BIGINT often arrives as string — strict === missed vacancy↔feedback links.
+            const want = Number(vacancyId);
+            return feedbacks.find((feedback) => Number(feedback.vacancy_id) === want);
         },
         [feedbacks, feedbackError],
     );
