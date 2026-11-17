@@ -1,6 +1,6 @@
 export type HhJobStatus = 'queued' | 'running' | 'done' | 'error' | 'cancelled';
 
-export type HhJobKind = 'sendFeedback' | 'getFeedback';
+export type HhJobKind = 'sendFeedback' | 'getFeedback' | 'syncResume';
 
 /** POST /start|/refresh always returns 202 queue mode (detached hh-worker). */
 export interface HhQueueResponse {

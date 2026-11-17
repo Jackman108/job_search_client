@@ -14,7 +14,9 @@ export const readActiveHhJob = (): ActiveHhJob | null => {
         if (!raw) return null;
         const parsed = JSON.parse(raw) as Partial<ActiveHhJob>;
         if (typeof parsed.jobId !== 'string' || !parsed.jobId) return null;
-        if (parsed.kind !== 'sendFeedback' && parsed.kind !== 'getFeedback') return null;
+        if (parsed.kind !== 'sendFeedback' && parsed.kind !== 'getFeedback' && parsed.kind !== 'syncResume') {
+            return null;
+        }
         return { jobId: parsed.jobId, kind: parsed.kind };
     } catch {
         return null;
@@ -38,6 +40,7 @@ export const clearActiveHhJob = (): void => {
 };
 
 export const endpointToHhJobKind = (endpoint: string): HhJobKind => {
+    if (endpoint.includes('sync-resume')) return 'syncResume';
     if (endpoint.includes('refresh')) return 'getFeedback';
     return 'sendFeedback';
 };

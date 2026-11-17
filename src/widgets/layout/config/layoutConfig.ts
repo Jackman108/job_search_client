@@ -35,6 +35,8 @@ export const layoutConfig: ButtonConfig<any>[] = [
         Component: ResumeButton,
         position: 'right',
         requiresAuth: true,
+        jobKind: 'syncResume',
+        jobKinds: ['syncResume'],
     },
     {
         icon: '/icons/subscribe.svg',

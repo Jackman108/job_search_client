@@ -14,7 +14,7 @@ export interface ButtonConfig<T> {
     jobKinds?: HhJobKind[];
 }
 
-export type SidebarJobBadge = 'apply' | 'refresh' | 'captcha';
+export type SidebarJobBadge = 'apply' | 'refresh' | 'captcha' | 'sync';
 
 export interface InteractiveButtonProps {
     icon: string;

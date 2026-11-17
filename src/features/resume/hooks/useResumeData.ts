@@ -42,5 +42,6 @@ export const useResumeData = (config: QueryConfigProps['config']) => {
         handleSubmit,
         handleInputChange,
         handleCancelClick,
+        loadData,
     };
 };
