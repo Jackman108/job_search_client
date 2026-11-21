@@ -51,16 +51,6 @@
     color: #6a4a18;
 }
 
-.dryRunOn {
-    background: #fff8e6;
-    border-radius: 4px;
-    padding: 4px 6px;
-}
-
-.dryRunCheck {
-    font-weight: 600;
-}
-
 .stickyActions {
     position: sticky;
     bottom: 0;

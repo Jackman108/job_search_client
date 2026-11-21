@@ -30,8 +30,6 @@ const SearchForm: FC<PanelProps> = ({ onClose }) => {
         setSelectedFieldId,
         handleInputChange,
         handleSelectChange,
-        dryRun,
-        setDryRun,
         applyCap,
         setApplyCap,
         applyActive,
@@ -197,16 +195,7 @@ const SearchForm: FC<PanelProps> = ({ onClose }) => {
                     </div>
                 ) : null}
 
-                <div className={`${styles.optionsRow} ${dryRun ? styles.dryRunOn : ''}`}>
-                    <label className={`${styles.check} ${styles.dryRunCheck}`}>
-                        <input
-                            type="checkbox"
-                            checked={dryRun}
-                            onChange={(e) => setDryRun(e.target.checked)}
-                            disabled={isLoading || isEditing}
-                        />
-                        Только поиск (dry-run) — без клика «Откликнуться»
-                    </label>
+                <div className={styles.optionsRow}>
                     <label className={styles.cap}>
                         Лимит откликов
                         <input
