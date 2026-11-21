@@ -18,6 +18,8 @@
     "typecheck": "tsc --noEmit",
     "check:structure": "node scripts/check-structure.mjs",
     "check:fsd": "node scripts/check-fsd.mjs",
+    "api:gen": "openapi-typescript openapi/openapi.json -o src/shared/api/generated/schema.d.ts",
+    "api:check": "node scripts/check-openapi-types.mjs",
     "precommit": "npm run lint && npm run format:check && npm run typecheck && npm run check:structure && npm run check:fsd && node scripts/precommit-runtime.mjs",
     "eject": "react-app-rewired eject"
   },
@@ -67,7 +69,6 @@
       "react-app/jest"
     ]
   },
-
   "browserslist": {
     "production": [
       ">0.2%",
@@ -90,6 +91,7 @@
     "@types/react-i18next": "^8.1.0",
     "customize-cra": "^1.0.0",
     "eslint-config-prettier": "^10.1.8",
+    "openapi-typescript": "^7.13.0",
     "prettier": "^3.9.10",
     "react-app-rewire-alias": "^1.1.7",
     "react-app-rewired": "^2.2.1",
