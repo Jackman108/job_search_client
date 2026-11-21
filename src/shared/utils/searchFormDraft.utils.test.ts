@@ -1,38 +1,28 @@
 import { clearSearchFormDraft, readSearchFormDraft, writeSearchFormDraft } from './searchFormDraft.utils';
 
-describe('searchFormDraft.utils', () => {
+describe('searchFormDraft', () => {
     beforeEach(() => {
-        localStorage.clear();
+        clearSearchFormDraft();
     });
 
-    it('persists safe fields and never keeps password', () => {
+    it('round-trips Magritte filter draft', () => {
         writeSearchFormDraft({
             email: 'a@b.c',
-            position: 'FE',
+            position: 'node',
             message: 'hi',
-            schedule: 'remote',
+            workFormat: 'REMOTE',
+            workScheduleByDays: 'FIVE_ON_TWO_OFF',
+            workingHours: 'HOURS_8',
             orderBy: 'relevance',
             searchField: 'name',
             experience: 'between3And6',
-            searchPeriod: '3',
-            employment: 'full',
+            searchPeriod: '7',
+            employmentForm: 'FULL',
         });
         const draft = readSearchFormDraft();
-        expect(draft?.email).toBe('a@b.c');
-        expect(draft?.position).toBe('FE');
-        expect(draft?.employment).toBe('full');
-        expect(JSON.stringify(draft)).not.toMatch(/password/i);
-    });
-
-    it('strips legacy password keys when reading', () => {
-        localStorage.setItem(
-            'mh.searchFormDraft',
-            JSON.stringify({ email: 'x@y.z', position: 'p', password: 'secret' }),
-        );
-        const draft = readSearchFormDraft();
-        expect(draft?.email).toBe('x@y.z');
-        expect(JSON.stringify(draft)).not.toMatch(/password/i);
-        clearSearchFormDraft();
-        expect(readSearchFormDraft()).toBeNull();
+        expect(draft?.workFormat).toBe('REMOTE');
+        expect(draft?.employmentForm).toBe('FULL');
+        expect(draft?.workScheduleByDays).toBe('FIVE_ON_TWO_OFF');
+        expect(draft?.workingHours).toBe('HOURS_8');
     });
 });

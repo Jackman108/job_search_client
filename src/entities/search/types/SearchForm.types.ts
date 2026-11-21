@@ -7,12 +7,14 @@ export interface FormValues {
     position: string;
     message: string;
     vacancyUrl: string;
-    schedule: string;
+    workFormat: string;
+    workScheduleByDays: string;
+    workingHours: string;
     orderBy: string;
     searchField: string;
     experience: string;
     searchPeriod: string;
-    employment: string;
+    employmentForm: string;
 }
 
 export interface SearchSubmitParams {

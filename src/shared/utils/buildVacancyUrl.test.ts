@@ -1,61 +1,64 @@
 import { buildVacancyUrl, readVacancyUrlParam } from './buildVacancyUrl';
 
 describe('buildVacancyUrl', () => {
-    it('builds hh search URL with provided params', () => {
-        const url = buildVacancyUrl({ text: 'frontend', experience: 'between1And3' });
-        expect(url.startsWith('https://hh.ru/search/vacancy?')).toBe(true);
+    it('builds Magritte work_format + employment_form params', () => {
+        const url = buildVacancyUrl({ text: 'frontend', experience: 'between1And3', workFormat: 'REMOTE' });
         expect(url).toContain('text=frontend');
         expect(url).toContain('experience=between1And3');
-        expect(url).toContain('hhtmFrom=vacancy_search_list');
-    });
-
-    it('omits empty optional params', () => {
-        const url = buildVacancyUrl({ text: '', schedule: undefined, employment: '' });
-        expect(url).not.toMatch(/(?:[?&])text=/);
+        expect(url).toContain('work_format=REMOTE');
         expect(url).not.toMatch(/(?:[?&])schedule=/);
-        expect(url).not.toMatch(/(?:[?&])employment=/);
-        expect(url).toContain('excluded_text=');
     });
 
-    it('maps camelCase form keys to HH snake_case params', () => {
-        const params = new URL(
-            buildVacancyUrl({
-                oredClusters: 'true',
-                orderBy: 'salary_desc',
-                searchField: 'name',
-                searchPeriod: '30',
-                employment: 'part',
-                schedule: 'flyInFlyOut',
-                experience: 'noExperience',
-            }),
-        ).searchParams;
-        expect(params.get('ored_clusters')).toBe('true');
+    it('skips empty optional filters', () => {
+        const url = buildVacancyUrl({ text: '', workFormat: undefined, employmentForm: '' });
+        expect(url).toContain('hh.ru/search/vacancy');
+        expect(url).not.toMatch(/(?:[?&])work_format=/);
+        expect(url).not.toMatch(/(?:[?&])employment_form=/);
+        expect(url).not.toMatch(/(?:[?&])employment=/);
+    });
+
+    it('maps all Magritte filters into query string', () => {
+        const url = buildVacancyUrl({
+            text: 'node',
+            orderBy: 'salary_desc',
+            searchField: 'name',
+            searchPeriod: '30',
+            employmentForm: 'PART',
+            workFormat: 'HYBRID',
+            experience: 'noExperience',
+            workScheduleByDays: 'FIVE_ON_TWO_OFF',
+            workingHours: 'HOURS_8',
+            oredClusters: 'true',
+        });
+        const params = new URL(url).searchParams;
+        expect(params.get('text')).toBe('node');
         expect(params.get('order_by')).toBe('salary_desc');
         expect(params.get('search_field')).toBe('name');
         expect(params.get('search_period')).toBe('30');
-        expect(params.get('employment')).toBe('part');
-        expect(params.get('schedule')).toBe('flyInFlyOut');
+        expect(params.get('employment_form')).toBe('PART');
+        expect(params.get('work_format')).toBe('HYBRID');
         expect(params.get('experience')).toBe('noExperience');
-        ['orderBy', 'searchField', 'searchPeriod', 'oredClusters'].forEach((legacy) =>
-            expect(params.has(legacy)).toBe(false),
-        );
+        expect(params.get('work_schedule_by_days')).toBe('FIVE_ON_TWO_OFF');
+        expect(params.get('working_hours')).toBe('HOURS_8');
+        ['schedule', 'employment'].forEach((legacy) => expect(params.get(legacy)).toBeNull());
     });
 
     it('keeps search_period=0 (all time)', () => {
         expect(new URL(buildVacancyUrl({ searchPeriod: '0' })).searchParams.get('search_period')).toBe('0');
     });
-});
 
-describe('readVacancyUrlParam', () => {
-    it('reads a param from a stored vacancy URL', () => {
-        const url = buildVacancyUrl({ employment: 'probation' });
-        expect(readVacancyUrlParam(url, 'employment')).toBe('probation');
+    it('maps internship to label=internship', () => {
+        const url = buildVacancyUrl({ employmentForm: 'internship' });
+        expect(new URL(url).searchParams.get('label')).toBe('internship');
+        expect(new URL(url).searchParams.get('employment_form')).toBeNull();
     });
 
-    it('returns empty string for missing param, empty or invalid URL', () => {
-        expect(readVacancyUrlParam(buildVacancyUrl({}), 'employment')).toBe('');
-        expect(readVacancyUrlParam('', 'employment')).toBe('');
-        expect(readVacancyUrlParam(undefined, 'employment')).toBe('');
-        expect(readVacancyUrlParam('not a url', 'employment')).toBe('');
+    it('readVacancyUrlParam reads HH keys', () => {
+        const url = buildVacancyUrl({ employmentForm: 'FULL', workFormat: 'REMOTE' });
+        expect(readVacancyUrlParam(url, 'employment_form')).toBe('FULL');
+        expect(readVacancyUrlParam(url, 'work_format')).toBe('REMOTE');
+        expect(readVacancyUrlParam('', 'employment_form')).toBe('');
+        expect(readVacancyUrlParam(undefined, 'employment_form')).toBe('');
+        expect(readVacancyUrlParam('not a url', 'employment_form')).toBe('');
     });
 });

@@ -10,7 +10,8 @@ const fieldPayload = (formValues: FormValues) => ({
     position: formValues.position,
     message: formValues.message,
     vacancy_url: formValues.vacancyUrl,
-    schedule: formValues.schedule,
+    /** DB column `schedule` stores Magritte `work_format` id. */
+    schedule: formValues.workFormat,
     order_by: formValues.orderBy,
     search_field: formValues.searchField,
     experience: formValues.experience,

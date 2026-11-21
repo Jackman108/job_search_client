@@ -10,8 +10,18 @@ describe('search form constants', () => {
         });
     });
 
-    it('covers HH schedule incl. fly-in/fly-out', () => {
-        expect(values('schedule')).toEqual(['remote', 'fullDay', 'flexible', 'shift', 'flyInFlyOut']);
+    it('covers Magritte work_format', () => {
+        expect(values('workFormat')).toEqual(['', 'ON_SITE', 'REMOTE', 'HYBRID', 'FIELD_WORK']);
+    });
+
+    it('covers Magritte work_schedule_by_days incl. 5/2 and flexible', () => {
+        expect(values('workScheduleByDays')).toEqual(
+            expect.arrayContaining(['', 'FIVE_ON_TWO_OFF', 'FLEXIBLE', 'WEEKEND', 'OTHER']),
+        );
+    });
+
+    it('covers Magritte working_hours', () => {
+        expect(values('workingHours')).toEqual(expect.arrayContaining(['', 'HOURS_8', 'HOURS_12', 'FLEXIBLE']));
     });
 
     it('uses noExperience for "no experience" (not an empty string)', () => {
@@ -23,13 +33,17 @@ describe('search form constants', () => {
         expect(values('searchPeriod')).toEqual(expect.arrayContaining(['1', '3', '7', '30', '0']));
     });
 
-    it('offers employment filter with "any" default', () => {
-        expect(values('employment')).toEqual(['', 'full', 'part', 'project', 'probation']);
-        expect(DEFAULT_SEARCH.employment).toBe('');
+    it('offers employment_form with internship and any default', () => {
+        expect(values('employmentForm')).toEqual(['', 'FULL', 'PART', 'PROJECT', 'FLY_IN_FLY_OUT', 'internship']);
+        expect(DEFAULT_SEARCH.employmentForm).toBe('');
+    });
+
+    it('includes distance in order_by', () => {
+        expect(values('orderBy')).toContain('distance');
     });
 
     it('defaults point at existing options', () => {
-        expect(values('schedule')).toContain(DEFAULT_SEARCH.schedule);
+        expect(values('workFormat')).toContain(DEFAULT_SEARCH.workFormat);
         expect(values('orderBy')).toContain(DEFAULT_SEARCH.orderBy);
         expect(values('searchField')).toContain(DEFAULT_SEARCH.searchField);
         expect(values('experience')).toContain(DEFAULT_SEARCH.experience);
