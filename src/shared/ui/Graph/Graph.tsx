@@ -50,7 +50,7 @@ const Graph: FC<GraphProps> = ({ vacancies }) => {
             height={totalHeight}
             className={styles.graphContainer}
             role="img"
-            aria-label="Vacancies by date"
+            aria-label="Вакансии по датам"
         >
             <defs>
                 <linearGradient id="gradientTrue" x1="0%" y1="0%" x2="0%" y2="100%">
