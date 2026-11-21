@@ -24,9 +24,9 @@ describe('search form constants', () => {
         expect(values('workingHours')).toEqual(expect.arrayContaining(['', 'HOURS_8', 'HOURS_12', 'FLEXIBLE']));
     });
 
-    it('uses noExperience for "no experience" (not an empty string)', () => {
-        expect(values('experience')).toContain('noExperience');
-        expect(values('experience')).not.toContain('');
+    it('offers any-experience (empty) plus HH experience ids', () => {
+        expect(values('experience')).toEqual(['', 'noExperience', 'between1And3', 'between3And6', 'moreThan6']);
+        expect(DEFAULT_SEARCH.experience).toBe('');
     });
 
     it('offers month and all-time search periods', () => {

@@ -9,7 +9,7 @@ export const DEFAULT_SEARCH = {
     oredClusters: 'true',
     orderBy: 'salary_desc',
     searchField: 'name',
-    experience: 'between3And6',
+    experience: '',
     searchPeriod: '3',
     employmentForm: '',
 };
@@ -122,6 +122,7 @@ export const FORM_CONFIG: FormConfig = {
             { value: 'OTHER', label: 'Другое' },
         ],
         experience: [
+            { value: '', label: 'Не важно' },
             { value: 'noExperience', label: 'Нет опыта' },
             { value: 'between1And3', label: 'От 1 года до 3 лет' },
             { value: 'between3And6', label: 'От 3 до 6 лет' },
