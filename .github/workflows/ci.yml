@@ -46,3 +46,6 @@ jobs:
 
       - name: FSD boundaries
         run: yarn check:fsd
+
+      - name: OpenAPI types drift (E4)
+        run: yarn api:check
