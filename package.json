@@ -83,18 +83,18 @@
   },
   "devDependencies": {
     "@babel/plugin-proposal-private-property-in-object": "^7.21.11",
-    "@tanstack/eslint-plugin-query": "^5.66.0",
-    "@testing-library/dom": "^10.4.0",
-    "@types/body-parser": "^1.19.5",
+    "@tanstack/eslint-plugin-query": "^5.108.1",
+    "@testing-library/dom": "^10.4.2",
+    "@types/body-parser": "^1.19.6",
     "@types/i18next": "^13.0.0",
     "@types/jwt-decode": "^3.1.0",
     "@types/react-i18next": "^8.1.0",
     "customize-cra": "^1.0.0",
     "eslint-config-prettier": "^10.1.8",
     "openapi-typescript": "^7.13.0",
-    "prettier": "^3.9.10",
+    "prettier": "^3.10.1",
     "react-app-rewire-alias": "^1.1.7",
     "react-app-rewired": "^2.2.1",
-    "serve": "^14.2.3"
+    "serve": "^14.2.8"
   }
 }
