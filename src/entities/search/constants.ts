@@ -3,6 +3,8 @@ import { FormConfig } from './types/SearchForm.types';
 /** HH Magritte filter defaults for URL building — no seeded position/message for users. */
 export const DEFAULT_SEARCH = {
     text: '',
+    /** HH area id: Moscow — avoids zero SERP when HH account region is e.g. Жлобин. */
+    area: '1',
     workFormat: 'REMOTE',
     workScheduleByDays: '',
     workingHours: '',

@@ -6,7 +6,12 @@ describe('buildVacancyUrl', () => {
         expect(url).toContain('text=frontend');
         expect(url).toContain('experience=between1And3');
         expect(url).toContain('work_format=REMOTE');
+        expect(url).toContain('area=1');
         expect(url).not.toMatch(/(?:[?&])schedule=/);
+    });
+
+    it('keeps explicit area override', () => {
+        expect(new URL(buildVacancyUrl({ area: '2' })).searchParams.get('area')).toBe('2');
     });
 
     it('skips empty optional filters', () => {
