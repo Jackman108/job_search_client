@@ -2,6 +2,7 @@ import styles from './HhJobDoneModal.module.css';
 import type { HhJobDoneModalProps } from './HhJobDoneModal.props';
 import { formatFailReasonRows } from '@shared/utils/hhFailReasonLabel.utils';
 import { doneModalBody, doneModalTitle } from './endReasonCopy';
+import { useFocusTrap } from '@shared/hooks/useFocusTrap';
 
 const HhJobDoneModal = ({
     found,
@@ -20,10 +21,12 @@ const HhJobDoneModal = ({
     const body = doneModalBody(endReason);
     const listed = foundListed ?? found;
     const failRows = formatFailReasonRows(failReasons);
+    const panelRef = useFocusTrap<HTMLDivElement>(true);
 
     return (
         <div className={styles.backdrop} role="presentation" onClick={onClose}>
             <div
+                ref={panelRef}
                 className={styles.panel}
                 role="dialog"
                 aria-modal="true"

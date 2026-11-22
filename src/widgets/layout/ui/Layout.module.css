@@ -3,6 +3,21 @@
     display: flex;
 }
 
+.skipLink {
+    position: absolute;
+    left: -9999px;
+    top: 0;
+    z-index: 1000;
+    padding: 0.5rem 1rem;
+    background: #111;
+    color: #fff;
+}
+
+.skipLink:focus {
+    left: 0.5rem;
+    top: 0.5rem;
+}
+
 .sidebarLeft,
 .sidebarRight {
     width: 3rem;

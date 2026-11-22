@@ -43,11 +43,16 @@ const Layout: FC<{ children: ReactNode }> = ({ children }) => {
 
     return (
         <div className={styles.layout}>
-            <nav className={styles.sidebarLeft} role="navigation" aria-label="Left Sidebar">
+            <a href="#main-content" className={styles.skipLink}>
+                Перейти к содержимому
+            </a>
+            <nav className={styles.sidebarLeft} role="navigation" aria-label="Левая панель">
                 {renderButtons('left')}
             </nav>
-            <div className={styles.content}>{children}</div>
-            <nav className={styles.sidebarRight} role="navigation" aria-label="Right Sidebar">
+            <main id="main-content" className={styles.content} tabIndex={-1}>
+                {children}
+            </main>
+            <nav className={styles.sidebarRight} role="navigation" aria-label="Правая панель">
                 {renderButtons('right')}
             </nav>
         </div>

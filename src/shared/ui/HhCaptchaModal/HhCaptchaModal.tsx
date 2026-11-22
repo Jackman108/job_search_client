@@ -1,6 +1,7 @@
 import { FormEvent, useEffect, useState } from 'react';
 import styles from './HhCaptchaModal.module.css';
 import type { HhCaptchaModalProps } from './HhCaptchaModal.props';
+import { useFocusTrap } from '@shared/hooks/useFocusTrap';
 
 const formatElapsed = (startedAt: number): string => {
     const sec = Math.max(0, Math.floor((Date.now() - startedAt) / 1000));
@@ -21,6 +22,7 @@ const HhCaptchaModal = ({
     const [answer, setAnswer] = useState('');
     const [elapsed, setElapsed] = useState('0:00');
     const [refreshing, setRefreshing] = useState(false);
+    const panelRef = useFocusTrap<HTMLFormElement>(true);
 
     useEffect(() => {
         const started = waitingSince ? Date.parse(waitingSince) : Date.now();
@@ -48,8 +50,15 @@ const HhCaptchaModal = ({
     };
 
     return (
-        <div className={styles.backdrop} role="dialog" aria-modal="true" aria-label="CAPTCHA">
-            <form className={styles.panel} onSubmit={handleSubmit}>
+        <div className={styles.backdrop} role="presentation">
+            <form
+                ref={panelRef}
+                className={styles.panel}
+                onSubmit={handleSubmit}
+                role="dialog"
+                aria-modal="true"
+                aria-label="Капча HeadHunter"
+            >
                 <header className={styles.header}>
                     <h2 className={styles.title}>Пройдите капчу</h2>
                     {onDismiss ? (
@@ -67,7 +76,7 @@ const HhCaptchaModal = ({
                     Ожидание: {elapsed}
                 </p>
                 {captchaSrc ? (
-                    <img className={styles.image} src={captchaSrc} alt="CAPTCHA" />
+                    <img className={styles.image} src={captchaSrc} alt="Картинка капчи" />
                 ) : (
                     <p className={styles.waiting}>Ожидаем картинку Magritte…</p>
                 )}
@@ -87,12 +96,15 @@ const HhCaptchaModal = ({
                         className={styles.input}
                         value={answer}
                         onChange={(e) => setAnswer(e.target.value)}
-                        autoFocus
                         autoComplete="off"
                         disabled={busy}
                     />
                 </label>
-                {error ? <p className={styles.error}>{error}</p> : null}
+                {error ? (
+                    <p className={styles.error} role="alert">
+                        {error}
+                    </p>
+                ) : null}
                 <button className={styles.submit} type="submit" disabled={busy || !answer.trim()}>
                     {busy ? 'Отправка…' : 'Отправить'}
                 </button>
