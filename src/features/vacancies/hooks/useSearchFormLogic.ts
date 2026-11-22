@@ -13,7 +13,6 @@ const useSearchFormLogic = () => {
     const { vacancySubmit, vacancyStop } = useVacancySubmit();
     const { handleSubmitRequest, handleStopRequest } = useSubmitRequest();
     const profile = useSharedSearchProfile(PROFILE_REQUIRED_KEYS);
-    const [dryRun, setDryRun] = useState(false);
     const [applyCap, setApplyCap] = useState<number | ''>('');
 
     const applyActive = isJobActive && activeJob?.kind === 'sendFeedback';
@@ -30,12 +29,11 @@ const useSearchFormLogic = () => {
         () => ({
             ...profile.formValues,
             token,
-            dryRun: dryRun || undefined,
             applyCap: typeof applyCap === 'number' && applyCap > 0 ? applyCap : undefined,
             setErrors: profile.setErrors,
             setIsLoading: profile.setIsLoading,
         }),
-        [profile, token, dryRun, applyCap],
+        [profile, token, applyCap],
     );
 
     const onSubmit = async (event: FormEvent) => {
@@ -81,18 +79,15 @@ const useSearchFormLogic = () => {
         await vacancySubmit({
             ...snap,
             token,
-            dryRun: dryRun || undefined,
             applyCap: typeof applyCap === 'number' && applyCap > 0 ? applyCap : undefined,
             setErrors: profile.setErrors,
             setIsLoading: profile.setIsLoading,
         });
-    }, [anyJobBusy, profile, vacancySubmit, token, dryRun, applyCap]);
+    }, [anyJobBusy, profile, vacancySubmit, token, applyCap]);
 
     return {
         token,
         ...profile,
-        dryRun,
-        setDryRun,
         applyCap,
         setApplyCap,
         applyActive,
