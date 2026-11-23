@@ -1839,10 +1839,10 @@
     "@svgr/plugin-svgo" "^5.5.0"
     loader-utils "^2.0.0"
 
-"@tanstack/eslint-plugin-query@^5.108.1":
-  version "5.108.1"
-  resolved "https://registry.yarnpkg.com/@tanstack/eslint-plugin-query/-/eslint-plugin-query-5.108.1.tgz#82e5f3cb206c227fb2c4bdfaba2a0154862f00cc"
-  integrity sha512-OzaAk7XF08PntuHI85FdUhVMa+Cot3uTfkqsk/a5lAz/9i/pNKn1mnrI8PCEkSWfQzO6l1Qy40UFrCCGofEqhg==
+"@tanstack/eslint-plugin-query@^5.108.2":
+  version "5.108.2"
+  resolved "https://registry.yarnpkg.com/@tanstack/eslint-plugin-query/-/eslint-plugin-query-5.108.2.tgz#dd2d2cead18e7914751f2d0799646529d33731f5"
+  integrity sha512-sxOijFTXh7oGX6sIVSlD13Cm17VKfMFYaBt1TGigeJ+CsJMXqtdFVC5cbf945tNpcmSSSK7SgAQmQuCkqEnkpw==
   dependencies:
     "@typescript-eslint/utils" "^8.71.0"
 
