@@ -83,7 +83,7 @@
   },
   "devDependencies": {
     "@babel/plugin-proposal-private-property-in-object": "^7.21.11",
-    "@tanstack/eslint-plugin-query": "^5.108.1",
+    "@tanstack/eslint-plugin-query": "^5.108.2",
     "@testing-library/dom": "^10.4.2",
     "@types/body-parser": "^1.19.6",
     "@types/i18next": "^13.0.0",
