@@ -6,12 +6,14 @@ export const LOGIN_FIELD_KEYS = ['email', 'password'] as const satisfies readonl
 /** Accordion: vacancy title + SERP URL + cover letter — only while creating/editing. */
 export const VACANCY_SECTION_KEYS = ['position', 'vacancyUrl'] as const satisfies readonly (keyof FormValues)[];
 
-/** Accordion: HH filter selects — always visible. */
+/** Accordion: HH Magritte filter selects — always visible (drawer order). */
 export const FILTER_OPTION_KEYS = [
-    'schedule',
-    'orderBy',
     'searchField',
+    'workFormat',
+    'workScheduleByDays',
+    'workingHours',
     'experience',
+    'employmentForm',
     'searchPeriod',
-    'employment',
+    'orderBy',
 ] as const;

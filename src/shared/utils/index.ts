@@ -1,4 +1,10 @@
 export { buildVacancyUrl, readVacancyUrlParam } from './buildVacancyUrl';
+export {
+    normalizeEmploymentForm,
+    normalizeWorkFormat,
+    readEmploymentFormFromUrl,
+    resolveWorkFormat,
+} from './hhFilterCompat';
 export { clearSearchFormDraft, readSearchFormDraft, writeSearchFormDraft } from './searchFormDraft.utils';
 export type { SearchFormDraft } from './searchFormDraft.utils';
 export { handleAuthError, getErrorValidate } from './errorHandler';

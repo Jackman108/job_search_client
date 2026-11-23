@@ -1,69 +1,76 @@
-/**
- * Local draft for typed Search/Feedback fields.
- * Never persist HH password (security).
- */
+const DRAFT_KEY = 'mh.searchFormDraft.v2';
 
 export type SearchFormDraft = {
     email: string;
     position: string;
     message: string;
-    schedule: string;
+    workFormat: string;
+    workScheduleByDays: string;
+    workingHours: string;
     orderBy: string;
     searchField: string;
     experience: string;
     searchPeriod: string;
-    employment: string;
+    employmentForm: string;
 };
 
-const DRAFT_KEY = 'mh.searchFormDraft';
+const asString = (v: unknown): string => (typeof v === 'string' ? v : '');
 
-const asString = (value: unknown, fallback = ''): string => (typeof value === 'string' ? value : fallback);
-
-export const readSearchFormDraft = (): SearchFormDraft | null => {
+export function readSearchFormDraft(): SearchFormDraft | null {
     try {
         const raw = localStorage.getItem(DRAFT_KEY);
         if (!raw) return null;
-        const parsed = JSON.parse(raw) as Partial<SearchFormDraft> & { password?: unknown };
-        // Strip legacy password if an older client wrote it.
+        const parsed = JSON.parse(raw) as Partial<SearchFormDraft> & {
+            /** legacy v1 keys */
+            schedule?: string;
+            employment?: string;
+        };
         return {
             email: asString(parsed.email),
             position: asString(parsed.position),
             message: asString(parsed.message),
-            schedule: asString(parsed.schedule),
+            workFormat: asString(parsed.workFormat || parsed.schedule),
+            workScheduleByDays: asString(parsed.workScheduleByDays),
+            workingHours: asString(parsed.workingHours),
             orderBy: asString(parsed.orderBy),
             searchField: asString(parsed.searchField),
             experience: asString(parsed.experience),
             searchPeriod: asString(parsed.searchPeriod),
-            employment: asString(parsed.employment),
+            employmentForm: asString(parsed.employmentForm || parsed.employment),
         };
     } catch {
         return null;
     }
-};
+}
 
-export const writeSearchFormDraft = (draft: SearchFormDraft): void => {
+export function writeSearchFormDraft(draft: SearchFormDraft): void {
     try {
-        const safe: SearchFormDraft = {
-            email: draft.email,
-            position: draft.position,
-            message: draft.message,
-            schedule: draft.schedule,
-            orderBy: draft.orderBy,
-            searchField: draft.searchField,
-            experience: draft.experience,
-            searchPeriod: draft.searchPeriod,
-            employment: draft.employment,
-        };
-        localStorage.setItem(DRAFT_KEY, JSON.stringify(safe));
+        localStorage.setItem(
+            DRAFT_KEY,
+            JSON.stringify({
+                email: draft.email,
+                position: draft.position,
+                message: draft.message,
+                workFormat: draft.workFormat,
+                workScheduleByDays: draft.workScheduleByDays,
+                workingHours: draft.workingHours,
+                orderBy: draft.orderBy,
+                searchField: draft.searchField,
+                experience: draft.experience,
+                searchPeriod: draft.searchPeriod,
+                employmentForm: draft.employmentForm,
+            }),
+        );
     } catch {
-        // Quota / private mode — ignore.
+        // ignore quota / private mode
     }
-};
+}
 
-export const clearSearchFormDraft = (): void => {
+export function clearSearchFormDraft(): void {
     try {
         localStorage.removeItem(DRAFT_KEY);
+        localStorage.removeItem('mh.searchFormDraft.v1');
     } catch {
         // ignore
     }
-};
+}

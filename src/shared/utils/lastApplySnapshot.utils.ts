@@ -13,12 +13,14 @@ export function writeLastApplySnapshot(values: Partial<FormValues> & Pick<FormVa
             position: values.position || '',
             message: values.message || '',
             vacancyUrl: values.vacancyUrl,
-            schedule: values.schedule || DEFAULT_SEARCH.schedule,
+            workFormat: values.workFormat || DEFAULT_SEARCH.workFormat,
+            workScheduleByDays: values.workScheduleByDays || DEFAULT_SEARCH.workScheduleByDays,
+            workingHours: values.workingHours || DEFAULT_SEARCH.workingHours,
             orderBy: values.orderBy || DEFAULT_SEARCH.orderBy,
             searchField: values.searchField || DEFAULT_SEARCH.searchField,
             experience: values.experience || DEFAULT_SEARCH.experience,
             searchPeriod: values.searchPeriod || DEFAULT_SEARCH.searchPeriod,
-            employment: values.employment || DEFAULT_SEARCH.employment,
+            employmentForm: values.employmentForm || DEFAULT_SEARCH.employmentForm,
             savedAt: new Date().toISOString(),
         };
         sessionStorage.setItem(KEY, JSON.stringify(snap));

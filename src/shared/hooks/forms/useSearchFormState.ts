@@ -8,27 +8,73 @@ import {
     writeSearchFormDraft,
     type SearchFormDraft,
 } from '@shared/utils/searchFormDraft.utils';
+import {
+    normalizeEmploymentForm,
+    normalizeWorkFormat,
+    readEmploymentFormFromUrl,
+    resolveWorkFormat,
+} from '@shared/utils/hhFilterCompat';
 
-const blankFieldSlice = (draft?: SearchFormDraft | null) => ({
-    position: draft?.position || '',
-    message: draft?.message || '',
-    vacancyUrl: buildVacancyUrl({
-        ...DEFAULT_SEARCH,
-        text: draft?.position || '',
-        schedule: draft?.schedule || DEFAULT_SEARCH.schedule,
-        orderBy: draft?.orderBy || DEFAULT_SEARCH.orderBy,
-        searchField: draft?.searchField || DEFAULT_SEARCH.searchField,
-        experience: draft?.experience || DEFAULT_SEARCH.experience,
-        searchPeriod: draft?.searchPeriod || DEFAULT_SEARCH.searchPeriod,
-        employment: draft?.employment || DEFAULT_SEARCH.employment,
-    }),
-    schedule: draft?.schedule || DEFAULT_SEARCH.schedule,
-    orderBy: draft?.orderBy || DEFAULT_SEARCH.orderBy,
-    searchField: draft?.searchField || DEFAULT_SEARCH.searchField,
-    experience: draft?.experience || DEFAULT_SEARCH.experience,
-    searchPeriod: draft?.searchPeriod || DEFAULT_SEARCH.searchPeriod,
-    employment: draft?.employment || DEFAULT_SEARCH.employment,
+const toUrlParams = (slice: {
+    position?: string;
+    workFormat?: string;
+    workScheduleByDays?: string;
+    workingHours?: string;
+    orderBy?: string;
+    searchField?: string;
+    experience?: string;
+    searchPeriod?: string;
+    employmentForm?: string;
+}) => ({
+    ...DEFAULT_SEARCH,
+    text: slice.position || '',
+    workFormat: slice.workFormat || DEFAULT_SEARCH.workFormat,
+    workScheduleByDays: slice.workScheduleByDays || DEFAULT_SEARCH.workScheduleByDays,
+    workingHours: slice.workingHours || DEFAULT_SEARCH.workingHours,
+    orderBy: slice.orderBy || DEFAULT_SEARCH.orderBy,
+    searchField: slice.searchField || DEFAULT_SEARCH.searchField,
+    experience: slice.experience || DEFAULT_SEARCH.experience,
+    searchPeriod: slice.searchPeriod || DEFAULT_SEARCH.searchPeriod,
+    employmentForm: slice.employmentForm || DEFAULT_SEARCH.employmentForm,
 });
+
+const blankFieldSlice = (draft?: SearchFormDraft | null) => {
+    const workFormat = normalizeWorkFormat(draft?.workFormat) || DEFAULT_SEARCH.workFormat;
+    const employmentForm = normalizeEmploymentForm(draft?.employmentForm) || DEFAULT_SEARCH.employmentForm;
+    const workScheduleByDays = draft?.workScheduleByDays || DEFAULT_SEARCH.workScheduleByDays;
+    const workingHours = draft?.workingHours || DEFAULT_SEARCH.workingHours;
+    const orderBy = draft?.orderBy || DEFAULT_SEARCH.orderBy;
+    const searchField = draft?.searchField || DEFAULT_SEARCH.searchField;
+    const experience = draft?.experience || DEFAULT_SEARCH.experience;
+    const searchPeriod = draft?.searchPeriod || DEFAULT_SEARCH.searchPeriod;
+    const position = draft?.position || '';
+
+    return {
+        position,
+        message: draft?.message || '',
+        vacancyUrl: buildVacancyUrl(
+            toUrlParams({
+                position,
+                workFormat,
+                workScheduleByDays,
+                workingHours,
+                orderBy,
+                searchField,
+                experience,
+                searchPeriod,
+                employmentForm,
+            }),
+        ),
+        workFormat,
+        workScheduleByDays,
+        workingHours,
+        orderBy,
+        searchField,
+        experience,
+        searchPeriod,
+        employmentForm,
+    };
+};
 
 const useSearchFormState = (
     initialAuths: SearchAuthData | null = null,
@@ -37,18 +83,30 @@ const useSearchFormState = (
     const initialFormValues = useMemo<FormValues>(() => {
         const draft = !initialFields ? readSearchFormDraft() : null;
         const fieldSlice = initialFields
-            ? {
-                  position: initialFields.position || '',
-                  message: initialFields.message || '',
-                  vacancyUrl: initialFields.vacancy_url || buildVacancyUrl(DEFAULT_SEARCH),
-                  schedule: initialFields.schedule || DEFAULT_SEARCH.schedule,
-                  orderBy: initialFields.order_by || DEFAULT_SEARCH.orderBy,
-                  searchField: initialFields.search_field || DEFAULT_SEARCH.searchField,
-                  experience: initialFields.experience || DEFAULT_SEARCH.experience,
-                  searchPeriod: initialFields.search_period || DEFAULT_SEARCH.searchPeriod,
-                  // No DB column: employment lives in the persisted vacancy_url.
-                  employment: readVacancyUrlParam(initialFields.vacancy_url, 'employment'),
-              }
+            ? (() => {
+                  const workFormat =
+                      resolveWorkFormat(initialFields.vacancy_url, initialFields.schedule) || DEFAULT_SEARCH.workFormat;
+                  const employmentForm =
+                      readEmploymentFormFromUrl(initialFields.vacancy_url) || DEFAULT_SEARCH.employmentForm;
+                  const workScheduleByDays =
+                      readVacancyUrlParam(initialFields.vacancy_url, 'work_schedule_by_days') ||
+                      DEFAULT_SEARCH.workScheduleByDays;
+                  const workingHours =
+                      readVacancyUrlParam(initialFields.vacancy_url, 'working_hours') || DEFAULT_SEARCH.workingHours;
+                  return {
+                      position: initialFields.position || '',
+                      message: initialFields.message || '',
+                      vacancyUrl: initialFields.vacancy_url || buildVacancyUrl(DEFAULT_SEARCH),
+                      workFormat,
+                      workScheduleByDays,
+                      workingHours,
+                      orderBy: initialFields.order_by || DEFAULT_SEARCH.orderBy,
+                      searchField: initialFields.search_field || DEFAULT_SEARCH.searchField,
+                      experience: initialFields.experience || DEFAULT_SEARCH.experience,
+                      searchPeriod: initialFields.search_period || DEFAULT_SEARCH.searchPeriod,
+                      employmentForm,
+                  };
+              })()
             : blankFieldSlice(draft);
 
         return {
@@ -72,23 +130,27 @@ const useSearchFormState = (
             email: formValues.email,
             position: formValues.position,
             message: formValues.message,
-            schedule: formValues.schedule,
+            workFormat: formValues.workFormat,
+            workScheduleByDays: formValues.workScheduleByDays,
+            workingHours: formValues.workingHours,
             orderBy: formValues.orderBy,
             searchField: formValues.searchField,
             experience: formValues.experience,
             searchPeriod: formValues.searchPeriod,
-            employment: formValues.employment,
+            employmentForm: formValues.employmentForm,
         });
     }, [
         formValues.email,
         formValues.position,
         formValues.message,
-        formValues.schedule,
+        formValues.workFormat,
+        formValues.workScheduleByDays,
+        formValues.workingHours,
         formValues.orderBy,
         formValues.searchField,
         formValues.experience,
         formValues.searchPeriod,
-        formValues.employment,
+        formValues.employmentForm,
         initialFields,
     ]);
 
@@ -126,20 +188,26 @@ const useSearchFormState = (
         (param: string) => (e: ChangeEvent<HTMLSelectElement>) => {
             const { value } = e.target;
 
-            setFormValues((prev) => ({
-                ...prev,
-                [param]: value,
-                vacancyUrl: buildVacancyUrl({
-                    ...DEFAULT_SEARCH,
-                    text: prev.position || '',
-                    schedule: param === 'schedule' ? value : prev.schedule,
-                    orderBy: param === 'orderBy' ? value : prev.orderBy,
-                    searchField: param === 'searchField' ? value : prev.searchField,
-                    experience: param === 'experience' ? value : prev.experience,
-                    searchPeriod: param === 'searchPeriod' ? value : prev.searchPeriod,
-                    employment: param === 'employment' ? value : prev.employment,
-                }),
-            }));
+            setFormValues((prev) => {
+                const next = {
+                    ...prev,
+                    [param]: value,
+                } as FormValues;
+                next.vacancyUrl = buildVacancyUrl(
+                    toUrlParams({
+                        position: next.position,
+                        workFormat: next.workFormat,
+                        workScheduleByDays: next.workScheduleByDays,
+                        workingHours: next.workingHours,
+                        orderBy: next.orderBy,
+                        searchField: next.searchField,
+                        experience: next.experience,
+                        searchPeriod: next.searchPeriod,
+                        employmentForm: next.employmentForm,
+                    }),
+                );
+                return next;
+            });
         },
         [],
     );
