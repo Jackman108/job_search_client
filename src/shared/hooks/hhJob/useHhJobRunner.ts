@@ -222,17 +222,44 @@ const useHhJobRunner = () => {
         setTableRevision(new Date().toISOString());
     }, [activeJob?.jobId, request]);
 
-    const stopJob = useCallback(async () => {
-        abortPolling();
-        try {
-            await request('post', '/stop', {});
-        } catch (error) {
-            console.error('Stop error:', error);
-        } finally {
-            clearJob();
-            setCompletion(null);
-        }
-    }, [abortPolling, clearJob, request]);
+    const stopJob = useCallback(
+        async (kinds?: HhJobKind[]) => {
+            const watched = activeJob;
+            abortPolling();
+            try {
+                await request('post', '/stop', kinds?.length ? { kinds } : {});
+            } catch (error) {
+                console.error('Stop error:', error);
+            }
+
+            // Apply-only stop: keep UI on a still-running refresh if one exists.
+            if (kinds?.length === 1 && kinds[0] === 'sendFeedback') {
+                try {
+                    const listed = (await request('get', '/jobs?limit=20')) as Array<{
+                        id: string;
+                        kind: HhJobKind;
+                        status: HhJobStatus;
+                    }>;
+                    const refresh = listed?.find(
+                        (j) => j.kind === 'getFeedback' && (j.status === 'running' || j.status === 'queued'),
+                    );
+                    if (refresh) {
+                        setCompletion(null);
+                        void watchJob(refresh.id, 'getFeedback');
+                        return;
+                    }
+                } catch {
+                    /* fall through to clear */
+                }
+            }
+
+            if (!kinds?.length || (watched && kinds.includes(watched.kind))) {
+                clearJob();
+                setCompletion(null);
+            }
+        },
+        [abortPolling, activeJob, clearJob, request, watchJob],
+    );
 
     useEffect(() => {
         if (!token) return;

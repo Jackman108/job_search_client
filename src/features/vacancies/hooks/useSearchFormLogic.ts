@@ -44,7 +44,8 @@ const useSearchFormLogic = () => {
 
     const onApplyToggle = useCallback(async () => {
         if (applyActive || canStop) {
-            await vacancyStop();
+            // Never cancel a running refresh when stopping applies.
+            await vacancyStop(['sendFeedback']);
             profile.setIsLoading(false);
             return;
         }
@@ -54,7 +55,7 @@ const useSearchFormLogic = () => {
 
     const onRefreshToggle = useCallback(async () => {
         if (refreshActive) {
-            await handleStopRequest();
+            await handleStopRequest(['getFeedback']);
             profile.setIsLoading(false);
             return;
         }

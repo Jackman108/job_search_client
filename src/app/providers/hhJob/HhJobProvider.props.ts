@@ -23,7 +23,8 @@ export interface HhJobState {
     liveSummary: HhLiveApplySummary | null;
     lastEvent?: string;
     watchJob: (jobId: string, kind: HhJobKind) => Promise<HhJobStatusResponse>;
-    stopJob: () => Promise<void>;
+    /** Optional kinds filter — apply stop should pass `['sendFeedback']` so refresh keeps running. */
+    stopJob: (kinds?: HhJobKind[]) => Promise<void>;
     clearJob: () => void;
     submitCaptchaAnswer: (answer: string) => Promise<void>;
     requestCaptchaRefresh: () => Promise<void>;
