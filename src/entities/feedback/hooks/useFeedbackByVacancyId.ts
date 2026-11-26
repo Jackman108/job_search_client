@@ -6,8 +6,15 @@ import type { HhJobKind } from '@type';
 import { feedbackConfig } from '../config/feedbackConfig';
 import { Feedback } from '../types/Feedback.types';
 import { formatFeedbackDate } from '../utils/formatFeedbackDate';
+import { buildFeedbackVacancyIndex, findFeedbackForVacancy } from '../utils/matchFeedbackToVacancy';
 
 const FEEDBACK_JOB_KINDS: readonly HhJobKind[] = ['getFeedback'];
+
+type VacancyFeedbackKey = {
+    id: number;
+    title_vacancy?: string;
+    title_company?: string;
+};
 
 /** Entity-level lookup so vacancies UI does not import features/feedback (A6). */
 const useFeedbackByVacancyId = () => {
@@ -20,19 +27,26 @@ const useFeedbackByVacancyId = () => {
         [fetchedData.feedback],
     );
 
-    const getFeedbackByVacancyId = useCallback(
-        (vacancyId: number): Feedback | undefined => {
+    const index = useMemo(() => buildFeedbackVacancyIndex(feedbacks), [feedbacks]);
+
+    const getFeedbackForVacancy = useCallback(
+        (vacancy: VacancyFeedbackKey): Feedback | undefined => {
             if (feedbackError || !feedbacks.length) {
                 return undefined;
             }
-            // pg BIGINT often arrives as string — strict === missed vacancy↔feedback links.
-            const want = Number(vacancyId);
-            return feedbacks.find((feedback) => Number(feedback.vacancy_id) === want);
+            return findFeedbackForVacancy(index, vacancy);
         },
-        [feedbacks, feedbackError],
+        [feedbacks, feedbackError, index],
+    );
+
+    /** @deprecated Prefer getFeedbackForVacancy — id-only misses list-sync rows with vacancy_id=0. */
+    const getFeedbackByVacancyId = useCallback(
+        (vacancyId: number): Feedback | undefined => getFeedbackForVacancy({ id: vacancyId }),
+        [getFeedbackForVacancy],
     );
 
     return {
+        getFeedbackForVacancy,
         getFeedbackByVacancyId,
         error: feedbackError,
     };

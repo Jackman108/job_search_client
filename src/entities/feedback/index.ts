@@ -8,4 +8,10 @@ export { formatFeedbackDate } from './utils/formatFeedbackDate';
 
 export { compareFeedbackByStatusThenDate, feedbackStatusRank } from './utils/feedbackStatusRank';
 
+export {
+    buildFeedbackVacancyIndex,
+    findFeedbackForVacancy,
+    normalizeFeedbackKey,
+} from './utils/matchFeedbackToVacancy';
+
 export { default as useFeedbackByVacancyId } from './hooks/useFeedbackByVacancyId';
