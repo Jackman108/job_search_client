@@ -30,9 +30,7 @@ const getQueryKey = (config: FetchByTypeConfig['config']) => {
 const LIVE_HH_ENDPOINTS = new Set(['/feedback', '/vacancy']);
 
 function isLiveHhConfig(config: FetchByTypeConfig['config']): boolean {
-    return Object.values(config as Record<string, ConfigItem>).some((item) =>
-        LIVE_HH_ENDPOINTS.has(item.apiEndpoint),
-    );
+    return Object.values(config as Record<string, ConfigItem>).some((item) => LIVE_HH_ENDPOINTS.has(item.apiEndpoint));
 }
 
 export const useFetchByType = (config: FetchByTypeConfig['config']) => {

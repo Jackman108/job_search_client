@@ -18,9 +18,9 @@ describe('matchFeedbackToVacancy', () => {
             fb({ id: 1, vacancy_id: 139205744, response_status: 'Приглашение', title_vacancy: 'X' }),
             fb({ id: 2, vacancy_id: 0, response_status: 'Отказ', title_vacancy: 'X' }),
         ]);
-        expect(
-            findFeedbackForVacancy(index, { id: 139205744, title_vacancy: 'X' })?.response_status,
-        ).toBe('Приглашение');
+        expect(findFeedbackForVacancy(index, { id: 139205744, title_vacancy: 'X' })?.response_status).toBe(
+            'Приглашение',
+        );
     });
 
     it('falls back to title when vacancy_id is 0', () => {
