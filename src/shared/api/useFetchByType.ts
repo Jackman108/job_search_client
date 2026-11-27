@@ -26,9 +26,17 @@ const getQueryKey = (config: FetchByTypeConfig['config']) => {
     return Object.keys(config).map((key) => [(config as Record<string, ConfigItem>)[key].apiEndpoint]);
 };
 
+/** HH-driven tables must not sit on a 10m RQ cache after /refresh or /start. */
+const LIVE_HH_ENDPOINTS = new Set(['/feedback', '/vacancy']);
+
+function isLiveHhConfig(config: FetchByTypeConfig['config']): boolean {
+    return Object.values(config as Record<string, ConfigItem>).some((item) => LIVE_HH_ENDPOINTS.has(item.apiEndpoint));
+}
+
 export const useFetchByType = (config: FetchByTypeConfig['config']) => {
     const { request } = useDataApi();
     const { token } = useAuth();
+    const liveHh = isLiveHhConfig(config);
 
     const fetchData = useCallback(
         async (endpoint: string) => {
@@ -52,8 +60,11 @@ export const useFetchByType = (config: FetchByTypeConfig['config']) => {
             return results;
         },
         enabled: !!token,
-        staleTime: 1000 * 60 * 10,
-        refetchOnWindowFocus: false,
+        // Feedback/vacancies change under getFeedback/sendFeedback; 10m stale + no focus
+        // refetch left the «Обратная связь» table looking frozen after a successful refresh.
+        staleTime: liveHh ? 0 : 1000 * 60 * 10,
+        refetchOnMount: liveHh ? 'always' : true,
+        refetchOnWindowFocus: liveHh,
         retry: shouldRetryAuthenticatedQuery,
     });
 

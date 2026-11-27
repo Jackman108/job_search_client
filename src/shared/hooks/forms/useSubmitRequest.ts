@@ -4,6 +4,7 @@ import { useDataApi } from '@api';
 import { useMutation } from '@tanstack/react-query';
 import { shouldRedirectToServerUnavailable } from '@shared/utils/serverUnavailableRedirect';
 import { useHhJobContext } from '@app/providers/hhJob/useHhJobContext';
+import type { HhJobKind } from '@type';
 
 const useSubmitRequest = () => {
     const { request } = useDataApi();
@@ -77,8 +78,8 @@ const useSubmitRequest = () => {
         }
     };
 
-    const handleStopRequest = async (): Promise<void> => {
-        await stopJob();
+    const handleStopRequest = async (kinds?: HhJobKind[]): Promise<void> => {
+        await stopJob(kinds);
     };
 
     return { handleSubmitRequest, handleStopRequest };

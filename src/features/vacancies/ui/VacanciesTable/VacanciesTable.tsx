@@ -11,15 +11,15 @@ import VacancyHeader from '@features/vacancies/ui/VacancyHeader/VacancyHeader';
 
 const VacanciesTable: FC = () => {
     const { vacancies, loading, error: vacancyError, deleteVacancy } = useVacancyContext();
-    const { getFeedbackByVacancyId, error: feedbackError } = useFeedbackByVacancyId();
+    const { getFeedbackForVacancy, error: feedbackError } = useFeedbackByVacancyId();
 
     const rows = useMemo(
         () =>
             vacancies.map((vacancy) => ({
                 ...vacancy,
-                feedback_status: getFeedbackByVacancyId(vacancy.id)?.response_status || '',
+                feedback_status: getFeedbackForVacancy(vacancy)?.response_status || '',
             })),
-        [vacancies, getFeedbackByVacancyId],
+        [vacancies, getFeedbackForVacancy],
     );
 
     const {
@@ -50,7 +50,7 @@ const VacanciesTable: FC = () => {
                         <VacancyRow
                             key={vacancy.id}
                             vacancy={vacancy}
-                            feedback={getFeedbackByVacancyId(vacancy.id)}
+                            feedback={getFeedbackForVacancy(vacancy)}
                             onMouseEnter={handleMouseEnter}
                             onMouseLeave={handleMouseLeave}
                             onDelete={deleteVacancy}
