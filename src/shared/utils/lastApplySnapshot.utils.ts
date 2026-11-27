@@ -9,7 +9,8 @@ export function writeLastApplySnapshot(values: Partial<FormValues> & Pick<FormVa
     try {
         const snap: LastApplySnapshot = {
             email: values.email,
-            password: values.password || '',
+            // Never persist HH password in sessionStorage (XSS / shared device).
+            password: '',
             position: values.position || '',
             message: values.message || '',
             vacancyUrl: values.vacancyUrl,
